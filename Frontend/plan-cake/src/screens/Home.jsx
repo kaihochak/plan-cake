@@ -1,4 +1,5 @@
 import React from 'react';
+import MyEvents from '../components/myEvents';
 
 const Home = () => {
   return (
@@ -6,7 +7,7 @@ const Home = () => {
       {/* My Events */}
       <MyEvents />
       {/* What's Nearby */}
-      <WhatsNearby />
+      {/* <WhatsNearby /> */}
     </div>
   );
 };
