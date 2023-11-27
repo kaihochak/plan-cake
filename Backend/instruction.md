@@ -4,9 +4,22 @@ Run Django server:
 
     python3 manage.py runserver
 
+- go to `{path}`/admin
+
+
 Apply migrations:
 
     python3 manage.py migrate
+
+
+# Django database setup
+https://docs.djangoproject.com/en/4.2/ref/models/fields/
+- go to api/models.py
+- create your model!
+
+- create api/serializer.py
+- create api/urls.py
+- update views.py
 
 # Set up backend process
 
@@ -61,6 +74,10 @@ Add Django REST
         'rest_framework', # Django REST Framework
     ]
 
-8. Applying migration
+Applying migration
 
     python3 manage.py migrate
+
+Create Super User
+
+    python3 manage.py createsuperuser
