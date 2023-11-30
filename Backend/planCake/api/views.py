@@ -9,3 +9,4 @@ from .models import FilmEvent
 class FilmEventListCreate(generics.ListCreateAPIView):
     queryset = FilmEvent.objects.all()
     serializer_class = FilmEventSerializer
+

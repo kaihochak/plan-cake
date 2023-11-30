@@ -9,17 +9,25 @@ Run Django server:
 
 Apply migrations:
 
+    python3 manage.py makemigrations
     python3 manage.py migrate
 
 
 # Django database setup
 https://docs.djangoproject.com/en/4.2/ref/models/fields/
-- go to api/models.py
-- create your model!
+1. go to api/models.py and create your model!
+2. create api/serializer.py
+3. create api/urls.py
+4. update api/admin.py
+5. update views.py
 
-- create api/serializer.py
-- create api/urls.py
-- update views.py
+# Create an entry
+https://medium.com/geekculture/how-to-django-creating-and-managing-models-databases-ae794b4d69a9
+
+    python manage.py shell
+    from api.models import FilmEvent
+    evemt = FilmEvent(title="Jungle Book")
+    event.save()
 
 # Set up backend process
 
