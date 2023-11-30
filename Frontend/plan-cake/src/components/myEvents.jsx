@@ -45,7 +45,7 @@ export default function MyEvents() {
                                 space-x-2 pb-1
                                 bg-transparent text-sm font-medium
                                 justify-between items-center"
-                    onPress={() => {}}>
+                    onClick={() => {}}>
                     <div>View More</div>
                     <HiOutlineArrowNarrowRight />
                 </button>
