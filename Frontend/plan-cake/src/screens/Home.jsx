@@ -1,13 +1,15 @@
+// Home.jsx
 import React from 'react';
-import MyEvents from '../components/myEvents';
+import MyEvents from '../components/MyEvents';
+import WhatsNearby from '../components/WhatsNearby';
 
 const Home = () => {
   return (
-    <div id="home" className='flex px-4 text-3xl font-bold underline'>
-      {/* My Events */}
+    <div id="home">
+      {/* My Events Section */}
       <MyEvents />
-      {/* What's Nearby */}
-      {/* <WhatsNearby /> */}
+      {/* What's Nearby Section */}
+      <WhatsNearby />
     </div>
   );
 };
