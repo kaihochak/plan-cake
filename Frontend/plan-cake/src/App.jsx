@@ -14,9 +14,9 @@ function App() {
 
   return (
     <Router>
-      <div className="bg-primary p-4">
+      <div className="bg-primary px-4 py-6">
         {/* Navigation */}
-        <nav className="flex justify-between items-center p-4">
+        <nav className="flex justify-between items-center pb-10">
           {/* Logo as Home Button */}
           <Link to="/" className="home-logo">
             <img src={Logo} alt="Home" />
