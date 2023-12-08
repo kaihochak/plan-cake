@@ -14,17 +14,17 @@ function App() {
 
   return (
     <Router>
-      <div className="bg-primary px-4 py-6">
+      <div className="bg-primary px-6 py-8">
         {/* Navigation */}
         <nav className="flex justify-between items-center pb-10">
           {/* Logo as Home Button */}
           <Link to="/" className="home-logo">
-            <img src={Logo} alt="Home" />
+            <img src={Logo} alt="Home" className="w-20 "/>
           </Link>
 
           {/* Menu Button */}
-          <button onClick={toggleMenu} className="menu-button">
-            <img src={menuIcon} alt="Menu" />
+          <button onClick={toggleMenu} >
+            <img src={menuIcon} alt="Menu" className="w-16 md:w-16" />
           </button>
         </nav>
 
