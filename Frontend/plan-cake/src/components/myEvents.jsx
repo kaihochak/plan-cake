@@ -1,23 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import List from './List';
-// You will need to import your data for my events or fetch it from an API
-import myEventsData from '../data/myEventsData'; 
+import dummyEventData from '../data/myEventsData'; 
+import { BsArrowRight } from 'react-icons/bs';
+//import { fetchEvents } from '../APIService';
 
 const MyEvents = () => {
-  // Assuming myEventsData is an array of event objects
+  const [myEventsData, setMyEventsData] = useState(dummyEventData);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // const data = await fetchEvents();
+        // setMyEventsData(data);
+      } catch (error) {
+        // Handle error, show an error message, etc.
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <section className="my-events">
       <header>
-        <h2>My Events</h2>
-        {/* Other header elements */}
+        <div className='flex justify-between'>
+          <h2 className='text-m-2xl'>My Events</h2>
+          <div className='flex'>
+            <p>VIEW MORE</p>
+            <BsArrowRight />
+          </div>
+        </div>
       </header>
-      {/* Pass the necessary props to List */}
-      <List 
-        items={myEventsData} 
-        isFilterVisible={false} 
-        isParticipantsVisible={true} 
-        layout="vertical" 
-      />
+
+      <List items={myEventsData} isFilterVisible={false} isParticipantsVisible={true} layout="vertical" />
     </section>
   );
 };
