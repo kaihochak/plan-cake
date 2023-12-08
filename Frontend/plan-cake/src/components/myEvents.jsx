@@ -24,7 +24,7 @@ const MyEvents = () => {
     <section className="my-events">
       <header>
         <div className='flex justify-between'>
-          <h2 className='text-m-2xl'>My Events</h2>
+          <h2 className='text-m-2xl '>My Events</h2>
           <div className='flex'>
             <p>VIEW MORE</p>
             <BsArrowRight />

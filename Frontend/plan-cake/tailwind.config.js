@@ -14,7 +14,8 @@ export default {
       },
       colors: {
         primary: '#1E1E1E',
-        secondary: 'oklch(40% 0.23 283)',
+        secondary: '#FFFFFF',
+        default: '#FFFFFF',
         error: 'oklch(54% 0.22 29)'
       },
       spacing: {

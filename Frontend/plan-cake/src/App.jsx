@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import Home from './screens/Home';
 import Menu from './components/Menu';
-import Logo from '../public/images/logo.png'; 
-import menuIcon from '../public/images/menu.png'; 
+import Logo from './images/logo.png'; 
+import menuIcon from './images/menu.png'; 
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,7 +14,7 @@ function App() {
 
   return (
     <Router>
-      <div className="bg-primary px-6 py-8">
+      <div className="bg-primary px-6 py-8 font-Urbanist text-default">
         {/* Navigation */}
         <nav className="flex justify-between items-center pb-10">
           {/* Logo as Home Button */}
