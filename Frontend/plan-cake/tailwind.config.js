@@ -28,10 +28,10 @@ export default {
         'md': '768px'
       },y: 'oklch(45% 0.2 270)',
       fontSize: {
-        'xl': ['1.5rem', {
+        'm-xl': ['1.75rem', {
           lineHeight: '2rem',
           letterSpacing: '-0.01em',
-          fontWeight: '500',
+          fontWeight: '400',
         }],
         'm-2xl': ['2.25rem', {
           lineHeight: '2rem',
@@ -46,6 +46,8 @@ export default {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/aspect-ratio'),
+  ],
 }
 

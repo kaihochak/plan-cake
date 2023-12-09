@@ -35,9 +35,11 @@ const MyEvents = () => {
 
       <List items={myEventsData} isFilterVisible={false} isParticipantsVisible={true} layout="vertical" max="3"/>
 
-      <button className='text-m-2xl'>
-        <BsFillPlusCircleFill />
-      </button>
+      <div className='flex justify-center'>
+        <button className='text-m-2xl'>
+          <BsFillPlusCircleFill />
+        </button>
+      </div>
     </section>
   );
 };
