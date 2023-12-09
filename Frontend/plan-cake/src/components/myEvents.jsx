@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import List from './List';
 import dummyEventData from '../data/myEventsData'; 
 import { BsArrowRight } from 'react-icons/bs';
+import { BsFillPlusCircleFill } from "react-icons/bs";
 //import { fetchEvents } from '../APIService';
 
 const MyEvents = () => {
@@ -23,16 +24,20 @@ const MyEvents = () => {
   return (
     <section className="my-events">
       <header>
-        <div className='flex justify-between'>
-          <h2 className='text-m-2xl '>My Events</h2>
-          <div className='flex'>
-            <p>VIEW MORE</p>
+        <div className='flex justify-between items-baseline border-b-2 pb-2 mb-2'>
+          <h2 className='text-m-2xl'>My Events</h2>
+          <div className='flex items-center'>
+            <p className='mr-2'>VIEW MORE</p>
             <BsArrowRight />
           </div>
         </div>
       </header>
 
-      <List items={myEventsData} isFilterVisible={false} isParticipantsVisible={true} layout="vertical" />
+      <List items={myEventsData} isFilterVisible={false} isParticipantsVisible={true} layout="vertical" max="3"/>
+
+      <button className='text-m-2xl'>
+        <BsFillPlusCircleFill />
+      </button>
     </section>
   );
 };
