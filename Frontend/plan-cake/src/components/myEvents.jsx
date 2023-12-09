@@ -22,7 +22,7 @@ const MyEvents = () => {
   }, []);
 
   return (
-    <section className="my-events">
+    <section className='mb-14'>
       <header>
         <div className='flex justify-between items-baseline border-b-2 pb-2 mb-2'>
           <h2 className='text-m-2xl'>My Events</h2>
