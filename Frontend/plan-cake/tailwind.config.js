@@ -28,6 +28,11 @@ export default {
         'md': '768px'
       },y: 'oklch(45% 0.2 270)',
       fontSize: {
+        'm-s': ['0.75rem', {
+          // lineHeight: '1rem',
+          letterSpacing: '-0.01em',
+          fontWeight: '400',
+        }],
         'm-xl': ['1.75rem', {
           lineHeight: '2rem',
           letterSpacing: '-0.01em',

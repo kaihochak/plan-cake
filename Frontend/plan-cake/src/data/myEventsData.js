@@ -7,9 +7,10 @@ const myEventsData = [
     time: '06:00PM',
     image: './src/assets/posters/before.jpeg',
     participants: [
-      { id: 'p1', avatar: '/path/to/avatar1.jpg', name: 'Alice' },
-      { id: 'p2', avatar: '/path/to/avatar2.jpg', name: 'Bob' },
-      // Add more participants as needed
+      { id: 'p1', avatar: './src/assets/avatars/avatar1.jpg', name: 'Alice' },
+      { id: 'p2', avatar: './src/assets/avatars/avatar2.jpg', name: 'Bob' },
+      { id: 'p3', avatar: './src/assets/avatars/avatar3.jpg', name: 'Charlie' },
+      { id: 'p4', avatar: './src/assets/avatars/avatar4.jpg', name: 'Dana' },
     ],
     location: 'Kais House',
   },
@@ -20,13 +21,38 @@ const myEventsData = [
     time: '06:00PM',
     image: './src/assets/posters/kubrick.jpg', // Replace with actual image path
     participants: [
-      { id: 'p3', avatar: '/path/to/avatar3.jpg', name: 'Charlie' },
-      { id: 'p4', avatar: '/path/to/avatar4.jpg', name: 'Dana' },
-      // Add more participants as needed
+      { id: 'p1', avatar: './src/assets/avatars/avatar1.jpg', name: 'Alice' },
+      { id: 'p4', avatar: './src/assets/avatars/avatar4.jpg', name: 'Dana' },
+      { id: 'p5', avatar: './src/assets/avatars/avatar5.jpg', name: 'Eve' },
+      { id: 'p3', avatar: './src/assets/avatars/avatar3.jpg', name: 'Frank' },
+      { id: 'p2', avatar: './src/assets/avatars/avatar2.jpg', name: 'Bob'}
     ],
     location: 'Kais House',
   },
-  // Add more events as needed
+  {
+    id: 3,
+    title: 'Kais Birthday',
+    date: '09 Oct 2023',
+    time: '06:00PM',
+    image: './src/assets/posters/kubrick.jpg', // Replace with actual image path
+    participants: [
+      { id: 'p1', avatar: './src/assets/avatars/avatar1.jpg', name: 'Alice' },
+      { id: 'p4', avatar: './src/assets/avatars/avatar4.jpg', name: 'Dana' },
+    ],
+    location: 'Kais House',
+  },
+  {
+    id: 4,
+    title: 'Bos Birthday',
+    date: '09 Oct 2023',
+    time: '06:00PM',
+    image: './src/assets/posters/kubrick.jpg', // Replace with actual image path
+    participants: [
+      { id: 'p1', avatar: './src/assets/avatars/avatar1.jpg', name: 'Alice' },
+      { id: 'p4', avatar: './src/assets/avatars/avatar4.jpg', name: 'Dana' },
+    ],
+  }
+
 ];
 
 export default myEventsData;
