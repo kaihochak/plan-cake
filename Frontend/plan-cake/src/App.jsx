@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import Home from './screens/Home';
+import CreateEvent from './screens/CreateEvent'; // Import CreateEvent component
 import Menu from './components/Menu';
 import Logo from './images/logo.png'; 
 import menuIcon from './images/menu.png'; 
@@ -16,7 +17,7 @@ function App() {
     <Router>
       <div className="bg-primary px-6 py-8 font-Urbanist text-default">
         {/* Navigation */}
-        <nav className="flex justify-between items-center pb-10">
+        <nav className="flex justify-between items-center">
           {/* Logo as Home Button */}
           <Link to="/" className="home-logo">
             <img src={Logo} alt="Home" className="w-20 "/>
@@ -43,7 +44,7 @@ function App() {
         {/* Routes */}
         <Routes>
           <Route path="/" element={<Home />} />
-          {/* Additional routes go here */}
+          <Route path="/create-event" element={<CreateEvent />} />
         </Routes>
       </div>
     </Router>
