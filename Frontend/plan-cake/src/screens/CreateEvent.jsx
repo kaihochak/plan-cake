@@ -10,6 +10,7 @@ const CreateEvent = () => {
   const navigate = useNavigate(); 
 
   const title = ['Create Event', 'Event Details', 'Pick A Film', 'Preview Event']
+  const totalSteps = 4;
 
   const nextStep = () => {
     if (currentStep < totalSteps) {
@@ -18,11 +19,11 @@ const CreateEvent = () => {
   };
 
   const prevStep = () => {
-    if (currentStep > 1) {
+    if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     } else {
       if (window.confirm("Are you sure you want to leave this page?")) {
-        navigate('/home');
+        navigate('/');
       }
     }
   };
@@ -56,8 +57,6 @@ const CreateEvent = () => {
     <div>
     </div>
     );
-
-  const totalSteps = 2; // Update this based on your number of steps
 
   return (
     <section>
