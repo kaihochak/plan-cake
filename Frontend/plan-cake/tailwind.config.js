@@ -9,14 +9,6 @@ export default {
   ],
   theme: {
     extend: {
-      screens: {
-        'xl': '380px',
-        'sm': '640px',
-        'md': '768px',
-        'lg': '1024px',
-        'xl': '1280px',
-        '2xl': '1536px',
-      },
       fontFamily: {
         'Urbanist': ['"Urbanist"', ...defaultTheme.fontFamily.sans],
       },
@@ -32,12 +24,26 @@ export default {
         'lg': '12px'
       },
       screens: {
-        'sm': '640px',
-        'md': '768px'
+        'xs': '380px', // SE not included
+        'sm': '640px', // large sc
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
       },y: 'oklch(45% 0.2 270)',
       fontSize: {
         'm-s': ['0.75rem', {
           // lineHeight: '1rem',
+          letterSpacing: '-0.01em',
+          fontWeight: '400',
+        }],
+        'm-m': ['1rem', {
+          lineHeight: '1rem',
+          letterSpacing: '-0.01em',
+          fontWeight: '400',
+        }],
+        'm-l': ['1.25rem', {
+          lineHeight: '1.25rem',
           letterSpacing: '-0.01em',
           fontWeight: '400',
         }],
