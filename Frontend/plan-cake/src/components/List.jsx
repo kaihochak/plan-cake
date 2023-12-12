@@ -6,7 +6,7 @@ const List = ({
   isFilterVisible,
   isParticipantsVisible,
   layout,
-  max,
+  max
 }) => {
   const [filter, setFilter] = React.useState("");
 
@@ -39,16 +39,17 @@ const List = ({
       {/* List of items */}
       <div
         className={
-          layout === "grid" ? "grid grid-cols-2 gap-4" : "flex flex-col"
+          layout === "grid" ? "grid grid-cols-2 gap-6" : "flex flex-col"
         }
       >
         {filteredItems.slice(0, max).map((item) => (
-          <div key={item.id} className="flex justify-between space-x-4 py-4">
+          <div key={item.id} className={ layout === "grid" ? "flex flex-col gap-y-2" : "flex justify-between space-x-4 py-4"}>
             {/* image */}
-            <div className="inset-0 w-[35%]">
+            <div className={ layout === "grid" ? "w-[90%]" : "inset-0 w-[35%]" }>
+          
               {/* The image fills the square container */}
 
-              <div class="aspect-w-1 aspect-h-1">
+              <div className="aspect-w-1 aspect-h-1">
                 <img
                   src={item.image}
                   alt={item.title}
@@ -58,18 +59,20 @@ const List = ({
             </div>
 
             {/* Info */}
-            <div className="w-[65%] flex flex-col justify-start gap-y-2">
+            <div className={ layout === "grid" ? "flex flex-col justify-start gap-y-1 pr-4" : "w-[65%] flex flex-col justify-start gap-y-2"}>
               {/* Date & Time */}
-              <div className="flex gap-x-2">
+              <div className={ layout === "grid" ? "text-m-s flex gap-x-2" : "flex gap-x-2"}>
                 <p>{item.date}</p>
                 <p>{item.time}</p>
               </div>
 
-              <h3 className="text-m-xl">{item.title}</h3>
+              <h3 className={ layout === "grid" ? "text-m-l mb-2 h-12" : "text-m-xl"}>
+                {item.title.length > 30 ? item.title.substring(0, 30) + '...' : item.title}
+              </h3>
 
               <div className="flex justify-between">
                 {/* Location */}
-                <div className="flex items-center space-x-2">
+                <div className={ layout === "grid" ? "text-m-s flex items-center gap-x-2" : "flex items-center space-x-2"}>
                   <GoLocation />
                   <p>{item.location}</p>
                 </div>
