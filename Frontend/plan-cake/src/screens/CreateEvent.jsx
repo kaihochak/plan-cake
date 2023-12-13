@@ -1,13 +1,78 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BsArrowLeft, BsFillPlusCircleFill } from 'react-icons/bs';
+import { BsArrowLeft } from 'react-icons/bs';
+
+// Form validation from Zod and React Hook Form
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+
+// button component from Shadcn
+import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+
+// calendar component from Shadcn
+import { CalendarIcon } from "@radix-ui/react-icons"
+import { addDays, format } from "date-fns"
+ 
+import { cn } from "@/lib/utils"
+import { Calendar } from "@/components/ui/calendar"
+
+// popover component from Shadcn
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+
+// select component from Shadcn
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+// input component from Shadcn
+import { Input } from "@/components/ui/input"
+
+// Zod Schema for form validation
+const formSchema = z.object({
+  username: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+});
 
 const CreateEvent = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     // Event data across all steps
   });
-  const navigate = useNavigate(); 
+  const [date, setDate] = useState();
+ 
+  const navigate = useNavigate();
+
+  // Form definition
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+    },
+  });
+
+  // 2. Define a submit handler.
+  function onSubmit(values) {
+    console.log(values);
+  }
 
   const title = ['Create Event', 'Event Details', 'Pick A Film', 'Preview Event']
   const totalSteps = 4;
@@ -40,12 +105,98 @@ const CreateEvent = () => {
 
   const CreateEvent = () => (
     <div>
+      
     </div>
   );
 
   const EventDetails = () => (
-    <div>
-    </div>
+    <Form {...form} >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mt-6">
+
+        {/* Event Name */}
+        <FormField
+          control={form.control}
+          name="Event Name"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="Event Name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Date */}
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              // variant={"outline"}
+              className={cn(
+                "w-full rounded-none justify-start text-left font-normal bg-primary border-b-2 h-14 p-2" ,
+                !date && "text-muted-foreground"
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {date ? format(date, "PPP") : <span className='text-m-m'>Pick A Date</span>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent
+            align="start"
+            className="flex w-auto flex-col space-y-2 p-2"
+          >
+            <Select
+              onValueChange={(value) =>
+                setDate(addDays(new Date(), parseInt(value)))
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select" />
+              </SelectTrigger>
+              <SelectContent position="popper">
+                <SelectItem value="0">Today</SelectItem>
+                <SelectItem value="1">Tomorrow</SelectItem>
+                <SelectItem value="3">In 3 days</SelectItem>
+                <SelectItem value="7">In a week</SelectItem>
+              </SelectContent>
+            </Select>
+            <div className="rounded-md border">
+              <Calendar mode="single" selected={date} onSelect={setDate} />
+            </div>
+          </PopoverContent>
+        </Popover>
+
+        {/* Location */}
+        <FormField
+          control={form.control}
+          name="Location"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="Location" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Guests */}
+        <FormField
+          control={form.control}
+          name="Guests"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="Guests" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
   );
 
   const PickAFilm = () => (
