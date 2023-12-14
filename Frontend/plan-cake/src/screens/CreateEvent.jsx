@@ -56,6 +56,7 @@ const CreateEvent = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     // Event data across all steps
+    eventType: ""
   });
   const [date, setDate] = useState();
  
@@ -103,9 +104,28 @@ const CreateEvent = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Event Type Selection Handler
+  const handleSelectEventType = (type) => {
+    setFormData({ ...formData, eventType: type });
+    console.log(formData.eventType);
+  };
+
   const CreateEvent = () => (
     <div>
-      
+      <p>What kind of event are you planning? </p>
+      <Form {...form}>
+      <form className="space-y-8 mt-6">
+
+        {/* Event Type */}
+        <div>
+        <button type='button' onClick={() => handleSelectEventType('Film')} className={formData.eventType === 'Film' ? 'selected' : ''}>Film</button>
+        <button type='button' onClick={() => handleSelectEventType('Music')} className={formData.eventType === 'Music' ? 'selected' : ''}>Music</button>
+        <button type='button' onClick={() => handleSelectEventType('Performance')} className={formData.eventType === 'Performance' ? 'selected' : ''}>Performance</button>
+        <button type='button' onClick={() => handleSelectEventType('Custom')} className={formData.eventType === 'Custom' ? 'selected' : ''}>Custom</button>
+      </div>
+
+      </form>
+      </Form>
     </div>
   );
 
