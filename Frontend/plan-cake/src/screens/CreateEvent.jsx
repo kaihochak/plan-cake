@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BsArrowLeft } from 'react-icons/bs';
 
@@ -70,7 +70,7 @@ const CreateEvent = () => {
     },
   });
 
-  // 2. Define a submit handler.
+  // Form submission handler
   function onSubmit(values) {
     console.log(values);
   }
@@ -107,22 +107,25 @@ const CreateEvent = () => {
   // Event Type Selection Handler
   const handleSelectEventType = (type) => {
     setFormData({ ...formData, eventType: type });
-    console.log(formData.eventType);
   };
+
+  useEffect(() => {
+    console.log(formData.eventType);
+  }, [formData.eventType]);
 
   const CreateEvent = () => (
     <div>
-      <p>What kind of event are you planning? </p>
+      <p class="text-m-l mt-10">What kind of event are you planning? </p>
       <Form {...form}>
       <form className="space-y-8 mt-6">
 
         {/* Event Type */}
-        <div>
-        <button type='button' onClick={() => handleSelectEventType('Film')} className={formData.eventType === 'Film' ? 'selected' : ''}>Film</button>
-        <button type='button' onClick={() => handleSelectEventType('Music')} className={formData.eventType === 'Music' ? 'selected' : ''}>Music</button>
-        <button type='button' onClick={() => handleSelectEventType('Performance')} className={formData.eventType === 'Performance' ? 'selected' : ''}>Performance</button>
-        <button type='button' onClick={() => handleSelectEventType('Custom')} className={formData.eventType === 'Custom' ? 'selected' : ''}>Custom</button>
-      </div>
+        <div className='flex flex-col gap-y-4'>
+          <Button variant='select' type='button' onClick={() => handleSelectEventType('Film')} className={formData.eventType === 'Film' ? 'bg-default' : ''}>Film</Button>
+          <Button variant='select' type='button' onClick={() => handleSelectEventType('Music')} className={formData.eventType === 'Music' ? 'bg-default' : ''}>Music</Button>
+          <Button variant='select' type='button' onClick={() => handleSelectEventType('Performance')} className={formData.eventType === 'Performance' ? 'bg-default' : ''}>Performance</Button>
+          <Button variant='select' type='button' onClick={() => handleSelectEventType('Custom')} className={formData.eventType === 'Custom' ? 'bg-default' : ''}>Custom</Button>
+        </div>
 
       </form>
       </Form>

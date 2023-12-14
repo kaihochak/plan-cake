@@ -23,10 +23,8 @@ module.exports = {
         'Urbanist': ['"Urbanist"', ...defaultTheme.fontFamily.sans],
       },
       colors: {
-        default: '#FFFFFF',
-        // primary: '#1E1E1E',
-        // secondary: '#FFFFFF',
-        // colors from shadcn
+        // Off White
+        default: '#D9D9D9',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
