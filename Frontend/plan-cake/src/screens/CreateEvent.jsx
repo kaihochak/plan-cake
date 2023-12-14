@@ -131,7 +131,6 @@ const CreateEvent = () => {
         <Popover>
           <PopoverTrigger asChild>
             <Button
-              // variant={"outline"}
               className={cn(
                 "w-full rounded-none justify-start text-left font-normal bg-primary border-b-2 h-14 p-2" ,
                 !date && "text-muted-foreground"
@@ -193,8 +192,6 @@ const CreateEvent = () => {
             </FormItem>
           )}
         />
-        
-        <Button type="submit">Submit</Button>
       </form>
     </Form>
   );
@@ -216,7 +213,7 @@ const CreateEvent = () => {
             <button className="text-m-2xl ml-1 mt-10 mb-6" onClick={prevStep}>
                 <BsArrowLeft />
             </button>
-            {/* Step Indicator */}
+            {/* Title */}
             <div className="flex justify-start items-center">
                 <h2 className='text-m-2xl mb-3'>{title[currentStep]}</h2>
             </div>
@@ -230,7 +227,7 @@ const CreateEvent = () => {
 
         {/* Next or Confirm Button */}
         {currentStep < totalSteps ? (
-            <button onClick={nextStep}>Next</button>
+            <Button onClick={nextStep} type="submit" className="mt-10">Next</Button>
         ) : (
             <button onClick={handleFinalize}>Confirm</button>
         )}
