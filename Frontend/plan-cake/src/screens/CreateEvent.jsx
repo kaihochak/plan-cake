@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BsArrowLeft } from 'react-icons/bs';
-
 // Form validation from Zod and React Hook Form
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-
 // button component from Shadcn
 import { Button } from "@/components/ui/button"
 import {
@@ -18,21 +16,17 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-
 // calendar component from Shadcn
-import { CalendarIcon } from "@radix-ui/react-icons"
+import { CalendarIcon, ReloadIcon } from "@radix-ui/react-icons"
 import { addDays, format } from "date-fns"
- 
 import { cn } from "@/lib/utils"
 import { Calendar } from "@/components/ui/calendar"
-
 // popover component from Shadcn
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-
 // select component from Shadcn
 import {
   Select,
@@ -41,7 +35,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-
 // input component from Shadcn
 import { Input } from "@/components/ui/input"
 
@@ -51,6 +44,7 @@ const formSchema = z.object({
     message: "Username must be at least 2 characters.",
   }),
 });
+
 
 const CreateEvent = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -106,6 +100,10 @@ const CreateEvent = () => {
 
   // Event Type Selection Handler
   const handleSelectEventType = (type) => {
+    if (type === formData.eventType) {
+      setFormData({ ...formData, eventType: "" });
+      return;
+    }
     setFormData({ ...formData, eventType: type });
   };
 
@@ -115,16 +113,18 @@ const CreateEvent = () => {
 
   const CreateEvent = () => (
     <div>
-      <p class="text-m-l mt-10">What kind of event are you planning? </p>
+      <p class="text-m-l mt-10">What type of events are you planning? </p>
       <Form {...form}>
       <form className="space-y-8 mt-6">
 
         {/* Event Type */}
         <div className='flex flex-col gap-y-4'>
-          <Button variant='select' type='button' onClick={() => handleSelectEventType('Film')} className={formData.eventType === 'Film' ? 'bg-default' : ''}>Film</Button>
-          <Button variant='select' type='button' onClick={() => handleSelectEventType('Music')} className={formData.eventType === 'Music' ? 'bg-default' : ''}>Music</Button>
-          <Button variant='select' type='button' onClick={() => handleSelectEventType('Performance')} className={formData.eventType === 'Performance' ? 'bg-default' : ''}>Performance</Button>
-          <Button variant='select' type='button' onClick={() => handleSelectEventType('Custom')} className={formData.eventType === 'Custom' ? 'bg-default' : ''}>Custom</Button>
+
+          <Button variant='select' type='button' onClick={() => handleSelectEventType('Film')} className={formData.eventType === 'Film' ? 'bg-accent text-accent-foreground border-none' : ''}>Movie Screening</Button>
+          <Button disabled variant='select'>Gig Buddies (coming soon)</Button>
+          {/* <Button variant='select' type='button' onClick={() => handleSelectEventType('Music')} className={formData.eventType === 'Music' ? 'bg-default' : ''}>Music (coming soon)</Button>
+          <Button variant='select' type='button' onClick={() => handleSelectEventType('Performance')} className={formData.eventType === 'Performance' ? 'bg-default' : ''}>Performance (coming soon)</Button>
+          <Button variant='select' type='button' onClick={() => handleSelectEventType('Custom')} className={formData.eventType === 'Custom' ? 'bg-default' : ''}>Custom (coming soon)</Button> */}
         </div>
 
       </form>
