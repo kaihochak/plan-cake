@@ -200,7 +200,7 @@ const CreateEvent = () => {
             variant='input'
               className={cn(
                 "w-full rounded-none justify-start text-left font-normal bg-primary border-b-2 h-14 p-2",
-                !date && "text-muted-foreground"
+                !date && "text-input"
               )}
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
