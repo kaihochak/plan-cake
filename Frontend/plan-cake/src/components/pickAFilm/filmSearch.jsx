@@ -4,7 +4,6 @@ import filmData from "@/data/filmData";
 
 // Search Display
 const SearchDisplay = ({ filteredItems }) => {
-
     return (
         <div>
             {/* List of items */}
@@ -81,10 +80,14 @@ const FilmSearch = () => {
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
-    };
+        const value = e.target.value;
+        setSearchTerm(value);
 
-    console.log(filmData);
+        const filtered = filmData.filter(item => 
+            item.title.toLowerCase().includes(value.toLowerCase())
+        );
+        setFilteredItems(filtered);
+    };
 
     return (
         <div>
