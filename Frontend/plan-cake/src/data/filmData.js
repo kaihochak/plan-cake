@@ -1,7 +1,7 @@
 // Example data for Pick A Film
 const filmData = [
     {
-        "name": "Inception",
+        "title": "Inception",
         "image": "./src/assets/posters/kubrick.jpg",
         "rating": 8.8,
         "watchlist": [
@@ -12,7 +12,7 @@ const filmData = [
         ]
       },
       {
-        "name": "The Shawshank Redemption",
+        "title": "The Shawshank Redemption",
         "image": "./src/assets/posters/kubrick.jpg",
         "rating": 9.3,
         "watchlist": [
@@ -23,7 +23,7 @@ const filmData = [
         ]
       },
       {
-        "name": "The Godfather",
+        "title": "The Godfather",
         "image": "./src/assets/posters/kubrick.jpg",
         "rating": 9.2,
         "watchlist": [
@@ -34,7 +34,7 @@ const filmData = [
         ]
       },
       {
-        "name": "The Dark Knight",
+        "title": "The Dark Knight",
         "image": "./src/assets/posters/kubrick.jpg",
         "rating": 9.0,
         "watchlist": [
@@ -45,7 +45,7 @@ const filmData = [
         ]
       },
       {
-        "name": "Pulp Fiction",
+        "title": "Pulp Fiction",
         "image": "./src/assets/posters/kubrick.jpg",
         "rating": 8.9,
         "watchlist": [

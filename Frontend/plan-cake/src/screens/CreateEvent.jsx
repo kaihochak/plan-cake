@@ -38,8 +38,8 @@ import {
 // input component from Shadcn
 import { Input } from "@/components/ui/input";
 // pick a film dummy data
-import filmData from "../data/filmData";
-import List from "../components/List";
+import filmData from "@/data/filmData";
+import FilmSearch from "@/components/pickAFilm/filmSearch";
 
 // Zod Schema for form validation
 const formSchema = z.object({
@@ -118,12 +118,7 @@ const CreateEvent = () => {
     console.log(formData.eventType);
   }, [formData.eventType]);
 
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
+  
   const handleSearch = () => {
     console.log("Searching for:", searchTerm);
     // Implement your search logic here
@@ -268,26 +263,7 @@ const CreateEvent = () => {
   );
 
   const PickAFilm = () => (
-    <div>
-      <div>
-        <Input
-          type="text"
-          placeholder="Search"
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-      </div>
-
-      {/* <div>
-        <List
-          items={pickafilmData}
-          isFilterVisible={false}
-          isParticipantsVisible={true}
-          layout="vertical"
-          max="3"
-        />
-      </div> */}
-    </div>
+    <FilmSearch />
   );
 
   const PreviewEvent = () => <div></div>;
