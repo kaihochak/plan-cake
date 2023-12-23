@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import filmData from "@/data/filmData";
+import { IoIosSearch } from "react-icons/io";
+import "@/styles/utility.css"
 
 // Search Display
 const SearchDisplay = ({ filteredItems }) => {
@@ -78,6 +80,8 @@ const SearchDisplay = ({ filteredItems }) => {
 const FilmSearch = () => {
     const [filteredItems, setFilteredItems] = useState(filmData);
     const [searchTerm, setSearchTerm] = useState("");
+    {/* Use to identify input element as search bar */}
+    const isSearchBar = true;
 
     const handleSearchChange = (e) => {
         const value = e.target.value;
@@ -92,12 +96,26 @@ const FilmSearch = () => {
     return (
         <div>
             {/* Search Bar */}
-            <Input
+            <div className="relative inline-block w-full my-6">
+                <div className="absolute top-1/2 left-2.5 transform -translate-y-1/2 text-primary-foreground ml-2">
+                    <IoIosSearch />
+                </div>
+                <input
+                    type="text"
+                    placeholder="Search"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    className="search-input flex h-14 w-full border-2 border-input bg-primary text-primary-foreground p-2 text-m-m ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-border focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 pl-10"
+                />
+            </div>
+
+            {/* <Input
                 type="text"
                 placeholder="Search"
                 value={searchTerm}
                 onChange={handleSearchChange}
-            />
+                isSearchBar={isSearchBar}
+            /> */}
             {/* Result */}
             <SearchDisplay filteredItems={filteredItems} />
         </div>
