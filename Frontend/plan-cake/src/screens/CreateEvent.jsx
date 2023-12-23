@@ -48,6 +48,9 @@ const formSchema = z.object({
   }),
 });
 
+
+
+// implementation of CreateEvent
 const CreateEvent = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
@@ -55,7 +58,7 @@ const CreateEvent = () => {
     eventType: "",
   });
   const [date, setDate] = useState();
-
+  const [selectedItems, setSelectedItems] = useState([]);
   const navigate = useNavigate();
 
   // Form definition
@@ -123,6 +126,11 @@ const CreateEvent = () => {
     console.log("Searching for:", searchTerm);
     // Implement your search logic here
   };
+
+  // handle selection change from PickAFilm (filmSearch.jsx)
+  const handleSelectionChange = (newSelectedItems) => {
+    setSelectedItems(newSelectedItems);
+};
 
   // fetch pick a film data
   const [pickafilmData, setPickafilmData] = useState(filmData);
@@ -263,7 +271,7 @@ const CreateEvent = () => {
   );
 
   const PickAFilm = () => (
-    <FilmSearch />
+    <FilmSearch onSelectionChange={handleSelectionChange} />
   );
 
   const PreviewEvent = () => <div></div>;
