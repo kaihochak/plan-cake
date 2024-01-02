@@ -15,7 +15,7 @@ const filmData = [
   {
     "id": 2,
     "title": "The Shawshank Redemption",
-    "image": "./src/assets/posters/kubrick.jpg",
+    "image": "./src/assets/posters/godfather.jpg",
     "rating": 9.3,
     "watchlist": [
       { id: 'p1', avatar: './src/assets/avatars/avatar1.jpg', name: 'Alice' },
@@ -27,7 +27,7 @@ const filmData = [
   {
     "id": 3,
     "title": "The Godfather",
-    "image": "./src/assets/posters/kubrick.jpg",
+    "image": "./src/assets/posters/her.jpg",
     "rating": 9.2,
     "watchlist": [
       { id: 'p1', avatar: './src/assets/avatars/avatar1.jpg', name: 'Alice' },
@@ -39,7 +39,7 @@ const filmData = [
   {
     "id": 4,
     "title": "The Dark Knight",
-    "image": "./src/assets/posters/kubrick.jpg",
+    "image": "./src/assets/posters/vertigo.jpg",
     "rating": 9.0,
     "watchlist": [
       { id: 'p1', avatar: './src/assets/avatars/avatar1.jpg', name: 'Alice' },
