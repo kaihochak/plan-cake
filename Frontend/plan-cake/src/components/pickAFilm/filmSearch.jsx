@@ -1,18 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import filmData from "@/data/filmData";
 import { IoIosSearch } from "react-icons/io";
 import "@/styles/utility.css"
 import { CiFilter } from "react-icons/ci";
+import { set } from "date-fns";
 
 // Search Display
 const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
     
-    console.log("Rendering SearchDisplay, selectedItems:", selectedItems); 
-
     const handleSelect = (itemId) => {
 
-        console.log("handleSelect: ", itemId);
         const newSelectedItems = selectedItems.includes(itemId)
             ? selectedItems.filter(id => id !== itemId)
             : [...selectedItems, itemId];
@@ -31,10 +29,10 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
                         onClick={() => handleSelect(item.id)}
                     >
                         {/* Checkbox */}
-                        <div className="absolute top-3 right-1">
+                        <div className="absolute top-2 right-2 mr-5 z-10">
                             <input
                                 type="checkbox"
-                                className="h-5 w-5 text-black z-40" // Adjust the size and color as needed
+                                className="h-8 w-8 bg-transparent border-0 focus:ring-0"
                                 checked={selectedItems.includes(item.id)}
                                 readOnly
                             />
@@ -100,8 +98,8 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
 };
 
 // Main Component
-const FilmSearch = ({ onSelectionChange }) => {
-    const [selectedItems, setSelectedItems] = useState([]);
+const FilmSearch = ({ onSelectionChange, selectedItems: parentSelectedItems }) => {
+    const [selectedItems, setSelectedItems] = useState(parentSelectedItems);
     const [filteredItems, setFilteredItems] = useState(filmData);
     const [searchTerm, setSearchTerm] = useState("");
     {/* Use to identify input element as search bar */}
@@ -147,13 +145,6 @@ const FilmSearch = ({ onSelectionChange }) => {
                 </button>
             </div>
 
-            {/* <Input
-                type="text"
-                placeholder="Search"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                isSearchBar={isSearchBar}
-            /> */}
             {/* Result */}
             <SearchDisplay
                 filteredItems={filteredItems} // Pass the filtered items to the display

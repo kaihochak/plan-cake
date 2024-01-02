@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsArrowLeft } from "react-icons/bs";
 // Form validation from Zod and React Hook Form
@@ -47,8 +47,6 @@ const formSchema = z.object({
     message: "Username must be at least 2 characters.",
   }),
 });
-
-
 
 // implementation of CreateEvent
 const CreateEvent = () => {
@@ -128,9 +126,10 @@ const CreateEvent = () => {
   };
 
   // handle selection change from PickAFilm (filmSearch.jsx)
-  const handleSelectionChange = (newSelectedItems) => {
+  const handleSelectionChange = useCallback((newSelectedItems) => {
     setSelectedItems(newSelectedItems);
-};
+  }, []); // Dependencies array is empty, so this function is created only once
+  
 
   // fetch pick a film data
   const [pickafilmData, setPickafilmData] = useState(filmData);
@@ -271,7 +270,7 @@ const CreateEvent = () => {
   );
 
   const PickAFilm = () => (
-    <FilmSearch onSelectionChange={handleSelectionChange} />
+    <FilmSearch onSelectionChange={handleSelectionChange} selectedItems={selectedItems} />
   );
 
   const PreviewEvent = () => <div></div>;
