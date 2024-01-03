@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsArrowLeft } from "react-icons/bs";
 // Form validation from Zod and React Hook Form
@@ -48,7 +48,9 @@ const formSchema = z.object({
   }),
 });
 
+// implementation of CreateEvent
 const CreateEvent = () => {
+  
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     // Event data across all steps
@@ -61,7 +63,8 @@ const CreateEvent = () => {
     eventDate: "",
     eventLocation: "",
   });
-
+  const [selectedItems, setSelectedItems] = useState([]);
+  
   const navigate = useNavigate();
 
   // Form definition
@@ -150,6 +153,12 @@ const CreateEvent = () => {
     // Implement your search logic here
   };
 
+  // handle selection change from PickAFilm (filmSearch.jsx)
+  const handleSelectionChange = useCallback((newSelectedItems) => {
+    setSelectedItems(newSelectedItems);
+  }, []); // Dependencies array is empty, so this function is created only once
+  
+
   // fetch pick a film data
   const [pickafilmData, setPickafilmData] = useState(filmData);
 
@@ -168,7 +177,7 @@ const CreateEvent = () => {
 
   const Create = () => (
     <div>
-      <p className="text-m-l mt-10">What type of events are you planning? </p>
+      <p className="text-m-l mt-10">What type of events are you planning?</p>
       <Form {...form}>
         <form className="space-y-8 mt-6">
           {/* Event Type */}
@@ -294,7 +303,7 @@ const CreateEvent = () => {
   );
 
   const PickAFilm = () => (
-    <FilmSearch />
+    <FilmSearch onSelectionChange={handleSelectionChange} selectedItems={selectedItems} />
   );
 
   const PreviewEvent = () => <div></div>;
