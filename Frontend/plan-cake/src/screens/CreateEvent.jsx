@@ -55,6 +55,12 @@ const CreateEvent = () => {
     eventType: "",
   });
   const [date, setDate] = useState();
+  const [validationMessages, setValidationMessages] = useState({
+    eventType: "",
+    eventName: "",
+    eventDate: "",
+    eventLocation: "",
+  });
 
   const navigate = useNavigate();
 
@@ -80,7 +86,27 @@ const CreateEvent = () => {
   const totalSteps = 4;
 
   const nextStep = () => {
-    if (currentStep < totalSteps) {
+    let isValid = true;
+    let newValidationMessages = {};
+
+    // Check if the event type is selected in the first step
+    if (currentStep === 0 && formData.eventType === "") {
+      newValidationMessages.eventType = "*Required";
+      isValid = false;
+    } else if (currentStep === 1) {
+      // Example validation logic for Event Details step
+      if (!formData.eventName || !formData.eventLocation) {
+        newValidationMessages.eventDetails = "*Please complete the required fields.";
+        isValid = false;
+      } else {
+        newValidationMessages.eventDetails = "";
+      }
+    }
+
+    // Update the state with new validation messages
+    setValidationMessages(newValidationMessages);
+
+    if (isValid && currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -147,6 +173,7 @@ const CreateEvent = () => {
         <form className="space-y-8 mt-6">
           {/* Event Type */}
           <div className="flex flex-col gap-y-4">
+            {validationMessages.eventType && <p className="text-primary-foreground text-m-m">{validationMessages.eventType}</p>}
             <Button
               variant="select"
               type="button"
@@ -156,6 +183,7 @@ const CreateEvent = () => {
                   ? "bg-accent text-accent-foreground border-none"
                   : ""
               }
+              
             >
               Movie Screening
             </Button>
@@ -171,7 +199,9 @@ const CreateEvent = () => {
     </div>
   );
 
-  const EventDetails = () => (
+  const EventDetails = ({ validationMessages }) => (
+    <div>
+    {validationMessages.eventDetails && <p className="text-primary-foreground text-m-m">{validationMessages.eventDetails}</p>}
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mt-6">
         {/* Event Name */}
@@ -181,7 +211,7 @@ const CreateEvent = () => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Event Name" {...field} />
+                <Input placeholder="Event Name*" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -202,7 +232,7 @@ const CreateEvent = () => {
               {date ? (
                 format(date, "PPP")
               ) : (
-                <span className="text-m-m">Pick A Date</span>
+                <span className="text-m-m">Pick A Date*</span>
               )}
             </Button>
           </PopoverTrigger>
@@ -238,7 +268,7 @@ const CreateEvent = () => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Location" {...field} />
+                <Input placeholder="Location*" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -252,7 +282,7 @@ const CreateEvent = () => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Guests" {...field} />
+                <Input placeholder="Guests*" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -260,6 +290,7 @@ const CreateEvent = () => {
         />
       </form>
     </Form>
+    </div>
   );
 
   const PickAFilm = () => (
@@ -283,7 +314,7 @@ const CreateEvent = () => {
 
       {/* Current Step Content */}
       {currentStep === 0 && <Create />}
-      {currentStep === 1 && <EventDetails />}
+      {currentStep === 1 && <EventDetails validationMessages={validationMessages} />}
       {currentStep === 2 && <PickAFilm />}
       {currentStep === 3 && <PreviewEvent />}
 
