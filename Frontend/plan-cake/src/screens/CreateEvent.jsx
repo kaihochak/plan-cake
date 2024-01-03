@@ -149,7 +149,7 @@ const CreateEvent = () => {
 
   const Create = () => (
     <div>
-      <p className="text-m-l mt-10">What type of events are you planning? </p>
+      <p className="text-m-l mt-10">What type of events are you planning?</p>
       <Form {...form}>
         <form className="space-y-8 mt-6">
           {/* Event Type */}

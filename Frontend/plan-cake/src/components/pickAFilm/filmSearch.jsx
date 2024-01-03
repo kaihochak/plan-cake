@@ -29,16 +29,16 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
                         onClick={() => handleSelect(item.id)}
                     >
                         {/* Checkbox */}
-                        <div className="absolute top-2 right-2 mr-5 z-10">
+                        <div className="absolute top-3 right-3 mr-4 z-10">
                             <input
                                 type="checkbox"
-                                className="h-8 w-8 bg-transparent border-0 focus:ring-0"
+                                className="h-8 w-8 border-2 focus:ring-0"
                                 checked={selectedItems.includes(item.id)}
                                 readOnly
                             />
                         </div>
                         {/* image */}
-                        <div className="w-[90%]">
+                        <div className={`w-[90%] ${selectedItems.includes(item.id) ? "selected-overlay" : ""}`}>
                             {/* The image fills the square container */}
                             <div className="aspect-w-1 aspect-h-1">
                                 <img
