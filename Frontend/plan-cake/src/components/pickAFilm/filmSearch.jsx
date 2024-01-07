@@ -98,10 +98,10 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
 };
 
 // Main Component
-const FilmSearch = ({ onSelectionChange, selectedItems: parentSelectedItems }) => {
+const FilmSearch = ({ onSelectionChange, selectedItems: parentSelectedItems, searchTerm: parentSearchTerm }) => {
     const [selectedItems, setSelectedItems] = useState(parentSelectedItems);
     const [filteredItems, setFilteredItems] = useState(filmData);
-    const [searchTerm, setSearchTerm] = useState("");
+    const [searchTerm, setSearchTerm] = useState(parentSearchTerm);
     {/* Use to identify input element as search bar */}
     const isSearchBar = true;
 

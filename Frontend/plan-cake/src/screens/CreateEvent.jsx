@@ -53,8 +53,10 @@ const CreateEvent = () => {
   
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
-    // Event data across all steps
     eventType: "",
+    eventName: "",
+    eventDate: "",
+    eventLocation: "",
   });
   const [date, setDate] = useState();
   const [validationMessages, setValidationMessages] = useState({
@@ -64,7 +66,8 @@ const CreateEvent = () => {
     eventLocation: "",
   });
   const [selectedItems, setSelectedItems] = useState([]);
-  
+  const [searchTerm, setSearchTerm] = useState("");
+
   const navigate = useNavigate();
 
   // Form definition
@@ -92,18 +95,18 @@ const CreateEvent = () => {
     let isValid = true;
     let newValidationMessages = {};
 
+    console.log("formData.eventName: " + formData.eventName );
+    console.log("formData.eventLocation: " + formData.eventLocation );
+
     // Check if the event type is selected in the first step
     if (currentStep === 0 && formData.eventType === "") {
       newValidationMessages.eventType = "*Required";
       isValid = false;
-    } else if (currentStep === 1) {
-      // Example validation logic for Event Details step
-      if (!formData.eventName || !formData.eventLocation) {
-        newValidationMessages.eventDetails = "*Please complete the required fields.";
-        isValid = false;
-      } else {
-        newValidationMessages.eventDetails = "";
-      }
+    } else if (currentStep === 1 && (formData.eventName === "" || formData.eventLocation === "") ) {
+      newValidationMessages.eventDetails = "*Please complete the required fields.";
+      isValid = false;
+    } else {
+      newValidationMessages.eventDetails = "";
     }
 
     // Update the state with new validation messages
@@ -147,18 +150,11 @@ const CreateEvent = () => {
     console.log(formData.eventType);
   }, [formData.eventType]);
 
-  
-  const handleSearch = () => {
-    console.log("Searching for:", searchTerm);
-    // Implement your search logic here
-  };
-
   // handle selection change from PickAFilm (filmSearch.jsx)
   const handleSelectionChange = useCallback((newSelectedItems) => {
     setSelectedItems(newSelectedItems);
   }, []); // Dependencies array is empty, so this function is created only once
   
-
   // fetch pick a film data
   const [pickafilmData, setPickafilmData] = useState(filmData);
 
@@ -303,7 +299,7 @@ const CreateEvent = () => {
   );
 
   const PickAFilm = () => (
-    <FilmSearch onSelectionChange={handleSelectionChange} selectedItems={selectedItems} />
+    <FilmSearch onSelectionChange={handleSelectionChange} selectedItems={selectedItems} searchTerm={searchTerm}/>
   );
 
   const PreviewEvent = () => <div></div>;
