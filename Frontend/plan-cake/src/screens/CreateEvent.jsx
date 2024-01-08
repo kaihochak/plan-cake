@@ -97,20 +97,20 @@ const CreateEvent = () => {
   };
 
   // Handler to update the formData state
-  const handleInputChange = (e) => {
+  const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
+  }, []);  
   
-  // handle selection change from PickAFilm (filmSearch.jsx)
-  const handleSelectionChange = useCallback((newSelectedItems) => {
-    setSelectedItems(newSelectedItems);
-  }, []); // Dependencies array is empty, so this function is created only once
-
   // Handler specifically for the date since it's not a typical input
   const handleDateChange = (newDate) => {
     setFormData({ ...formData, eventDate: newDate });
   };
+
+  // handle selection change from PickAFilm (filmSearch.jsx)
+  const handleSelectionChange = useCallback((newSelectedItems) => {
+    setSelectedItems(newSelectedItems);
+  }, []); // Dependencies array is empty, so this function is created only once
 
   useEffect(() => {
     console.log(formData.eventType);
@@ -153,14 +153,17 @@ const CreateEvent = () => {
 
   const EventDetails = () => (
     <EventDetailsForm
-      validationMessages={validationMessages}
-      onInputChange={handleInputChange}
-      onDateChange={handleDateChange}
+      key="event-details-form"
+      formData={formData}
     />
   );
 
   const PickAFilm = () => (
-    <FilmSearch onSelectionChange={handleSelectionChange} selectedItems={selectedItems} searchTerm={searchTerm}/>
+    <FilmSearch 
+      onSelectionChange={handleSelectionChange} 
+      selectedItems={selectedItems} 
+      searchTerm={searchTerm}
+    />
   );
 
   const PreviewEvent = () => <div></div>;

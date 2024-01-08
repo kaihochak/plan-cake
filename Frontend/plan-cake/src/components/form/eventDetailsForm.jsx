@@ -21,8 +21,20 @@ import {
 import { Input } from "@/components/ui/input";
 
 
-const EventDetailsForm = ({ validationMessages, onInputChange, onDateChange }) => {
+const EventDetailsForm = ({ key, formData: parentFormData}) => {
     const [date, setDate] = useState();
+    const [formData, setFormData] = useState(parentFormData);
+    const [validationMessages, setValidationMessages] = useState({
+        eventName: "",
+        eventLocation: "",
+    });
+
+    // Log on every render
+    console.log('EventDetailsForm Props:', { validationMessages, formData });
+
+    const handleNameChange = (e) => {
+        setFormData({ ...formData, eventName: e.target.value });
+    }
 
     return (
 
@@ -33,7 +45,8 @@ const EventDetailsForm = ({ validationMessages, onInputChange, onDateChange }) =
                 <Input
                     name="eventName"
                     placeholder="Event Name*"
-                    onChange={onInputChange}
+                    onChange={handleNameChange}
+                    value={formData.eventName}
                 />
                 {validationMessages.eventName && <p className="text-destructive-foreground text-m-m">{validationMessages.eventName}</p>}
             </div>
