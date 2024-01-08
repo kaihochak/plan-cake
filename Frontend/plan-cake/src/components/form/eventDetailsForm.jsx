@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 
 // components from Shadcn
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 
-const EventDetailsForm = ({ key, formData: parentFormData}) => {
+const EventDetailsForm = ({ formData: parentFormData, nextStep }) => {
     const [date, setDate] = useState();
     const [formData, setFormData] = useState(parentFormData);
     const [validationMessages, setValidationMessages] = useState({
@@ -29,15 +29,48 @@ const EventDetailsForm = ({ key, formData: parentFormData}) => {
         eventLocation: "",
     });
 
-    // Log on every render
-    console.log('EventDetailsForm Props:', { validationMessages, formData });
+    const handleNextStep = () => {
+        let isValid = true;
+        let newValidationMessages = {};
 
-    const handleNameChange = (e) => {
-        setFormData({ ...formData, eventName: e.target.value });
+        if (formData.eventName === "") {
+            newValidationMessages.eventName = "*required";
+            isValid = false;
+        }
+        
+        if (formData.eventLocation === "") {
+            newValidationMessages.eventLocation = "*required";
+            isValid = false;
+        }
+
+        // Update the state with new validation messages
+        setValidationMessages(newValidationMessages);
+
+        if (isValid) {
+            nextStep(formData);
+        }
+    
     }
 
-    return (
+    const handleDateChange = (date) => {
+        setDate(date);
+        setFormData({ ...formData, date: date });
+    }
 
+    const handleLocationChange = (e) => {
+        setFormData({ ...formData, eventLocation: e.target.value });
+    }
+
+    const handleGuestsChange = (e) => {
+        setFormData({ ...formData, guests: e.target.value });
+    }
+
+    // debug
+    useEffect(() => {
+        console.log(formData);
+    }, [formData]);
+
+    return (
         <div className="space-y-8 mt-6">
 
             {/* Event Name */}
@@ -45,8 +78,8 @@ const EventDetailsForm = ({ key, formData: parentFormData}) => {
                 <Input
                     name="eventName"
                     placeholder="Event Name*"
-                    onChange={handleNameChange}
                     value={formData.eventName}
+                    onChange={(e) => setFormData({ ...formData, eventName: e.target.value })}
                 />
                 {validationMessages.eventName && <p className="text-destructive-foreground text-m-m">{validationMessages.eventName}</p>}
             </div>
@@ -89,7 +122,7 @@ const EventDetailsForm = ({ key, formData: parentFormData}) => {
                         </SelectContent>
                     </Select>
                     <div className="rounded-md border">
-                        <Calendar mode="single" selected={date} onSelect={onDateChange} />
+                        <Calendar mode="single" selected={date} onSelect={handleDateChange} />
                     </div>
                 </PopoverContent>
             </Popover>
@@ -99,7 +132,7 @@ const EventDetailsForm = ({ key, formData: parentFormData}) => {
                 <Input
                     name="eventLocation"
                     placeholder="Location*"
-                    onChange={onInputChange}
+                    onChange={handleLocationChange}
                 />
                 {validationMessages.eventLocation && <p className="text-destructive-foreground text-m-m">{validationMessages.eventLocation}</p>}
             </div>
@@ -108,8 +141,13 @@ const EventDetailsForm = ({ key, formData: parentFormData}) => {
             <Input
                 name="guests"
                 placeholder="Guests"
-                onChange={onInputChange}
+                onChange={handleGuestsChange}
             />
+
+            {/* Next Step */}
+            <Button onClick={handleNextStep} type="submit" className="mt-10">
+                Next
+            </Button>
         </div>
     )
 };

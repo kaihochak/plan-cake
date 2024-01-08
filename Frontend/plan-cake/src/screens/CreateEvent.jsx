@@ -8,19 +8,16 @@ import filmData from "@/data/filmData";
 
 // implementation of CreateEvent
 const CreateEvent = () => {
-  
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     eventType: "",
     eventName: "",
-    date: "",
-    location: "",
-    guestList: [],
+    eventDate: "",
+    eventLocation: "",
+    eventGuestList: [],
   });
   const [validationMessages, setValidationMessages] = useState({
     eventType: "",
-    eventName: "",
-    eventLocation: "",
   });
 
   // State for the selected items in the PickAFilm component
@@ -38,55 +35,27 @@ const CreateEvent = () => {
   ];
   const totalSteps = 4;
 
-  const nextStep = () => {
-    let isValid = true;
-    let newValidationMessages = {};
-    let required = "*Required"
-
-    console.log("formData.eventName: " + formData.eventName );
-    console.log("formData.eventLocation: " + formData.eventLocation );
-
-    // Check if the event type is selected in step 1
-    if (currentStep === 0 && formData.eventType === "") {
-      newValidationMessages.eventType = required;
-      isValid = false;
-    } 
-    // Check for step 2
-    else if (currentStep === 1 ) {
-      if (formData.eventName === "") {
-        newValidationMessages.eventName = required;
-        isValid = false;
-      } 
-      if (formData.eventLocation === "") {
-        newValidationMessages.eventLocation = required;
-        isValid = false;
-      }
-    }
-
-    // Update the state with new validation messages
-    setValidationMessages(newValidationMessages);
-
-    if (isValid && currentStep < totalSteps) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
   const prevStep = () => {
+    // If we're not on the first step, go to the previous step
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
-    } else {
+    } 
+    // If we're on the first step, prompt the user to confirm leaving the page
+    else {
       if (window.confirm("Are you sure you want to leave this page?")) {
         navigate("/");
       }
     }
   };
 
-  const handleFinalize = () => {
-    console.log("Finalize event creation with data: ", formData);
-    // Here, handle the final submission logic
-    // navigate('/event-created'); // Navigate to a confirmation page or another appropriate location
-  };
 
+  const nextStep = (formData) => {
+    if (formData) {
+      setFormData({ ...formData, ...formData });      
+    }
+    setCurrentStep(currentStep + 1);
+  };
+  
   // Handler to update the event type
   const handleSelectEventType = (type) => {
     if (type === formData.eventType) {
@@ -96,16 +65,19 @@ const CreateEvent = () => {
     setFormData({ ...formData, eventType: type });
   };
 
-  // Handler to update the formData state
-  const handleInputChange = useCallback((e) => {
-    const { name, value } = e.target;
-    setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
-  }, []);  
-  
-  // Handler specifically for the date since it's not a typical input
-  const handleDateChange = (newDate) => {
-    setFormData({ ...formData, eventDate: newDate });
-  };
+  const handleEventTypeNextStep = () => {
+    let isValid = true;
+
+    if (formData.eventType === "") {
+      setValidationMessages({ ...validationMessages, eventType: "*Required" });
+      isValid = false;
+      return;
+    } 
+
+    // Update the state with new validation messages
+    setValidationMessages({ ...validationMessages, eventType: "" });
+    nextStep();
+  }
 
   // handle selection change from PickAFilm (filmSearch.jsx)
   const handleSelectionChange = useCallback((newSelectedItems) => {
@@ -126,7 +98,7 @@ const CreateEvent = () => {
   const Create = () => (
     <div>
       <p className="text-m-l mt-10">What type of events are you planning?</p>
-        <form className="space-y-8 mt-6">
+        <div className="space-y-8 mt-6">
           {/* Event Type */}
           <div className="flex flex-col gap-y-4">
             <Button
@@ -147,14 +119,18 @@ const CreateEvent = () => {
             </Button>
             {validationMessages.eventType && <p className="text-destructive-foreground text-m-m">{validationMessages.eventType}</p>}
           </div>
-        </form>
+          {/* Next */}
+          <Button onClick={handleEventTypeNextStep} type="submit" className="mt-10">
+            Next
+          </Button>
+        </div>
     </div>
   );
 
   const EventDetails = () => (
     <EventDetailsForm
-      key="event-details-form"
       formData={formData}
+      nextStep={nextStep}
     />
   );
 
@@ -189,15 +165,6 @@ const CreateEvent = () => {
       {currentStep === 1 && <EventDetails />}
       {currentStep === 2 && <PickAFilm />}
       {currentStep === 3 && <PreviewEvent />}
-
-      {/* Next or Confirm Button */}
-      {currentStep < totalSteps ? (
-        <Button onClick={nextStep} type="submit" className="mt-10">
-          Next
-        </Button>
-      ) : (
-        <button onClick={handleFinalize}>Confirm</button>
-      )}
     </section>
   );
 };
