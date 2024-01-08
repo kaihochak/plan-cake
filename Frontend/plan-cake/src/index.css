@@ -33,8 +33,9 @@
     --accent2: 220 100% 80%;
     --accent2-foreground: 0 0% 85%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Red */
+    --destructive: 0 100% 30%;
+    --destructive-foreground: 0 100% 43%;
 
     --border: 0 0% 50%;
     --input: 0 0% 50%;
