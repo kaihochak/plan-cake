@@ -34,12 +34,12 @@ const EventDetailsForm = ({ formData: parentFormData, nextStep }) => {
         let newValidationMessages = {};
 
         if (formData.eventName === "") {
-            newValidationMessages.eventName = "*required";
+            newValidationMessages.eventName = "*Required";
             isValid = false;
         }
         
         if (formData.eventLocation === "") {
-            newValidationMessages.eventLocation = "*required";
+            newValidationMessages.eventLocation = "*Required";
             isValid = false;
         }
 
@@ -53,8 +53,7 @@ const EventDetailsForm = ({ formData: parentFormData, nextStep }) => {
     }
 
     const handleDateChange = (date) => {
-        setDate(date);
-        setFormData({ ...formData, date: date });
+        setFormData({ ...formData, eventDate: date });
     }
 
     const handleLocationChange = (e) => {
@@ -81,7 +80,7 @@ const EventDetailsForm = ({ formData: parentFormData, nextStep }) => {
                     value={formData.eventName}
                     onChange={(e) => setFormData({ ...formData, eventName: e.target.value })}
                 />
-                {validationMessages.eventName && <p className="text-destructive-foreground text-m-m">{validationMessages.eventName}</p>}
+                {validationMessages.eventName && <p className="text-destructive-foreground text-m-m pt-2">{validationMessages.eventName}</p>}
             </div>
 
             {/* Date */}
@@ -90,13 +89,13 @@ const EventDetailsForm = ({ formData: parentFormData, nextStep }) => {
                     <Button
                         variant='input'
                         className={cn(
-                            "w-full rounded-none justify-start text-left font-normal bg-primary border-b-2 h-14 p-2",
-                            !date && "text-input"
+                            "w-full rounded-none justify-start text-left font-normal bg-primary border-b-2 h-14 p-2 text-primary-foreground",
+                            !formData.eventDate && "text-input"
                         )}
                     >
                         <CalendarIcon className="mr-2 h-4 w-4" />
-                        {date ? (
-                            format(date, "PPP")
+                        {formData.eventDate ? (
+                            format(formData.eventDate, "PPP")
                         ) : (
                             <span className="text-m-m">Pick A Date</span>
                         )}
@@ -134,7 +133,7 @@ const EventDetailsForm = ({ formData: parentFormData, nextStep }) => {
                     placeholder="Location*"
                     onChange={handleLocationChange}
                 />
-                {validationMessages.eventLocation && <p className="text-destructive-foreground text-m-m">{validationMessages.eventLocation}</p>}
+                {validationMessages.eventLocation && <p className="text-destructive-foreground text-m-m pt-2">{validationMessages.eventLocation}</p>}
             </div>
 
             {/* Guests */}
