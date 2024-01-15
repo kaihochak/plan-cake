@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import filmData from "@/data/filmData";
 import { IoIosSearch } from "react-icons/io";
@@ -98,12 +99,13 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
 };
 
 // Main Component
-const FilmSearch = ({ onSelectionChange, selectedItems: parentSelectedItems, searchTerm: parentSearchTerm }) => {
+const FilmSearch = ({ onSelectionChange, selectedItems: parentSelectedItems, searchTerm: parentSearchTerm, nextStep }) => {
     const [selectedItems, setSelectedItems] = useState(parentSelectedItems);
     const [filteredItems, setFilteredItems] = useState(filmData);
     const [searchTerm, setSearchTerm] = useState(parentSearchTerm);
     {/* Use to identify input element as search bar */}
     const isSearchBar = true;
+    const [showNoSelectionError, setShowNoSelectionError] = useState(false); 
 
     // Call this function when an item's selection state changes
     const updateSelection = (newSelectedItems) => {
@@ -121,6 +123,19 @@ const FilmSearch = ({ onSelectionChange, selectedItems: parentSelectedItems, sea
         );
         setFilteredItems(filtered);
     };
+
+    const handleNextStep = () => {
+        if (selectedItems.length === 0) {
+            setShowNoSelectionError(true); // Show error message if no film is selected
+            return;
+        } else {
+            setShowNoSelectionError(false); // Hide error message if films are selected
+            console.log(selectedItems);
+        }
+
+        nextStep(); 
+    };
+    
 
     return (
         <div>
@@ -146,11 +161,22 @@ const FilmSearch = ({ onSelectionChange, selectedItems: parentSelectedItems, sea
             </div>
 
             {/* Result */}
+            {/* Display error message if no film is selected */}
+            {showNoSelectionError && (
+                <div className="error-message">
+                    Please select at least one film.
+                </div>
+            )}
             <SearchDisplay
                 filteredItems={filteredItems} // Pass the filtered items to the display
                 selectedItems={selectedItems} // Pass the selected items to the display
                 setSelectedItems={updateSelection} // Pass the update function
             />
+            
+            {/* Next Step */}
+            <Button onClick={handleNextStep} type="submit" className="mt-10">
+                Next
+            </Button>
         </div>
     );
 };
