@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import FilmSearch from "@/components/pickAFilm/filmSearch";
 import EventDetailsForm from "@/components/form/eventDetailsForm";
+import PreviewEventForm from "@/components/form/previewEvent";
 import { BsArrowLeft } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
 import filmData from "@/data/filmData";
@@ -15,6 +16,7 @@ const CreateEvent = () => {
     eventDate: "",
     eventLocation: "",
     eventGuestList: [],
+    selectedItems: []
   });
   const [validationMessages, setValidationMessages] = useState({
     eventType: "",
@@ -81,12 +83,14 @@ const CreateEvent = () => {
 
   // handle selection change from PickAFilm (filmSearch.jsx)
   const handleSelectionChange = useCallback((newSelectedItems) => {
-    setSelectedItems(newSelectedItems);
+    console.log("create event new selected items:", newSelectedItems);
+    //setFormData({...formData, selectedItems: newSelectedItems});
+   // console.log("create event selected items:", selectedItems);
   }, []); // Dependencies array is empty, so this function is created only once
 
   useEffect(() => {
-    console.log(formData.eventType);
-  }, [formData.eventType]);
+    console.log(currentStep);
+  }, [currentStep]);
   
   /*
     Step Content:
@@ -139,10 +143,15 @@ const CreateEvent = () => {
       onSelectionChange={handleSelectionChange} 
       selectedItems={selectedItems} 
       searchTerm={searchTerm}
+      nextStep={nextStep}
     />
   );
 
-  const PreviewEvent = () => <div></div>;
+  const PreviewEvent = () => (
+    <PreviewEventForm 
+      formData = {formData}
+    />
+  );
 
   /*
     Return the appropriate step content based on the current step
