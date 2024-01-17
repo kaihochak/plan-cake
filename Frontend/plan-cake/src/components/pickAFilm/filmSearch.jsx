@@ -11,12 +11,12 @@ import { set } from "date-fns";
 const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
     
     const handleSelect = (itemId) => {
-
+        
         const newSelectedItems = selectedItems.includes(itemId)
-            ? selectedItems.filter(id => id !== itemId)
-            : [...selectedItems, itemId];
+            ? selectedItems.filter(id => id !== itemId) // de-select
+            : [...selectedItems, itemId]; // select
 
-        setSelectedItems(newSelectedItems); // This now calls 'updateSelection' from FilmSearch
+        setSelectedItems(newSelectedItems); 
     };
 
     return (
@@ -38,6 +38,7 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
                                 readOnly
                             />
                         </div>
+
                         {/* image */}
                         <div className={`w-[90%] ${selectedItems.includes(item.id) ? "selected-overlay" : ""}`}>
                             {/* The image fills the square container */}
@@ -99,19 +100,21 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
 };
 
 // Main Component
-const FilmSearch = ({ onSelectionChange, selectedItems: parentSelectedItems, searchTerm: parentSearchTerm, nextStep }) => {
-    const [selectedItems, setSelectedItems] = useState(parentSelectedItems);
+const FilmSearch = ({ formData: parentFormData, nextStep }) => {
+
     const [filteredItems, setFilteredItems] = useState(filmData);
-    const [searchTerm, setSearchTerm] = useState(parentSearchTerm);
-    {/* Use to identify input element as search bar */}
-    const isSearchBar = true;
+    const [formData, setFormData] = useState(parentFormData);
+    // const [selectedItems, setSelectedItems] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
     const [showNoSelectionError, setShowNoSelectionError] = useState(false); 
 
-    // Call this function when an item's selection state changes
+    // API call 
+
     const updateSelection = (newSelectedItems) => {
-        console.log("updateSelection: ", newSelectedItems);
-        setSelectedItems(newSelectedItems); // Update the selected items
-        onSelectionChange(newSelectedItems); // Notify the caller of the change
+        setFormData(formData => ({
+            ...formData,
+            selectedItems: newSelectedItems
+        }));
     };
 
     const handleSearchChange = (e) => {
@@ -125,18 +128,17 @@ const FilmSearch = ({ onSelectionChange, selectedItems: parentSelectedItems, sea
     };
 
     const handleNextStep = () => {
-        if (selectedItems.length === 0) {
+        if (formData.selectedItems.length === 0) {
             setShowNoSelectionError(true); // Show error message if no film is selected
             return;
         } else {
             setShowNoSelectionError(false); // Hide error message if films are selected
-            console.log(selectedItems);
+            console.log(formData.selectedItems);
         }
 
-        nextStep(); 
+        nextStep(formData); 
     };
     
-
     return (
         <div>
             {/* Search Bar */}
@@ -161,17 +163,19 @@ const FilmSearch = ({ onSelectionChange, selectedItems: parentSelectedItems, sea
             </div>
 
             {/* Result */}
+            <SearchDisplay
+                filteredItems={filteredItems} // Pass the filtered items to the display
+                selectedItems={formData.selectedItems} // Pass the selected items to the display
+                setSelectedItems={updateSelection} // Pass the update function
+            />
+
+
             {/* Display error message if no film is selected */}
-            {showNoSelectionError && (
-                <div className="error-message">
+                        {showNoSelectionError && (
+                <div className="text-destructive-foreground text-m-m pt-10">
                     Please select at least one film.
                 </div>
             )}
-            <SearchDisplay
-                filteredItems={filteredItems} // Pass the filtered items to the display
-                selectedItems={selectedItems} // Pass the selected items to the display
-                setSelectedItems={updateSelection} // Pass the update function
-            />
             
             {/* Next Step */}
             <Button onClick={handleNextStep} type="submit" className="mt-10">

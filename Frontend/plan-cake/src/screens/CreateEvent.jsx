@@ -22,11 +22,6 @@ const CreateEvent = () => {
     eventType: "",
   });
 
-  // State for the selected items in the PickAFilm component
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [pickafilmData, setPickafilmData] = useState(filmData);
-
   const navigate = useNavigate();
 
   const title = [
@@ -81,16 +76,9 @@ const CreateEvent = () => {
     nextStep();
   }
 
-  // handle selection change from PickAFilm (filmSearch.jsx)
-  const handleSelectionChange = useCallback((newSelectedItems) => {
-    console.log("create event new selected items:", newSelectedItems);
-    //setFormData({...formData, selectedItems: newSelectedItems});
-   // console.log("create event selected items:", selectedItems);
-  }, []); // Dependencies array is empty, so this function is created only once
-
   useEffect(() => {
-    console.log(currentStep);
-  }, [currentStep]);
+    console.log(formData);
+  }, [formData]);
   
   /*
     Step Content:
@@ -140,9 +128,7 @@ const CreateEvent = () => {
 
   const PickAFilm = () => (
     <FilmSearch 
-      onSelectionChange={handleSelectionChange} 
-      selectedItems={selectedItems} 
-      searchTerm={searchTerm}
+      formData={formData}
       nextStep={nextStep}
     />
   );

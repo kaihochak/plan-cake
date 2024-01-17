@@ -132,6 +132,7 @@ const EventDetailsForm = ({ formData: parentFormData, nextStep }) => {
                     name="eventLocation"
                     placeholder="Location*"
                     onChange={handleLocationChange}
+                    value={formData.eventLocation}
                 />
                 {validationMessages.eventLocation && <p className="text-destructive-foreground text-m-m pt-2">{validationMessages.eventLocation}</p>}
             </div>
