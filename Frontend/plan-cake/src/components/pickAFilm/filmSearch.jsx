@@ -10,11 +10,16 @@ import { set } from "date-fns";
 // Search Display
 const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
     
-    const handleSelect = (itemId) => {
-        
-        const newSelectedItems = selectedItems.includes(itemId)
-            ? selectedItems.filter(id => id !== itemId) // de-select
-            : [...selectedItems, itemId]; // select
+    const handleSelect = (item) => {
+        const itemId = item.id;
+        const itemTitle = item.title;
+
+        // Check if the item is already selected based on its id
+        const isItemSelected = selectedItems.some(selectedItem => selectedItem.id === itemId);
+
+        const newSelectedItems = isItemSelected
+            ? selectedItems.filter(selectedItem => selectedItem.id !== itemId) // de-select
+            : [...selectedItems, { id: itemId, title: itemTitle }]; // select
 
         setSelectedItems(newSelectedItems); 
     };
@@ -27,20 +32,20 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
                     <div
                         key={item.id}
                         className="flex flex-col gap-y-2 relative"
-                        onClick={() => handleSelect(item.id)}
+                        onClick={() => handleSelect(item)}
                     >
                         {/* Checkbox */}
                         <div className="absolute top-3 right-3 mr-4 z-10">
                             <input
                                 type="checkbox"
                                 className="h-8 w-8 border-2 focus:ring-0"
-                                checked={selectedItems.includes(item.id)}
+                                checked={selectedItems.some(selectedItem => selectedItem.id === item.id)}
                                 readOnly
                             />
                         </div>
 
                         {/* image */}
-                        <div className={`w-[90%] ${selectedItems.includes(item.id) ? "selected-overlay" : ""}`}>
+                        <div className={`w-[90%] ${selectedItems.some(selectedItem => selectedItem.id === item.id) ? "selected-overlay" : ""}`}>
                             {/* The image fills the square container */}
                             <div className="aspect-w-1 aspect-h-1">
                                 <img
@@ -111,6 +116,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     // API call 
 
     const updateSelection = (newSelectedItems) => {
+
         setFormData(formData => ({
             ...formData,
             selectedItems: newSelectedItems
@@ -133,9 +139,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             return;
         } else {
             setShowNoSelectionError(false); // Hide error message if films are selected
-            console.log(formData.selectedItems);
         }
-
         nextStep(formData); 
     };
     
