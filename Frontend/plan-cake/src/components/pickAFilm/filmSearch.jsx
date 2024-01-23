@@ -99,6 +99,36 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
     );
 };
 
+// Filter Groups
+const FilterGroup = ({ genre, setGenre, yearRange, setYearRange }) => {
+
+    return (
+        <div className="mb-10">
+
+
+            {/* Is in watchlist */}
+
+            {/* Genres */}
+
+            {/* Year Range */}
+            <p>{yearRange.start}</p>
+            <input
+                type="range"
+                min="1860"
+                max={new Date().getFullYear()}
+                value={yearRange.start}
+                onChange={(e) => setYearRange({ ...yearRange, start: parseInt(e.target.value) })}
+            />
+
+            {/* Imdb Rating */}
+
+        </div>
+
+    )
+
+
+}
+
 // Main Component
 const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
@@ -108,7 +138,23 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [showNoSelectionError, setShowNoSelectionError] = useState(false); 
 
+    // Filter
+    const [isInWatchlist, setIsInWatchlist] = useState(null);
+    const [genreFilter, setGenreFilter] = useState(null);
+    const [yearRangeFilter, setYearRangeFilter] = useState({
+        start: 1860,
+        end: new Date().getFullYear()
+    });
+    const [imdbRating, setImdbRating] = useState(null);
+
+
     // API call 
+    const applyFilters = () => {
+        return filmData.filter(item => {
+            return item.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+                   (!genreFilter || item.genre === genreFilter); // Apply genre filter if set
+        });
+    };
 
     const updateSelection = (newSelectedItems) => {
         setFormData(formData => ({
@@ -116,7 +162,6 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             selectedItems: newSelectedItems
         }));
     };
-
     const handleSearchChange = (e) => {
         const value = e.target.value;
         setSearchTerm(value);
@@ -138,6 +183,10 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
         nextStep(formData); 
     };
+
+    useEffect(() => {
+        setFilteredItems(applyFilters());
+    }, [searchTerm, genreFilter]); // Re-apply filters when searchTerm or genreFilter changes
     
     return (
         <div>
@@ -156,11 +205,15 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     />
                 </div>
 
-                {/* Filter Button */}
-                <button className="flex items-center text-m-l mr-3 text-primary-foreground">
-                    <CiFilter />
-                </button>
             </div>
+
+            {/* Filter Button */}
+            <FilterGroup 
+                genre={genreFilter}
+                setGenre={(genre) => setGenreFilter(genre)}
+                yearRange={yearRangeFilter} 
+                setYearRange={(newRange) => setYearRangeFilter(newRange)}
+            />
 
             {/* Result */}
             <SearchDisplay
