@@ -12,26 +12,26 @@ const PreviewEvent = ({ formData }) => {
     <div>
         {/* Event Name */}
         <div>
-            <p>{formData.eventName}</p>
+            <p className="text-m-xl mt-10">{formData.eventName}</p>
         </div>
 
         {/* Event Description */}
 
         {/* Date & Time */}
-        <div>
-            <p>Date & Time</p>
+        <div className="mt-8 text-m-m text-border">
+            <p className="">Date & Time</p>
             <p>{formattedDate}</p>
         </div> 
 
         {/* Location */}
         <div>
-            <p>Location</p>
+            <p className="mt-8 text-m-m text-border">Location</p>
             <p>{formData.eventLocation}</p>
         </div> 
 
         {/* Event Description */}
         <div>
-            <p>Guests</p>
+            <p className="mt-8 text-m-m text-border">Guests</p>
             <p>{formData.eventGuestList}</p>
         </div> 
 
