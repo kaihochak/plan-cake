@@ -8,14 +8,14 @@ import MultiSelect from "@/components/utility/multiSelect";
 
 // Search Display
 const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
-    
+
     const handleSelect = (itemId) => {
-        
+
         const newSelectedItems = selectedItems.includes(itemId)
             ? selectedItems.filter(id => id !== itemId) // de-select
             : [...selectedItems, itemId]; // select
 
-        setSelectedItems(newSelectedItems); 
+        setSelectedItems(newSelectedItems);
     };
 
     return (
@@ -106,14 +106,30 @@ const FilterGroup = ({ genre, setGenre, yearRange, setYearRange }) => {
 
 
             {/* Is in watchlist */}
-
-            {/* Genres */}
-            <MultiSelect 
+            <MultiSelect
                 options={genres}
                 selected={genre}
                 setSelected={setGenre}
             />
 
+            {/* Genres */}
+            <MultiSelect
+                options={genres}
+                selected={genre}
+                setSelected={setGenre}
+            />
+
+            <MultiSelect
+                options={genres}
+                selected={genre}
+                setSelected={setGenre}
+            />       
+            
+            <MultiSelect
+                options={genres}
+                selected={genre}
+                setSelected={setGenre}
+            />
             {/* Year Range */}
             <p>{yearRange.start}</p>
             <input
@@ -140,7 +156,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const [formData, setFormData] = useState(parentFormData);
     // const [selectedItems, setSelectedItems] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
-    const [showNoSelectionError, setShowNoSelectionError] = useState(false); 
+    const [showNoSelectionError, setShowNoSelectionError] = useState(false);
 
     // Filter
     const [isInWatchlist, setIsInWatchlist] = useState(null);
@@ -156,7 +172,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const applyFilters = () => {
         return filmData.filter(item => {
             return item.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-                   (!genreFilter || item.genre === genreFilter); // Apply genre filter if set
+                (!genreFilter || item.genre === genreFilter); // Apply genre filter if set
         });
     };
 
@@ -170,7 +186,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         const value = e.target.value;
         setSearchTerm(value);
 
-        const filtered = filmData.filter(item => 
+        const filtered = filmData.filter(item =>
             item.title.toLowerCase().includes(value.toLowerCase())
         );
         setFilteredItems(filtered);
@@ -185,13 +201,13 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             console.log(formData.selectedItems);
         }
 
-        nextStep(formData); 
+        nextStep(formData);
     };
 
     useEffect(() => {
         setFilteredItems(applyFilters());
     }, [searchTerm, genreFilter]); // Re-apply filters when searchTerm or genreFilter changes
-    
+
     return (
         <div>
             {/* Search Bar */}
@@ -212,10 +228,10 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             </div>
 
             {/* Filter Button */}
-            <FilterGroup 
+            <FilterGroup
                 genre={genreFilter}
                 setGenre={(genre) => setGenreFilter(genre)}
-                yearRange={yearRangeFilter} 
+                yearRange={yearRangeFilter}
                 setYearRange={(newRange) => setYearRangeFilter(newRange)}
             />
 
@@ -228,12 +244,12 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
 
             {/* Display error message if no film is selected */}
-                        {showNoSelectionError && (
+            {showNoSelectionError && (
                 <div className="text-destructive-foreground text-m-m pt-10">
                     Please select at least one film.
                 </div>
             )}
-            
+
             {/* Next Step */}
             <Button onClick={handleNextStep} type="submit" className="mt-10">
                 Next

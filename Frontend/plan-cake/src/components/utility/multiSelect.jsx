@@ -35,7 +35,7 @@ const MultiSelect = ({ options, selected, setSelected }) => {
             <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                     <Button variant="outline" className="w-[150px] justify-start">
-                        {selectedStatus ? <>{selectedStatus.label}</> : <>+ Set status</>}
+                        {selectedStatus ? <>{selectedStatus.label}</> : <>Genres</>}
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0" align="start">
@@ -54,7 +54,7 @@ const MultiSelect = ({ options, selected, setSelected }) => {
         <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
                 <Button variant="outline" className="w-full justify-start">
-                    {selectedStatus ? <>{selectedStatus.label}</> : <>+ Set status</>}
+                    {selectedStatus ? <>{selectedStatus.label}</> : <>Genres</>}
                 </Button>
             </DrawerTrigger>
             <DrawerContent>
