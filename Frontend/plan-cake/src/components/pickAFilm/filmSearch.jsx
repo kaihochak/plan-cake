@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import filmData from "@/data/filmData";
-import genres from "@/data/genres";
+import genresData from "@/data/genres";
 import { IoIosSearch } from "react-icons/io";
 import { CiFilter } from "react-icons/ci";
 import "@/styles/utility.css"
@@ -103,31 +103,35 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
 const FilterGroup = ({ genre, setGenre, yearRange, setYearRange }) => {
 
     return (
-        <div className="mb-10">
+        <div className="mb-10 flex flex-col gap-y-3 mx-2">
 
 
             {/* Is in watchlist */}
             <MultiSelect
-                options={genres}
+                options={genresData}
+                label="Watchlist"
                 selected={genre}
                 setSelected={setGenre}
             />
 
             {/* Genres */}
             <MultiSelect
-                options={genres}
+                options={genresData}
+                label="Genre"
                 selected={genre}
                 setSelected={setGenre}
             />
 
             <MultiSelect
-                options={genres}
+                options={genresData}
+                label="Year"
                 selected={genre}
                 setSelected={setGenre}
             />       
             
             <MultiSelect
-                options={genres}
+                options={genresData}
+                label="Rating"
                 selected={genre}
                 setSelected={setGenre}
             />
@@ -161,6 +165,8 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
     // Filter
     const [filterGroupOpen, setFilterGroupOpen] = useState(false);
+    const [isAnimating, setIsAnimating] = useState(false);
+
     const [isInWatchlist, setIsInWatchlist] = useState(null);
     const [genreFilter, setGenreFilter] = useState(null);
     const [yearRangeFilter, setYearRangeFilter] = useState({
@@ -210,6 +216,19 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         setFilteredItems(applyFilters());
     }, [searchTerm, genreFilter]); // Re-apply filters when searchTerm or genreFilter changes
 
+
+    // Filter Animation
+    useEffect(() => {
+        if (filterGroupOpen) {
+            setIsAnimating(true);
+        }
+    }, [filterGroupOpen]);
+
+    const handleAnimationEnd = () => {
+        if (!filterGroupOpen) setIsAnimating(false);
+    };
+
+
     return (
         <div>
             {/* Search Bar */}
@@ -238,13 +257,18 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
 
             {/* Filter Button */}
-            { filterGroupOpen && (
-                <FilterGroup
-                    genre={genreFilter}
-                    setGenre={(genre) => setGenreFilter(genre)}
-                    yearRange={yearRangeFilter}
-                    setYearRange={(newRange) => setYearRangeFilter(newRange)}
-                />
+            {(filterGroupOpen || isAnimating) && (
+                <div 
+                    className={`transition-transform duration-300 ${filterGroupOpen ? 'animate-slide-down' : 'animate-slide-up'}`}
+                    onAnimationEnd={handleAnimationEnd}
+                >
+                    <FilterGroup
+                        genre={genreFilter}
+                        setGenre={(genre) => setGenreFilter(genre)}
+                        yearRange={yearRangeFilter}
+                        setYearRange={(newRange) => setYearRangeFilter(newRange)}
+                    />
+                </div>
             )}
 
             {/* Result */}

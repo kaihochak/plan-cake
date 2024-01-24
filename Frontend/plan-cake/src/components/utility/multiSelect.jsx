@@ -20,7 +20,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 
-const MultiSelect = ({ options, selected, setSelected }) => {
+const MultiSelect = ({ options, label, selected, setSelected }) => {
 
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredOptions, setFilteredOptions] = useState(options);
@@ -28,21 +28,22 @@ const MultiSelect = ({ options, selected, setSelected }) => {
 
     const [open, setOpen] = React.useState(false)
     const isDesktop = useMediaQuery('only screen and (min-width: 768px)')
-    const [selectedStatus, setSelectedStatus] = React.useState(null);
+    const [selectedOptions, setSelectedOptions] = React.useState(null);
 
     if (isDesktop) {
         return (
             <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                     <Button variant="outline" className="w-[150px] justify-start">
-                        {selectedStatus ? <>{selectedStatus.label}</> : <>Genres</>}
+                        {selectedOptions ? <>{selectedOptions.label}</> : <>{label}</>}
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0" align="start">
                     <StatusList 
                         options={options}
+                        label={label}
                         setOpen={setOpen} 
-                        setSelectedStatus={setSelectedStatus} 
+                        setSelectedOptions={setSelectedOptions} 
                     />
                 </PopoverContent>
             </Popover>
@@ -51,18 +52,19 @@ const MultiSelect = ({ options, selected, setSelected }) => {
 
     // Mobile
     return (
-        <Drawer open={open} onOpenChange={setOpen}>
+        <Drawer open={open} onOpenChange={setOpen} className="py-2">
             <DrawerTrigger asChild>
                 <Button variant="outline" className="w-full justify-start">
-                    {selectedStatus ? <>{selectedStatus.label}</> : <>Genres</>}
+                    {selectedOptions ? <>{selectedOptions.label}</> : <>{label}</>}
                 </Button>
             </DrawerTrigger>
             <DrawerContent>
                 <div className="mt-4 border-t">
-                    <StatusList 
+                    <OptionList 
                         options={options}
+                        label={label}
                         setOpen={setOpen} 
-                        setSelectedStatus={setSelectedStatus} 
+                        setSelectedOptions={setSelectedOptions} 
                     />
                 </div>
             </DrawerContent>
@@ -71,25 +73,25 @@ const MultiSelect = ({ options, selected, setSelected }) => {
 
 }
 
-function StatusList({ options, setOpen, setSelectedStatus }) {
+function OptionList({ options, label, setOpen, setSelectedOptions }) {
     return (
         <Command>
-            <CommandInput placeholder="Filter genres..." />
+            <CommandInput placeholder={`Filter by ${label}` + "s"} />
             <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup>
-                    {options.map((status) => (
+                    {options.map((option) => (
                         <CommandItem
-                            key={status.value}
-                            value={status.value}
+                            key={option.value}
+                            value={option.value}
                             onSelect={(value) => {
-                                setSelectedStatus(
+                                setSelectedOptions(
                                     options.find((priority) => priority.value === value) || null
                                 );
                                 setOpen(false);
                             }}
                         >
-                            {status.label}
+                            {option.label}
                         </CommandItem>
                     ))}
                 </CommandGroup>

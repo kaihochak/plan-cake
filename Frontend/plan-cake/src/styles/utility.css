@@ -31,17 +31,3 @@ input[type="checkbox"]:checked {
     z-index: 5; /* Ensuring it's above the content but below the checkbox */
     border-radius: 0.75rem;
 }
-
-
-/* .search-container {
-    position: relative;
-    display: inline-block;
-}
-
-.search-icon {
-    position: absolute;
-    top: 50%;
-    left: 5%;
-    transform: translateY(-50%);
-}
- */
