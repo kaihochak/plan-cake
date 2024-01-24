@@ -9,13 +9,33 @@ const PreviewEvent = ({ formData }) => {
     const formattedDate = formData.eventDate instanceof Date ? formData.eventDate.toDateString() : '';
 
     return ( 
-    <div>
+    <div className="flex flex-col ">
+
+        {/* Selected Items Image */}
+        <div className="w-2/3 mx-auto mt-10"> {/* mx-auto for horizontal centering of the container */}
+        {formData.selectedItems.map((item, index) => (
+            <div key={index} className="flex justify-center mb-4"> {/* Container for each image, mb-4 for some margin between images */}
+                <img
+                    src={item.image}
+                    alt={item.title}
+                    className="object-cover object-center rounded-xl"
+                />
+            </div>
+        ))}
+        </div>
+
         {/* Event Name */}
         <div>
             <p className="text-m-xl mt-10">{formData.eventName}</p>
         </div>
-
-        {/* Event Description */}
+        
+        {/* Selected Items Title */}
+        <div>
+            <p className="mt-8 text-m-m text-border">Selected Movies</p>
+            <p>{formData.selectedItems.map(item => (
+                <div key={item.id}>{item.title}</div>
+            ))}</p>
+        </div> 
 
         {/* Date & Time */}
         <div className="mt-8 text-m-m text-border">
@@ -35,11 +55,6 @@ const PreviewEvent = ({ formData }) => {
             <p>{formData.eventGuestList}</p>
         </div> 
 
-        {/* Selected Items */}
-        <div>
-            <p className="mt-8 text-m-m text-border">Selected</p>
-            {/* <p>{formData.selectedItems}</p> */}
-        </div> 
     </div>
     )
 };
