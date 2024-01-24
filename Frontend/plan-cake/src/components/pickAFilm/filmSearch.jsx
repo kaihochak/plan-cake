@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import filmData from "@/data/filmData";
+import genres from "@/data/genres";
 import { IoIosSearch } from "react-icons/io";
 import "@/styles/utility.css"
-import { CiFilter } from "react-icons/ci";
-import { set } from "date-fns";
+import MultiSelect from "@/components/utility/multiSelect";
 
 // Search Display
 const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
@@ -109,6 +108,11 @@ const FilterGroup = ({ genre, setGenre, yearRange, setYearRange }) => {
             {/* Is in watchlist */}
 
             {/* Genres */}
+            <MultiSelect 
+                options={genres}
+                selected={genre}
+                setSelected={setGenre}
+            />
 
             {/* Year Range */}
             <p>{yearRange.start}</p>
