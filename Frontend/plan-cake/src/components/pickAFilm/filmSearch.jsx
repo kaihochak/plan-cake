@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import filmData from "@/data/filmData";
 import genres from "@/data/genres";
 import { IoIosSearch } from "react-icons/io";
+import { CiFilter } from "react-icons/ci";
 import "@/styles/utility.css"
 import MultiSelect from "@/components/utility/multiSelect";
 
@@ -159,6 +160,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const [showNoSelectionError, setShowNoSelectionError] = useState(false);
 
     // Filter
+    const [filterGroupOpen, setFilterGroupOpen] = useState(false);
     const [isInWatchlist, setIsInWatchlist] = useState(null);
     const [genreFilter, setGenreFilter] = useState(null);
     const [yearRangeFilter, setYearRangeFilter] = useState({
@@ -225,15 +227,25 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     />
                 </div>
 
+                {/* Filter Button */}
+                <button 
+                    className="flex items-center text-m-l mr-3 text-primary-foreground"
+                    onClick={() => setFilterGroupOpen(!filterGroupOpen)}    
+                >
+                    <CiFilter />
+                </button>
             </div>
 
+
             {/* Filter Button */}
-            <FilterGroup
-                genre={genreFilter}
-                setGenre={(genre) => setGenreFilter(genre)}
-                yearRange={yearRangeFilter}
-                setYearRange={(newRange) => setYearRangeFilter(newRange)}
-            />
+            { filterGroupOpen && (
+                <FilterGroup
+                    genre={genreFilter}
+                    setGenre={(genre) => setGenreFilter(genre)}
+                    yearRange={yearRangeFilter}
+                    setYearRange={(newRange) => setYearRangeFilter(newRange)}
+                />
+            )}
 
             {/* Result */}
             <SearchDisplay
