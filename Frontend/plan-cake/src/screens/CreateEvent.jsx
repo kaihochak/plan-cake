@@ -45,8 +45,8 @@ const CreateEvent = () => {
     }
   };
 
-
   const nextStep = (formData) => {
+
     if (formData) {
       setFormData({ ...formData, ...formData });      
     }

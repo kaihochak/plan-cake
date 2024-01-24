@@ -35,6 +35,11 @@ const PreviewEvent = ({ formData }) => {
             <p>{formData.eventGuestList}</p>
         </div> 
 
+        {/* Selected Items */}
+        <div>
+            <p className="mt-8 text-m-m text-border">Selected</p>
+            {/* <p>{formData.selectedItems}</p> */}
+        </div> 
     </div>
     )
 };
