@@ -1,78 +1,78 @@
 const genres = [
     {
-      "value": "action",
+      "value": "Action",
       "label": "Action"
     },
     {
-      "value": "adventure",
+      "value": "Adventure",
       "label": "Adventure"
     },
     {
-      "value": "animation",
+      "value": "Animation",
       "label": "Animation"
     },
     {
-      "value": "comedy",
+      "value": "Comedy",
       "label": "Comedy"
     },
     {
-      "value": "crime",
+      "value": "Crime",
       "label": "Crime"
     },
     {
-      "value": "documentary",
+      "value": "Documentary",
       "label": "Documentary"
     },
     {
-      "value": "drama",
+      "value": "Drama",
       "label": "Drama"
     },
     {
-      "value": "family",
+      "value": "Family",
       "label": "Family"
     },
     {
-      "value": "fantasy",
+      "value": "Fantasy",
       "label": "Fantasy"
     },
     {
-      "value": "history",
+      "value": "History",
       "label": "History"
     },
     {
-      "value": "horror",
+      "value": "Horror",
       "label": "Horror"
     },
     {
-      "value": "music",
+      "value": "Music",
       "label": "Music"
     },
     {
-      "value": "mystery",
+      "value": "Mystery",
       "label": "Mystery"
     },
     {
-      "value": "romance",
+      "value": "Romance",
       "label": "Romance"
     },
     {
-      "value": "science Fiction",
+      "value": "Science Fiction",
       "label": "Science Fiction"
     },
     {
-      "value": "tV Movie",
+      "value": "TV Movie",
       "label": "TV Movie"
     },
     {
-      "value": "thriller",
+      "value": "Thriller",
       "label": "Thriller"
     },
     {
-      "value": "war",
+      "value": "War",
       "label": "War"
     },
     {
-      "value": "western",
+      "value": "Western",
       "label": "Western"
     }
 ]

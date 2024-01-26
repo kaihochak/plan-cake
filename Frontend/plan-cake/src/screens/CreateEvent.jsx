@@ -76,9 +76,9 @@ const CreateEvent = () => {
     nextStep();
   }
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+  // useEffect(() => {
+  //   console.log(formData);
+  // }, [formData]);
   
   /*
     Step Content:
