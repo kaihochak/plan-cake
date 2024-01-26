@@ -13,13 +13,14 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
     const handleSelect = (item) => {
         const itemId = item.id;
         const itemTitle = item.title;
+        const itemImage = item.image;
 
         // Check if the item is already selected based on its id
         const isItemSelected = selectedItems.some(selectedItem => selectedItem.id === itemId);
 
         const newSelectedItems = isItemSelected
             ? selectedItems.filter(selectedItem => selectedItem.id !== itemId) // de-select
-            : [...selectedItems, { id: itemId, title: itemTitle }]; // select
+            : [...selectedItems, { id: itemId, title: itemTitle, image: itemImage }]; // select
 
         setSelectedItems(newSelectedItems); 
     };

@@ -1,4 +1,12 @@
 import React, { useState, useEffect } from "react";
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+  } from "@/components/ui/carousel";
+  
 
 const PreviewEvent = ({ formData }) => {
     // debug
@@ -9,13 +17,39 @@ const PreviewEvent = ({ formData }) => {
     const formattedDate = formData.eventDate instanceof Date ? formData.eventDate.toDateString() : '';
 
     return ( 
-    <div>
+    <div className="flex flex-col ">
+
+        {/* Selected Items Image */}
+{/* Selected Items Image Carousel */}
+<Carousel className="w-[70%] mx-auto">
+    <CarouselContent className="mx-auto mt-10">
+        {formData.selectedItems.map((item, id) => (
+            <CarouselItem key={id} className="flex justify-center mb-4">
+                <img
+                    src={item.image}
+                    alt={item.title || 'Carousel image'} // Fallback text if title is not available
+                    className="object-cover object-center rounded-xl transition duration-300 ease-in-out transform hover:scale-105" // Added hover effect
+                />
+            </CarouselItem>
+        ))}
+    </CarouselContent>
+    <CarouselPrevious />
+    <CarouselNext />
+</Carousel>
+
+
         {/* Event Name */}
         <div>
             <p className="text-m-xl mt-10">{formData.eventName}</p>
         </div>
-
-        {/* Event Description */}
+        
+        {/* Selected Items Title */}
+        <div>
+            <p className="mt-8 text-m-m text-border">Selected Movies</p>
+            <p>{formData.selectedItems.map(item => (
+                <div key={item.id}>{item.title}</div>
+            ))}</p>
+        </div> 
 
         {/* Date & Time */}
         <div className="mt-8 text-m-m text-border">
@@ -35,11 +69,6 @@ const PreviewEvent = ({ formData }) => {
             <p>{formData.eventGuestList}</p>
         </div> 
 
-        {/* Selected Items */}
-        <div>
-            <p className="mt-8 text-m-m text-border">Selected</p>
-            {/* <p>{formData.selectedItems}</p> */}
-        </div> 
     </div>
     )
 };
