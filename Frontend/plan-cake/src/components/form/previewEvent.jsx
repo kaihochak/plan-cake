@@ -1,4 +1,12 @@
 import React, { useState, useEffect } from "react";
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+  } from "@/components/ui/carousel";
+  
 
 const PreviewEvent = ({ formData }) => {
     // debug
@@ -12,17 +20,23 @@ const PreviewEvent = ({ formData }) => {
     <div className="flex flex-col ">
 
         {/* Selected Items Image */}
-        <div className="w-2/3 mx-auto mt-10"> {/* mx-auto for horizontal centering of the container */}
-        {formData.selectedItems.map((item, index) => (
-            <div key={index} className="flex justify-center mb-4"> {/* Container for each image, mb-4 for some margin between images */}
+{/* Selected Items Image Carousel */}
+<Carousel className="w-[70%] mx-auto">
+    <CarouselContent className="mx-auto mt-10">
+        {formData.selectedItems.map((item, id) => (
+            <CarouselItem key={id} className="flex justify-center mb-4">
                 <img
                     src={item.image}
-                    alt={item.title}
-                    className="object-cover object-center rounded-xl"
+                    alt={item.title || 'Carousel image'} // Fallback text if title is not available
+                    className="object-cover object-center rounded-xl transition duration-300 ease-in-out transform hover:scale-105" // Added hover effect
                 />
-            </div>
+            </CarouselItem>
         ))}
-        </div>
+    </CarouselContent>
+    <CarouselPrevious />
+    <CarouselNext />
+</Carousel>
+
 
         {/* Event Name */}
         <div>
