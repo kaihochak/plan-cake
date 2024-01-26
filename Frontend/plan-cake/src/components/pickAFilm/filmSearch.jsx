@@ -19,6 +19,7 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
             ? selectedItems.filter(id => id !== itemId) // de-select
             : [...selectedItems, itemId]; // select
         setSelectedItems(newSelectedItems);
+
     };
 
     return (
@@ -191,6 +192,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     };
 
     const updateSelection = (newSelectedItems) => {
+
         setFormData(formData => ({
             ...formData,
             selectedItems: newSelectedItems
@@ -212,9 +214,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             return;
         } else {
             setShowNoSelectionError(false); // Hide error message if films are selected
-            console.log(formData.selectedItems);
         }
-
         nextStep(formData);
     };
 
