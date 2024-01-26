@@ -75,20 +75,24 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
                                         <div className="flex">
                                             {item.watchlists
                                                 .slice(0, item.watchlists.length > 4 ? 3 : 4)
-                                                .map((participant, index) => (
+                                                .map((participantID, index) => {
+                                                // Find the user in usersData that matches the participant's id
+                                                const user = usersData.find(user => user.id === participantID);
+                                                return (    
                                                     <div
                                                         className={`w-6 h-6 rounded-full overflow-hidden flex items-center justify-center 
                                                                     ${index > 0 ? "-ml-1" : ""} 
                                                                     `}
-                                                        key={participant.id}
+                                                        key={index}
                                                     >
                                                         <img
                                                             className="min-w-full min-h-full object-cover"
-                                                            src={participant.avatar}
-                                                            alt={participant.name}
+                                                            src={user ? user.avatar : 'defaultAvatarUrl'} // Use the found user's avatar or a default avatar URL
+                                                            alt={user ? user.name : 'Default Name'}
                                                         />
                                                     </div>
-                                                ))}
+                                                )
+                                            })}
                                             {/* plus sign + how many more people */}
                                             {item.watchlists.length > 4 && (
                                                 <div>+{item.watchlists.length - 3}</div>

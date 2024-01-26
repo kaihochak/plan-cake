@@ -6,7 +6,7 @@ const filmData = [
     "genres": ["Action", "Adventure", "Sci-Fi"],
     "image": "./src/assets/posters/kubrick.jpg",
     "rating": 8.8,
-    "watchlists": ['Alice', 'Bob', 'Dana'] 
+    "watchlists": [1,3,5,2]
   },
   {
     "id": 2,
@@ -14,7 +14,7 @@ const filmData = [
     "genres": ["Drama"],
     "image": "./src/assets/posters/godfather.jpg",
     "rating": 9.3,
-    "watchlists": ['Alice', 'Bob', 'Charlie', 'Dana']
+    "watchlists": [1,2,3,4,5]
   },
   {
     "id": 3,
@@ -22,7 +22,7 @@ const filmData = [
     "genres": ["Crime", "Drama"],
     "image": "./src/assets/posters/her.jpg",
     "rating": 9.2,
-    "watchlists": ['Dana']
+    "watchlists": [1]
   },
   {
     "id": 4,
@@ -30,7 +30,7 @@ const filmData = [
     "genres": ["Action", "Crime", "Drama"],
     "image": "./src/assets/posters/vertigo.jpg",
     "rating": 9.0,
-    "watchlists": ['Alice', 'Dana'] 
+    "watchlists": [3,4]
   },
   {
     "id": 5,
@@ -38,9 +38,8 @@ const filmData = [
     "genres": ["Crime", "Drama"],
     "image": "./src/assets/posters/kubrick.jpg",
     "rating": 8.9,
-    "watchlists": ['Charlie']
+    "watchlists": [3]
   }
-
 ];
 
 export default filmData;
