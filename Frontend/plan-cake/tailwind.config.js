@@ -127,6 +127,18 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        'slide-down': 'slide-down 0.2s ease-out',
+        'slide-up': 'slide-up 0.2s ease-out', 
+      },
+      keyframes: {
+        'slide-down': {
+          '0%': { transform: 'translateY(-20px)', opacity: '1' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        'slide-up': {
+          '0%': { transform: 'translateY(0)', opacity: '1' },
+          '100%': { transform: 'translateY(-20px)', opacity: '1' }, 
+        },
       },
     },
   },
