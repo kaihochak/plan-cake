@@ -9,7 +9,7 @@ import filmData from "@/data/filmData";
 
 // implementation of CreateEvent
 const CreateEvent = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(2);
   const [formData, setFormData] = useState({
     eventType: "",
     eventName: "",
@@ -76,9 +76,9 @@ const CreateEvent = () => {
     nextStep();
   }
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+  // useEffect(() => {
+  //   console.log(formData);
+  // }, [formData]);
   
   /*
     Step Content:
