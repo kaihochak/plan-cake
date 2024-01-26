@@ -5,11 +5,10 @@ import EventDetailsForm from "@/components/form/eventDetailsForm";
 import PreviewEventForm from "@/components/form/previewEvent";
 import { BsArrowLeft } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
-import filmData from "@/data/filmData";
 
 // implementation of CreateEvent
 const CreateEvent = () => {
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     eventType: "",
     eventName: "",

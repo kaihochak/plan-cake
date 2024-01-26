@@ -65,9 +65,9 @@ const EventDetailsForm = ({ formData: parentFormData, nextStep }) => {
     }
 
     // debug
-    useEffect(() => {
-        console.log(formData);
-    }, [formData]);
+    // useEffect(() => {
+    //     console.log(formData);
+    // }, [formData]);
 
     return (
         <div className="space-y-8 mt-6">
