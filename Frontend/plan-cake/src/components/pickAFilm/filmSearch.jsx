@@ -206,7 +206,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             <ReactModal 
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}
-                className="w-full h-full bg-background z-20"
+                className="w-full h-full bg-background z-30"
             >
                 <Filters
                     closeModal={closeModal}
@@ -220,70 +220,74 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     setImdbRating={(rating) => setImdbRating(rating)}
                 />
             </ReactModal>
-
-            {/* Search Bar */}
-            <div className="flex gap-x-4">
-                <div className="relative inline-block w-full my-6">
-                    <div className="absolute top-1/2 left-2.5 transform -translate-y-1/2 text-primary-foreground mx-2 text-m-l">
-                        <IoIosSearch />
+            
+            {/* Main Content */}
+            <div className={`${modalIsOpen ? "hidden" : "block"}`}>
+                {/* Search Bar */}
+                <div className="flex gap-x-4">
+                    <div className="relative inline-block w-full my-6">
+                        <div className="absolute top-1/2 left-2.5 transform -translate-y-1/2 text-primary-foreground mx-2 text-m-l">
+                            <IoIosSearch />
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Search"
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                            className="flex h-14 w-full pl-12 border-2 border-input bg-primary text-primary-foreground text-m-m ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-border focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                        />
                     </div>
-                    <input
-                        type="text"
-                        placeholder="Search"
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                        className="flex h-14 w-full pl-12 border-2 border-input bg-primary text-primary-foreground text-m-m ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-border focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                    />
+
+                    {/* Filter Button */}
+                    <button 
+                        className="flex items-center text-m-l mr-3 text-primary-foreground"
+                        onClick={() => setModalIsOpen(true)}
+                    >
+                        <CiFilter />
+                    </button>
                 </div>
+
 
                 {/* Filter Button */}
-                <button 
-                    className="flex items-center text-m-l mr-3 text-primary-foreground"
-                    onClick={() => setModalIsOpen(true)}
-                >
-                    <CiFilter />
-                </button>
+                {/* {(filterGroupOpen || isAnimating) && (
+                    <div 
+                        className={`transition-transform duration-300 ${filterGroupOpen ? 'animate-slide-down' : 'animate-slide-up'}`}
+                        onAnimationEnd={handleAnimationEnd}
+                    >
+                        <FilterGroup
+                            selectedWatchlists={isInWatchlists}
+                            setSelectedWatchlists={(watchlist) => setIsInWatchlists(watchlist)}
+                            selectedGenres={genreFilters}
+                            setGenre={(genre) => setGenreFilters(genre)}
+                            selectedYearRange={yearRangeFilter}
+                            setYearRange={(newRange) => setYearRangeFilter(newRange)}
+                            selectedImdbRating={imdbRating}
+                            setImdbRating={(rating) => setImdbRating(rating)}
+                        />
+                    </div>
+                )} */}
+
+                {/* Result */}
+                <SearchDisplay
+                    filteredItems={filteredItems} // Pass the filtered items to the display
+                    selectedItems={formData.selectedItems} // Pass the selected items to the display
+                    setSelectedItems={updateSelection} // Pass the update function
+                />
+
+
+                {/* Display error message if no film is selected */}
+                {showNoSelectionError && (
+                    <div className="text-destructive-foreground text-m-m pt-10">
+                        Please select at least one film.
+                    </div>
+                )}
+
+                {/* Next Step */}
+                <Button onClick={handleNextStep} type="submit" className="mt-10">
+                    Next
+                </Button>
             </div>
 
-
-            {/* Filter Button */}
-            {/* {(filterGroupOpen || isAnimating) && (
-                <div 
-                    className={`transition-transform duration-300 ${filterGroupOpen ? 'animate-slide-down' : 'animate-slide-up'}`}
-                    onAnimationEnd={handleAnimationEnd}
-                >
-                    <FilterGroup
-                        selectedWatchlists={isInWatchlists}
-                        setSelectedWatchlists={(watchlist) => setIsInWatchlists(watchlist)}
-                        selectedGenres={genreFilters}
-                        setGenre={(genre) => setGenreFilters(genre)}
-                        selectedYearRange={yearRangeFilter}
-                        setYearRange={(newRange) => setYearRangeFilter(newRange)}
-                        selectedImdbRating={imdbRating}
-                        setImdbRating={(rating) => setImdbRating(rating)}
-                    />
-                </div>
-            )} */}
-
-            {/* Result */}
-            <SearchDisplay
-                filteredItems={filteredItems} // Pass the filtered items to the display
-                selectedItems={formData.selectedItems} // Pass the selected items to the display
-                setSelectedItems={updateSelection} // Pass the update function
-            />
-
-
-            {/* Display error message if no film is selected */}
-            {showNoSelectionError && (
-                <div className="text-destructive-foreground text-m-m pt-10">
-                    Please select at least one film.
-                </div>
-            )}
-
-            {/* Next Step */}
-            <Button onClick={handleNextStep} type="submit" className="mt-10">
-                Next
-            </Button>
         </div>
     );
 };

@@ -20,7 +20,7 @@ const Filters = ({ closeModal,
 
     // Mobile
     return (
-        <div className="flex flex-col gap-y-3 text-primary-foreground py-10 px-8">
+        <div className="flex flex-col gap-y-3 text-primary-foreground py-10 px-8 z-50">
 
             <div className='flex justify-between mb-6 place-items-end'>
                 <h3 className='text-m-xl'>Filters</h3>
@@ -47,6 +47,7 @@ const Filters = ({ closeModal,
                 selected={selectedGenres}
                 setSelected={setGenre}
             />
+
             
             {/* Year and above */}
             {/* slider  */}
