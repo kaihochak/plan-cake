@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 
 // implementation of CreateEvent
 const CreateEvent = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(2);
   const [formData, setFormData] = useState({
     eventType: "",
     eventName: "",

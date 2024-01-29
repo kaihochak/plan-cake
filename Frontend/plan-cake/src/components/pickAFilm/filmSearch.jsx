@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
+import ReactModal from 'react-modal';
 import { Button } from "@/components/ui/button";
 import { IoIosSearch } from "react-icons/io";
 import { CiFilter } from "react-icons/ci";
 import "@/styles/utility.css"
-import MultiSelect from "@/components/utility/multiSelect";
-
+import Filters from "@/components/utility/filters";
 // dummy
 import filmData from "@/data/filmData";
-import genresData from "@/data/genres";
 import usersData from "@/data/users";
-
 
 // Search Display
 const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
@@ -19,7 +17,6 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
             ? selectedItems.filter(id => id !== itemId) // de-select
             : [...selectedItems, itemId]; // select
         setSelectedItems(newSelectedItems);
-
     };
 
     return (
@@ -28,6 +25,7 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
                 <div>
                     {/* List of items */}
                     <div className="grid grid-cols-2 gap-6">
+                        {/* each item */}
                         {filteredItems.slice(0, 10).map((item) => (
                             <div
                                 key={item.id}
@@ -112,40 +110,6 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
     );
 };
 
-// Filter Groups
-const FilterGroup = ({ 
-    selectedWatchlists, setSelectedWatchlists, selectedGenres, setGenre, 
-    selectedYearRange, setYearRange, selectedImdbRating, setImdbRating }) => {
-
-    return (
-        <div className="mb-8 flex flex-col gap-y-3 mx-2">
-
-            {/* Is in watchlist */}
-            <MultiSelect
-                options={usersData}
-                label="Watchlist"
-                selected={selectedWatchlists}
-                setSelected={setSelectedWatchlists}
-            />
-
-            {/* Genres */}
-            <MultiSelect
-                options={genresData}
-                label="Genre"
-                selected={selectedGenres}
-                setSelected={setGenre}
-            />
-            
-            {/* Year Range */}
-            
-            {/* Imdb Rating */}
-         
-        </div>
-
-    )
-
-
-}
 
 // Main Component
 const FilmSearch = ({ formData: parentFormData, nextStep }) => {
@@ -157,9 +121,8 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const [showNoSelectionError, setShowNoSelectionError] = useState(false);
 
     // Filter
-    const [filterGroupOpen, setFilterGroupOpen] = useState(false);
-    const [isAnimating, setIsAnimating] = useState(false);
-
+    // const [filterGroupOpen, setFilterGroupOpen] = useState(false);
+    // const [isAnimating, setIsAnimating] = useState(false);
     const [isInWatchlists, setIsInWatchlists] = useState([]);
     const [genreFilters, setGenreFilters] = useState([]);
     const [yearRangeFilter, setYearRangeFilter] = useState({
@@ -167,6 +130,9 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         end: new Date().getFullYear()
     });
     const [imdbRating, setImdbRating] = useState({ start: null, end: null });
+    const [modalIsOpen, setModalIsOpen] = React.useState(false);
+    const openModal = () => setModalIsOpen(true);
+    const closeModal = () => setModalIsOpen(false);
 
     const applyFilters = () => {
         return filmData.filter(item => {
@@ -224,19 +190,37 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
 
     // Filter Animation
-    useEffect(() => {
-        if (filterGroupOpen) {
-            setIsAnimating(true);
-        }
-    }, [filterGroupOpen]);
+    // useEffect(() => {
+    //     if (filterGroupOpen) {
+    //         setIsAnimating(true);
+    //     }
+    // }, [filterGroupOpen]);
 
-    const handleAnimationEnd = () => {
-        if (!filterGroupOpen) setIsAnimating(false);
-    };
-
+    // const handleAnimationEnd = () => {
+    //     if (!filterGroupOpen) setIsAnimating(false);
+    // };
 
     return (
         <div>
+            {/* Filter Group */}
+            <ReactModal 
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                className="w-full h-full bg-background z-20"
+            >
+                <Filters
+                    closeModal={closeModal}
+                    selectedWatchlists={isInWatchlists}
+                    setSelectedWatchlists={(watchlist) => setIsInWatchlists(watchlist)}
+                    selectedGenres={genreFilters}
+                    setGenre={(genre) => setGenreFilters(genre)}
+                    selectedYearRange={yearRangeFilter}
+                    setYearRange={(newRange) => setYearRangeFilter(newRange)}
+                    selectedImdbRating={imdbRating}
+                    setImdbRating={(rating) => setImdbRating(rating)}
+                />
+            </ReactModal>
+
             {/* Search Bar */}
             <div className="flex gap-x-4">
                 <div className="relative inline-block w-full my-6">
@@ -255,7 +239,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                 {/* Filter Button */}
                 <button 
                     className="flex items-center text-m-l mr-3 text-primary-foreground"
-                    onClick={() => setFilterGroupOpen(!filterGroupOpen)}    
+                    onClick={() => setModalIsOpen(true)}
                 >
                     <CiFilter />
                 </button>
@@ -263,7 +247,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
 
             {/* Filter Button */}
-            {(filterGroupOpen || isAnimating) && (
+            {/* {(filterGroupOpen || isAnimating) && (
                 <div 
                     className={`transition-transform duration-300 ${filterGroupOpen ? 'animate-slide-down' : 'animate-slide-up'}`}
                     onAnimationEnd={handleAnimationEnd}
@@ -279,7 +263,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                         setImdbRating={(rating) => setImdbRating(rating)}
                     />
                 </div>
-            )}
+            )} */}
 
             {/* Result */}
             <SearchDisplay
