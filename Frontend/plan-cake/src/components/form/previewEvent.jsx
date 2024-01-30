@@ -6,15 +6,22 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Button } from "@/components/ui/button";
 
 import filmData from "@/data/filmData";
 
 
-const PreviewEvent = ({ formData }) => {
+const PreviewEvent = ({ formData, nextStep }) => {
     // debug
     // useEffect(() => {
     //     console.log(formData);
     // }, [formData]);
+
+    const handleNextStep = () => {
+
+        nextStep(formData);
+    
+    }
 
     const formattedDate = formData.eventDate instanceof Date ? formData.eventDate.toDateString() : '';
 
@@ -77,6 +84,11 @@ const PreviewEvent = ({ formData }) => {
                 <p className="mt-8 text-m-m text-border">Guests</p>
                 <p>{formData.eventGuestList}</p>
             </div>
+
+            {/* Confirm */}
+          <Button onClick={handleNextStep} type="submit" className="mt-10">
+            Confirm
+          </Button>
 
         </div>
     )

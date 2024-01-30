@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import FilmSearch from "@/components/pickAFilm/filmSearch";
 import EventDetailsForm from "@/components/form/eventDetailsForm";
 import PreviewEventForm from "@/components/form/previewEvent";
+import ConfirmedEventPage from "@/components/form/confirmedEvent.jsx";
 import { BsArrowLeft } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
 
@@ -28,8 +29,9 @@ const CreateEvent = () => {
     "Event Details",
     "Pick A Film",
     "Preview Event",
+    "Event Created!"
   ];
-  const totalSteps = 4;
+  const totalSteps = 5;
 
   const prevStep = () => {
     // If we're not on the first step, go to the previous step
@@ -135,6 +137,13 @@ const CreateEvent = () => {
   const PreviewEvent = () => (
     <PreviewEventForm 
       formData = {formData}
+      nextStep={nextStep}
+    />
+  );
+
+  const ConfirmedEvent = () => (
+    <ConfirmedEventPage 
+      formData = {formData}
     />
   );
 
@@ -159,6 +168,7 @@ const CreateEvent = () => {
       {currentStep === 1 && <EventDetails />}
       {currentStep === 2 && <PickAFilm />}
       {currentStep === 3 && <PreviewEvent />}
+      {currentStep === 4 && <ConfirmedEvent />}
     </section>
   );
 };
