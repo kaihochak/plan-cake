@@ -121,18 +121,11 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const [showNoSelectionError, setShowNoSelectionError] = useState(false);
 
     // Filter
-    // const [filterGroupOpen, setFilterGroupOpen] = useState(false);
-    // const [isAnimating, setIsAnimating] = useState(false);
-    const [isInWatchlists, setIsInWatchlists] = useState([]);
+    const [watchlistFilters, setwatchlistFilters] = useState(0);
     const [genreFilters, setGenreFilters] = useState([]);
-    const [yearRangeFilter, setYearRangeFilter] = useState({
-        start: 1860,
-        end: new Date().getFullYear()
-    });
-    const [imdbRating, setImdbRating] = useState({ start: null, end: null });
+    const [yearRangeFilter, setYearRangeFilter] = useState(1960);
+    const [imdbRating, setImdbRating] = useState(0);
     const [modalIsOpen, setModalIsOpen] = React.useState(false);
-    const openModal = () => setModalIsOpen(true);
-    const closeModal = () => setModalIsOpen(false);
 
     const applyFilters = () => {
         return filmData.filter(item => {
@@ -142,8 +135,8 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             // Check if any of the item's genres are in the selected genreFilters
             const genreMatch = genreFilters.length === 0 || (Array.isArray(item.genres) && item.genres.some(genre => genreFilters.includes(genre)));
 
-            // Check if the item is in the watchlist
-            const watchlistMatch = isInWatchlists.length === 0 || (Array.isArray(item.watchlists) && item.watchlists.some(user => isInWatchlists.includes(user)));
+            // Check if the item is at least in selected number of watchlists
+            // const watchlistMatch =
 
             // Check if the item's year is within the selected year range
             // const yearMatch = yearRangeFilter.start <= item.year && item.year <= yearRangeFilter.end;
@@ -153,7 +146,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                                 // (imdbRating.end === undefined || item.rating <= imdbRating.end);
 
             // return titleMatch && genreMatch && watchlistMatch && yearMatch && ratingMatch;
-            return titleMatch && genreMatch && watchlistMatch;
+            return titleMatch && genreMatch;
         });
     };
 
@@ -188,30 +181,18 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         setFilteredItems(applyFilters());
     }, [searchTerm, genreFilters]); // Re-apply filters when searchTerm or genreFilters changes
 
-
-    // Filter Animation
-    // useEffect(() => {
-    //     if (filterGroupOpen) {
-    //         setIsAnimating(true);
-    //     }
-    // }, [filterGroupOpen]);
-
-    // const handleAnimationEnd = () => {
-    //     if (!filterGroupOpen) setIsAnimating(false);
-    // };
-
     return (
         <div>
             {/* Filter Group */}
             <ReactModal 
                 isOpen={modalIsOpen}
-                onRequestClose={closeModal}
+                onRequestClose={() => setModalIsOpen(false)}
                 className="w-full h-full bg-background z-30"
             >
                 <Filters
-                    closeModal={closeModal}
-                    selectedWatchlists={isInWatchlists}
-                    setSelectedWatchlists={(watchlist) => setIsInWatchlists(watchlist)}
+                    closeModal={() => setModalIsOpen(false)}
+                    selectedwatchlistFilters={watchlistFilters}
+                    setSelectedWatchlists={(numWatchlist) => setwatchlistFilters(numWatchlist)}
                     selectedGenres={genreFilters}
                     setGenre={(genre) => setGenreFilters(genre)}
                     selectedYearRange={yearRangeFilter}
@@ -223,9 +204,17 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             
             {/* Main Content */}
             <div className={`${modalIsOpen ? "hidden" : "block"}`}>
+
+                {/* Description */}
+                <div className="text-m-l ">
+                    <p className="text-m-m">
+                        or many films and decide later which one to watch.
+                    </p>
+                </div>
+
                 {/* Search Bar */}
                 <div className="flex gap-x-4">
-                    <div className="relative inline-block w-full my-6">
+                    <div className="relative inline-block w-full mt-3 mb-6">
                         <div className="absolute top-1/2 left-2.5 transform -translate-y-1/2 text-primary-foreground mx-2 text-m-l">
                             <IoIosSearch />
                         </div>
@@ -247,33 +236,12 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     </button>
                 </div>
 
-
-                {/* Filter Button */}
-                {/* {(filterGroupOpen || isAnimating) && (
-                    <div 
-                        className={`transition-transform duration-300 ${filterGroupOpen ? 'animate-slide-down' : 'animate-slide-up'}`}
-                        onAnimationEnd={handleAnimationEnd}
-                    >
-                        <FilterGroup
-                            selectedWatchlists={isInWatchlists}
-                            setSelectedWatchlists={(watchlist) => setIsInWatchlists(watchlist)}
-                            selectedGenres={genreFilters}
-                            setGenre={(genre) => setGenreFilters(genre)}
-                            selectedYearRange={yearRangeFilter}
-                            setYearRange={(newRange) => setYearRangeFilter(newRange)}
-                            selectedImdbRating={imdbRating}
-                            setImdbRating={(rating) => setImdbRating(rating)}
-                        />
-                    </div>
-                )} */}
-
                 {/* Result */}
                 <SearchDisplay
                     filteredItems={filteredItems} // Pass the filtered items to the display
                     selectedItems={formData.selectedItems} // Pass the selected items to the display
                     setSelectedItems={updateSelection} // Pass the update function
                 />
-
 
                 {/* Display error message if no film is selected */}
                 {showNoSelectionError && (

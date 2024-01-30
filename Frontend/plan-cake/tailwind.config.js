@@ -84,7 +84,7 @@ module.exports = {
           fontWeight: '400',
         }],
         'm-m': ['1rem', {
-          lineHeight: '1rem',
+          lineHeight: '1.5rem',
           letterSpacing: '-0.01em',
           fontWeight: '400',
         }],
