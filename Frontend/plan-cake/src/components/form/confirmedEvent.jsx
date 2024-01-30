@@ -73,8 +73,8 @@ const ConfirmedEvent = ({
         </div>
       </div>
       </div>
-      <div className="flex flex-col justify-center items-center mt-8 text-m-m text-border text-primary-foreground">
-        <p className="">Invite Friends</p>
+      <div className="flex flex-col justify-center items-center mt-8 text-m-m text-border">
+        <p className=" text-primary-foreground">Invite Friends</p>
         <div className="flex justify-center items-center mt-3 gap-3">
 
          {/* Share on Facebook  */}
