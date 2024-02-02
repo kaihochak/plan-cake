@@ -123,7 +123,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     // Filter
     const [watchlistFilters, setwatchlistFilters] = useState(0);
     const [genreFilters, setGenreFilters] = useState([]);
-    const [yearFilter, setYearFilter] = useState(1960);
+    const [yearFilter, setYearFilter] = useState(1860);
     const [imdbRating, setImdbRating] = useState(0);
     const [modalIsOpen, setModalIsOpen] = React.useState(false);
 
