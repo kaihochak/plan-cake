@@ -191,6 +191,8 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             >
                 <Filters
                     closeModal={() => setModalIsOpen(false)}
+                    maxNumWatchlist={10}
+                    minYear={1860} maxYear={2022}
                     selectedwatchlistFilters={watchlistFilters}
                     setSelectedWatchlists={(newNumWatchlist) => setwatchlistFilters(newNumWatchlist)}
                     selectedGenres={genreFilters}

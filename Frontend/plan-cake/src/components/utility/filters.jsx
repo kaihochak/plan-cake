@@ -6,20 +6,35 @@ import genresData from "@/data/genres";
 import usersData from "@/data/users";
 import Slider from '@mui/material/Slider';
 import { Input } from "@/components/ui/input"
+import { Separator } from "@/components/ui/separator"
 
-const Filters = ({ closeModal, maxNumWatchlists,
-    selectedWatchlists: parentSelectedWatchlists, setSelectedWatchlists: parentSetSelectedWatchlists, 
+const Filters = ({ closeModal, maxNumWatchlists, minYear, maxYear,
+    selectedWatchlists: parentSelectedWatchlists, setSelectedWatchlists: parentSetSelectedWatchlists,
     selectedGenres: parentSelectedGenres, setGenre: parentSetGenre,
-    selectedYear: parentSelectedYear, setYear: parentSetYear, 
-    selectedImdbRating: parentSelectedImdbRating, setImdbRating: parentSetRating }) => {
+    selectedYear: parentSelectedYear, setYear: parentSetYear,
+    selectedRating: parentSelectedRating, setRating: parentSetRating }) => {
 
     const isDesktop = useMediaQuery('only screen and (min-width: 768px)');
 
     const [selectedWatchlists, setSelectedWatchlists] = useState(parentSelectedWatchlists);
     const [selectedGenres, setSelectedGenres] = useState(parentSelectedGenres);
+    const [selectedYear, setSelectedYear] = useState(parentSelectedYear);
+    const [selectedRating, setSelectedRating] = useState(parentSelectedRating);
 
     const handleWatchlistChange = (event, newNumWatchlist) => {
         setSelectedWatchlists(newNumWatchlist);
+    };
+
+    const handleGenreChange = (newGenre) => {
+        setSelectedGenres(newGenre);
+    };
+
+    const handleYearChange = (event, newYear) => {
+        setSelectedYear(newYear);
+    };
+
+    const handleRatingChange = (event, newRating) => {
+        setSelectedRating(newRating);
     };
 
     // Desktop
@@ -31,7 +46,7 @@ const Filters = ({ closeModal, maxNumWatchlists,
 
     // Mobile
     return (
-        <div className="flex flex-col gap-y-6 text-primary-foreground py-10 px-8 z-50">
+        <div className="flex flex-col gap-y-4 text-primary-foreground py-10 px-8 z-50">
 
 
             <div className='flex justify-between mb-6 place-items-end'>
@@ -40,18 +55,10 @@ const Filters = ({ closeModal, maxNumWatchlists,
             </div>
 
             {/* Is in watchlist */}
-            <div className='flex flex-col placeholder:gap-y-6'>
-                <div className='flex place-items-center'>
-                    <div className='text-m-l'>In at least </div>
-                    <Input 
-                        className='text-accent mx-4 w-12 h-9 text-center bg-primary/80 border rounded-md' 
-                        value={selectedWatchlists}
-                        defaultValue={selectedWatchlists}
-                        onChange={handleWatchlistChange}
-                    /> 
-                    <div>watchlists</div> 
-                </div>
+            <div className='flex flex-col py-4'>
+                <div className='text-m-l pb-2'>Watchlists </div>
 
+                {/* https://mui.com/material-ui/react-slider/ */}
                 <Slider
                     defaultValue={selectedWatchlists}
                     aria-label="Default"
@@ -59,23 +66,91 @@ const Filters = ({ closeModal, maxNumWatchlists,
                     value={selectedWatchlists}
                     onChange={handleWatchlistChange}
                 />
+
+                <div className='flex place-items-center justify-center'>
+                    <div>in </div>
+                    <Input
+                        className='text-accent mx-4 w-12 h-6 text-center bg-primary/80 border rounded-md'
+                        value={selectedWatchlists}
+                        defaultValue={selectedWatchlists}
+                        onChange={handleWatchlistChange}
+                    />
+                    <div>or more</div>
+                </div>
             </div>
 
             {/* Genres */}
-            <MultiSelect
-                options={genresData}
-                label="Genre"
-                selected={selectedGenres}
-                setSelected={parentSetGenre}
-            />
+            <div className='flex flex-col py-2'>
+                <div className='text-m-l pb-4'>Genres</div>
+                <MultiSelect
+                    options={genresData}
+                    label="All"
+                    selected={selectedGenres}
+                    setSelected={parentSelectedGenres}
+                />
+            </div>
 
             {/* Year and above */}
-            {/* slider  */}
+            <div className='flex flex-col py-4'>
+                <div className='text-m-l pb-2'>Year </div>
+
+                {/* https://mui.com/material-ui/react-slider/ */}
+                <Slider
+                    defaultValue={selectedYear}
+                    aria-label="Default"
+                    valueLabelDisplay="auto"
+                    value={selectedYear}
+                    onChange={handleYearChange}
+                    max={maxYear}
+                    min={minYear}
+                />
+
+                <div className='flex place-items-center justify-between'>
+                    <Input
+                        className='text-accent mx-4 w-16 h-6 text-center bg-primary/80 border rounded-md'
+                        value={selectedYear}
+                        defaultValue={selectedYear}
+                        onChange={handleYearChange}
+                        max={maxYear}
+                        min={minYear}
+                    />
+                    <Input
+                        className='text-accent mx-4 w-16 h-6 text-center bg-primary/80 border rounded-md'
+                        value={selectedYear}
+                        defaultValue={selectedYear}
+                        onChange={handleYearChange}
+                        max={maxYear}
+                        min={minYear}
+                    />
+                </div>
+            </div>
 
 
             {/* Imdb Rating */}
-            {/* slider / multi select */}
+            <div className='flex flex-col py-4'>
+                <div className='text-m-l pb-2'>Rating </div>
 
+                {/* https://mui.com/material-ui/react-slider/ */}
+                <Slider
+                    defaultValue={selectedRating}
+                    aria-label="Default"
+                    valueLabelDisplay="auto"
+                    value={selectedRating}
+                    onChange={handleRatingChange}
+                />
+
+                <div className='flex place-items-center justify-center'>
+                    <Input
+                        className='text-accent mx-4 w-12 h-6 text-center bg-primary/80 border rounded-md'
+                        value={selectedRating}
+                        defaultValue={selectedRating}
+                        onChange={handleRatingChange}
+                    />
+                    <div>or more</div>
+                </div>
+            </div>
+
+            <Separator />
             {/* Sort By */}
 
 
