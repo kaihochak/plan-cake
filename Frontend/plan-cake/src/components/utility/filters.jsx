@@ -1,10 +1,11 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useMediaQuery } from '@react-hook/media-query'
 import MultiSelect from "@/components/utility/multiSelect";
 import genresData from "@/data/genres";
 import usersData from "@/data/users";
 import { Slider } from "@/components/ui/slider"
+import { IoClose } from "react-icons/io5";
 
 
 const Filters = ({ closeModal,
@@ -16,6 +17,28 @@ const Filters = ({ closeModal,
     // const numWatchlists = selectedWatchlists.length;
     const numWatchlists = 6;
 
+
+    // reset filters
+    const resetFilters = () => {
+
+        setSelectedWatchlists(0); 
+        setGenre([]); 
+        setYearRange(1860); 
+        setImdbRating(0); 
+
+
+    };
+
+    // apply filters
+    const applyFilters = () => {
+
+        closeModal();
+
+    };
+
+    // useEffect(() => {
+    //     console.log(selectedGenres);
+    // },[selectedGenres])
 
     // Desktop
     if (isDesktop) {
@@ -30,7 +53,9 @@ const Filters = ({ closeModal,
 
             <div className='flex justify-between mb-6 place-items-end'>
                 <h3 className='text-m-xl'>Filters</h3>
-                <button onClick={closeModal} className='text-m-l underline'>Apply</button>
+                <div onClick={closeModal} className='text-m-xl cursor-pointer'>
+                    <IoClose />
+                </div>
             </div>
 
             {/* Is in watchlist */}
@@ -59,6 +84,15 @@ const Filters = ({ closeModal,
             {/* slider / multi select */}
 
             {/* Sort By */}
+
+            <div className='flex w-full space-x-2'>
+                {/* reset */}
+                <button onClick={resetFilters} className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent py-2 px-4">Reset</button>
+                
+                {/* apply */}
+                <button onClick={applyFilters} className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent py-2 px-4">Apply</button>
+            </div>
+
 
          
         </div>
