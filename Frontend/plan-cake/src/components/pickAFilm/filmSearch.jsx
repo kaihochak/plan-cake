@@ -123,7 +123,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     // Filter
     const [watchlistFilters, setwatchlistFilters] = useState(0);
     const [genreFilters, setGenreFilters] = useState([]);
-    const [yearRangeFilter, setYearRangeFilter] = useState(1860);
+    const [yearFilter, setYearFilter] = useState(1860);
     const [imdbRating, setImdbRating] = useState(0);
     const [modalIsOpen, setModalIsOpen] = React.useState(false);
 
@@ -139,7 +139,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             // const watchlistMatch =
 
             // Check if the item's year is within the selected year range
-            // const yearMatch = yearRangeFilter.start <= item.year && item.year <= yearRangeFilter.end;
+            // const yearMatch = yearFilter.start <= item.year && item.year <= yearFilter.end;
 
             // Check if the item's IMDb rating is within the selected rating range
             // const ratingMatch = (imdbRating.start === undefined || imdbRating.start <= item.rating) &&
@@ -191,14 +191,16 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             >
                 <Filters
                     closeModal={() => setModalIsOpen(false)}
+                    maxNumWatchlist={10}
+                    minYear={1860} maxYear={2022}
                     selectedwatchlistFilters={watchlistFilters}
-                    setSelectedWatchlists={(numWatchlist) => setwatchlistFilters(numWatchlist)}
+                    setSelectedWatchlists={(newNumWatchlist) => setwatchlistFilters(newNumWatchlist)}
                     selectedGenres={genreFilters}
-                    setGenre={(genre) => setGenreFilters(genre)}
-                    selectedYearRange={yearRangeFilter}
-                    setYearRange={(newRange) => setYearRangeFilter(newRange)}
+                    setGenre={(newGenre) => setGenreFilters(newGenre)}
+                    selectedYear={yearFilter}
+                    setYear={(newYear) => setYearFilter(newYear)}
                     selectedImdbRating={imdbRating}
-                    setImdbRating={(rating) => setImdbRating(rating)}
+                    setImdbRating={(newRating) => setImdbRating(newRating)}
                 />
             </ReactModal>
             
