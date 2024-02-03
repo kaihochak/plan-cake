@@ -188,15 +188,16 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
     // Check if any filter has been applied
     useEffect(() => {
-        console.log("Current Filters:", { watchlistFilter, genreFilter, yearFilter, imdbRating });
+        console.log("Current Filters:", { watchlistFilter, genreFilter, yearFilter, ratingFilter });
     
         const hasChanged = watchlistFilter !== defaultWatchlistFilter ||
                             (genreFilter && genreFilter.length > 0) || 
-                            yearFilter !== defaultYearFilter ||
-                            imdbRating !== defaultImdbRating;
+                            yearFilter[0] !== defaultYearFilter[0] ||
+                            yearFilter[1] !== defaultYearFilter[1] ||
+                            ratingFilter !== defaultRating;
     
         setIsFilterApplied(hasChanged);
-    }, [watchlistFilter, genreFilter, yearFilter, imdbRating]);
+    }, [watchlistFilter, genreFilter, yearFilter, ratingFilter]);
 
     return (
         <div>
