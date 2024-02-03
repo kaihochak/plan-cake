@@ -3,19 +3,19 @@ import { useMediaQuery } from '@react-hook/media-query'
 import MultiSelect from "@/components/utility/multiSelect";
 import genresData from "@/data/genres";
 import usersData from "@/data/users";
+import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { IoClose } from "react-icons/io5";
 
-const Filters = ({ closeModal, maxNumWatchlists, minYear, maxYear,
+const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
     selectedWatchlists: parentSelectedWatchlists, setSelectedWatchlists: parentSetSelectedWatchlists,
     selectedGenres: parentSelectedGenres, setGenre: parentSetGenre,
     selectedYear: parentSelectedYear, setYear: parentSetYear,
     selectedRating: parentSelectedRating, setRating: parentSetRating }) => {
 
     const isDesktop = useMediaQuery('only screen and (min-width: 768px)');
-
     const [selectedWatchlists, setSelectedWatchlists] = useState(parentSelectedWatchlists);
     const [selectedGenres, setSelectedGenres] = useState(parentSelectedGenres);
     const [selectedYear, setSelectedYear] = useState(parentSelectedYear);
@@ -29,30 +29,17 @@ const Filters = ({ closeModal, maxNumWatchlists, minYear, maxYear,
         setSelectedGenres(newGenre);
     };
 
-    const handleYearChange = (event, newYear) => {
-        setSelectedYear(newYear);
-    };
-
-    const handleRatingChange = (event, newRating) => {
-        setSelectedRating(newRating);
-    };
-
     // reset filters
     const resetFilters = () => {
-
         setSelectedWatchlists(0); 
         setGenre([]); 
         setYearRange(1860); 
         setImdbRating(0); 
-
-
     };
 
     // apply filters
     const applyFilters = () => {
-
         closeModal();
-
     };
 
     // useEffect(() => {
@@ -124,7 +111,9 @@ const Filters = ({ closeModal, maxNumWatchlists, minYear, maxYear,
                     aria-label="Default"
                     valueLabelDisplay="auto"
                     value={selectedYear}
-                    onChange={handleYearChange}
+                    onChange={(event, newYear) => {
+                        setSelectedYear(newYear)
+                    }}
                     max={maxYear}
                     min={minYear}
                 />
@@ -132,25 +121,25 @@ const Filters = ({ closeModal, maxNumWatchlists, minYear, maxYear,
                 <div className='flex place-items-center justify-between'>
                     <Input
                         className='text-accent mx-4 w-16 h-6 text-center bg-primary/80 border rounded-md'
-                        value={selectedYear}
-                        defaultValue={selectedYear}
-                        onChange={handleYearChange}
-                        max={maxYear}
-                        min={minYear}
+                        value={selectedYear[0]}
+                        defaultValue={minYear}
+                        onChange={(event, newYearStart) => {
+                            setSelectedYear([selectedYear[0], newYearStart])
+                        }}
                     />
                     <Input
                         className='text-accent mx-4 w-16 h-6 text-center bg-primary/80 border rounded-md'
-                        value={selectedYear}
-                        defaultValue={selectedYear}
-                        onChange={handleYearChange}
-                        max={maxYear}
-                        min={minYear}
+                        value={selectedYear[1]}
+                        defaultValue={maxYear}
+                        onChange={(event, newYearEnd) => {
+                            setSelectedYear([selectedYear[0], newYearEnd])
+                        }}
                     />
                 </div>
             </div>
 
 
-            {/* Imdb Rating */}
+            {/* Rating */}
             <div className='flex flex-col py-4'>
                 <div className='text-m-l pb-2'>Rating </div>
 
@@ -160,7 +149,9 @@ const Filters = ({ closeModal, maxNumWatchlists, minYear, maxYear,
                     aria-label="Default"
                     valueLabelDisplay="auto"
                     value={selectedRating}
-                    onChange={handleRatingChange}
+                    onChange={(event, newRating) => {
+                        setSelectedRating(newRating);
+                    }}
                 />
 
                 <div className='flex place-items-center justify-center'>
@@ -168,7 +159,9 @@ const Filters = ({ closeModal, maxNumWatchlists, minYear, maxYear,
                         className='text-accent mx-4 w-12 h-6 text-center bg-primary/80 border rounded-md'
                         value={selectedRating}
                         defaultValue={selectedRating}
-                        onChange={handleRatingChange}
+                        onChange={(event, newRating) => {
+                            setSelectedRating(newRating);
+                        }}
                     />
                     <div>or more</div>
                 </div>

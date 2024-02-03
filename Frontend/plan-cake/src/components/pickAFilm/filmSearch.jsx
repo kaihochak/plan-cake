@@ -110,7 +110,6 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
     );
 };
 
-
 // Main Component
 const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
@@ -121,10 +120,13 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const [showNoSelectionError, setShowNoSelectionError] = useState(false);
 
     // Filter
-    const [watchlistFilters, setwatchlistFilters] = useState(0);
-    const [genreFilters, setGenreFilters] = useState([]);
-    const [yearFilter, setYearFilter] = useState(1860);
-    const [imdbRating, setImdbRating] = useState(0);
+    const defaultYearStart = 1860;
+    const defaultYearEnd = new Date().getFullYear();
+
+    const [watchlistFilter, setwatchlistFilter] = useState(0);
+    const [genreFilter, setGenreFilter] = useState([]);
+    const [yearFilter, setYearFilter] = useState([defaultYearStart, defaultYearEnd]);
+    const [ratingFilter, setRatingFilter] = useState(0);
     const [modalIsOpen, setModalIsOpen] = React.useState(false);
 
     const applyFilters = () => {
@@ -132,8 +134,8 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
            // Check if the search term matches (or if search term is empty)
             const titleMatch = searchTerm ? item.title.toLowerCase().includes(searchTerm.toLowerCase()) : true;
 
-            // Check if any of the item's genres are in the selected genreFilters
-            const genreMatch = genreFilters.length === 0 || (Array.isArray(item.genres) && item.genres.some(genre => genreFilters.includes(genre)));
+            // Check if any of the item's genres are in the selected genreFilter
+            const genreMatch = genreFilter.length === 0 || (Array.isArray(item.genres) && item.genres.some(genre => genreFilter.includes(genre)));
 
             // Check if the item is at least in selected number of watchlists
             // const watchlistMatch =
@@ -179,7 +181,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
     useEffect(() => {
         setFilteredItems(applyFilters());
-    }, [searchTerm, genreFilters]); // Re-apply filters when searchTerm or genreFilters changes
+    }, [searchTerm, genreFilter]); // Re-apply filters when searchTerm or genreFilter changes
 
     return (
         <div>
@@ -192,15 +194,16 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                 <Filters
                     closeModal={() => setModalIsOpen(false)}
                     maxNumWatchlist={10}
-                    minYear={1860} maxYear={2022}
-                    selectedwatchlistFilters={watchlistFilters}
-                    setSelectedWatchlists={(newNumWatchlist) => setwatchlistFilters(newNumWatchlist)}
-                    selectedGenres={genreFilters}
-                    setGenre={(newGenre) => setGenreFilters(newGenre)}
+                    minYear={defaultYearStart} 
+                    maxYear={defaultYearEnd}
+                    selectedWatchlists={watchlistFilter}
+                    setSelectedWatchlists={(newNumWatchlist) => setwatchlistFilter(newNumWatchlist)}
+                    selectedGenres={genreFilter}
+                    setGenre={(newGenre) => setGenreFilter(newGenre)}
                     selectedYear={yearFilter}
                     setYear={(newYear) => setYearFilter(newYear)}
-                    selectedImdbRating={imdbRating}
-                    setImdbRating={(newRating) => setImdbRating(newRating)}
+                    selectedRating={ratingFilter}
+                    setRating={(newRating) => setRatingFilter(newRating)}
                 />
             </ReactModal>
             
