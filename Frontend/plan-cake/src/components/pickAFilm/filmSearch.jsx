@@ -111,7 +111,6 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
     );
 };
 
-
 // Main Component
 const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
@@ -124,13 +123,13 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     // Filter
     const defaultWatchlistFilter = 0;
     const defaultGenreFilter = [];
-    const defaultYearFilter = 1860;
-    const defaultImdbRating = 0;
+    const defaultYearFilter = [1860, new Date().getFullYear()];
+    const defaultRating = 0;
     const [isFilterApplied, setIsFilterApplied] = useState(false);
     const [watchlistFilter, setwatchlistFilter] = useState(defaultWatchlistFilter);
     const [genreFilter, setGenreFilter] = useState(defaultGenreFilter);
     const [yearFilter, setYearFilter] = useState(defaultYearFilter);
-    const [imdbRating, setImdbRating] = useState(defaultImdbRating);
+    const [ratingFilter, setRatingFilter] = useState(defaultRating);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     
     const applyFilters = () => {
@@ -210,15 +209,16 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                 <Filters
                     closeModal={() => setModalIsOpen(false)}
                     maxNumWatchlist={10}
-                    minYear={1860} maxYear={2022}
-                    selectedwatchlistFilter={watchlistFilter}
+                    minYear={defaultYearFilter[0]} 
+                    maxYear={defaultYearFilter[1]}
+                    selectedWatchlists={watchlistFilter}
                     setSelectedWatchlists={(newNumWatchlist) => setwatchlistFilter(newNumWatchlist)}
                     selectedGenres={genreFilter}
                     setGenre={(newGenre) => setGenreFilter(newGenre)}
                     selectedYear={yearFilter}
                     setYear={(newYear) => setYearFilter(newYear)}
-                    selectedImdbRating={imdbRating}
-                    setImdbRating={(newRating) => setImdbRating(newRating)}
+                    selectedRating={ratingFilter}
+                    setRating={(newRating) => setRatingFilter(newRating)}
                 />
             </ReactModal>
             
