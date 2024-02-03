@@ -5,6 +5,7 @@ import { IoIosSearch } from "react-icons/io";
 import { CiFilter } from "react-icons/ci";
 import "@/styles/utility.css"
 import Filters from "@/components/utility/filters";
+import { cn } from "@/lib/utils"
 // dummy
 import filmData from "@/data/filmData";
 import usersData from "@/data/users";
@@ -121,19 +122,26 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const [showNoSelectionError, setShowNoSelectionError] = useState(false);
 
     // Filter
-    const [watchlistFilters, setwatchlistFilters] = useState(0);
-    const [genreFilters, setGenreFilters] = useState([]);
-    const [yearFilter, setYearFilter] = useState(1860);
-    const [imdbRating, setImdbRating] = useState(0);
-    const [modalIsOpen, setModalIsOpen] = React.useState(false);
+    const defaultWatchlistFilter = 0;
+    const defaultGenreFilter = [];
+    const defaultYearFilter = 1860;
+    const defaultImdbRating = 0;
 
+    const [isFilterApplied, setIsFilterApplied] = useState(false);
+
+    const [watchlistFilter, setwatchlistFilter] = useState(defaultWatchlistFilter);
+    const [genreFilter, setGenreFilter] = useState(defaultGenreFilter);
+    const [yearFilter, setYearFilter] = useState(defaultYearFilter);
+    const [imdbRating, setImdbRating] = useState(defaultImdbRating);
+    const [modalIsOpen, setModalIsOpen] = React.useState(false);
+    
     const applyFilters = () => {
         return filmData.filter(item => {
            // Check if the search term matches (or if search term is empty)
             const titleMatch = searchTerm ? item.title.toLowerCase().includes(searchTerm.toLowerCase()) : true;
 
-            // Check if any of the item's genres are in the selected genreFilters
-            const genreMatch = genreFilters.length === 0 || (Array.isArray(item.genres) && item.genres.some(genre => genreFilters.includes(genre)));
+            // Check if any of the item's genres are in the selected genreFilter
+            const genreMatch = genreFilter.length === 0 || (Array.isArray(item.genres) && item.genres.some(genre => genreFilter.includes(genre)));
 
             // Check if the item is at least in selected number of watchlists
             // const watchlistMatch =
@@ -179,7 +187,19 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
     useEffect(() => {
         setFilteredItems(applyFilters());
-    }, [searchTerm, genreFilters]); // Re-apply filters when searchTerm or genreFilters changes
+    }, [searchTerm, genreFilter]); // Re-apply filters when searchTerm or genreFilter changes
+
+    // Check if any filter has been applied
+    useEffect(() => {
+        console.log("Current Filters:", { watchlistFilter, genreFilter, yearFilter, imdbRating });
+    
+        const hasChanged = watchlistFilter !== defaultWatchlistFilter ||
+                            (genreFilter && genreFilter.length > 0) || 
+                            yearFilter !== defaultYearFilter ||
+                            imdbRating !== defaultImdbRating;
+    
+        setIsFilterApplied(hasChanged);
+    }, [watchlistFilter, genreFilter, yearFilter, imdbRating]);
 
     return (
         <div>
@@ -193,10 +213,10 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     closeModal={() => setModalIsOpen(false)}
                     maxNumWatchlist={10}
                     minYear={1860} maxYear={2022}
-                    selectedwatchlistFilters={watchlistFilters}
-                    setSelectedWatchlists={(newNumWatchlist) => setwatchlistFilters(newNumWatchlist)}
-                    selectedGenres={genreFilters}
-                    setGenre={(newGenre) => setGenreFilters(newGenre)}
+                    selectedwatchlistFilter={watchlistFilter}
+                    setSelectedWatchlists={(newNumWatchlist) => setwatchlistFilter(newNumWatchlist)}
+                    selectedGenres={genreFilter}
+                    setGenre={(newGenre) => setGenreFilter(newGenre)}
                     selectedYear={yearFilter}
                     setYear={(newYear) => setYearFilter(newYear)}
                     selectedImdbRating={imdbRating}
@@ -231,7 +251,8 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
                     {/* Filter Button */}
                     <button 
-                        className="flex items-center text-m-l mr-3 text-primary-foreground"
+                        className={cn("flex items-center text-[30px] mr-2 mb-3 text-primary-foreground",
+                            {"text-accent": isFilterApplied})}
                         onClick={() => setModalIsOpen(true)}
                     >
                         <CiFilter />
