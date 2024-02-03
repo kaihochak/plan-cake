@@ -126,14 +126,12 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const defaultGenreFilter = [];
     const defaultYearFilter = 1860;
     const defaultImdbRating = 0;
-
     const [isFilterApplied, setIsFilterApplied] = useState(false);
-
     const [watchlistFilter, setwatchlistFilter] = useState(defaultWatchlistFilter);
     const [genreFilter, setGenreFilter] = useState(defaultGenreFilter);
     const [yearFilter, setYearFilter] = useState(defaultYearFilter);
     const [imdbRating, setImdbRating] = useState(defaultImdbRating);
-    const [modalIsOpen, setModalIsOpen] = React.useState(false);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
     
     const applyFilters = () => {
         return filmData.filter(item => {
