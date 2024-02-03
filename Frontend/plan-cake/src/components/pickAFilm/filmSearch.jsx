@@ -5,6 +5,7 @@ import { IoIosSearch } from "react-icons/io";
 import { CiFilter } from "react-icons/ci";
 import "@/styles/utility.css"
 import Filters from "@/components/utility/filters";
+import { cn } from "@/lib/utils"
 // dummy
 import filmData from "@/data/filmData";
 import usersData from "@/data/users";
@@ -126,24 +127,13 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const defaultYearFilter = 1860;
     const defaultImdbRating = 0;
 
-    const [filtersState, setfiltersState] = useState(false);
+    const [isFilterApplied, setIsFilterApplied] = useState(false);
 
     const [watchlistFilter, setwatchlistFilter] = useState(defaultWatchlistFilter);
     const [genreFilter, setGenreFilter] = useState(defaultGenreFilter);
     const [yearFilter, setYearFilter] = useState(defaultYearFilter);
     const [imdbRating, setImdbRating] = useState(defaultImdbRating);
     const [modalIsOpen, setModalIsOpen] = React.useState(false);
-
-    useEffect(() => {
-        console.log("Current Filters:", { watchlistFilter, genreFilter, yearFilter, imdbRating });
-    
-        const hasChanged = watchlistFilter !== defaultWatchlistFilter ||
-                            (genreFilter && genreFilter.length > 0) || // Check if genreFilter is not empty
-                            yearFilter !== defaultYearFilter ||
-                            imdbRating !== defaultImdbRating;
-    
-        setfiltersState(hasChanged);
-    }, [watchlistFilter, genreFilter, yearFilter, imdbRating]);
     
     const applyFilters = () => {
         return filmData.filter(item => {
@@ -199,6 +189,18 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         setFilteredItems(applyFilters());
     }, [searchTerm, genreFilter]); // Re-apply filters when searchTerm or genreFilter changes
 
+    // Check if any filter has been applied
+    useEffect(() => {
+        console.log("Current Filters:", { watchlistFilter, genreFilter, yearFilter, imdbRating });
+    
+        const hasChanged = watchlistFilter !== defaultWatchlistFilter ||
+                            (genreFilter && genreFilter.length > 0) || 
+                            yearFilter !== defaultYearFilter ||
+                            imdbRating !== defaultImdbRating;
+    
+        setIsFilterApplied(hasChanged);
+    }, [watchlistFilter, genreFilter, yearFilter, imdbRating]);
+
     return (
         <div>
             {/* Filter Group */}
@@ -249,7 +251,8 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
                     {/* Filter Button */}
                     <button 
-                        className={filtersState ? "flex items-center text-m-l mr-3 text-primary-foreground" : "bg-yellow"}
+                        className={cn("flex items-center text-[30px] mr-2 mb-3 text-primary-foreground",
+                            {"text-accent": isFilterApplied})}
                         onClick={() => setModalIsOpen(true)}
                     >
                         <CiFilter />
