@@ -22,11 +22,22 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
     const [selectedRating, setSelectedRating] = useState(parentSelectedRating);
 
     const handleWatchlistChange = (event, newNumWatchlist) => {
+        if (newNumWatchlist == null) {
+            newNumWatchlist = 0;
+        }
         setSelectedWatchlists(newNumWatchlist);
     };
 
     const handleGenreChange = (newGenre) => {
         setSelectedGenres(newGenre);
+    };
+
+    const handleYearChange = (event, newYear) => {
+        setSelectedYear(newYear);
+    };
+
+    const handleRatingChange = (event, newRating) => {
+        setSelectedRating(newRating);
     };
 
     // reset filters
@@ -42,9 +53,21 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
         closeModal();
     };
 
-    // useEffect(() => {
-    //     console.log(selectedGenres);
-    // },[selectedGenres])
+    useEffect(() => {
+        console.log('selectedWatchlists', selectedWatchlists);
+    }, [selectedWatchlists]);
+
+    useEffect(() => {
+        console.log('selectedGenres', selectedGenres);
+    }, [selectedGenres]);
+
+    useEffect(() => {
+        console.log('selectedYear', selectedYear);
+    }, [selectedYear]);
+
+    useEffect(() => {
+        console.log('selectedRating', selectedRating);
+    }, [selectedRating]);
 
     // Desktop
     if (isDesktop) {
@@ -97,7 +120,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                     options={genresData}
                     label="All"
                     selected={selectedGenres}
-                    setSelected={parentSelectedGenres}
+                    setSelected={handleGenreChange}
                 />
             </div>
 
@@ -108,12 +131,10 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                 {/* https://mui.com/material-ui/react-slider/ */}
                 <Slider
                     defaultValue={selectedYear}
-                    aria-label="Default"
+                    getAriaLabel={() => 'range'}
                     valueLabelDisplay="auto"
                     value={selectedYear}
-                    onChange={(event, newYear) => {
-                        setSelectedYear(newYear)
-                    }}
+                    onChange={handleYearChange}
                     max={maxYear}
                     min={minYear}
                 />
@@ -137,7 +158,6 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                     />
                 </div>
             </div>
-
 
             {/* Rating */}
             <div className='flex flex-col py-4'>

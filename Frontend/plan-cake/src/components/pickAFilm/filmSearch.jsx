@@ -195,7 +195,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                             yearFilter[0] !== defaultYearFilter[0] ||
                             yearFilter[1] !== defaultYearFilter[1] ||
                             ratingFilter !== defaultRating;
-    
+
         setIsFilterApplied(hasChanged);
     }, [watchlistFilter, genreFilter, yearFilter, ratingFilter]);
 
