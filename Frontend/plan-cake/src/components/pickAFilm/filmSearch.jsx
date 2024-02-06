@@ -3,6 +3,7 @@ import ReactModal from 'react-modal';
 import { Button } from "@/components/ui/button";
 import { IoIosSearch } from "react-icons/io";
 import { CiFilter } from "react-icons/ci";
+import { IoMdCloseCircleOutline } from "react-icons/io";
 import "@/styles/utility.css"
 import Filters from "@/components/utility/filters";
 import { cn } from "@/lib/utils"
@@ -105,7 +106,7 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
                     </div>
                 </div>
             ) : (
-                <div className="text-m-l mt-10">No results found</div>
+                <div className="text-m-l mt-4 text-center">No results found...</div>
             )}
         </div>
     );
@@ -116,7 +117,6 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
     const [filteredItems, setFilteredItems] = useState(filmData);
     const [formData, setFormData] = useState(parentFormData);
-    // const [selectedItems, setSelectedItems] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [showNoSelectionError, setShowNoSelectionError] = useState(false);
 
@@ -156,12 +156,12 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     };
 
     const updateSelection = (newSelectedItems) => {
-
         setFormData(formData => ({
             ...formData,
             selectedItems: newSelectedItems
         }));
     };
+
     const handleSearchChange = (e) => {
         const value = e.target.value;
         setSearchTerm(value);
@@ -182,26 +182,25 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         nextStep(formData);
     };
 
-    useEffect(() => {
-        setFilteredItems(applyFilters());
-    }, [searchTerm, genreFilter]); // Re-apply filters when searchTerm or genreFilter changes
 
-    // Check if any filter has been applied
     useEffect(() => {
         console.log("Current Filters:", { watchlistFilter, genreFilter, yearFilter, ratingFilter });
     
+        // show the filter button in a different color if any filter has been applied
         const hasChanged = watchlistFilter !== defaultWatchlistFilter ||
-                            (genreFilter && genreFilter.length > 0) || 
+                            (genreFilter && genreFilter.length > 0) ||
                             yearFilter[0] !== defaultYearFilter[0] ||
                             yearFilter[1] !== defaultYearFilter[1] ||
                             ratingFilter !== defaultRating;
 
         setIsFilterApplied(hasChanged);
-    }, [watchlistFilter, genreFilter, yearFilter, ratingFilter]);
+        setFilteredItems(applyFilters());
+
+    }, [searchTerm, watchlistFilter, genreFilter, yearFilter, ratingFilter]);
 
     return (
         <div>
-            {/* Filter Group */}
+            {/* Filter Group Modal */}
             <ReactModal 
                 isOpen={modalIsOpen}
                 onRequestClose={() => setModalIsOpen(false)}
@@ -209,7 +208,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             >
                 <Filters
                     closeModal={() => setModalIsOpen(false)}
-                    maxNumWatchlist={10}
+                    maxNumWatchlist={6}
                     minYear={defaultYearFilter[0]} 
                     maxYear={defaultYearFilter[1]}
                     selectedWatchlists={watchlistFilter}
@@ -224,18 +223,18 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             </ReactModal>
             
             {/* Main Content */}
-            <div className={`${modalIsOpen ? "hidden" : "block"}`}>
+            <div className={`${modalIsOpen ? "hidden" : "flex flex-col"}`}>
 
                 {/* Description */}
-                <div className="text-m-l ">
+                <div className="text-m-l">
                     <p className="text-m-m">
                         or many films and decide later which one to watch.
                     </p>
                 </div>
 
-                {/* Search Bar */}
+                {/* Search & Filter */}
                 <div className="flex gap-x-4">
-                    <div className="relative inline-block w-full mt-3 mb-6">
+                    <div className="relative inline-block w-full mt-3 mb-2">
                         <div className="absolute top-1/2 left-2.5 transform -translate-y-1/2 text-primary-foreground mx-2 text-m-l">
                             <IoIosSearch />
                         </div>
@@ -250,12 +249,46 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
                     {/* Filter Button */}
                     <button 
-                        className={cn("flex items-center text-[30px] mr-2 mb-3 text-primary-foreground",
-                            {"text-accent": isFilterApplied})}
+                        className={cn("flex items-center text-[30px] mr-2 mt-2 text-primary-foreground/60",
+                            {"text-accent/70": isFilterApplied})}
                         onClick={() => setModalIsOpen(true)}
                     >
                         <CiFilter />
                     </button>
+                </div>
+
+                {/* Filters */}
+                <div className="flex flex-wrap gap-2 justify-start mt-1 mb-4">
+                    {watchlistFilter > 0 && (
+                        <button onClick={() => setModalIsOpen(true)}>
+                            <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">Watchlists: ≥ {watchlistFilter}</p>
+                        </button>
+                    )}
+                    {genreFilter.length > 0 && (
+                        <button onClick={() => setModalIsOpen(true)}>
+                            <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">{genreFilter.join(", ")}</p>
+                        </button>
+                    )}
+                    {(yearFilter[0] !== defaultYearFilter[0] || yearFilter[1] !== defaultYearFilter[1]) && (
+                        <button onClick={() => setModalIsOpen(true)}>
+                            <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">{yearFilter[0]} - {yearFilter[1]}</p>
+                        </button>
+                    )}
+                    {ratingFilter > 0 && (
+                        <button onClick={() => setModalIsOpen(true)}>
+                            <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">≥ {ratingFilter}</p>
+                        </button>
+                    )}
+                    {isFilterApplied && (
+                        <button onClick={() => {
+                            setwatchlistFilter(defaultWatchlistFilter);
+                            setGenreFilter(defaultGenreFilter);
+                            setYearFilter(defaultYearFilter);
+                            setRatingFilter(defaultRating);
+                        }}>
+                            <IoMdCloseCircleOutline className="text-accent/50 text-xl" />
+                        </button>
+                    )}
                 </div>
 
                 {/* Result */}

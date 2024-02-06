@@ -19,55 +19,96 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
     const [selectedWatchlists, setSelectedWatchlists] = useState(parentSelectedWatchlists);
     const [selectedGenres, setSelectedGenres] = useState(parentSelectedGenres);
     const [selectedYear, setSelectedYear] = useState(parentSelectedYear);
+    const [tempStartYear, setTempStartYear] = useState(parentSelectedYear[0]);
+    const [tempEndYear, setTempEndYear] = useState(parentSelectedYear[1]);
     const [selectedRating, setSelectedRating] = useState(parentSelectedRating);
 
-    const handleWatchlistChange = (event, newNumWatchlist) => {
-        if (newNumWatchlist == null) {
-            newNumWatchlist = 0;
+    const handleWatchlistChange = (event, newValue) => {
+        // For slider component, the newValue is directly provided as the second argument
+        if (newValue !== undefined) {
+            setSelectedWatchlists(newValue);
+        } else {
+            // For standard input, extract the value from event.target.value
+            const inputVal = event.target.value === '' ? 0 : Number(event.target.value);
+            if (inputVal > maxNumWatchlist || inputVal < 0) {
+                return;
+            }
+            setSelectedWatchlists(inputVal);
         }
-        setSelectedWatchlists(newNumWatchlist);
     };
 
     const handleGenreChange = (newGenre) => {
         setSelectedGenres(newGenre);
     };
 
-    const handleYearChange = (event, newYear) => {
-        setSelectedYear(newYear);
+    const handleYearsSliderChange = (event, newValue) => {
+        setSelectedYear(newValue);
+        setTempStartYear(newValue[0].toString());
+        setTempEndYear(newValue[1].toString());
     };
 
-    const handleRatingChange = (event, newRating) => {
-        setSelectedRating(newRating);
+    const handleYearsInputBlur = (type) => (event) => {
+        const newValue = parseInt(event.target.value, 10);
+        setSelectedYear((currentYears) => {
+            let startYear = currentYears[0], endYear = currentYears[1];
+    
+            if (type === "start") {
+                // Adjust the start year within the boundaries
+                startYear = isNaN(newValue) ? minYear : Math.min(Math.max(newValue, minYear), endYear);
+            } else {
+                // Adjust the end year within the boundaries
+                endYear = isNaN(newValue) ? maxYear : Math.max(Math.min(newValue, maxYear), startYear);
+            }
+    
+            // Update temporary states to reflect the new value or the adjusted boundary value
+            const newYears = [startYear, endYear];
+            setTempStartYear(newYears[0].toString());
+            setTempEndYear(newYears[1].toString());
+    
+            return newYears;
+        });
+    };
+    
+    
+    const handleYearsInputChange = (type) => (event) => {
+        const value = event.target.value;
+        if (type === "start") {
+            setTempStartYear(value);
+        } else { // Assuming type is "end"
+            setTempEndYear(value);
+        }
+    };
+
+    const handleRatingChange = (event, newValue) => {
+        // For slider component, the newValue is directly provided as the second argument
+        if (newValue !== undefined) {
+            setSelectedRating(newValue);
+        } else {
+            // For standard input, extract the value from event.target.value
+            const inputVal = event.target.value === '' ? 0 : Number(event.target.value);
+            if (inputVal > maxNumWatchlist || inputVal < 0) {
+                return;
+            }
+            setSelectedRating(inputVal);
+        }
     };
 
     // reset filters
     const resetFilters = () => {
-        setSelectedWatchlists(0); 
-        setGenre([]); 
-        setYearRange(1860); 
-        setImdbRating(0); 
+        setSelectedWatchlists(0);
+        setSelectedGenres([]);
+        setSelectedYear([minYear, maxYear]);
+        setSelectedRating(0);
     };
 
     // apply filters
     const applyFilters = () => {
+        parentSetSelectedWatchlists(selectedWatchlists);
+        parentSetGenre(selectedGenres);
+        parentSetYear(selectedYear);
+        parentSetRating(selectedRating);
         closeModal();
     };
-
-    useEffect(() => {
-        console.log('selectedWatchlists', selectedWatchlists);
-    }, [selectedWatchlists]);
-
-    useEffect(() => {
-        console.log('selectedGenres', selectedGenres);
-    }, [selectedGenres]);
-
-    useEffect(() => {
-        console.log('selectedYear', selectedYear);
-    }, [selectedYear]);
-
-    useEffect(() => {
-        console.log('selectedRating', selectedRating);
-    }, [selectedRating]);
 
     // Desktop
     if (isDesktop) {
@@ -99,15 +140,22 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                     valueLabelDisplay="auto"
                     value={selectedWatchlists}
                     onChange={handleWatchlistChange}
+                    min={0}
+                    max={maxNumWatchlist}
                 />
 
                 <div className='flex place-items-center justify-center'>
                     <div>in </div>
                     <Input
-                        className='text-accent mx-4 w-12 h-6 text-center bg-primary/80 border rounded-md'
-                        value={selectedWatchlists}
-                        defaultValue={selectedWatchlists}
+                        type="text"
+                        className="text-accent mx-4 w-12 h-6 text-center bg-primary/80 border rounded-md"
+                        value={selectedWatchlists.toString()}
                         onChange={handleWatchlistChange}
+                        onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                                event.preventDefault();
+                            }
+                        }}
                     />
                     <div>or more</div>
                 </div>
@@ -124,39 +172,52 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                 />
             </div>
 
-            {/* Year and above */}
+            {/* Years */}
             <div className='flex flex-col py-4'>
-                <div className='text-m-l pb-2'>Year </div>
+                <div className='text-m-l pb-2'>Years</div>
 
                 {/* https://mui.com/material-ui/react-slider/ */}
                 <Slider
                     defaultValue={selectedYear}
-                    getAriaLabel={() => 'range'}
+                    getAriaLabel={() => 'Year range'}
                     valueLabelDisplay="auto"
                     value={selectedYear}
-                    onChange={handleYearChange}
+                    onChange={handleYearsSliderChange}
                     max={maxYear}
                     min={minYear}
                 />
 
                 <div className='flex place-items-center justify-between'>
+                    {/* Start Year Input */}
                     <Input
-                        className='text-accent mx-4 w-16 h-6 text-center bg-primary/80 border rounded-md'
-                        value={selectedYear[0]}
-                        defaultValue={minYear}
-                        onChange={(event, newYearStart) => {
-                            setSelectedYear([selectedYear[0], newYearStart])
+                        type="text"
+                        className='text-accent w-16 h-6 text-center bg-primary/80 border rounded-md'
+                        value={tempStartYear}
+                        onChange={handleYearsInputChange("start")}
+                        onBlur={handleYearsInputBlur("start")}
+                        onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                                event.preventDefault();
+                            }
                         }}
                     />
+
+                    {/* End Year Input */}
                     <Input
-                        className='text-accent mx-4 w-16 h-6 text-center bg-primary/80 border rounded-md'
-                        value={selectedYear[1]}
-                        defaultValue={maxYear}
-                        onChange={(event, newYearEnd) => {
-                            setSelectedYear([selectedYear[0], newYearEnd])
+                        type="text"
+                        className='text-accent w-16 h-6 text-center bg-primary/80 border rounded-md'
+                        value={tempEndYear}
+                        onChange={handleYearsInputChange("end")}
+                        onBlur={handleYearsInputBlur("end")}
+                        onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                                event.preventDefault();
+                            }
                         }}
                     />
                 </div>
+
+
             </div>
 
             {/* Rating */}
@@ -169,21 +230,18 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                     aria-label="Default"
                     valueLabelDisplay="auto"
                     value={selectedRating}
-                    onChange={(event, newRating) => {
-                        setSelectedRating(newRating);
-                    }}
+                    onChange={handleRatingChange}
                 />
 
                 <div className='flex place-items-center justify-center'>
+                    <div>at least</div>
                     <Input
-                        className='text-accent mx-4 w-12 h-6 text-center bg-primary/80 border rounded-md'
+                        className='text-accent mx-2 w-12 h-6 text-center bg-primary/80 border rounded-md'
                         value={selectedRating}
                         defaultValue={selectedRating}
-                        onChange={(event, newRating) => {
-                            setSelectedRating(newRating);
-                        }}
+                        onChange={handleRatingChange}
                     />
-                    <div>or more</div>
+                    <div>/ 100</div>
                 </div>
             </div>
 
@@ -193,7 +251,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
             <div className='flex w-full space-x-2'>
                 {/* reset */}
                 <button onClick={resetFilters} className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent py-2 px-4">Reset</button>
-                
+
                 {/* apply */}
                 <button onClick={applyFilters} className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent py-2 px-4">Apply</button>
             </div>

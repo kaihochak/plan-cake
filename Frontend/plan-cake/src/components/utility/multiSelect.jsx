@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMediaQuery } from '@react-hook/media-query'
 import { Button } from "@/components/ui/button"
 import {
@@ -28,6 +28,10 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
     const isDesktop = useMediaQuery('only screen and (min-width: 768px)')
     const [open, setOpen] = useState(false)
     const [selectedOptions, setSelectedOptions] = useState(parentSelected);
+
+    useEffect(() => {
+        setSelectedOptions(parentSelected);
+    }, [parentSelected]);
 
     if (isDesktop) {
         return (
