@@ -8,6 +8,17 @@ import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { IoClose } from "react-icons/io5";
 
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+ 
+ 
+
 const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
     selectedWatchlists: parentSelectedWatchlists, setSelectedWatchlists: parentSetSelectedWatchlists,
     selectedSpecificWatchlists: parentSelectedSpecificWatchlists, setSelectedSpecificWatchlists: parentSetSelectedSpecificWatchlists,
@@ -124,16 +135,36 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
         )
     }
 
+    const [position, setPosition] = React.useState("Sort by")
+
     // Mobile
     return (
         <div className="flex flex-col gap-y-4 text-primary-foreground py-10 px-8 z-50">
-
-            <div className='flex justify-between mb-2 place-items-end'>
-                <h3 className='text-m-xl'>Filters</h3>
+            <div className='flex justify-between mb-6 place-items-end'>
+                <h3 className='text-m-xl'>Filters & Sort</h3>
                 <div onClick={closeModal} className='text-m-xl cursor-pointer'>
                     <IoClose />
                 </div>
             </div>
+
+            {/* Sort By */}
+            <div className='flex flex-col py-2'>
+                <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="outline">{position}</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                    <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
+                    <DropdownMenuRadioItem value="Year: Old to New">Year: Old to New</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="Year: New to Old">Year: New to Old</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="Rating: High to Low">Rating: High to Low</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="Rating: Low to High">Rating: Low to High</DropdownMenuRadioItem>
+                    </DropdownMenuRadioGroup>
+                </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
+
+            <Separator />
 
             {/* Is in watchlist */}
             <div className='flex flex-col py-2'>
@@ -280,8 +311,6 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
             </div>
 
             <Separator />
-            
-            {/* Sort By */}
 
             <div className='flex w-full space-x-2'>
                 {/* reset */}
