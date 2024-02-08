@@ -122,11 +122,13 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
     // Filter
     const defaultWatchlistFilter = 0;
+    const defaultSpecificWatchlistFilter = [];
     const defaultGenreFilter = [];
     const defaultYearFilter = [1860, new Date().getFullYear()];
     const defaultRating = 0;
     const [isFilterApplied, setIsFilterApplied] = useState(false);
     const [watchlistFilter, setwatchlistFilter] = useState(defaultWatchlistFilter);
+    const [specificWatchlistFilter, setSpecificWatchlistFilter] = useState(defaultSpecificWatchlistFilter);
     const [genreFilter, setGenreFilter] = useState(defaultGenreFilter);
     const [yearFilter, setYearFilter] = useState(defaultYearFilter);
     const [ratingFilter, setRatingFilter] = useState(defaultRating);
@@ -184,10 +186,11 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
 
     useEffect(() => {
-        console.log("Current Filters:", { watchlistFilter, genreFilter, yearFilter, ratingFilter });
+        console.log("Current Filters:", { watchlistFilter, specificWatchlistFilter, genreFilter, yearFilter, ratingFilter });
     
         // show the filter button in a different color if any filter has been applied
         const hasChanged = watchlistFilter !== defaultWatchlistFilter ||
+                            (specificWatchlistFilter && specificWatchlistFilter.length > 0 ) ||
                             (genreFilter && genreFilter.length > 0) ||
                             yearFilter[0] !== defaultYearFilter[0] ||
                             yearFilter[1] !== defaultYearFilter[1] ||
@@ -196,7 +199,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         setIsFilterApplied(hasChanged);
         setFilteredItems(applyFilters());
 
-    }, [searchTerm, watchlistFilter, genreFilter, yearFilter, ratingFilter]);
+    }, [searchTerm, watchlistFilter, specificWatchlistFilter, genreFilter, yearFilter, ratingFilter]);
 
     return (
         <div>
@@ -213,6 +216,8 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     maxYear={defaultYearFilter[1]}
                     selectedWatchlists={watchlistFilter}
                     setSelectedWatchlists={(newNumWatchlist) => setwatchlistFilter(newNumWatchlist)}
+                    selectedSpecificWatchlists={specificWatchlistFilter}
+                    setSelectedSpecificWatchlists={(newSpecificWatchlist) => setSpecificWatchlistFilter(newSpecificWatchlist)}
                     selectedGenres={genreFilter}
                     setGenre={(newGenre) => setGenreFilter(newGenre)}
                     selectedYear={yearFilter}
@@ -264,6 +269,11 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                             <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">Watchlists: ≥ {watchlistFilter}</p>
                         </button>
                     )}
+                    {specificWatchlistFilter.length > 0 && (
+                        <button onClick={() => setModalIsOpen(true)}>
+                            <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">{specificWatchlistFilter.join(", ")}</p>
+                        </button>
+                    )}
                     {genreFilter.length > 0 && (
                         <button onClick={() => setModalIsOpen(true)}>
                             <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">{genreFilter.join(", ")}</p>
@@ -282,6 +292,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     {isFilterApplied && (
                         <button onClick={() => {
                             setwatchlistFilter(defaultWatchlistFilter);
+                            setSpecificWatchlistFilter(defaultSpecificWatchlistFilter);
                             setGenreFilter(defaultGenreFilter);
                             setYearFilter(defaultYearFilter);
                             setRatingFilter(defaultRating);

@@ -3,7 +3,6 @@ import { useMediaQuery } from '@react-hook/media-query'
 import MultiSelect from "@/components/utility/multiSelect";
 import genresData from "@/data/genres";
 import usersData from "@/data/users";
-import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
@@ -11,12 +10,14 @@ import { IoClose } from "react-icons/io5";
 
 const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
     selectedWatchlists: parentSelectedWatchlists, setSelectedWatchlists: parentSetSelectedWatchlists,
+    selectedSpecificWatchlists: parentSelectedSpecificWatchlists, setSelectedSpecificWatchlists: parentSetSelectedSpecificWatchlists,
     selectedGenres: parentSelectedGenres, setGenre: parentSetGenre,
     selectedYear: parentSelectedYear, setYear: parentSetYear,
     selectedRating: parentSelectedRating, setRating: parentSetRating }) => {
 
     const isDesktop = useMediaQuery('only screen and (min-width: 768px)');
     const [selectedWatchlists, setSelectedWatchlists] = useState(parentSelectedWatchlists);
+    const [selectedSpecificWatchlists, setSelectedSpecificWatchlists] = useState(parentSelectedSpecificWatchlists);
     const [selectedGenres, setSelectedGenres] = useState(parentSelectedGenres);
     const [selectedYear, setSelectedYear] = useState(parentSelectedYear);
     const [tempStartYear, setTempStartYear] = useState(parentSelectedYear[0]);
@@ -35,6 +36,10 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
             }
             setSelectedWatchlists(inputVal);
         }
+    };
+
+    const handleSpecificWatchlistChange = (newSpecificWatchlist) => {
+        setSelectedSpecificWatchlists(newSpecificWatchlist);
     };
 
     const handleGenreChange = (newGenre) => {
@@ -86,7 +91,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
         } else {
             // For standard input, extract the value from event.target.value
             const inputVal = event.target.value === '' ? 0 : Number(event.target.value);
-            if (inputVal > maxNumWatchlist || inputVal < 0) {
+            if (inputVal > 10 || inputVal < 0) {
                 return;
             }
             setSelectedRating(inputVal);
@@ -96,6 +101,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
     // reset filters
     const resetFilters = () => {
         setSelectedWatchlists(0);
+        setSelectedSpecificWatchlists([]);
         setSelectedGenres([]);
         setSelectedYear([minYear, maxYear]);
         setSelectedRating(0);
@@ -104,6 +110,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
     // apply filters
     const applyFilters = () => {
         parentSetSelectedWatchlists(selectedWatchlists);
+        parentSetSelectedSpecificWatchlists(selectedSpecificWatchlists);
         parentSetGenre(selectedGenres);
         parentSetYear(selectedYear);
         parentSetRating(selectedRating);
@@ -121,8 +128,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
     return (
         <div className="flex flex-col gap-y-4 text-primary-foreground py-10 px-8 z-50">
 
-
-            <div className='flex justify-between mb-6 place-items-end'>
+            <div className='flex justify-between mb-2 place-items-end'>
                 <h3 className='text-m-xl'>Filters</h3>
                 <div onClick={closeModal} className='text-m-xl cursor-pointer'>
                     <IoClose />
@@ -130,9 +136,10 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
             </div>
 
             {/* Is in watchlist */}
-            <div className='flex flex-col py-4'>
+            <div className='flex flex-col py-2'>
                 <div className='text-m-l pb-2'>Watchlists </div>
 
+            <div className='w-[90%] mx-auto'>
                 {/* https://mui.com/material-ui/react-slider/ */}
                 <Slider
                     defaultValue={selectedWatchlists}
@@ -144,7 +151,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                     max={maxNumWatchlist}
                 />
 
-                <div className='flex place-items-center justify-center'>
+                <div className='flex justify-center'>
                     <div>in </div>
                     <Input
                         type="text"
@@ -157,91 +164,116 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                             }
                         }}
                     />
-                    <div>or more</div>
+                    <div>or more watchlists</div>
                 </div>
+
+                {/* Specific Watchlist */}
+                <div className='mt-4 text-center text-accent'>AND</div>
+                <div className='mt-4 text-center'> in the watchlists of </div>
+                <div className=' mt-4 gap-y-4'>
+                    <MultiSelect
+                        options={usersData}
+                        label="All"
+                        selected={selectedSpecificWatchlists}
+                        setSelected={handleSpecificWatchlistChange}
+                    />
+                </div>
+            </div>
+
             </div>
 
             {/* Genres */}
             <div className='flex flex-col py-2'>
                 <div className='text-m-l pb-4'>Genres</div>
-                <MultiSelect
-                    options={genresData}
-                    label="All"
-                    selected={selectedGenres}
-                    setSelected={handleGenreChange}
-                />
+                <div className='w-[90%] mx-auto'>
+                    <MultiSelect
+                        options={genresData}
+                        label="All"
+                        selected={selectedGenres}
+                        setSelected={handleGenreChange}
+                    />
+                </div>
             </div>
 
             {/* Years */}
-            <div className='flex flex-col py-4'>
+            <div className='flex flex-col py-2'>
                 <div className='text-m-l pb-2'>Years</div>
-
-                {/* https://mui.com/material-ui/react-slider/ */}
-                <Slider
-                    defaultValue={selectedYear}
-                    getAriaLabel={() => 'Year range'}
-                    valueLabelDisplay="auto"
-                    value={selectedYear}
-                    onChange={handleYearsSliderChange}
-                    max={maxYear}
-                    min={minYear}
-                />
-
-                <div className='flex place-items-center justify-between'>
-                    {/* Start Year Input */}
-                    <Input
-                        type="text"
-                        className='text-accent w-16 h-6 text-center bg-primary/80 border rounded-md'
-                        value={tempStartYear}
-                        onChange={handleYearsInputChange("start")}
-                        onBlur={handleYearsInputBlur("start")}
-                        onKeyPress={(event) => {
-                            if (!/[0-9]/.test(event.key)) {
-                                event.preventDefault();
-                            }
-                        }}
+                
+                <div className='w-[90%] mx-auto'>
+                    {/* https://mui.com/material-ui/react-slider/ */}
+                    <Slider
+                        defaultValue={selectedYear}
+                        getAriaLabel={() => 'Year range'}
+                        valueLabelDisplay="auto"
+                        value={selectedYear}
+                        onChange={handleYearsSliderChange}
+                        max={maxYear}
+                        min={minYear}
                     />
 
-                    {/* End Year Input */}
-                    <Input
-                        type="text"
-                        className='text-accent w-16 h-6 text-center bg-primary/80 border rounded-md'
-                        value={tempEndYear}
-                        onChange={handleYearsInputChange("end")}
-                        onBlur={handleYearsInputBlur("end")}
-                        onKeyPress={(event) => {
-                            if (!/[0-9]/.test(event.key)) {
-                                event.preventDefault();
-                            }
-                        }}
-                    />
+                    <div className='flex place-items-center justify-between'>
+                        {/* Start Year Input */}
+                        <Input
+                            type="text"
+                            className='text-accent w-16 h-6 text-center bg-primary/80 border rounded-md'
+                            value={tempStartYear}
+                            onChange={handleYearsInputChange("start")}
+                            onBlur={handleYearsInputBlur("start")}
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault();
+                                }
+                            }}
+                        />
+
+                        {/* End Year Input */}
+                        <Input
+                            type="text"
+                            className='text-accent w-16 h-6 text-center bg-primary/80 border rounded-md'
+                            value={tempEndYear}
+                            onChange={handleYearsInputChange("end")}
+                            onBlur={handleYearsInputBlur("end")}
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault();
+                                }
+                            }}
+                        />
+                    </div>
                 </div>
-
-
             </div>
 
             {/* Rating */}
-            <div className='flex flex-col py-4'>
+            <div className='flex flex-col py-2'>
                 <div className='text-m-l pb-2'>Rating </div>
 
-                {/* https://mui.com/material-ui/react-slider/ */}
-                <Slider
-                    defaultValue={selectedRating}
-                    aria-label="Default"
-                    valueLabelDisplay="auto"
-                    value={selectedRating}
-                    onChange={handleRatingChange}
-                />
-
-                <div className='flex place-items-center justify-center'>
-                    <div>at least</div>
-                    <Input
-                        className='text-accent mx-2 w-12 h-6 text-center bg-primary/80 border rounded-md'
-                        value={selectedRating}
+                <div className='w-[90%] mx-auto'>
+                    {/* https://mui.com/material-ui/react-slider/ */}
+                    <Slider
                         defaultValue={selectedRating}
+                        aria-label="Default"
+                        valueLabelDisplay="auto"
+                        value={selectedRating}
                         onChange={handleRatingChange}
+                        min={0}
+                        max={10}
                     />
-                    <div>/ 100</div>
+
+                    <div className='flex place-items-center justify-center'>
+                        <div>at least</div>
+                        <Input
+                            type="text"
+                            className="text-accent mx-4 w-12 h-6 text-center bg-primary/80 border rounded-md"
+                            value={selectedRating.toString()}
+                            onChange={handleRatingChange}
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault();
+                                }
+                            }}
+                        />
+                        <div>/ 10</div>
+                    </div>
                 </div>
             </div>
 
