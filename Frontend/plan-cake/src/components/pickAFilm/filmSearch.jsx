@@ -76,9 +76,9 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
                                         <div className="flex">
                                             {item.watchlists
                                                 .slice(0, item.watchlists.length > 4 ? 3 : 4)
-                                                .map((participantID, index) => {
+                                                .map((participantName, index) => {
                                                 // Find the user in usersData that matches the participant's id
-                                                const user = usersData.find(user => user.id === participantID);
+                                                const user = usersData.find(user => user.value === participantName);
                                                 return (    
                                                     <div
                                                         className={`w-6 h-6 rounded-full overflow-hidden flex items-center justify-center 
@@ -136,24 +136,26 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     
     const applyFilters = () => {
         return filmData.filter(item => {
-           // Check if the search term matches (or if search term is empty)
+            // Check if the search term matches (or if search term is empty)
             const titleMatch = searchTerm ? item.title.toLowerCase().includes(searchTerm.toLowerCase()) : true;
 
+            // Check if the item is at least in selected number of watchlists
+            const watchlistMatch = watchlistFilter === 0 || item.watchlists.length >= watchlistFilter;
+
+            // Check if any of the item's watchlists are in the selected specificWatchlistFilter
+            const specificWatchlistMatch = specificWatchlistFilter.length === 0 || (Array.isArray(item.watchlists) && item.watchlists.some(user => specificWatchlistFilter.includes(user)));
+        
             // Check if any of the item's genres are in the selected genreFilter
             const genreMatch = genreFilter.length === 0 || (Array.isArray(item.genres) && item.genres.some(genre => genreFilter.includes(genre)));
 
-            // Check if the item is at least in selected number of watchlists
-            // const watchlistMatch =
-
             // Check if the item's year is within the selected year range
-            // const yearMatch = yearFilter.start <= item.year && item.year <= yearFilter.end;
+            const yearMatch = yearFilter[0] <= item.year && item.year <= yearFilter[1];
 
-            // Check if the item's IMDb rating is within the selected rating range
-            // const ratingMatch = (imdbRating.start === undefined || imdbRating.start <= item.rating) &&
-                                // (imdbRating.end === undefined || item.rating <= imdbRating.end);
+            // Check if the item's rating is at least the selected rating
+            const ratingMatch = ratingFilter === 0 || item.rating >= ratingFilter;
 
-            // return titleMatch && genreMatch && watchlistMatch && yearMatch && ratingMatch;
-            return titleMatch && genreMatch;
+            return titleMatch && watchlistMatch && specificWatchlistMatch && genreMatch && yearMatch && ratingMatch;
+
         });
     };
 
@@ -271,7 +273,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     )}
                     {specificWatchlistFilter.length > 0 && (
                         <button onClick={() => setModalIsOpen(true)}>
-                            <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">{specificWatchlistFilter.join(", ")}</p>
+                            <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">{specificWatchlistFilter.join(" & ")}</p>
                         </button>
                     )}
                     {genreFilter.length > 0 && (
