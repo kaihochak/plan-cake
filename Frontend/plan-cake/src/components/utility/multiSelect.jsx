@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMediaQuery } from '@react-hook/media-query'
 import { Button } from "@/components/ui/button"
 import {
@@ -28,6 +28,10 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
     const isDesktop = useMediaQuery('only screen and (min-width: 768px)')
     const [open, setOpen] = useState(false)
     const [selectedOptions, setSelectedOptions] = useState(parentSelected);
+
+    useEffect(() => {
+        setSelectedOptions(parentSelected);
+    }, [parentSelected]);
 
     if (isDesktop) {
         return (
@@ -76,6 +80,8 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
                             ))}</>}
                     </Button>
                 </DrawerTrigger>
+
+                {/* Drawer Content */}
                 <DrawerContent>
                     <div className="mt-4 border-t">
                         <OptionList
@@ -88,7 +94,10 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
                         />
                     </div>
                 </DrawerContent>
+
             </Drawer>
+
+            {/* Cross Symbol */}
             <div className="absolute z-40 top-0 right-0">
                 {selectedOptions.length !== 0 &&
                     <ClearSelection
@@ -97,6 +106,7 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
                     />
                 }
             </div>
+
         </div>
         
     )
@@ -113,6 +123,12 @@ function OptionList({ options, selectedOptions, label, setOpen, setSelectedOptio
 
         setSelectedOptions(newSelectedOptions); // Update local state
         parentSetSelected(newSelectedOptions); // Update parent state
+    };
+
+    // Reset options
+    const resetOptions = () => {
+        setSelectedOptions([]);
+        parentSetSelected([]);
         setOpen(false);
     };
 
@@ -134,6 +150,22 @@ function OptionList({ options, selectedOptions, label, setOpen, setSelectedOptio
                     ))}
                 </CommandGroup>
             </CommandList>
+            <div className='flex justify-between space-x-2 px-4 pb-4'>
+                {/* reset */}
+                <button 
+                    onClick={resetOptions}
+                    className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent/10 py-2 px-4"
+                >
+                    Reset
+                </button>
+                {/* apply */}
+                <button 
+                    onClick={() => setOpen(false)}
+                    className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent/10 py-2 px-4"
+                >
+                    Apply
+                </button>
+            </div>
         </Command>
     );
 }
