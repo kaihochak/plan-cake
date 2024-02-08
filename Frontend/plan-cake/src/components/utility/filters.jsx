@@ -176,6 +176,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                         label="All"
                         selected={selectedSpecificWatchlists}
                         setSelected={handleSpecificWatchlistChange}
+                        separator=" &&nbsp;"
                     />
                 </div>
             </div>
@@ -191,6 +192,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                         label="All"
                         selected={selectedGenres}
                         setSelected={handleGenreChange}
+                        separator=",&nbsp;"
                     />
                 </div>
             </div>
@@ -278,6 +280,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
             </div>
 
             <Separator />
+            
             {/* Sort By */}
 
             <div className='flex w-full space-x-2'>

@@ -6,7 +6,8 @@ const filmData = [
     "genres": ["Action", "Adventure", "Sci-Fi"],
     "image": "./src/assets/posters/kubrick.jpg",
     "rating": 8.8,
-    "watchlists": [1,3,5,2]
+    "year": 2010,
+    "watchlists": ["Bob", "Charlie", "Eve"]
   },
   {
     "id": 2,
@@ -14,7 +15,8 @@ const filmData = [
     "genres": ["Drama"],
     "image": "./src/assets/posters/godfather.jpg",
     "rating": 9.3,
-    "watchlists": [1,2,3,4,5]
+    "year": 1994,
+    "watchlists": ["Alice", "Charlie", "Eve"]
   },
   {
     "id": 3,
@@ -22,7 +24,8 @@ const filmData = [
     "genres": ["Crime", "Drama"],
     "image": "./src/assets/posters/her.jpg",
     "rating": 9.2,
-    "watchlists": [1]
+    "year": 1972,
+    "watchlists": ["Alice", "Charlie", "Dana", "Eve"]
   },
   {
     "id": 4,
@@ -30,7 +33,8 @@ const filmData = [
     "genres": ["Action", "Crime", "Drama"],
     "image": "./src/assets/posters/vertigo.jpg",
     "rating": 9.0,
-    "watchlists": [3,4]
+    "year": 2008,
+    "watchlists": ["Dana"]
   },
   {
     "id": 5,
@@ -38,7 +42,8 @@ const filmData = [
     "genres": ["Crime", "Drama"],
     "image": "./src/assets/posters/kubrick.jpg",
     "rating": 8.9,
-    "watchlists": [3]
+    "year": 1994,
+    "watchlists": ["Bob", "Eve"]
   }
 ];
 

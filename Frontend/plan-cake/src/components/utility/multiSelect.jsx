@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils"
 import { RxCross1 } from "react-icons/rx";
 
 
-const MultiSelect = ({ options, label, selected: parentSelected, setSelected: parentSetSelected }) => {
+const MultiSelect = ({ options, label, selected: parentSelected, setSelected: parentSetSelected, separator }) => {
 
     const isDesktop = useMediaQuery('only screen and (min-width: 768px)')
     const [open, setOpen] = useState(false)
@@ -75,7 +75,7 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
                         {selectedOptions.length === 0 ? <>{label}</> : 
                             <>{selectedOptions.map((option, index) => (
                                     <span key={index}>
-                                        {option}{index < selectedOptions.length - 1 ? ',' : ''}
+                                        {option}{index < selectedOptions.length - 1 ? separator : ''}
                                     </span>
                             ))}</>}
                     </Button>
