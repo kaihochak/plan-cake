@@ -121,12 +121,14 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const [showNoSelectionError, setShowNoSelectionError] = useState(false);
 
     // Filter
+    const defaultSortBy = "Watchlists: Most to Least";
     const defaultWatchlistFilter = 0;
     const defaultSpecificWatchlistFilter = [];
     const defaultGenreFilter = [];
     const defaultYearFilter = [1860, new Date().getFullYear()];
     const defaultRating = 0;
     const [isFilterApplied, setIsFilterApplied] = useState(false);
+    const [sortBy, setSortBy] = useState(defaultSortBy);
     const [watchlistFilter, setwatchlistFilter] = useState(defaultWatchlistFilter);
     const [specificWatchlistFilter, setSpecificWatchlistFilter] = useState(defaultSpecificWatchlistFilter);
     const [genreFilter, setGenreFilter] = useState(defaultGenreFilter);
@@ -136,23 +138,18 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     
     const applyFilters = () => {
         return filmData.filter(item => {
-            // Check if the search term matches (or if search term is empty)
+            // Check if the item's title includes the search term
             const titleMatch = searchTerm ? item.title.toLowerCase().includes(searchTerm.toLowerCase()) : true;
 
-            // Check if the item is at least in selected number of watchlists
+            // Check if the item matches the filters
             const watchlistMatch = watchlistFilter === 0 || item.watchlists.length >= watchlistFilter;
-
-            // Check if any of the item's watchlists are in the selected specificWatchlistFilter
             const specificWatchlistMatch = specificWatchlistFilter.length === 0 || (Array.isArray(item.watchlists) && item.watchlists.some(user => specificWatchlistFilter.includes(user)));
-        
-            // Check if any of the item's genres are in the selected genreFilter
             const genreMatch = genreFilter.length === 0 || (Array.isArray(item.genres) && item.genres.some(genre => genreFilter.includes(genre)));
-
-            // Check if the item's year is within the selected year range
             const yearMatch = yearFilter[0] <= item.year && item.year <= yearFilter[1];
-
-            // Check if the item's rating is at least the selected rating
             const ratingMatch = ratingFilter === 0 || item.rating >= ratingFilter;
+
+            // Sort by
+
 
             return titleMatch && watchlistMatch && specificWatchlistMatch && genreMatch && yearMatch && ratingMatch;
 
@@ -201,7 +198,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         setIsFilterApplied(hasChanged);
         setFilteredItems(applyFilters());
 
-    }, [searchTerm, watchlistFilter, specificWatchlistFilter, genreFilter, yearFilter, ratingFilter]);
+    }, [searchTerm, sortBy, watchlistFilter, specificWatchlistFilter, genreFilter, yearFilter, ratingFilter]);
 
     return (
         <div>
@@ -216,6 +213,8 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     maxNumWatchlist={6}
                     minYear={defaultYearFilter[0]} 
                     maxYear={defaultYearFilter[1]}
+                    selectedSortBy={sortBy} 
+                    setSelectedSortBy={(newSortBy) => setSortBy(newSortBy)}
                     selectedWatchlists={watchlistFilter}
                     setSelectedWatchlists={(newNumWatchlist) => setwatchlistFilter(newNumWatchlist)}
                     selectedSpecificWatchlists={specificWatchlistFilter}
