@@ -209,7 +209,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             <ReactModal 
                 isOpen={modalIsOpen}
                 onRequestClose={() => setModalIsOpen(false)}
-                className="w-full h-full bg-background z-30"
+                className="w-full h-full bg-background z-30 overflow-y-auto"
             >
                 <Filters
                     closeModal={() => setModalIsOpen(false)}
