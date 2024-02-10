@@ -19,16 +19,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
  
- 
-
 const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
+    selectedSortBy: parentSelectedSortBy, setSelectedSortBy: parentSetSelectedSortBy,
     selectedWatchlists: parentSelectedWatchlists, setSelectedWatchlists: parentSetSelectedWatchlists,
     selectedSpecificWatchlists: parentSelectedSpecificWatchlists, setSelectedSpecificWatchlists: parentSetSelectedSpecificWatchlists,
     selectedGenres: parentSelectedGenres, setGenre: parentSetGenre,
     selectedYear: parentSelectedYear, setYear: parentSetYear,
     selectedRating: parentSelectedRating, setRating: parentSetRating }) => {
-
+        
     const isDesktop = useMediaQuery('only screen and (min-width: 768px)');
+    const [sortBy, setSortBy] = useState(parentSelectedSortBy)
     const [selectedWatchlists, setSelectedWatchlists] = useState(parentSelectedWatchlists);
     const [selectedSpecificWatchlists, setSelectedSpecificWatchlists] = useState(parentSelectedSpecificWatchlists);
     const [selectedGenres, setSelectedGenres] = useState(parentSelectedGenres);
@@ -36,6 +36,10 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
     const [tempStartYear, setTempStartYear] = useState(parentSelectedYear[0]);
     const [tempEndYear, setTempEndYear] = useState(parentSelectedYear[1]);
     const [selectedRating, setSelectedRating] = useState(parentSelectedRating);
+
+    const handleSortByChange = (newSortBy) => {
+        setSortBy(newSortBy);
+    };
 
     const handleWatchlistChange = (event, newValue) => {
         // For slider component, the newValue is directly provided as the second argument
@@ -113,6 +117,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
 
     // reset filters
     const resetFilters = () => {
+        setSortBy("Watchlists: Most to Least");
         setSelectedWatchlists(0);
         setSelectedSpecificWatchlists([]);
         setSelectedGenres([]);
@@ -122,6 +127,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
 
     // apply filters
     const applyFilters = () => {
+        parentSetSelectedSortBy(sortBy);
         parentSetSelectedWatchlists(selectedWatchlists);
         parentSetSelectedSpecificWatchlists(selectedSpecificWatchlists);
         parentSetGenre(selectedGenres);
@@ -137,7 +143,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
         )
     }
 
-    const [position, setPosition] = React.useState("Watching: High to low")
+    
 
     // Mobile
     return (
@@ -155,14 +161,12 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
 
                 <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button 
-                        variant="outline"
-                        className="bg-accent/80 text-accent-foreground border-none"
-                    >{position}</Button>
+                    <Button variant="outline">{sortBy}</Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56">
-                    <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-                    <DropdownMenuRadioItem value="Watching: High to low">Watching: High to low</DropdownMenuRadioItem>
+                    <DropdownMenuRadioGroup value={sortBy} onValueChange={handleSortByChange}>
+                    <DropdownMenuRadioItem value="Watchlists: Most to Least">Watchlists: Most to Least</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="Watchlists: Least to Most">Watchlists: Least to Most</DropdownMenuRadioItem>
                     <DropdownMenuRadioItem value="Year: Old to New">Year: Old to New</DropdownMenuRadioItem>
                     <DropdownMenuRadioItem value="Year: New to Old">Year: New to Old</DropdownMenuRadioItem>
                     <DropdownMenuRadioItem value="Rating: High to Low">Rating: High to Low</DropdownMenuRadioItem>

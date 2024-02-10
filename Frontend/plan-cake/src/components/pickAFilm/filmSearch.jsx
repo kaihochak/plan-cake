@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReactModal from 'react-modal';
+import SearchDisplay from "./searchDisplay";
 import { Button } from "@/components/ui/button";
 import { IoIosSearch } from "react-icons/io";
 import { CiFilter } from "react-icons/ci";
@@ -8,156 +9,40 @@ import "@/styles/utility.css"
 import Filters from "@/components/utility/filters";
 import { cn } from "@/lib/utils"
 // dummy
-import filmData from "@/data/filmData";
-import usersData from "@/data/users";
+import dummyFilmData from "@/data/filmData";
 
-// Search Display
-const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
-
-    const handleSelect = (itemId) => {
-        const newSelectedItems = selectedItems.includes(itemId)
-            ? selectedItems.filter(id => id !== itemId) // de-select
-            : [...selectedItems, itemId]; // select
-        setSelectedItems(newSelectedItems);
-    };
-
-    return (
-        <div>
-            {filteredItems.length > 0 ? (
-                <div>
-                    {/* List of items */}
-                    <div className="grid grid-cols-2 gap-6">
-                        {/* each item */}
-                        {filteredItems.slice(0, 10).map((item) => (
-                            <div
-                                key={item.id}
-                                className="flex flex-col gap-y-2 relative"
-                                onClick={() => handleSelect(item.id)}
-                            >
-                                {/* Checkbox */}
-                                <div className="absolute top-3 right-3 mr-4 z-10">
-                                    <input
-                                        type="checkbox"
-                                        className="h-8 w-8 border-2 focus:ring-0"
-                                        checked={selectedItems.includes(item.id)}
-                                        readOnly
-                                    />
-                                </div>
-    
-                                {/* image */}
-                                <div className={`w-[90%] ${selectedItems.includes(item.id) ? "selected-overlay" : ""}`}>
-                                    {/* The image fills the square container */}
-                                    <div className="aspect-w-1 aspect-h-1">
-                                        <img
-                                            src={item.image}
-                                            alt={item.title}
-                                            className="object-cover object-center rounded-xl"
-                                        />
-                                    </div>
-                                </div>
-    
-                                {/* Info */}
-                                <div className="flex flex-col justify-start gap-y-1 pr-4">
-                                    {/* Date & Time */}
-                                    <div className="text-m-s flex gap-x-2">
-                                        <p>{item.date}</p>
-                                        <p>{item.time}</p>
-                                    </div>
-    
-                                    <h3 className="text-m-l mb-2 h-12">
-                                        {item.title.length > 30
-                                            ? item.title.substring(0, 30) + "..."
-                                            : item.title}
-                                    </h3>
-    
-                                    <div className="flex justify-between">
-    
-                                        {/* watchlist */}
-                                        <div className="flex">
-                                            {item.watchlists
-                                                .slice(0, item.watchlists.length > 4 ? 3 : 4)
-                                                .map((participantName, index) => {
-                                                // Find the user in usersData that matches the participant's id
-                                                const user = usersData.find(user => user.value === participantName);
-                                                return (    
-                                                    <div
-                                                        className={`w-6 h-6 rounded-full overflow-hidden flex items-center justify-center 
-                                                                    ${index > 0 ? "-ml-1" : ""} 
-                                                                    `}
-                                                        key={index}
-                                                    >
-                                                        <img
-                                                            className="min-w-full min-h-full object-cover"
-                                                            src={user ? user.avatar : 'defaultAvatarUrl'} // Use the found user's avatar or a default avatar URL
-                                                            alt={user ? user.name : 'Default Name'}
-                                                        />
-                                                    </div>
-                                                )
-                                            })}
-                                            {/* plus sign + how many more people */}
-                                            {item.watchlists.length > 4 && (
-                                                <div>+{item.watchlists.length - 3}</div>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            ) : (
-                <div className="text-m-l mt-4 text-center">No results found...</div>
-            )}
-        </div>
-    );
-};
-
-// Main Component
 const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
+    const [filmData, setFilmData] = useState(dummyFilmData);
     const [filteredItems, setFilteredItems] = useState(filmData);
     const [formData, setFormData] = useState(parentFormData);
     const [searchTerm, setSearchTerm] = useState("");
     const [showNoSelectionError, setShowNoSelectionError] = useState(false);
 
     // Filter
+    const defaultSortBy = "Watchlists: Most to Least";
     const defaultWatchlistFilter = 0;
     const defaultSpecificWatchlistFilter = [];
     const defaultGenreFilter = [];
     const defaultYearFilter = [1860, new Date().getFullYear()];
     const defaultRating = 0;
     const [isFilterApplied, setIsFilterApplied] = useState(false);
+    const [sortBy, setSortBy] = useState(defaultSortBy);
     const [watchlistFilter, setwatchlistFilter] = useState(defaultWatchlistFilter);
     const [specificWatchlistFilter, setSpecificWatchlistFilter] = useState(defaultSpecificWatchlistFilter);
     const [genreFilter, setGenreFilter] = useState(defaultGenreFilter);
     const [yearFilter, setYearFilter] = useState(defaultYearFilter);
     const [ratingFilter, setRatingFilter] = useState(defaultRating);
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    
-    const applyFilters = () => {
-        return filmData.filter(item => {
-            // Check if the search term matches (or if search term is empty)
-            const titleMatch = searchTerm ? item.title.toLowerCase().includes(searchTerm.toLowerCase()) : true;
 
-            // Check if the item is at least in selected number of watchlists
-            const watchlistMatch = watchlistFilter === 0 || item.watchlists.length >= watchlistFilter;
-
-            // Check if any of the item's watchlists are in the selected specificWatchlistFilter
-            const specificWatchlistMatch = specificWatchlistFilter.length === 0 || (Array.isArray(item.watchlists) && item.watchlists.some(user => specificWatchlistFilter.includes(user)));
-        
-            // Check if any of the item's genres are in the selected genreFilter
-            const genreMatch = genreFilter.length === 0 || (Array.isArray(item.genres) && item.genres.some(genre => genreFilter.includes(genre)));
-
-            // Check if the item's year is within the selected year range
-            const yearMatch = yearFilter[0] <= item.year && item.year <= yearFilter[1];
-
-            // Check if the item's rating is at least the selected rating
-            const ratingMatch = ratingFilter === 0 || item.rating >= ratingFilter;
-
-            return titleMatch && watchlistMatch && specificWatchlistMatch && genreMatch && yearMatch && ratingMatch;
-
-        });
-    };
+    // Fetch data initially
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //     const result = await axios('https://api.example.com/data');
+    //     setData(result.data);
+    //     };
+    //     fetchData();
+    // }, []);
 
     const updateSelection = (newSelectedItems) => {
         setFormData(formData => ({
@@ -186,12 +71,12 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         nextStep(formData);
     };
 
-
     useEffect(() => {
-        console.log("Current Filters:", { watchlistFilter, specificWatchlistFilter, genreFilter, yearFilter, ratingFilter });
+        console.log("Current Filters:", { watchlistFilter, sortBy, specificWatchlistFilter, genreFilter, yearFilter, ratingFilter });
     
         // show the filter button in a different color if any filter has been applied
-        const hasChanged = watchlistFilter !== defaultWatchlistFilter ||
+        const hasChanged = sortBy !== defaultSortBy ||
+                            watchlistFilter !== defaultWatchlistFilter ||
                             (specificWatchlistFilter && specificWatchlistFilter.length > 0 ) ||
                             (genreFilter && genreFilter.length > 0) ||
                             yearFilter[0] !== defaultYearFilter[0] ||
@@ -199,9 +84,58 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                             ratingFilter !== defaultRating;
 
         setIsFilterApplied(hasChanged);
-        setFilteredItems(applyFilters());
+        setFilteredItems(applyFiltersAndSort()); 
 
-    }, [searchTerm, watchlistFilter, specificWatchlistFilter, genreFilter, yearFilter, ratingFilter]);
+    }, [searchTerm, sortBy, watchlistFilter, specificWatchlistFilter, genreFilter, yearFilter, ratingFilter]);
+
+    const applyFiltersAndSort = () => {
+        let results = applyFilters(); // Apply filters based on the current state
+        return applySort(results); // Then, sort those results before returning them
+    };
+
+    const applyFilters = () => {
+        return filmData.filter(item => {
+            // Check if the item's title includes the search term
+            const titleMatch = searchTerm ? item.title.toLowerCase().includes(searchTerm.toLowerCase()) : true;
+
+            // Check if the item matches the filters
+            const watchlistMatch = watchlistFilter === 0 || item.watchlists.length >= watchlistFilter;
+            const specificWatchlistMatch = specificWatchlistFilter.length === 0 || (Array.isArray(item.watchlists) && item.watchlists.some(user => specificWatchlistFilter.includes(user)));
+            const genreMatch = genreFilter.length === 0 || (Array.isArray(item.genres) && item.genres.some(genre => genreFilter.includes(genre)));
+            const yearMatch = yearFilter[0] <= item.year && item.year <= yearFilter[1];
+            const ratingMatch = ratingFilter === 0 || item.rating >= ratingFilter;
+
+            return titleMatch && watchlistMatch && specificWatchlistMatch && genreMatch && yearMatch && ratingMatch;
+
+        });
+    };
+
+    const applySort = (results) => {
+        let sortedItems = results;
+        switch (sortBy) {
+            case "Watchlists: Most to Least":
+                sortedItems = sortedItems.sort((a, b) => b.watchlists.length - a.watchlists.length);
+                break;
+            case "Watchlists: Least to Most":
+                sortedItems = sortedItems.sort((a, b) => a.watchlists.length - b.watchlists.length);
+                break;
+            case "Rating: High to Low":
+                sortedItems = sortedItems.sort((a, b) => b.rating - a.rating);
+                break;
+            case "Rating: Low to High":
+                sortedItems = sortedItems.sort((a, b) => a.rating - b.rating);
+                break;
+            case "Year: Newest to Oldest":
+                sortedItems = sortedItems.sort((a, b) => b.year - a.year);
+                break;
+            case "Year: Oldest to Newest":
+                sortedItems = sortedItems.sort((a, b) => a.year - b.year);
+                break;
+            default:
+                break;
+        }
+        return sortedItems;
+    }
 
     return (
         <div>
@@ -216,6 +150,8 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     maxNumWatchlist={6}
                     minYear={defaultYearFilter[0]} 
                     maxYear={defaultYearFilter[1]}
+                    selectedSortBy={sortBy} 
+                    setSelectedSortBy={(newSortBy) => setSortBy(newSortBy)}
                     selectedWatchlists={watchlistFilter}
                     setSelectedWatchlists={(newNumWatchlist) => setwatchlistFilter(newNumWatchlist)}
                     selectedSpecificWatchlists={specificWatchlistFilter}
@@ -264,8 +200,13 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     </button>
                 </div>
 
-                {/* Filters */}
+                {/* Filter Displays */}
                 <div className="flex flex-wrap gap-2 justify-start mt-1 mb-4">
+                    {sortBy !== defaultSortBy && (
+                        <button onClick={() => setModalIsOpen(true)}>
+                            <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">{sortBy}</p>
+                        </button>
+                    )}
                     {watchlistFilter > 0 && (
                         <button onClick={() => setModalIsOpen(true)}>
                             <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">Watchlists: ≥ {watchlistFilter}</p>
@@ -293,6 +234,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     )}
                     {isFilterApplied && (
                         <button onClick={() => {
+                            setSortBy(defaultSortBy);
                             setwatchlistFilter(defaultWatchlistFilter);
                             setSpecificWatchlistFilter(defaultSpecificWatchlistFilter);
                             setGenreFilter(defaultGenreFilter);
