@@ -7,6 +7,8 @@ import Slider from '@mui/material/Slider';
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { IoClose } from "react-icons/io5";
+import { styled } from '@mui/material/styles';
+
 
 import { Button } from "@/components/ui/button"
 import {
@@ -141,10 +143,12 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
         )
     }
 
+    
+
     // Mobile
     return (
         <div className="flex flex-col gap-y-4 text-primary-foreground py-10 px-8 z-50">
-            <div className='flex justify-between mb-6 place-items-end'>
+            <div className='flex justify-between mb-4 place-items-end'>
                 <h3 className='text-m-xl'>Filters & Sort</h3>
                 <div onClick={closeModal} className='text-m-xl cursor-pointer'>
                     <IoClose />
@@ -152,7 +156,9 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
             </div>
 
             {/* Sort By */}
-            <div className='flex flex-col py-2'>
+            <div className='flex flex-col py-3'>
+                <div className='text-m-l pb-4'>Sort by </div>
+
                 <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="outline">{sortBy}</Button>
@@ -173,26 +179,37 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
             <Separator />
 
             {/* Is in watchlist */}
-            <div className='flex flex-col py-2'>
-                <div className='text-m-l pb-2'>Watchlists </div>
+            <div className='flex flex-col py-3'>
+                <div className='text-m-l pb-2'>Watchlists 
+                    <p className='text-m-s pt-2 text-primary-foreground/70'>The minimum number of watchlists they're on.</p>
+                </div>
+                
 
-            <div className='w-[90%] mx-auto'>
+            <div className='w-[100%] mx-auto'>
                 {/* https://mui.com/material-ui/react-slider/ */}
-                <Slider
-                    defaultValue={selectedWatchlists}
-                    aria-label="Default"
-                    valueLabelDisplay="auto"
-                    value={selectedWatchlists}
-                    onChange={handleWatchlistChange}
-                    min={0}
-                    max={maxNumWatchlist}
-                />
+                <div className='flex'>
 
-                <div className='flex justify-center'>
-                    <div>in </div>
+                    <Slider
+                        defaultValue={selectedWatchlists}
+                        aria-label="Default"
+                        valueLabelDisplay="auto"
+                        value={selectedWatchlists}
+                        onChange={handleWatchlistChange}
+                        min={0}
+                        max={maxNumWatchlist}
+                        sx={
+                            {color: 'hsl(var(--accent))',
+                            height: 2,
+                            '& .MuiSlider-thumb': {
+                            height: 12,
+                            width: 12,
+                            },
+                        }}
+                    />
+
                     <Input
                         type="text"
-                        className="text-accent mx-4 w-12 h-6 text-center bg-primary/80 border rounded-md"
+                        className="border rounded-md text-m-s ml-2 w-12 h-6 text-center bg-primary/80 "
                         value={selectedWatchlists.toString()}
                         onChange={handleWatchlistChange}
                         onKeyPress={(event) => {
@@ -201,13 +218,13 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                             }
                         }}
                     />
-                    <div>or more watchlists</div>
-                </div>
+                    </div>
 
                 {/* Specific Watchlist */}
-                <div className='mt-4 text-center text-accent'>AND</div>
-                <div className='mt-4 text-center'> in the watchlists of </div>
-                <div className=' mt-4 gap-y-4'>
+                <div className='mt-4'>
+                    <p className='text-m-s pb-4 text-primary-foreground/70'>Whose watchlists they appear on.</p>
+                </div>
+                <div className='w-[100%] mx-auto'>
                     <MultiSelect
                         options={usersData}
                         label="All"
@@ -221,9 +238,9 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
             </div>
 
             {/* Genres */}
-            <div className='flex flex-col py-2'>
+            <div className='flex flex-col py-3'>
                 <div className='text-m-l pb-4'>Genres</div>
-                <div className='w-[90%] mx-auto'>
+                <div className='w-[100%] mx-auto'>
                     <MultiSelect
                         options={genresData}
                         label="All"
@@ -235,11 +252,25 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
             </div>
 
             {/* Years */}
-            <div className='flex flex-col py-2'>
-                <div className='text-m-l pb-2'>Years</div>
+            <div className='flex flex-col py-3'>
+                <div className='text-m-l pb-4'>Years</div>
                 
-                <div className='w-[90%] mx-auto'>
+                <div className='w-[100%] mx-auto flex'>
                     {/* https://mui.com/material-ui/react-slider/ */}
+                                           {/* Start Year Input */}
+                    <Input
+                        type="text"
+                        className='border rounded-md text-m-s mr-3 w-12 h-6 text-center bg-primary/80'
+                        value={tempStartYear}
+                        onChange={handleYearsInputChange("start")}
+                        onBlur={handleYearsInputBlur("start")}
+                        onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                                event.preventDefault();
+                            }
+                        }}
+                    />
+
                     <Slider
                         defaultValue={selectedYear}
                         getAriaLabel={() => 'Year range'}
@@ -248,43 +279,35 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                         onChange={handleYearsSliderChange}
                         max={maxYear}
                         min={minYear}
+                        sx={
+                            {color: 'hsl(var(--accent))',
+                            height: 2,
+                            '& .MuiSlider-thumb': {
+                              height: 12,
+                              width: 12,
+                        }}}
                     />
 
-                    <div className='flex place-items-center justify-between'>
-                        {/* Start Year Input */}
-                        <Input
-                            type="text"
-                            className='text-accent w-16 h-6 text-center bg-primary/80 border rounded-md'
-                            value={tempStartYear}
-                            onChange={handleYearsInputChange("start")}
-                            onBlur={handleYearsInputBlur("start")}
-                            onKeyPress={(event) => {
-                                if (!/[0-9]/.test(event.key)) {
-                                    event.preventDefault();
-                                }
-                            }}
-                        />
+                    {/* End Year Input */}
+                    <Input
+                        type="text"
+                        className='border rounded-md text-m-s ml-3 w-12 h-6 text-center bg-primary/80'
+                        value={tempEndYear}
+                        onChange={handleYearsInputChange("end")}
+                        onBlur={handleYearsInputBlur("end")}
+                        onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                                event.preventDefault();
+                            }
+                        }}
+                    />
 
-                        {/* End Year Input */}
-                        <Input
-                            type="text"
-                            className='text-accent w-16 h-6 text-center bg-primary/80 border rounded-md'
-                            value={tempEndYear}
-                            onChange={handleYearsInputChange("end")}
-                            onBlur={handleYearsInputBlur("end")}
-                            onKeyPress={(event) => {
-                                if (!/[0-9]/.test(event.key)) {
-                                    event.preventDefault();
-                                }
-                            }}
-                        />
-                    </div>
                 </div>
             </div>
 
             {/* Rating */}
-            <div className='flex flex-col py-2'>
-                <div className='text-m-l pb-2'>Rating </div>
+            <div className='flex flex-col py-3'>
+                <div className='text-m-l pb-4'>Rating </div>
 
                 <div className='w-[90%] mx-auto'>
                     {/* https://mui.com/material-ui/react-slider/ */}
