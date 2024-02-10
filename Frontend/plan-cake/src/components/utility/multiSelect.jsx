@@ -70,7 +70,7 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
             <Drawer open={open} onOpenChange={setOpen} className="py-2 absolute">
                 <DrawerTrigger asChild>
                     <Button variant="outline" className={cn("w-full justify-start",
-                        {'bg-secondary text-secondary-foreground': selectedOptions.length !== 0},
+                        {'bg-accent/80 text-accent-foreground border-none': selectedOptions.length !== 0},
                     )}>
                         {selectedOptions.length === 0 ? <>{label}</> : 
                             <>{selectedOptions.map((option, index) => (
