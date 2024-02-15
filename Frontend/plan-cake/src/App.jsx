@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import CreateEvent from './screens/CreateEvent'; // Import CreateEvent component
 import Menu from './components/Menu';
-import Logo from './images/logo.png'; 
-import menuIcon from './images/menu.png'; 
+import Logo from '@/assets/icons/logo.png'; 
+import menuIcon from '@/assets/icons/menu.png'; 
 import SigninForm from './_auth/forms/SigninForm';
 import SignupForm from './_auth/forms/SignupForm';
 import { Home } from './_root/pages';
