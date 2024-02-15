@@ -4,6 +4,7 @@ import MultiSelect from "@/components/utility/multiSelect";
 import genresData from "@/data/genres";
 import usersData from "@/data/users";
 import Slider from '@mui/material/Slider';
+import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { IoClose } from "react-icons/io5";
@@ -18,8 +19,8 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
- 
-const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
+
+const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear, ratingSteps,
     selectedSortBy: parentSelectedSortBy, setSelectedSortBy: parentSetSelectedSortBy,
     selectedWatchlists: parentSelectedWatchlists, setSelectedWatchlists: parentSetSelectedWatchlists,
     selectedSpecificWatchlists: parentSelectedSpecificWatchlists, setSelectedSpecificWatchlists: parentSetSelectedSpecificWatchlists,
@@ -89,9 +90,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
     
             return newYears;
         });
-    };
-    
-    
+    };    
     const handleYearsInputChange = (type) => (event) => {
         const value = event.target.value;
         if (type === "start") {
@@ -143,8 +142,6 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
         )
     }
 
-    
-
     // Mobile
     return (
         <div className="flex flex-col gap-y-4 text-primary-foreground py-10 px-8 z-50">
@@ -161,7 +158,14 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
 
                 <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="outline">{sortBy}</Button>
+                    <Button 
+                        variant="outline"
+                        className={cn(
+                            "",
+                            (sortBy !== "Watchlists: Most to Least") && "border-none bg-accent/80 text-accent-foreground"
+                        )}
+                    >
+                            {sortBy}</Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56">
                     <DropdownMenuRadioGroup value={sortBy} onValueChange={handleSortByChange}>
@@ -192,7 +196,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                     <Slider
                         defaultValue={selectedWatchlists}
                         aria-label="Default"
-                        valueLabelDisplay="auto"
+                        valueLabelDisplay="on"
                         value={selectedWatchlists}
                         onChange={handleWatchlistChange}
                         min={0}
@@ -206,7 +210,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                             },
                         }}
                     />
-
+{/* 
                     <Input
                         type="text"
                         className="border rounded-md text-m-s ml-2 w-12 h-6 text-center bg-primary/80 "
@@ -217,7 +221,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                                 event.preventDefault();
                             }
                         }}
-                    />
+                    /> */}
                     </div>
 
                 {/* Specific Watchlist */}
@@ -257,8 +261,8 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                 
                 <div className='w-[100%] mx-auto flex'>
                     {/* https://mui.com/material-ui/react-slider/ */}
-                                           {/* Start Year Input */}
-                    <Input
+                    {/* Start Year Input */}
+                    {/* <Input
                         type="text"
                         className='border rounded-md text-m-s mr-3 w-12 h-6 text-center bg-primary/80'
                         value={tempStartYear}
@@ -269,12 +273,12 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                                 event.preventDefault();
                             }
                         }}
-                    />
+                    /> */}
 
                     <Slider
                         defaultValue={selectedYear}
                         getAriaLabel={() => 'Year range'}
-                        valueLabelDisplay="auto"
+                        valueLabelDisplay="on"
                         value={selectedYear}
                         onChange={handleYearsSliderChange}
                         max={maxYear}
@@ -289,7 +293,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                     />
 
                     {/* End Year Input */}
-                    <Input
+                    {/* <Input
                         type="text"
                         className='border rounded-md text-m-s ml-3 w-12 h-6 text-center bg-primary/80'
                         value={tempEndYear}
@@ -300,7 +304,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                                 event.preventDefault();
                             }
                         }}
-                    />
+                    /> */}
 
                 </div>
             </div>
@@ -309,6 +313,8 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
             <div className='flex flex-col py-3'>
                 <div className='text-m-l pb-4'>Rating </div>
 
+                <RatingButtons/>
+                
                 <div className='w-[90%] mx-auto'>
                     {/* https://mui.com/material-ui/react-slider/ */}
                     <Slider
