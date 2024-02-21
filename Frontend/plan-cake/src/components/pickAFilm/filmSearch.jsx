@@ -150,6 +150,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     maxNumWatchlist={6}
                     minYear={defaultYearFilter[0]} 
                     maxYear={defaultYearFilter[1]}
+                    ratingSteps={10}
                     selectedSortBy={sortBy} 
                     setSelectedSortBy={(newSortBy) => setSortBy(newSortBy)}
                     selectedWatchlists={watchlistFilter}

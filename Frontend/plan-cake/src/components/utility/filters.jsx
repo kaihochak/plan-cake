@@ -7,8 +7,7 @@ import Slider from '@mui/material/Slider';
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { IoClose } from "react-icons/io5";
-import { styled } from '@mui/material/styles';
-
+import RatingButton from '@mui/material/Button';
 
 import { Button } from "@/components/ui/button"
 import {
@@ -19,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
  
-const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
+const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear, ratingSteps,
     selectedSortBy: parentSelectedSortBy, setSelectedSortBy: parentSetSelectedSortBy,
     selectedWatchlists: parentSelectedWatchlists, setSelectedWatchlists: parentSetSelectedWatchlists,
     selectedSpecificWatchlists: parentSelectedSpecificWatchlists, setSelectedSpecificWatchlists: parentSetSelectedSpecificWatchlists,
@@ -73,7 +72,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
         const newValue = parseInt(event.target.value, 10);
         setSelectedYear((currentYears) => {
             let startYear = currentYears[0], endYear = currentYears[1];
-    
+            
             if (type === "start") {
                 // Adjust the start year within the boundaries
                 startYear = isNaN(newValue) ? minYear : Math.min(Math.max(newValue, minYear), endYear);
@@ -81,12 +80,12 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                 // Adjust the end year within the boundaries
                 endYear = isNaN(newValue) ? maxYear : Math.max(Math.min(newValue, maxYear), startYear);
             }
-    
+            
             // Update temporary states to reflect the new value or the adjusted boundary value
             const newYears = [startYear, endYear];
             setTempStartYear(newYears[0].toString());
             setTempEndYear(newYears[1].toString());
-    
+            
             return newYears;
         });
     };
@@ -100,20 +99,24 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
             setTempEndYear(value);
         }
     };
-
-    const handleRatingChange = (event, newValue) => {
-        // For slider component, the newValue is directly provided as the second argument
-        if (newValue !== undefined) {
-            setSelectedRating(newValue);
-        } else {
-            // For standard input, extract the value from event.target.value
-            const inputVal = event.target.value === '' ? 0 : Number(event.target.value);
-            if (inputVal > 10 || inputVal < 0) {
-                return;
-            }
-            setSelectedRating(inputVal);
-        }
-    };
+    
+    const handleRatingChange = (value) => {
+        setSelectedRating(value);
+    }
+    
+    // const handleRatingChange = (event, newValue) => {
+        //     // For slider component, the newValue is directly provided as the second argument
+    //     if (newValue !== undefined) {
+    //         setSelectedRating(newValue);
+    //     } else {
+    //         // For standard input, extract the value from event.target.value
+    //         const inputVal = event.target.value === '' ? 0 : Number(event.target.value);
+    //         if (inputVal > 10 || inputVal < 0) {
+    //             return;
+    //         }
+    //         setSelectedRating(inputVal);
+    //     }
+    // };
 
     // reset filters
     const resetFilters = () => {
@@ -134,6 +137,62 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
         parentSetYear(selectedYear);
         parentSetRating(selectedRating);
         closeModal();
+    };
+    
+
+    // rating buttons
+    const RatingBtnGroup = () => {
+
+
+        const buttons = [];
+        const getSx = (index) => ({
+            color: selectedRating===index ? 'hsl(var(--accent-foreground))':'hsl(var(--primary-foreground))',
+            backgroundColor: selectedRating===index ? 'hsl(var(--accent))':'hsl(var(--primary))',
+            borderColor: 'hsl(var(--border))',
+            borderWidth: '1px',
+            '&:hover': {
+                color: 'hsl(var(--primary))',
+                backgroundColor: 'hsl(var(--accent))',
+                borderStyle: 'none'
+            },
+        });
+
+
+        buttons.push(
+            <RatingButton 
+                className='border rounded-md text-m-s ml-3 w-12 h-6 text-center' 
+                variant={selectedRating===0?"contained":"outlined"}
+                sx={getSx(0)}
+                onClick={() => handleRatingChange(0)}
+                key={0}
+            >Any
+            </RatingButton>
+        );
+        for (let i = 1; i < ratingSteps; i++) {
+            buttons.push(
+                <RatingButton                 
+                    className='border rounded-md text-m-s ml-3 w-12 h-6 text-center' 
+                    variant={selectedRating===i?"contained":"outlined"}
+                    sx={getSx(i)}
+                    onClick={() => handleRatingChange(i)}
+                    key={i}
+                 > {i}+ </RatingButton>
+            );
+        }
+        buttons.push(
+            <RatingButton 
+                className='border rounded-md text-m-s ml-3 w-12 h-6 text-center' 
+                variant={selectedRating===ratingSteps?"contained":"outlined"}
+                sx={getSx(ratingSteps)}
+                onClick={() => handleRatingChange(ratingSteps)}
+                key={ratingSteps}
+            > {ratingSteps} </RatingButton>
+        );
+        return (
+            <div className='flex gap-2 flex-wrap'>
+                {buttons}
+            </div>
+        );
     };
 
     // Desktop
@@ -306,12 +365,15 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
             </div>
 
             {/* Rating */}
-            <div className='flex flex-col py-3'>
+            <div className='flex flex-col py-3 '>
                 <div className='text-m-l pb-4'>Rating </div>
 
-                <div className='w-[90%] mx-auto'>
+                <div className='w-[100%] mx-auto'>
+
+                    <RatingBtnGroup/>
+
                     {/* https://mui.com/material-ui/react-slider/ */}
-                    <Slider
+                    {/* <Slider
                         defaultValue={selectedRating}
                         aria-label="Default"
                         valueLabelDisplay="auto"
@@ -319,8 +381,8 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                         onChange={handleRatingChange}
                         min={0}
                         max={10}
-                    />
-
+                    /> */}
+{/* 
                     <div className='flex place-items-center justify-center'>
                         <div>at least</div>
                         <Input
@@ -335,7 +397,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear,
                             }}
                         />
                         <div>/ 10</div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
