@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Link } from "react-router-dom"
+import { useToast } from "@/components/ui/use-toast"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -20,6 +21,7 @@ import { createUserAccount } from '../../lib/appwrite/api'
 
 const SignupForm = () => {
   const [isLoading, setIsLoading] = useState(false)
+  const { toast } = useToast()
 
   const form = useForm({
     resolver: zodResolver(SignupValidation),
@@ -33,7 +35,12 @@ const SignupForm = () => {
 
   async function onSubmit(values) {
     const newUser = await createUserAccount(values);
-    console.log(newUser);
+
+    if (!newUser) {
+      return toast({ title: "Error", message: "Sign up failed. Please try again.", type: "error" });
+    }
+
+    const 
   }
 
   return (

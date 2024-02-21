@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import CreateEvent from './_root/pages/CreateEvent'; // Import CreateEvent component
-import Menu from './components/Menu';
-import Logo from '@/assets/icons/logo.png'; 
-import menuIcon from '@/assets/icons/menu.png'; 
 import SigninForm from './_auth/forms/SigninForm';
 import SignupForm from './_auth/forms/SignupForm';
 import { Home } from './_root/pages';
 import AuthLayout from './_auth/AuthLayout';
 import RootLayout from './_root/RootLayout';
+import { Toaster } from "@/components/ui/toaster"
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,7 +16,7 @@ function App() {
   };
 
   return (
-    <main className="bg-primary px-6 py-8 font-Urbanist text-default">
+    <main classNamexw="bg-primary px-6 py-8 font-Urbanist text-default">
 
       {/* Routes */}
       <Routes>
@@ -36,6 +34,8 @@ function App() {
         </Route>
 
       </Routes>
+
+      <Toaster />
     </main>
   );
 }
