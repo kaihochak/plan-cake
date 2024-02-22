@@ -16,7 +16,8 @@ function App() {
   };
 
   return (
-    <main classNamexw="bg-primary px-6 py-8 font-Urbanist text-default">
+    <main className="bg-primary px-6 py-8 font-Urbanist text-default">
+
 
       {/* Routes */}
       <Routes>

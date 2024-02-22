@@ -40,7 +40,6 @@ const SignupForm = () => {
       return toast({ title: "Error", message: "Sign up failed. Please try again.", type: "error" });
     }
 
-    const 
   }
 
   return (
