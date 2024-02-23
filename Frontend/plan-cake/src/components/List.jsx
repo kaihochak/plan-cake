@@ -1,5 +1,6 @@
 import React from "react";
 import { GoLocation } from "react-icons/go";
+import {cn} from "@/lib/utils"
 
 const List = ({
   items,
@@ -38,12 +39,14 @@ const List = ({
 
       {/* List of items */}
       <div
-        className={
-          layout === "grid" ? "grid grid-cols-2 gap-6" : "flex flex-col"
+        className={cn("",layout === "grid" ? 
+          "grid grid-cols-2 gap-6 xl:grid-flow-row" : 
+          "flex flex-col xl:flex-row") 
+          
         }
       >
         {filteredItems.slice(0, max).map((item) => (
-          <div key={item.id} className={ layout === "grid" ? "flex flex-col gap-y-2" : "flex justify-between space-x-4 py-4"}>
+          <div key={item.id} className={ layout === "grid" ? "flex flex-col gap-y-2" : "flex justify-between space-x-4 py-4 xl:flex-col"}>
             {/* image */}
             <div className={ layout === "grid" ? "w-[90%]" : "inset-0 w-[35%]" }>
           
