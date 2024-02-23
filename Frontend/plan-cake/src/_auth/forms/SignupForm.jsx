@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useToast } from "@/components/ui/use-toast"
 import { Button } from "@/components/ui/button"
 import {
@@ -17,12 +17,27 @@ import { useForm } from "react-hook-form"
 import { SignupValidation } from "@/lib/validation"
 import Logo from '@/assets/icons/logo.png'
 import Loader from '@/components/utility/Loader'
-import { createUserAccount } from '../../lib/appwrite/api'
+import { useCreateUserAccount, useSignInAccount } from '@/lib/react-query/queriesAndMutations'
+import { useUserContext } from '@/context/AuthContext'
 
 const SignupForm = () => {
-  const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
+  const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
+  const navigate = useNavigate();
 
+  // use tanstack/react-query's useMutation hook to create a new user account
+  const { 
+    mutateAsync: createUserAccount, 
+    isPending: isCreatingUser
+  } = useCreateUserAccount()
+
+  // use tanstack/react-query's useMutation hook to sign in the user
+  const {
+    mutateAsync: signInAccount,
+    isPending: isSigningIn
+  } = useSignInAccount()
+
+  // use react-hook-form's useForm hook to create a form
   const form = useForm({
     resolver: zodResolver(SignupValidation),
     defaultValues: {
@@ -33,15 +48,38 @@ const SignupForm = () => {
     },
   })
 
+  // function to handle form submission
   async function onSubmit(values) {
-    const newUser = await createUserAccount(values);
 
+    // create a new user account with the values from the form
+    const newUser = await createUserAccount(values);
+    // if the user account was not created, show an error message
     if (!newUser) {
       return toast({ title: "Error", message: "Sign up failed. Please try again.", type: "error" });
     }
 
+    // if the user account was created, sign in the user
+    const session = await signInAccount({
+      email: values.email,
+      password: values.password,
+    });
+    // if the user was not signed in, show an error message
+    if (!session) {
+      return toast({ title: "Error", message: "Sign in failed. Please try again.", type: "error" });
+    }
+
+    // check if the user is authenticated
+    const isLoggedIn = await checkAuthUser();
+    // if the user is authenticated, redirect to the home page
+    if (isLoggedIn) {
+      form.reset();
+      navigate("/");
+    }
+    // if the user is not authenticated, show an error message
+    return toast({ title: "Error", message: "Sign in failed. Please try again.", type: "error" });
   }
 
+  // return the form
   return (
     <Form {...form}>
       <div className='w-full flex flex-col justify-center items-center gap-y-4 pt-10'>
@@ -113,7 +151,7 @@ const SignupForm = () => {
 
           {/* submit */}
           <Button type="submit" variant="outline" className="w-[80%]">
-            {isLoading? (
+            {isCreatingUser ? (
               <div className='flex items-center gap-2'>
                 <Loader/>Loading...
               </div>

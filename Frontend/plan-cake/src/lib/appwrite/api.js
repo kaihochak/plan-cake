@@ -1,6 +1,7 @@
-import { ID } from 'appwrite';
-import { account, appwriteConfig, avatars, database } from './config';
+import { ID, Query } from 'appwrite';
+import { account, appwriteConfig, avatars, databases } from './config';
 
+// Create a new user account with Appwrite
 export async function createUserAccount(user) {
     try {
         // Create a new account with Appwrite
@@ -24,23 +25,58 @@ export async function createUserAccount(user) {
             imageUri: avatarUrl,  // from the avatars service
         })
 
-        return newAccount;
+        return newUser;
     } catch (error) {
         console.error(error);
         return error;
     }
 }
 
+// Save the user to the database with Appwrite
 export async function saveUserToDB(user) {
     try {
         // Save the user to the database with Appwrite
-        const newUser = await database.createDocument(
+        const newUser = await databases.createDocument(
             appwriteConfig.databaseId,
             appwriteConfig.collectionId,
             ID.unique(),
             user,
         );
         return newUser;
+    } catch (error) {
+        console.error(error);
+        return error;
+    }
+}
+
+// Sign in the user with Appwrite
+export async function signInAccount(user) {
+    try {
+        // Sign in the user with Appwrite
+        const session = await account.createSession(user.email, user.password);
+        return session;
+    } catch (error) {
+        console.error(error);
+        return error;
+    }
+}
+
+// Get the current user with Appwrite
+export async function getCurrentUser() {
+    try {
+        // Get the current user with Appwrite
+        const currentAccount = await account.get();
+        if (!currentAccount) throw new Error('No user found');
+
+        // Get the user from the database with Appwrite
+        const currentUser = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            [Query.equal('accountId', currentAccount.$id)]
+        );
+        if (!currentUser) throw new Error('No user found'); 
+
+        return currentUser.documents[0];
     } catch (error) {
         console.error(error);
         return error;
