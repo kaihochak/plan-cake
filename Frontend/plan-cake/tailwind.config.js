@@ -103,10 +103,40 @@ module.exports = {
           letterSpacing: '-0.01em',
           fontWeight: '400',
         }],
+        'm-3xl': ['3rem', {
+          lineHeight: '3.5rem',
+          letterSpacing: '-0.01em',
+          fontWeight: '400',
+        }],
+        's': ['0.875rem', {
+          lineHeight: '1.25rem',
+          letterSpacing: '-0.02em',
+          fontWeight: '400',
+        }],
+        'm': ['1rem', {
+          lineHeight: '1.5rem',
+          letterSpacing: '-0.02em',
+          fontWeight: '400',
+        }],
+        'l': ['1.125rem', {
+          lineHeight: '1.75rem',
+          letterSpacing: '-0.02em',
+          fontWeight: '400',
+        }],
+        'xl': ['1.5rem', {
+          lineHeight: '1.75rem',
+          letterSpacing: '-0.02em',
+          fontWeight: '400',
+        }],
+        '2xl': ['1.125rem', {
+          lineHeight: '1.75rem',
+          letterSpacing: '-0.02em',
+          fontWeight: '400',
+        }],
         '3xl': ['1.875rem', {
           lineHeight: '2.25rem',
           letterSpacing: '-0.02em',
-          fontWeight: '700',
+          fontWeight: '400',
         }],
       },
       borderRadius: {

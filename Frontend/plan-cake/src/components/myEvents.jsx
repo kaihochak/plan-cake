@@ -39,7 +39,7 @@ const MyEvents = () => {
         </div>
       </header>
 
-      <List items={myEventsData} isFilterVisible={false} isParticipantsVisible={true} layout="vertical" max="3"/>
+      <List items={myEventsData} isFilterVisible={false} isParticipantsVisible={true} mobileLayout="vertical" max="3"/>
 
       <div className='flex justify-center'>
         <button className='text-m-2xl' onClick={navigateToCreateEvent}>
