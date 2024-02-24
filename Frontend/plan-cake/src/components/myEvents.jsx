@@ -4,6 +4,7 @@ import List from './List';
 import dummyEventData from '../data/myEventsData';
 import { BsArrowRight, BsFillPlusCircleFill } from 'react-icons/bs';
 
+
 const MyEvents = () => {
   const [myEventsData, setMyEventsData] = useState(dummyEventData);
   const navigate = useNavigate(); 
@@ -39,12 +40,16 @@ const MyEvents = () => {
         </div>
       </header>
 
-      <List items={myEventsData} isFilterVisible={false} isParticipantsVisible={true} layout="vertical" max="3"/>
+      <div
+        className='flex lg:flex-row lg:space-x-4 lg:gap-4 lg:justify-start '
+      >
+        <List items={myEventsData} isFilterVisible={false} isParticipantsVisible={true} mobileLayout="vertical" max="3"/>
 
-      <div className='flex justify-center'>
-        <button className='text-m-2xl' onClick={navigateToCreateEvent}>
-          <BsFillPlusCircleFill />
-        </button>
+        <div className='flex justify-center'>
+          <button className='text-m-2xl' onClick={navigateToCreateEvent}>
+            <BsFillPlusCircleFill />
+          </button>
+        </div>
       </div>
     </section>
   );

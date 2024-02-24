@@ -1,11 +1,12 @@
 import React from "react";
 import { GoLocation } from "react-icons/go";
+import { cn } from "@/lib/utils"
 
 const List = ({
   items,
   isFilterVisible,
   isParticipantsVisible,
-  layout,
+  mobileLayout,
   max
 }) => {
   const [filter, setFilter] = React.useState("");
@@ -32,23 +33,39 @@ const List = ({
             value={filter}
             onChange={handleFilterChange}
           />
-          {/* Other filters can be added here */}
         </div>
       )}
 
       {/* List of items */}
       <div
         className={
-          layout === "grid" ? "grid grid-cols-2 gap-6" : "flex flex-col"
-        }
+          cn("lg:grid-cols-4 lg:space-x-4 lg:gap-4", // universal
+          // cn("lg:grid-cols-4", // universal
+          mobileLayout === "grid" ?
+            "grid grid-cols-2 gap-6" : // grid view (only for mobile)
+            "grid grid-cols-1 " // vertical view (only for mobile)
+        )}
       >
+        {/* each item */}
         {filteredItems.slice(0, max).map((item) => (
-          <div key={item.id} className={ layout === "grid" ? "flex flex-col gap-y-2" : "flex justify-between space-x-4 py-4"}>
+          <div
+            key={item.id}
+            className={
+              cn("flex lg:py-8 lg:justify-start lg:w-auto", // universal
+              mobileLayout === "grid" ?
+                "flex-col gap-y-2" :  // grid view (only for mobile)
+                "lg:flex-col justify-between lg:justify-start space-x-4 lg:space-x-0 py-4 lg:gap-y-2 " // vertical veiw (only for mobile)
+            )}>
+              
             {/* image */}
-            <div className={ layout === "grid" ? "w-[90%]" : "inset-0 w-[35%]" }>
-          
-              {/* The image fills the square container */}
+            <div className={
+              cn("lg:w-[200px]", // universal
+              mobileLayout === "grid" ?
+                "w-[90%]" : // grid view (only for mobile)
+                "inset-0 w-[35%]" // vertical view (only for mobile)
+            )}>
 
+              {/* The image fills the square container */}
               <div className="aspect-w-1 aspect-h-1">
                 <img
                   src={item.image}
@@ -59,20 +76,43 @@ const List = ({
             </div>
 
             {/* Info */}
-            <div className={ layout === "grid" ? "flex flex-col justify-start gap-y-1 pr-4" : "w-[65%] flex flex-col justify-start gap-y-2"}>
+            <div className={
+              cn("flex flex-col justify-start lg:p-0 lg:w-auto lg:pt-4", // universal
+              mobileLayout === "grid" ?
+                "gap-y-1 lg:gap-y-2 pr-4" : // grid view (only for mobile)
+                "gap-y-2 w-[65%] " // vertical view (only for mobile)
+              )}>
               {/* Date & Time */}
-              <div className={ layout === "grid" ? "text-m-s flex gap-x-2" : "flex gap-x-2"}>
+              <div className={
+                cn("flex gap-x-2 lg:text-l", // universal
+                mobileLayout === "grid" ? 
+                  "text-m-s" : // grid view (only for mobile)
+                  "" // grid view (only for mobile)
+              )}>
                 <p>{item.date}</p>
                 <p>{item.time}</p>
               </div>
 
-              <h3 className={ layout === "grid" ? "text-m-l mb-2 h-12" : "text-m-xl"}>
+              {/* Title */}
+              <h3 className={
+                cn("lg:text-3xl", // universal
+                mobileLayout === "grid" ? 
+                "text-m-l mb-2 h-12 lg:mb-0 lg:h-auto" : // grid view (only for mobile)
+                "text-m-xl" // vertical view (only for mobile)
+              )}>
                 {item.title.length > 30 ? item.title.substring(0, 30) + '...' : item.title}
               </h3>
 
+              {/* Location & Participants */}
               <div className="flex justify-between">
+
                 {/* Location */}
-                <div className={ layout === "grid" ? "text-m-s flex items-center gap-x-2" : "flex items-center space-x-2"}>
+                <div className={
+                  cn("flex items-center lg:text-l", // universal
+                    mobileLayout === "grid" ? 
+                    "text-m-s gap-x-2" : // grid view (only for mobile)
+                    "space-x-2" // vertical view (only for mobile)
+                  )}>
                   <GoLocation />
                   <p>{item.location}</p>
                 </div>
@@ -81,7 +121,7 @@ const List = ({
                 {isParticipantsVisible && (
                   <div className="flex">
                     {item.participants
-                      .slice(0,  item.participants.length > 4 ? 3 : 4)
+                      .slice(0, item.participants.length > 4 ? 3 : 4)
                       .map((participant, index) => (
                         <div
                           className={`w-6 h-6 rounded-full overflow-hidden flex items-center justify-center 
@@ -100,7 +140,7 @@ const List = ({
                     {/* plus sign + how many more people */}
                     {item.participants.length > 4 && (
                       <div>+{item.participants.length - 3}</div>
-                      )}
+                    )}
                   </div>
                 )}
               </div>
@@ -108,6 +148,7 @@ const List = ({
           </div>
         ))}
       </div>
+
     </div>
   );
 };

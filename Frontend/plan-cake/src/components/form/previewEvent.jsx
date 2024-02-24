@@ -29,7 +29,7 @@ const PreviewEvent = ({ formData, nextStep }) => {
         <div className="flex flex-col ">
 
             {/* Selected Items Image Carousel */}
-            <Carousel className="w-[70%] mx-auto">
+            <Carousel className="w-[70%] mx-auto lg:w-[40%]">
                 <CarouselContent className="mx-auto mt-10">
                     {formData.selectedItems.map((filmID, id) => {
 

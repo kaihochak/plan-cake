@@ -196,17 +196,17 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear, ratingSteps,
     };
 
     // Desktop
-    if (isDesktop) {
-        return (
-            <div></div>
-        )
-    }
+    // if (isDesktop) {
+    //     return (
+    //         <div></div>
+    //     )
+    // }
 
     
 
     // Mobile
     return (
-        <div className="flex flex-col gap-y-4 text-primary-foreground py-10 px-8 z-50">
+        <div className="flex flex-col gap-y-4 text-primary-foreground py-10 px-8 z-50 lg:mx-auto lg:w-[1024px]">
             <div className='flex justify-between mb-4 place-items-end'>
                 <h3 className='text-m-xl'>Filters & Sort</h3>
                 <div onClick={closeModal} className='text-m-xl cursor-pointer'>
@@ -246,7 +246,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear, ratingSteps,
 
             <div className='w-[100%] mx-auto'>
                 {/* https://mui.com/material-ui/react-slider/ */}
-                <div className='flex'>
+                <div className='flex items-center'>
 
                     <Slider
                         defaultValue={selectedWatchlists}
@@ -311,10 +311,10 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear, ratingSteps,
             </div>
 
             {/* Years */}
-            <div className='flex flex-col py-3'>
+            <div className='flex flex-col py-3 '>
                 <div className='text-m-l pb-4'>Years</div>
                 
-                <div className='w-[100%] mx-auto flex'>
+                <div className='w-[100%] mx-auto flex items-center'>
                     {/* https://mui.com/material-ui/react-slider/ */}
                                            {/* Start Year Input */}
                     <Input
@@ -368,36 +368,10 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear, ratingSteps,
             <div className='flex flex-col py-3 '>
                 <div className='text-m-l pb-4'>Rating </div>
 
-                <div className='w-[100%] mx-auto'>
+                <div className='w-[100%] mx-auto3.79'>
 
                     <RatingBtnGroup/>
 
-                    {/* https://mui.com/material-ui/react-slider/ */}
-                    {/* <Slider
-                        defaultValue={selectedRating}
-                        aria-label="Default"
-                        valueLabelDisplay="auto"
-                        value={selectedRating}
-                        onChange={handleRatingChange}
-                        min={0}
-                        max={10}
-                    /> */}
-{/* 
-                    <div className='flex place-items-center justify-center'>
-                        <div>at least</div>
-                        <Input
-                            type="text"
-                            className="text-accent mx-4 w-12 h-6 text-center bg-primary/80 border rounded-md"
-                            value={selectedRating.toString()}
-                            onChange={handleRatingChange}
-                            onKeyPress={(event) => {
-                                if (!/[0-9]/.test(event.key)) {
-                                    event.preventDefault();
-                                }
-                            }}
-                        />
-                        <div>/ 10</div>
-                    </div> */}
                 </div>
             </div>
 

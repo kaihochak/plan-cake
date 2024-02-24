@@ -51,8 +51,7 @@ const myEventsData = [
       { id: 'p1', avatar: './src/assets/avatars/avatar1.jpg', name: 'Alice' },
       { id: 'p4', avatar: './src/assets/avatars/avatar4.jpg', name: 'Dana' },
     ],
-  }
-
+  },
 ];
 
 export default myEventsData;
