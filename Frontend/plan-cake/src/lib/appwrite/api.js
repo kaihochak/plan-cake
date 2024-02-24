@@ -4,7 +4,7 @@ import { account, appwriteConfig, avatars, databases } from './config';
 // Create a new user account with Appwrite
 export async function createUserAccount(user) {
     try {
-        // Create a new account with Appwrite
+        // Create a new account passing in SignupForm data to Appwrite's account service
         const newAccount = await account.create(
             ID.unique(),
             user.email,
@@ -22,7 +22,7 @@ export async function createUserAccount(user) {
             name: newAccount.name,
             email: newAccount.email,
             username: user.username, // from the form
-            imageUri: avatarUrl,  // from the avatars service
+            imageUrl: avatarUrl,  // from the avatars service
         })
 
         return newUser;
@@ -38,9 +38,9 @@ export async function saveUserToDB(user) {
         // Save the user to the database with Appwrite
         const newUser = await databases.createDocument(
             appwriteConfig.databaseId,
-            appwriteConfig.collectionId,
+            appwriteConfig.userCollectionId,
             ID.unique(),
-            user,
+            user
         );
         return newUser;
     } catch (error) {
@@ -53,7 +53,7 @@ export async function saveUserToDB(user) {
 export async function signInAccount(user) {
     try {
         // Sign in the user with Appwrite
-        const session = await account.createSession(user.email, user.password);
+        const session = await account.createEmailSession(user.email, user.password);
         return session;
     } catch (error) {
         console.error(error);
@@ -61,11 +61,23 @@ export async function signInAccount(user) {
     }
 }
 
+
+export async function getAccount() {
+    try {
+      const currentAccount = await account.get();
+
+      return currentAccount;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  
 // Get the current user with Appwrite
 export async function getCurrentUser() {
     try {
         // Get the current user with Appwrite
-        const currentAccount = await account.get();
+        const currentAccount = await getAccount();
         if (!currentAccount) throw new Error('No user found');
 
         // Get the user from the database with Appwrite
@@ -74,7 +86,7 @@ export async function getCurrentUser() {
             appwriteConfig.userCollectionId,
             [Query.equal('accountId', currentAccount.$id)]
         );
-        if (!currentUser) throw new Error('No user found'); 
+        if (!currentUser) throw new Error('No user found');
 
         return currentUser.documents[0];
     } catch (error) {

@@ -34,7 +34,7 @@ const SignupForm = () => {
   // use tanstack/react-query's useMutation hook to sign in the user
   const {
     mutateAsync: signInAccount,
-    isPending: isSigningIn
+    isPending: isSigningInUser
   } = useSignInAccount()
 
   // use react-hook-form's useForm hook to create a form
@@ -53,7 +53,6 @@ const SignupForm = () => {
 
     // create a new user account with the values from the form
     const newUser = await createUserAccount(values);
-    // if the user account was not created, show an error message
     if (!newUser) {
       return toast({ title: "Error", message: "Sign up failed. Please try again.", type: "error" });
     }
@@ -63,19 +62,17 @@ const SignupForm = () => {
       email: values.email,
       password: values.password,
     });
-    // if the user was not signed in, show an error message
     if (!session) {
+      console.log("XXXXXXXXXXX Sign in failed. Please try again.")
       return toast({ title: "Error", message: "Sign in failed. Please try again.", type: "error" });
     }
 
-    // check if the user is authenticated
-    const isLoggedIn = await checkAuthUser();
     // if the user is authenticated, redirect to the home page
+    const isLoggedIn = await checkAuthUser();
     if (isLoggedIn) {
       form.reset();
       navigate("/");
     }
-    // if the user is not authenticated, show an error message
     return toast({ title: "Error", message: "Sign in failed. Please try again.", type: "error" });
   }
 

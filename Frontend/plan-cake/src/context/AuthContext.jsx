@@ -23,14 +23,14 @@ const INITIAL_STATE = {
 const AuthContext = createContext(INITIAL_STATE)
 
 const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(INITIAL_USER)
-    const [isLoading, setisLoading] = useState(false)
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
-
+    const [user, setUser] = useState(INITIAL_USER) // the user object
+    const [isLoading, setisLoading] = useState(false) // loading state
+    const [isAuthenticated, setIsAuthenticated] = useState(false) // authentication state
     const navigate = useNavigate();
 
-    // check if we have a logged in user
+    // check if we have a logged in user, whenever the page is refreshed
     const checkAuthUser = async () => {
+        setisLoading(true);
         try {
             const currentAccount = await getCurrentUser();
 
@@ -41,10 +41,13 @@ const AuthProvider = ({ children }) => {
                     username: currentAccount.username,
                     email: currentAccount.email,
                     imageUrl: currentAccount.imageUrl,
-                    bio: currentAccount.bio,
+                    bio: currentAccount.bio
                 })
+
+                setIsAuthenticated(true);
                 return true;
             }
+            return false;
 
         } catch (error) {
             console.error(error)
@@ -54,13 +57,22 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    useEffect(() => {
-        // if the user is not logged in, redirect to the sign-in page
-        if (
-            localStorage.getItem('cookieFallback' === `[]` || 
-            localStorage.getItem('cookieFallback' === null))
-        ) navigate('/sign-in')
+    // if (
+    //     cookieFallback === "[]" ||
+    //     cookieFallback === null ||
+    //     cookieFallback === undefined
+    //   ) {
 
+
+    // check if we have a logged in user, whenever the page is refreshed
+    useEffect(() => {
+        const cookieFallback = localStorage.getItem("cookieFallback");
+        if (
+          cookieFallback === "[]" 
+        ) {
+          navigate("/sign-in");
+        }
+    
         // check if we have a logged in user
         checkAuthUser();
     }, [])
@@ -69,16 +81,9 @@ const AuthProvider = ({ children }) => {
         user,
         setUser,
         isLoading,
-        setisLoading,
         isAuthenticated,
         setIsAuthenticated,
-        checkAuthUser: async () => {
-            setisLoading(true)
-            // check if we have a logged in user
-            // if we do, set the user and isAuthenticated to true
-            // if we don't, set the user and isAuthenticated to false
-            setisLoading(false)
-        }
+        checkAuthUser,
     }
 
     return (
