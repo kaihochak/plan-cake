@@ -7,14 +7,14 @@ import Navbar from '@/components/Navbar';
 const RootLayout = () => {
 
   return (
-    <div className="">
-      <Navbar/>
-    {/* Routes */}
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/create-event" element={<CreateEvent />} />
-    </Routes>
-  </div>
+    <div className="lg:mx-auto lg:w-[1024px]">
+      <Navbar />
+      {/* Routes */}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/create-event" element={<CreateEvent />} />
+      </Routes>
+    </div>
   )
 }
 
