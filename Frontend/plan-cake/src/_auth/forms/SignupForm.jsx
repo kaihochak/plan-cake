@@ -81,7 +81,7 @@ const SignupForm = () => {
     <Form {...form}>
       <div className='w-full flex flex-col justify-center items-center gap-y-4 pt-10'>
         <img src={Logo} alt="Home" className="w-20 "/>
-        <h1 className="text-2xl font-bold text-center">Create a account</h1>
+        <h1 className="text-2xl text-center">Create a account</h1>
 
         <form 
           onSubmit={form.handleSubmit(onSubmit)} 
@@ -97,7 +97,6 @@ const SignupForm = () => {
                   <Input type="text" placeholder="Username" {...field} />
                 </FormControl>
                 <FormDescription>
-                  Username CANNOT be changed later
                 </FormDescription>
                 <FormMessage />
               </FormItem>
