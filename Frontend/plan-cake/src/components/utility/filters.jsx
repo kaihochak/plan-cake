@@ -196,17 +196,17 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear, ratingSteps,
     };
 
     // Desktop
-    if (isDesktop) {
-        return (
-            <div></div>
-        )
-    }
+    // if (isDesktop) {
+    //     return (
+    //         <div></div>
+    //     )
+    // }
 
     
 
     // Mobile
     return (
-        <div className="flex flex-col gap-y-4 text-primary-foreground py-10 px-8 z-50">
+        <div className="flex flex-col gap-y-4 text-primary-foreground py-10 px-8 z-50 lg:mx-auto lg:w-[1024px]">
             <div className='flex justify-between mb-4 place-items-end'>
                 <h3 className='text-m-xl'>Filters & Sort</h3>
                 <div onClick={closeModal} className='text-m-xl cursor-pointer'>

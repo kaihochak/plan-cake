@@ -40,7 +40,7 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
                     <Button variant="outline" 
                             className={cn(
                                 "w-full justify-start",
-                                {'bg-secondary text-secondary-foreground': selectedOptions.length !== 0},
+                                {'bg-accent/80 text-secondary-foreground': selectedOptions.length !== 0},
                             )}
                     >
                         {selectedOptions.length === 0 ? <>{label}</> : 

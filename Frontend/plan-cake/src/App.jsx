@@ -15,7 +15,7 @@ function App() {
 
   return (
     <Router>
-      <div className="bg-primary px-6 py-8 font-Urbanist text-default">
+      <div className="lg:mx-auto lg:w-[1024px] bg-primary px-6 py-8 font-Urbanist text-default">
         {/* Navigation */}
         <nav className="flex justify-between items-center">
           {/* Logo as Home Button */}

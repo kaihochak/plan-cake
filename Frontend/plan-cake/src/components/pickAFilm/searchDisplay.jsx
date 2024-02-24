@@ -16,7 +16,7 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
             {filteredItems.length > 0 ? (
                 <div>
                     {/* List of items */}
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
                         {/* each item */}
                         {filteredItems.slice(0, 10).map((item) => (
                             <div

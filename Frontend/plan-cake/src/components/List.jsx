@@ -39,7 +39,7 @@ const List = ({
       {/* List of items */}
       <div
         className={
-          cn("lg:flex lg:overflow-x-auto lg:space-x-4 lg:gap-4", // universal
+          cn("lg:grid-cols-4 lg:space-x-4 lg:gap-4", // universal
           // cn("lg:grid-cols-4", // universal
           mobileLayout === "grid" ?
             "grid grid-cols-2 gap-6" : // grid view (only for mobile)
@@ -51,7 +51,7 @@ const List = ({
           <div
             key={item.id}
             className={
-              cn("flex lg:py-8 lg:justify-between lg:w-[460px] lg:flex-shrink-0 ", // universal
+              cn("flex lg:py-8 lg:justify-start lg:w-auto", // universal
               mobileLayout === "grid" ?
                 "flex-col gap-y-2" :  // grid view (only for mobile)
                 "lg:flex-col justify-between lg:justify-start space-x-4 lg:space-x-0 py-4 lg:gap-y-2 " // vertical veiw (only for mobile)
@@ -59,14 +59,14 @@ const List = ({
               
             {/* image */}
             <div className={
-              cn("lg:w-full", // universal
+              cn("lg:w-[200px]", // universal
               mobileLayout === "grid" ?
                 "w-[90%]" : // grid view (only for mobile)
                 "inset-0 w-[35%]" // vertical view (only for mobile)
             )}>
 
               {/* The image fills the square container */}
-              <div className="aspect-w-1 aspect-h-1 lg:aspect-w-[1.6]">
+              <div className="aspect-w-1 aspect-h-1">
                 <img
                   src={item.image}
                   alt={item.title}
