@@ -9,7 +9,7 @@ const AuthLayout = () => {
       {isAuth ? (
         <Navigate to="/" /> 
       ) : (
-        <>
+        <div className='flex'>
           <section className='flex flex-1 justify-center items-center flex-col'>
             <Outlet />
           </section>
@@ -19,7 +19,7 @@ const AuthLayout = () => {
             alt="Random"
             className="hidden xl:block h-screen w-1/2 object-cover no-repeat"
           />
-        </>
+        </div>
       )}
     </>
   )
