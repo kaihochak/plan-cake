@@ -24,7 +24,9 @@ const WhatsNearby = () => {
         items={nearbyEventsData} 
         isFilterVisible={true} 
         isParticipantsVisible={false} 
-        mobileLayout="grid" 
+        mobileLayout="grid"
+        max='8'
+        hasButton={false}        
       />
     </section>
   );

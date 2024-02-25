@@ -4,7 +4,6 @@ import List from './List';
 import dummyEventData from '../data/myEventsData';
 import { BsArrowRight } from 'react-icons/bs';
 
-
 const MyEvents = () => {
   const [myEventsData, setMyEventsData] = useState(dummyEventData);
   const navigate = useNavigate(); 
@@ -52,12 +51,6 @@ const MyEvents = () => {
           hasButton={true}
           buttonHandler={navigateToCreateEvent}
         />
-
-        {/* <div className='flex justify-center'>
-          <button className='text-m-2xl' onClick={navigateToCreateEvent}>
-            <BsFillPlusCircleFill />
-          </button>
-        </div> */}
       </div>
     </section>
   );

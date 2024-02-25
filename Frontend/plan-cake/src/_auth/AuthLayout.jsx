@@ -6,14 +6,14 @@ const AuthLayout = () => {
 
   return (
     <>
-      {isAuth ? (
-        <Navigate to="/" /> 
-      ) : (
+      {isAuth ? (<Navigate to="/" /> ) : 
+      
+      // authentication main layout
+      (
         <div className='flex lg:mx-auto lg:w-[1600px]'>
           <section className='flex flex-1 justify-center items-center flex-col'>
             <Outlet />
           </section>
-
           <img
             src="https://source.unsplash.com/random/800x600"
             alt="Random"

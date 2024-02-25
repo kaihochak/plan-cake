@@ -9,16 +9,8 @@ import RootLayout from './_root/RootLayout';
 import { Toaster } from "@/components/ui/toaster"
 
 function App() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   return (
-
     <main className="bg-primary px-6 py-8 font-Urbanist text-default">
-
 
       {/* Routes */}
       <Routes>

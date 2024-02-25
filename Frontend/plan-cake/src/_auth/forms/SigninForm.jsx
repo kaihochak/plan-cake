@@ -49,7 +49,7 @@ const SigninForm = () => {
       password: values.password,
     });
     if (!session) {
-      console.log("XXXXXXXXXXX Sign in failed. Please try again.")
+      console.log("Sign in failed. Please try again.")
       return toast({ title: "Error", message: "Sign in failed. Please try again.", type: "error" });
     }
 

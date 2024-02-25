@@ -43,7 +43,6 @@ const List = ({
       <div
         className={
           cn("lg:space-x-4 lg:gap-4", // universal
-          // cn("lg:grid-cols-4", // universal
           mobileLayout === "grid" ?
             "grid grid-cols-2 gap-6 lg:grid-cols-4" : // grid view (only for mobile)
             "grid grid-cols-1 lg:grid-cols-3 lg:w-[75%]" // vertical view (for mobile) button view (for desktop)

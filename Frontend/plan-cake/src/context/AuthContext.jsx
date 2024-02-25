@@ -63,7 +63,6 @@ const AuthProvider = ({ children }) => {
     //     cookieFallback === undefined
     //   ) {
 
-
     // check if we have a logged in user, whenever the page is refreshed
     useEffect(() => {
         const cookieFallback = localStorage.getItem("cookieFallback");
