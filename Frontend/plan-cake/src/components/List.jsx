@@ -1,13 +1,16 @@
 import React from "react";
 import { GoLocation } from "react-icons/go";
 import { cn } from "@/lib/utils"
+import { BsFillPlusCircleFill } from 'react-icons/bs';
 
 const List = ({
   items,
   isFilterVisible,
   isParticipantsVisible,
   mobileLayout,
-  max
+  max,
+  hasButton,
+  buttonHandler,
 }) => {
   const [filter, setFilter] = React.useState("");
 
@@ -22,7 +25,7 @@ const List = ({
   );
 
   return (
-    <div>
+    <div className={hasButton && "lg:flex lg:flex-row"}>  
       {/* Filter */}
       {isFilterVisible && (
         <div>
@@ -39,11 +42,11 @@ const List = ({
       {/* List of items */}
       <div
         className={
-          cn("lg:grid-cols-4 lg:space-x-4 lg:gap-4", // universal
+          cn("lg:space-x-4 lg:gap-4", // universal
           // cn("lg:grid-cols-4", // universal
           mobileLayout === "grid" ?
-            "grid grid-cols-2 gap-6" : // grid view (only for mobile)
-            "grid grid-cols-1 " // vertical view (only for mobile)
+            "grid grid-cols-2 gap-6 lg:grid-cols-4" : // grid view (only for mobile)
+            "grid grid-cols-1 lg:grid-cols-3 lg:w-[75%]" // vertical view (for mobile) button view (for desktop)
         )}
       >
         {/* each item */}
@@ -148,6 +151,15 @@ const List = ({
           </div>
         ))}
       </div>
+
+      {/* Button */}
+      {hasButton && (
+        <div className='flex justify-center lg:w-[25%]'>
+          <button className='text-m-2xl lg:text-[60px]' onClick={buttonHandler}>
+            <BsFillPlusCircleFill />
+          </button>
+        </div>
+      )}
 
     </div>
   );

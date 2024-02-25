@@ -128,7 +128,7 @@ module.exports = {
           letterSpacing: '-0.02em',
           fontWeight: '400',
         }],
-        '2xl': ['1.125rem', {
+        '2xl': ['1.75rem', {
           lineHeight: '1.75rem',
           letterSpacing: '-0.02em',
           fontWeight: '400',

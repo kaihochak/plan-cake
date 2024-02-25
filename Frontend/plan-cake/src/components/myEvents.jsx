@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import List from './List';
 import dummyEventData from '../data/myEventsData';
-import { BsArrowRight, BsFillPlusCircleFill } from 'react-icons/bs';
+import { BsArrowRight } from 'react-icons/bs';
 
 
 const MyEvents = () => {
@@ -41,15 +41,23 @@ const MyEvents = () => {
       </header>
 
       <div
-        className='flex lg:flex-row lg:space-x-4 lg:gap-4 lg:justify-start '
+        className='flex flex-col lg:flex-row lg:space-x-4 lg:gap-4 lg:justify-start '
       >
-        <List items={myEventsData} isFilterVisible={false} isParticipantsVisible={true} mobileLayout="vertical" max="3"/>
+        <List 
+          items={myEventsData}
+          isFilterVisible={false}
+          isParticipantsVisible={true}
+          mobileLayout="vertical"
+          max="3"
+          hasButton={true}
+          buttonHandler={navigateToCreateEvent}
+        />
 
-        <div className='flex justify-center'>
+        {/* <div className='flex justify-center'>
           <button className='text-m-2xl' onClick={navigateToCreateEvent}>
             <BsFillPlusCircleFill />
           </button>
-        </div>
+        </div> */}
       </div>
     </section>
   );
