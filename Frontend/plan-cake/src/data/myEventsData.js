@@ -1,5 +1,5 @@
 // Example data for My Events
-const myEventsData = [
+const MyEventsData = [
   {
     id: 1,
     title: 'Before Trilogy Movie Night',
@@ -54,4 +54,4 @@ const myEventsData = [
   },
 ];
 
-export default myEventsData;
+export default MyEventsData;

@@ -61,18 +61,33 @@ export async function signInAccount(user) {
     }
 }
 
-// 
+// Get the current account with Appwrite
 export async function getAccount() {
     try {
-      const currentAccount = await account.get();
+        const currentAccount = await account.get();
 
-      return currentAccount;
+        return currentAccount;
     } catch (error) {
-      console.log(error);
+        console.log(error);
     }
-  }
+}
 
-  
+
+// Sign out the user with Appwrite
+export async function signOutAccount() {
+    try {
+        const session = await account.deleteSession("current");
+
+        return session;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+
+
 // Get the current user with Appwrite
 export async function getCurrentUser() {
     try {

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import List from './List';
-import dummyEventData from '@/data/myEventsData';
+import dumMyEventData from '@/data/MyEventsData';
 import { BsArrowRight } from 'react-icons/bs';
 
 const MyEvents = () => {
-  const [myEventsData, setMyEventsData] = useState(dummyEventData);
+  const [MyEventsData, setMyEventsData] = useState(dumMyEventData);
   const navigate = useNavigate(); 
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const MyEvents = () => {
         className='flex flex-col lg:flex-row lg:space-x-4 lg:gap-4 lg:justify-start '
       >
         <List 
-          items={myEventsData}
+          items={MyEventsData}
           isFilterVisible={false}
           isParticipantsVisible={true}
           mobileLayout="vertical"
