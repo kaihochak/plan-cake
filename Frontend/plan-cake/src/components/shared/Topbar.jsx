@@ -17,8 +17,8 @@ const TopBar = () => {
     }, [isSuccess]);
 
     return (
-        <section>
-            <nav className="flex justify-between items-center">
+        <section className='topbar'>
+            <nav className="flex-between py-4 px-5">
                 {/* Logo as Home Button */}
                 <Link to="/" className="home-logo">
                     <img src={Logo} alt="Home" className="w-20 " />

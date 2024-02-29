@@ -3,16 +3,16 @@ import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import CreateEvent from './pages/CreateEvent';
 import TopBar from '@/components/shared/TopBar';
-// import LeftSidebar from '@/components/shared/LeftSidebar';
+import LeftSidebar from '@/components/shared/LeftSidebar';
 import Bottombar from '@/components/shared/Bottombar';
 
 const RootLayout = () => {
   return (
-    <div className="lg:mx-auto lg:w-[1024px]">
+    <div className="w-full lg:flex lg:mx-auto">
       <TopBar />
-      {/* <LeftSidebar /> */}
+      <LeftSidebar />
       {/* Routes */}
-      <section>
+      <section className='max-w-[1024px] mx-auto'>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/create-event" element={<CreateEvent />} />

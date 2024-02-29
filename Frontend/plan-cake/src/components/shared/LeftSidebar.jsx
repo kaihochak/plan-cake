@@ -1,36 +1,37 @@
+import React from 'react'
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-
+import Logo from '/assets/icons/logo.png';
 import { sidebarLinks } from "@/constants";
-import { Loader } from "@/components/shared";
+import Loader from '@/components/utility/Loader'
 import { Button } from "@/components/ui/button";
 import { useSignOutAccount } from "@/lib/react-query/queries";
 import { useUserContext, INITIAL_USER } from "@/context/AuthContext";
 
 const LeftSidebar = () => {
-    // const navigate = useNavigate();
-    // const { pathname } = useLocation();
-    // const { user, setUser, setIsAuthenticated, isLoading } = useUserContext();
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
+    const { user, setUser, setIsAuthenticated, isLoading } = useUserContext();
 
-    // const { mutate: signOut } = useSignOutAccount();
+    const { mutate: signOut } = useSignOutAccount();
 
-    // const handleSignOut = async (e) => {
-    //     e.preventDefault();
-    //     signOut();
-    //     setIsAuthenticated(false);
-    //     setUser(INITIAL_USER);
-    //     navigate("/sign-in");
-    // };
+    const handleSignOut = async (e) => {
+        e.preventDefault();
+        signOut();
+        setIsAuthenticated(false);
+        setUser(INITIAL_USER);
+        navigate("/sign-in");
+    };
 
     return (
         <nav className="leftsidebar">
-            {/* <div className="flex flex-col gap-11">
+            <div className="flex flex-col gap-11">
                 <Link to="/" className="flex gap-3 items-center">
-                <img
-                    src="/assets/images/logo.svg"
-                    alt="logo"
-                    width={170}
-                    height={36}
-                />
+                    <img
+                        src={Logo}
+                        alt="logo"
+                        width={170}
+                        height={36}
+                    />
                 </Link>
 
                 {isLoading || !user.email ? (
@@ -85,7 +86,7 @@ const LeftSidebar = () => {
                 onClick={(e) => handleSignOut(e)}>
                 <img src="/assets/icons/logout.svg" alt="logout" />
                 <p className="small-medium lg:base-medium">Logout</p>
-            </Button> */}
+            </Button>
         </nav>
     );
 };
