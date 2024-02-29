@@ -43,12 +43,10 @@ const AuthProvider = ({ children }) => {
                     imageUrl: currentAccount.imageUrl,
                     bio: currentAccount.bio
                 })
-
                 setIsAuthenticated(true);
                 return true;
             }
             return false;
-
         } catch (error) {
             console.error(error)
             return false;
@@ -57,17 +55,13 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    // if (
-    //     cookieFallback === "[]" ||
-    //     cookieFallback === null ||
-    //     cookieFallback === undefined
-    //   ) {
-
     // check if we have a logged in user, whenever the page is refreshed
     useEffect(() => {
         const cookieFallback = localStorage.getItem("cookieFallback");
         if (
-          cookieFallback === "[]" 
+            cookieFallback === "[]" ||
+            cookieFallback === null ||
+            cookieFallback === undefined
         ) {
           navigate("/sign-in");
         }

@@ -25,7 +25,7 @@ const List = ({
   );
 
   return (
-    <div className={hasButton && "lg:flex lg:flex-row"}>  
+    <div className={hasButton ? "lg:flex lg:flex-row" : ""}>  
       {/* Filter */}
       {isFilterVisible && (
         <div>
