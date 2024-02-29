@@ -90,7 +90,7 @@ const EventDetailsForm = ({ formData: parentFormData, nextStep }) => {
                         variant='input'
                         className={cn(
                             "w-full rounded-none justify-start text-left font-normal bg-primary border-b-2 h-14 p-2 text-primary-foreground",
-                            !formData.eventDate && "text-input"
+                            !formData.eventDate? "text-input" : ""
                         )}
                     >
                         <CalendarIcon className="mr-2 h-4 w-4" />

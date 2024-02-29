@@ -48,9 +48,14 @@ const SigninForm = () => {
       email: values.email,
       password: values.password,
     });
+
     if (!session) {
       console.log("Sign in failed. Please try again.")
-      return toast({ title: "Error", message: "Sign in failed. Please try again.", type: "error" });
+      return toast({
+        variant: "destructive",
+        title: "Sign in failed. ", 
+        description: "Please try again!"
+      });
     }
 
     // if the user is authenticated, redirect to the home page
@@ -58,9 +63,18 @@ const SigninForm = () => {
     if (isLoggedIn) {
       form.reset();
       navigate("/");
+      return toast({
+        variant: "success",
+        title: "Sign in successful. ",
+      });
+    } else {
+      return toast({
+        variant: "destructive",
+        title: "Sign in failed. ", 
+        description: "Please try again!"
+      });
     }
-    return toast({ title: "Error", message: "Sign in failed. Please try again.", type: "error" });
-  }
+}
 
   // return the form
   return (

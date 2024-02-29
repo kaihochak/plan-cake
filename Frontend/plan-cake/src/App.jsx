@@ -11,10 +11,8 @@ import { Toaster } from "@/components/ui/toaster"
 function App() {
   return (
     <main className="bg-primary px-6 py-8 font-Urbanist text-default">
-
       {/* Routes */}
       <Routes>
-
         {/* public */}
         <Route element={<AuthLayout />}>
           <Route path="/sign-in" element={<SigninForm />} />
@@ -26,9 +24,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/create-event" element={<CreateEvent />} />
         </Route>
-
       </Routes>
-
       <Toaster />
     </main>
   );
