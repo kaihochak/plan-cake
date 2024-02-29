@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form"
 import { SigninValidation } from "@/lib/validation"
 import Logo from '@/assets/icons/logo.png'
 import Loader from '@/components/utility/Loader'
-import { useSignInAccount } from '@/lib/react-query/queriesAndMutations'
+import { useSignInAccount } from '@/lib/react-query/queries'
 import { useUserContext } from '@/context/AuthContext'
 
 const SigninForm = () => {
