@@ -54,7 +54,10 @@ const SignupForm = () => {
     // create a new user account with the values from the form
     const newUser = await createUserAccount(values);
     if (!newUser) {
-      return toast({ title: "Error 1", message: "Sign up failed. Please try again.", type: "error" });
+      return toast({
+        title: "Account not created. ", 
+        description: "Please try again!"
+      });
     }
 
     // if the user account was created, sign in the user
@@ -64,7 +67,10 @@ const SignupForm = () => {
     });
     if (!session) {
       console.log("Sign in failed. Please try again.")
-      return toast({ title: "Error 2", message: "Sign in failed. Please try again.", type: "error" });
+      return toast({
+        title: "Sign in failed. ", 
+        description: "Please try again!"
+      });
     }
 
     // if the user is authenticated, redirect to the home page
@@ -73,8 +79,11 @@ const SignupForm = () => {
       form.reset();
       navigate("/");
     } else {
-      console.log("Sign in failed. Please try again.")
-      return toast({ title: "Error 3", message: "Sign in failed. Please try again.", type: "error" });
+      console.log("XXX Sign in failed. Please try again.")
+      return toast({
+        title: "Sign in failed. ", 
+        description: "Please try again!"
+      });
     }
   }
 

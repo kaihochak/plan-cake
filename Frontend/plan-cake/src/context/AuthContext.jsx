@@ -1,6 +1,7 @@
-import { createContext, useContext, useEffect, useState } from 'react'
-import { getCurrentUser } from '../lib/appwrite/api'
 import { useNavigate } from 'react-router-dom'
+import { createContext, useContext, useEffect, useState } from 'react'
+
+import { getCurrentUser } from '../lib/appwrite/api'
 
 export const INITIAL_USER = {
     id: '',
@@ -23,17 +24,16 @@ const INITIAL_STATE = {
 const AuthContext = createContext(INITIAL_STATE)
 
 const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(INITIAL_USER) // the user object
-    const [isLoading, setisLoading] = useState(false) // loading state
-    const [isAuthenticated, setIsAuthenticated] = useState(false) // authentication state
     const navigate = useNavigate();
+    const [user, setUser] = useState(INITIAL_USER) // the user object
+    const [isAuthenticated, setIsAuthenticated] = useState(false) // authentication state
+    const [isLoading, setisLoading] = useState(false) // loading state
 
     // check if we have a logged in user, whenever the page is refreshed
     const checkAuthUser = async () => {
         setisLoading(true);
         try {
             const currentAccount = await getCurrentUser();
-
             if (currentAccount) {
                 setUser({
                     id: currentAccount.$id,
@@ -65,7 +65,6 @@ const AuthProvider = ({ children }) => {
         ) {
           navigate("/sign-in");
         }
-    
         // check if we have a logged in user
         checkAuthUser();
     }, [])

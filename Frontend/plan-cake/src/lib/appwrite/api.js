@@ -55,9 +55,9 @@ export async function signInAccount(user) {
         // Sign in the user with Appwrite
         const session = await account.createEmailSession(user.email, user.password);
         return session;
-    } catch (error) {
+    }
+    catch (error) {
         console.error(error);
-        return error;
     }
 }
 
