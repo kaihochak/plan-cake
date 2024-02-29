@@ -25,8 +25,8 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
  
-    /* Yellow */
-    --accent: 43 99% 53%; 
+    /* Yellow - Off Black */
+    --accent: 43 99% 53%;  
     --accent-foreground: 0 0% 12%;
 
     /* Purple */
@@ -293,7 +293,7 @@
   }
 
   .leftsidebar-link {
-    @apply rounded-lg base-medium hover:bg-primary/75 transition;
+    @apply rounded-lg base-medium items-center hover:bg-primary/50 transition;
   }
 
   /* Post Card */

@@ -10,7 +10,7 @@ import { Toaster } from "@/components/ui/toaster"
 
 function App() {
   return (
-    <main className="bg-primary px-6 py-8 font-Urbanist text-default">
+    <main className="bg-primary px-6 py-8 font-Urbanist text-default h-screen">
       {/* Routes */}
       <Routes>
         {/* public */}
@@ -23,6 +23,8 @@ function App() {
         <Route element={<RootLayout />}>
           <Route index element={<Home />} />
           <Route path="/create-event" element={<CreateEvent />} />
+          <Route path='/search' element={<h1>Search</h1>} />
+          <Route path='/profile/:id/*' element={<h1>profile</h1>} />
         </Route>
       </Routes>
       <Toaster />

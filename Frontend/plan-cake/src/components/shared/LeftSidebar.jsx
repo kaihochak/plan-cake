@@ -1,7 +1,10 @@
 import React from 'react'
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import Logo from '/assets/icons/logo.png';
-import { sidebarLinks } from "@/constants";
+import { GoHome } from "react-icons/go";
+import { IoMdAddCircleOutline } from "react-icons/io";
+import { IoIosSearch } from "react-icons/io";
+import { IoMdLogOut } from "react-icons/io";
 import Loader from '@/components/utility/Loader'
 import { Button } from "@/components/ui/button";
 import { useSignOutAccount } from "@/lib/react-query/queries";
@@ -25,6 +28,7 @@ const LeftSidebar = () => {
     return (
         <nav className="leftsidebar">
             <div className="flex flex-col gap-11">
+                {/* Logo */}
                 <Link to="/" className="flex gap-3 items-center">
                     <img
                         src={Logo}
@@ -34,59 +38,58 @@ const LeftSidebar = () => {
                     />
                 </Link>
 
+                {/* Profile */}
                 {isLoading || !user.email ? (
-                <div className="h-14">
-                    <Loader />
-                </div>
-                ) : (
-                <Link to={`/profile/${user.id}`} className="flex gap-3 items-center">
-                    <img
-                    src={user.imageUrl || "/assets/icons/profile-placeholder.svg"}
-                    alt="profile"
-                    className="h-14 w-14 rounded-full"
-                    />
-                    <div className="flex flex-col">
-                    <p className="body-bold">{user.name}</p>
-                    <p className="small-regular text-light-3">@{user.username}</p>
+                    <div className="h-14">
+                        <Loader />
                     </div>
-                </Link>
+                ) : (
+                    <Link to={`/profile/${user.id}`} className="flex gap-3 items-center">
+                        <img
+                            src={user.imageUrl || "/assets/icons/profile-placeholder.svg"}
+                            alt="profile"
+                            className="h-14 w-14 rounded-full"
+                        />
+                        <div className="flex flex-col">
+                            <p className="body-bold">{user.name}</p>
+                            <p className="small-regular text-light-3">@{user.username}</p>
+                        </div>
+                    </Link>
                 )}
 
+                {/* Links */}
                 <ul className="flex flex-col gap-6">
-                {sidebarLinks.map((link) => {
-                    const isActive = pathname === link.route;
+                    {/* Home */}
+                    <NavLink
+                        to="/"
+                        className="leftsidebar-link group flex gap-4 p-4 hover:bg-accent [&_*]:hover:text-accent-foreground">
+                        <GoHome className='text-accent/80 text-[30px]'/>
+                        <p>Home</p>
+                    </NavLink>
+                    {/* Create */}
+                    <NavLink
+                        to="/create-event"
+                        className="leftsidebar-link group flex gap-4 p-4 hover:bg-accent [&_*]:hover:text-accent-foreground">
+                        <IoMdAddCircleOutline className='text-accent/80 text-[30px]'/>
+                        <p>Create</p>
+                    </NavLink>
+                    {/* Search */}
+                    <NavLink
+                        to="/search"
+                        className="leftsidebar-link group flex gap-4 p-4 hover:bg-accent [&_*]:hover:text-accent-foreground">
+                        <IoIosSearch className='text-accent/80 text-[30px]'/>
+                        <p>Search</p>
+                    </NavLink>
 
-                    return (
-                    <li
-                        key={link.label}
-                        className={`leftsidebar-link group ${
-                        isActive && "bg-primary-500"
-                        }`}>
-                        <NavLink
-                        to={link.route}
-                        className="flex gap-4 items-center p-4">
-                        <img
-                            src={link.imgURL}
-                            alt={link.label}
-                            className={`group-hover:invert-white ${
-                            isActive && "invert-white"
-                            }`}
-                        />
-                        {link.label}
-                        </NavLink>
-                    </li>
-                    );
-                })}
                 </ul>
             </div>
 
-            <Button
-                variant="ghost"
-                className="shad-button_ghost"
+            <button
+                className="leftsidebar-link group flex gap-4 p-4 hover:bg-accent [&_*]:hover:text-accent-foreground"
                 onClick={(e) => handleSignOut(e)}>
-                <img src="/assets/icons/logout.svg" alt="logout" />
-                <p className="small-medium lg:base-medium">Logout</p>
-            </Button>
+                <IoMdLogOut className="text-accent/80 text-[30px]" />
+                <p>Logout</p>
+            </button>
         </nav>
     );
 };

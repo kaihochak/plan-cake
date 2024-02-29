@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import Logo from '/assets/icons/logo.png';
 import ProfilePlaceholder from '/assets/icons/profile-placeholder.svg';
-import { Button } from "@/components/ui/button"
 import { IoMdLogOut } from "react-icons/io";
 import { useUserContext } from "@/context/AuthContext";
 import { useSignOutAccount } from '@/lib/react-query/queries'
