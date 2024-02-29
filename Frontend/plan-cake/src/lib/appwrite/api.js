@@ -61,7 +61,7 @@ export async function signInAccount(user) {
     }
 }
 
-
+// 
 export async function getAccount() {
     try {
       const currentAccount = await account.get();
