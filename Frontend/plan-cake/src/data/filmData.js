@@ -4,7 +4,7 @@ const filmData = [
     "id": 1,
     "title": "Inception",
     "genres": ["Action", "Adventure", "Sci-Fi"],
-    "image": "./src/assets/posters/kubrick.jpg",
+    "image": "/assets/posters/kubrick.jpg",
     "rating": 8.8,
     "year": 2010,
     "watchlists": ["Bob", "Charlie", "Eve"]
@@ -13,7 +13,7 @@ const filmData = [
     "id": 2,
     "title": "The Shawshank Redemption",
     "genres": ["Drama"],
-    "image": "./src/assets/posters/godfather.jpg",
+    "image": "/assets/posters/godfather.jpg",
     "rating": 9.3,
     "year": 1994,
     "watchlists": ["Alice", "Charlie", "Eve"]
@@ -22,7 +22,7 @@ const filmData = [
     "id": 3,
     "title": "The Godfather",
     "genres": ["Crime", "Drama"],
-    "image": "./src/assets/posters/her.jpg",
+    "image": "/assets/posters/her.jpg",
     "rating": 9.2,
     "year": 1972,
     "watchlists": ["Alice", "Charlie", "Dana", "Eve"]
@@ -31,7 +31,7 @@ const filmData = [
     "id": 4,
     "title": "The Dark Knight",
     "genres": ["Action", "Crime", "Drama"],
-    "image": "./src/assets/posters/vertigo.jpg",
+    "image": "/assets/posters/vertigo.jpg",
     "rating": 9.0,
     "year": 2008,
     "watchlists": ["Dana"]
@@ -40,7 +40,7 @@ const filmData = [
     "id": 5,
     "title": "Pulp Fiction",
     "genres": ["Crime", "Drama"],
-    "image": "./src/assets/posters/kubrick.jpg",
+    "image": "/assets/posters/kubrick.jpg",
     "rating": 8.9,
     "year": 1994,
     "watchlists": ["Bob", "Eve"]

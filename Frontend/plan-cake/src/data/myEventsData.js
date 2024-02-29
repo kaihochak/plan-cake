@@ -5,12 +5,12 @@ const MyEventsData = [
     title: 'Before Trilogy Movie Night',
     date: '09 Oct 2023',
     time: '06:00PM',
-    image: './src/assets/posters/before.jpeg',
+    image: '/assets/posters/before.jpeg',
     participants: [
-      { id: 'p1', avatar: './src/assets/avatars/avatar1.jpg', name: 'Alice' },
-      { id: 'p2', avatar: './src/assets/avatars/avatar2.jpg', name: 'Bob' },
-      { id: 'p3', avatar: './src/assets/avatars/avatar3.jpg', name: 'Charlie' },
-      { id: 'p4', avatar: './src/assets/avatars/avatar4.jpg', name: 'Dana' },
+      { id: 'p1', avatar: '/assets/avatars/avatar1.jpg', name: 'Alice' },
+      { id: 'p2', avatar: '/assets/avatars/avatar2.jpg', name: 'Bob' },
+      { id: 'p3', avatar: '/assets/avatars/avatar3.jpg', name: 'Charlie' },
+      { id: 'p4', avatar: '/assets/avatars/avatar4.jpg', name: 'Dana' },
     ],
     location: 'Kais House',
   },
@@ -19,13 +19,13 @@ const MyEventsData = [
     title: 'Kubrick Marathon',
     date: '09 Oct 2023',
     time: '06:00PM',
-    image: './src/assets/posters/kubrick.jpg', // Replace with actual image path
+    image: '/assets/posters/kubrick.jpg', // Replace with actual image path
     participants: [
-      { id: 'p1', avatar: './src/assets/avatars/avatar1.jpg', name: 'Alice' },
-      { id: 'p4', avatar: './src/assets/avatars/avatar4.jpg', name: 'Dana' },
-      { id: 'p5', avatar: './src/assets/avatars/avatar5.jpg', name: 'Eve' },
-      { id: 'p3', avatar: './src/assets/avatars/avatar3.jpg', name: 'Frank' },
-      { id: 'p2', avatar: './src/assets/avatars/avatar2.jpg', name: 'Bob'}
+      { id: 'p1', avatar: '/assets/avatars/avatar1.jpg', name: 'Alice' },
+      { id: 'p4', avatar: '/assets/avatars/avatar4.jpg', name: 'Dana' },
+      { id: 'p5', avatar: '/assets/avatars/avatar5.jpg', name: 'Eve' },
+      { id: 'p3', avatar: '/assets/avatars/avatar3.jpg', name: 'Frank' },
+      { id: 'p2', avatar: '/assets/avatars/avatar2.jpg', name: 'Bob'}
     ],
     location: 'Kais House',
   },
@@ -34,10 +34,10 @@ const MyEventsData = [
     title: 'Kais Birthday',
     date: '09 Oct 2023',
     time: '06:00PM',
-    image: './src/assets/posters/kubrick.jpg', // Replace with actual image path
+    image: '/assets/posters/kubrick.jpg', // Replace with actual image path
     participants: [
-      { id: 'p1', avatar: './src/assets/avatars/avatar1.jpg', name: 'Alice' },
-      { id: 'p4', avatar: './src/assets/avatars/avatar4.jpg', name: 'Dana' },
+      { id: 'p1', avatar: '/assets/avatars/avatar1.jpg', name: 'Alice' },
+      { id: 'p4', avatar: '/assets/avatars/avatar4.jpg', name: 'Dana' },
     ],
     location: 'Kais House',
   },
@@ -46,10 +46,10 @@ const MyEventsData = [
     title: 'Bos Birthday',
     date: '09 Oct 2023',
     time: '06:00PM',
-    image: './src/assets/posters/kubrick.jpg', // Replace with actual image path
+    image: '/assets/posters/kubrick.jpg', // Replace with actual image path
     participants: [
-      { id: 'p1', avatar: './src/assets/avatars/avatar1.jpg', name: 'Alice' },
-      { id: 'p4', avatar: './src/assets/avatars/avatar4.jpg', name: 'Dana' },
+      { id: 'p1', avatar: '/assets/avatars/avatar1.jpg', name: 'Alice' },
+      { id: 'p4', avatar: '/assets/avatars/avatar4.jpg', name: 'Dana' },
     ],
   },
 ];

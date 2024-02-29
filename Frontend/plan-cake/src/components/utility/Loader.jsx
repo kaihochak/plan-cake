@@ -1,5 +1,5 @@
 import React from 'react'
-import loader from '@/assets/icons/loader.svg'
+import loader from '/assets/icons/loader.svg'
 
 const Loader = props => {
     return (
