@@ -62,26 +62,33 @@ const LeftSidebar = () => {
                     {/* Home */}
                     <NavLink
                         to="/"
-                        className="leftsidebar-link group flex gap-4 p-4 hover:bg-accent [&_*]:hover:text-accent-foreground">
-                        <GoHome className='text-accent/80 text-[30px]'/>
+                        className={`leftsidebar-link flex gap-4 p-4 hover:rounded-lg hover:bg-accent [&_*]:hover:text-accent-foreground 
+                        ${pathname === "/" ? "bg-accent [&_*]:text-accent-foreground": ""}`}
+                    >
+                        <GoHome className='text-accent/80 text-[30px]' />
                         <p>Home</p>
                     </NavLink>
                     {/* Create */}
                     <NavLink
                         to="/create-event"
-                        className="leftsidebar-link group flex gap-4 p-4 hover:bg-accent [&_*]:hover:text-accent-foreground">
-                        <IoMdAddCircleOutline className='text-accent/80 text-[30px]'/>
+                        className={`leftsidebar-link flex gap-4 p-4 hover:rounded-lg hover:bg-accent [&_*]:hover:text-accent-foreground 
+                        ${pathname === "/create-event" ? "bg-accent [&_*]:text-accent-foreground": ""}`}
+                    >
+                        <IoMdAddCircleOutline className='text-accent/80 text-[30px]' />
                         <p>Create</p>
                     </NavLink>
                     {/* Search */}
                     <NavLink
                         to="/search"
-                        className="leftsidebar-link group flex gap-4 p-4 hover:bg-accent [&_*]:hover:text-accent-foreground">
-                        <IoIosSearch className='text-accent/80 text-[30px]'/>
+                        className={`leftsidebar-link flex gap-4 p-4 hover:rounded-lg hover:bg-accent [&_*]:hover:text-accent-foreground 
+                        ${pathname === "/search" ? "bg-accent [&_*]:text-accent-foreground": ""}`}
+                    >
+                        <IoIosSearch className='text-accent/80 text-[30px]' />
                         <p>Search</p>
                     </NavLink>
-
                 </ul>
+
+
             </div>
 
             <button
