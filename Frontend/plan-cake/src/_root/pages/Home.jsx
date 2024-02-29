@@ -1,7 +1,7 @@
 // Home.jsx
 import React from 'react';
-import MyEvents from '@/components/MyEvents';
-import WhatsNearby from '@/components/WhatsNearby';
+import MyEvents from '@/components/shared/myEvents';
+import WhatsNearby from '@/components/shared/WhatsNearby';
 
 const Home = () => {
   return (

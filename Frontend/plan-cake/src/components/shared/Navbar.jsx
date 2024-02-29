@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import Logo from '@/assets/icons/logo.png';
 import menuIcon from '@/assets/icons/menu.png';
-import Menu from '@/components/Menu';
+import Menu from '@/components/shared/menu';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);

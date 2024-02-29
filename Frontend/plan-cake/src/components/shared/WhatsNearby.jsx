@@ -1,7 +1,7 @@
 import React from 'react';
 import List from './List';
 // You will need to import your data for what's nearby or fetch it from an API
-import nearbyEventsData from '../data/nearbyEventsData';
+import nearbyEventsData from '@/data/nearbyEventsData';
 import { BsArrowRight } from 'react-icons/bs';
 
 const WhatsNearby = () => {

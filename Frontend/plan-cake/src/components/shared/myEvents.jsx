@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import List from './List';
-import dummyEventData from '../data/myEventsData';
+import dummyEventData from '@/data/myEventsData';
 import { BsArrowRight } from 'react-icons/bs';
 
 const MyEvents = () => {
