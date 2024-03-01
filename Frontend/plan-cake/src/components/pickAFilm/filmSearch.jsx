@@ -143,7 +143,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             <ReactModal 
                 isOpen={modalIsOpen}
                 onRequestClose={() => setModalIsOpen(false)}
-                className="w-full h-full bg-background z-30 overflow-y-auto"
+                className="w-full h-full bg-background z-30 overflow-scroll custom-scrollbar"
             >
                 <Filters
                     closeModal={() => setModalIsOpen(false)}
