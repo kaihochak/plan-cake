@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ReactModal from 'react-modal';
-import SearchDisplay from "./searchDisplay";
+import SearchDisplay from "./SearchDisplay";
 import { Button } from "@/components/ui/button";
 import { IoIosSearch } from "react-icons/io";
 import { CiFilter } from "react-icons/ci";

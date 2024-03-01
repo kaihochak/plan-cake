@@ -21,7 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 
-const EventDetailsForm = ({ formData: parentFormData, nextStep }) => {
+const EventDetails = ({ formData: parentFormData, nextStep }) => {
     const [date, setDate] = useState();
     const [formData, setFormData] = useState(parentFormData);
     const [validationMessages, setValidationMessages] = useState({
@@ -63,11 +63,6 @@ const EventDetailsForm = ({ formData: parentFormData, nextStep }) => {
     const handleGuestsChange = (e) => {
         setFormData({ ...formData, guests: e.target.value });
     }
-
-    // debug
-    // useEffect(() => {
-    //     console.log(formData);
-    // }, [formData]);
 
     return (
         <div className="space-y-8 mt-6">
@@ -152,5 +147,5 @@ const EventDetailsForm = ({ formData: parentFormData, nextStep }) => {
     )
 };
 
-export default EventDetailsForm
+export default EventDetails
 

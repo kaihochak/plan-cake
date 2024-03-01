@@ -69,10 +69,10 @@ module.exports = {
         'lg': '12px'
       },
       screens: {
-        'xs': '380px', // SE not included
-        'sm': '640px', // large sc
-        'md': '768px',
-        'lg': '1024px',
+        'xs': '380px', // mobile SE not included
+        'sm': '640px', // tablet
+        'md': '768px', 
+        'lg': '1024px', // desktop
         'xl': '1280px',
         '2xl': '1536px',
       },y: 'oklch(45% 0.2 270)',

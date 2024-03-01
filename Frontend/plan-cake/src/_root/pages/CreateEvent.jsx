@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import FilmSearch from "@/components/pickAFilm/filmSearch";
-import EventDetailsForm from "@/components/form/eventDetailsForm";
-import PreviewEventForm from "@/components/form/previewEvent";
-import ConfirmedEventPage from "@/components/form/confirmedEvent.jsx";
+import CreateEventType from "@/components/createEventForm/CreateEventType";
+import FilmSearch from "@/components/createEventForm/FilmSearch";
+import EventDetails from "@/components/createEventForm/EventDetails";
+import PreviewEvent from "@/components/createEventForm/PreviewEvent";
+import ConfirmedEvent from "@/components/createEventForm/ConfirmedEvent";
 import { BsArrowLeft } from "react-icons/bs";
-import { Button } from "@/components/ui/button";
 
-// implementation of CreateEvent
 const CreateEvent = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(2);
   const [formData, setFormData] = useState({
     eventType: "",
     eventName: "",
@@ -54,102 +53,10 @@ const CreateEvent = () => {
     setCurrentStep(currentStep + 1);
   };
 
-  // Handler to update the event type
-  const handleSelectEventType = (type) => {
-    if (type === formData.eventType) {
-      setFormData({ ...formData, eventType: "" });
-      return;
-    }
-    setFormData({ ...formData, eventType: type });
-  };
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
-  const handleEventTypeNextStep = () => {
-    let isValid = true;
-
-    if (formData.eventType === "") {
-      setValidationMessages({ ...validationMessages, eventType: "*Required" });
-      isValid = false;
-      return;
-    }
-
-    // Update the state with new validation messages
-    setValidationMessages({ ...validationMessages, eventType: "" });
-    nextStep();
-  }
-
-  // useEffect(() => {
-  //   console.log(formData);
-  // }, [formData]);
-
-  /*
-    Step Content:
-      1. Create
-      2. Event Details
-      3. PickAFilm (filmSearch.jsx)
-      4. Preview
-  */
-  const Create = () => (
-    <div>
-      <p className="text-m-l mt-10">What type of events are you planning?</p>
-      <div className="space-y-8 mt-6">
-        {/* Event Type */}
-        <div className="flex flex-col gap-y-4">
-          <Button
-            variant="select"
-            type="button"
-            onClick={() => handleSelectEventType("Film")}
-            className={
-              formData.eventType === "Film"
-                ? "bg-accent text-accent-foreground border-none"
-                : ""
-            }
-
-          >
-            Movie Screening
-          </Button>
-          <Button disabled variant="select">
-            Gig Buddies (coming soon)
-          </Button>
-          {validationMessages.eventType && <p className="text-destructive-foreground text-m-m">{validationMessages.eventType}</p>}
-        </div>
-        {/* Next */}
-        <Button onClick={handleEventTypeNextStep} type="submit" className="mt-10">
-          Next
-        </Button>
-      </div>
-    </div>
-  );
-
-  const EventDetails = () => (
-    <EventDetailsForm
-      formData={formData}
-      nextStep={nextStep}
-    />
-  );
-
-  const PickAFilm = () => (
-    <FilmSearch
-      formData={formData}
-      nextStep={nextStep}
-    />
-  );
-
-  const PreviewEvent = () => (
-    <PreviewEventForm
-      formData={formData}
-      nextStep={nextStep}
-    />
-  );
-
-  const ConfirmedEvent = () => (
-    <ConfirmedEventPage
-      formData={formData}
-    />
-  );
-
-  /*
-    Return the appropriate step content based on the current step
-  */
   return (
     <section className="common-container max-w-[1024px] mx-auto">
       <header className="w-full">
@@ -164,11 +71,11 @@ const CreateEvent = () => {
       </header>
       {/* Current Step Content */}
       <div className="w-full">
-        {currentStep === 0 && <Create />}
-        {currentStep === 1 && <EventDetails />}
-        {currentStep === 2 && <PickAFilm />}
-        {currentStep === 3 && <PreviewEvent />}
-        {currentStep === 4 && <ConfirmedEvent />}
+        {currentStep === 0 && <CreateEventType formData={formData} nextStep={nextStep}/>}
+        {currentStep === 1 && <EventDetails formData={formData} nextStep={nextStep}/>}
+        {currentStep === 2 && <FilmSearch formData={formData} nextStep={nextStep}/>}
+        {currentStep === 3 && <PreviewEvent formData={formData} nextStep={nextStep}/>}
+        {currentStep === 4 && <ConfirmedEvent formData={formData}/>}
       </div>
     </section>
   );
