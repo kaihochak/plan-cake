@@ -9,13 +9,15 @@ import Bottombar from '@/components/shared/Bottombar';
 
 const RootLayout = () => {
   return (
-    <div className="w-full h-full lg:flex lg:mx-auto">
+    <div className="w-full lg:flex">
       <TopBar />
       <LeftSidebar />
+
       {/* Routes */}
-      <section className='max-w-[1024px] mx-auto h-full'>
+      <section className='flex flex-1 h-full px-6 py-8 max-w-[1024px] mx-auto'>
         <Outlet/>
       </section>
+      
       <Bottombar />
     </div>
   )

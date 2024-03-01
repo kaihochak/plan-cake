@@ -10,29 +10,29 @@ const Bottombar = () => {
   return (
     <section className="bottom-bar">
         {/* Home */}
-        <li className="leftsidebar-link group bg-primary">
-          <Link
-              to="/"
-              className="flex gap-4 p-4 hover:bg-accent [&_*]:hover:text-accent-foreground">
-              <GoHome className='text-accent/80 text-[30px]'/>
-          </Link>
-        </li>
+        <Link
+            to="/"
+            className={`p-4 transition rounded-[10px] 
+                      ${pathname === "/" ? "bg-accent [&_*]:text-accent-foreground": "bg-primary [&_*]:text-primary-foreground"}`}
+          >
+            <GoHome className='text-[30px]'/>
+        </Link>
         {/* Create */}
-        <li className="leftsidebar-link group bg-primary">
-          <Link
-              to="/create-event"
-              className="flex gap-4 p-4 hover:bg-accent [&_*]:hover:text-accent-foreground">
-              <IoMdAddCircleOutline className='text-accent/80 text-[30px]'/>
-          </Link>
-        </li>
+        <Link
+            to="/create-event"
+            className={`p-4 transition rounded-[10px] 
+                      ${pathname === "/create-event" ? "bg-accent [&_*]:text-accent-foreground": "bg-primary [&_*]:text-primary-foreground"}`}
+        >
+            <IoMdAddCircleOutline className='text-[30px]'/>
+        </Link>
         {/* Search */}
-        <li className="leftsidebar-link group bg-primary">
-          <Link
-              to="/search"
-              className="flex gap-4 p-4 hover:bg-accent [&_*]:hover:text-accent-foreground">
-              <IoIosSearch className='text-accent/80 text-[30px]'/>
-          </Link>
-        </li>
+        <Link
+            to="/search"
+            className={`p-4 transition rounded-[10px] 
+                      ${pathname === "/search" ? "bg-accent [&_*]:text-accent-foreground": "bg-primary [&_*]:text-primary-foreground"}`}
+        >
+            <IoIosSearch className='text-[30px]'/>
+        </Link>
     </section>
   );
 };

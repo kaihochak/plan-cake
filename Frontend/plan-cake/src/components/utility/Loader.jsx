@@ -7,7 +7,7 @@ const Loader = props => {
             <img
                 src={loader}
                 alt="Loader"
-                className="w-6 h-6"
+                className="animate-spin w-6 h-6"
             />
         </div>
     )
