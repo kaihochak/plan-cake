@@ -151,7 +151,7 @@ const CreateEvent = () => {
     Return the appropriate step content based on the current step
   */
   return (
-    <section className="common-container">
+    <section className="common-container max-w-[1024px] mx-auto">
       <header className="w-full">
         {/* Back Button */}
         <button className="text-m-2xl ml-1 mt-10 mb-6" onClick={prevStep}>

@@ -204,7 +204,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear, ratingSteps,
 
     // Mobile
     return (
-        <div className="flex flex-col gap-y-4 text-primary-foreground pt-10 pb-32 px-8 z-50 lg:mx-auto lg:w-[1024px] ">
+        <div className="flex flex-col gap-y-4 text-primary-foreground w-full pt-10 pb-32 px-8 z-50 lg:mx-auto  ">
             <div className='flex justify-between mb-4 place-items-end'>
                 <h3 className='text-m-xl'>Filters & Sort</h3>
                 <div onClick={closeModal} className='text-m-xl cursor-pointer'>

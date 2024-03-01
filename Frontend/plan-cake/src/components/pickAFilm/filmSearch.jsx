@@ -19,7 +19,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [showNoSelectionError, setShowNoSelectionError] = useState(false);
 
-    // Filter
+    // Filter settings
     const defaultSortBy = "Watchlists: Most to Least";
     const defaultWatchlistFilter = 0;
     const defaultSpecificWatchlistFilter = [];
@@ -33,7 +33,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const [genreFilter, setGenreFilter] = useState(defaultGenreFilter);
     const [yearFilter, setYearFilter] = useState(defaultYearFilter);
     const [ratingFilter, setRatingFilter] = useState(defaultRating);
-    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [showFilters, setShowFilters] = useState(false);
 
     // Fetch data initially
     // useEffect(() => {
@@ -73,18 +73,18 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
     useEffect(() => {
         console.log("Current Filters:", { watchlistFilter, sortBy, specificWatchlistFilter, genreFilter, yearFilter, ratingFilter });
-    
+
         // show the filter button in a different color if any filter has been applied
         const hasChanged = sortBy !== defaultSortBy ||
-                            watchlistFilter !== defaultWatchlistFilter ||
-                            (specificWatchlistFilter && specificWatchlistFilter.length > 0 ) ||
-                            (genreFilter && genreFilter.length > 0) ||
-                            yearFilter[0] !== defaultYearFilter[0] ||
-                            yearFilter[1] !== defaultYearFilter[1] ||
-                            ratingFilter !== defaultRating;
+            watchlistFilter !== defaultWatchlistFilter ||
+            (specificWatchlistFilter && specificWatchlistFilter.length > 0) ||
+            (genreFilter && genreFilter.length > 0) ||
+            yearFilter[0] !== defaultYearFilter[0] ||
+            yearFilter[1] !== defaultYearFilter[1] ||
+            ratingFilter !== defaultRating;
 
         setIsFilterApplied(hasChanged);
-        setFilteredItems(applyFiltersAndSort()); 
+        setFilteredItems(applyFiltersAndSort());
 
     }, [searchTerm, sortBy, watchlistFilter, specificWatchlistFilter, genreFilter, yearFilter, ratingFilter]);
 
@@ -138,136 +138,136 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     }
 
     return (
-        <div>
-            {/* Filter Group Modal */}
-            <ReactModal 
-                isOpen={modalIsOpen}
-                onRequestClose={() => setModalIsOpen(false)}
-                className="w-full h-full bg-background z-30 overflow-scroll custom-scrollbar"
-            >
-                <Filters
-                    closeModal={() => setModalIsOpen(false)}
-                    maxNumWatchlist={6}
-                    minYear={defaultYearFilter[0]} 
-                    maxYear={defaultYearFilter[1]}
-                    ratingSteps={10}
-                    selectedSortBy={sortBy} 
-                    setSelectedSortBy={(newSortBy) => setSortBy(newSortBy)}
-                    selectedWatchlists={watchlistFilter}
-                    setSelectedWatchlists={(newNumWatchlist) => setwatchlistFilter(newNumWatchlist)}
-                    selectedSpecificWatchlists={specificWatchlistFilter}
-                    setSelectedSpecificWatchlists={(newSpecificWatchlist) => setSpecificWatchlistFilter(newSpecificWatchlist)}
-                    selectedGenres={genreFilter}
-                    setGenre={(newGenre) => setGenreFilter(newGenre)}
-                    selectedYear={yearFilter}
-                    setYear={(newYear) => setYearFilter(newYear)}
-                    selectedRating={ratingFilter}
-                    setRating={(newRating) => setRatingFilter(newRating)}
-                />
-            </ReactModal>
-            
-            {/* Main Content */}
-            <div className={`${modalIsOpen ? "hidden" : "flex flex-col"}`}>
+        <div className="w-full">
 
-                {/* Description */}
-                <div className="text-m-l">
-                    <p className="text-m-m">
-                        or many films and decide later which one to watch.
-                    </p>
-                </div>
-
-                {/* Search & Filter */}
-                <div className="flex gap-x-4">
-                    <div className="relative inline-block w-full mt-3 mb-2">
-                        <div className="absolute top-1/2 left-2.5 transform -translate-y-1/2 text-primary-foreground mx-2 text-m-l">
-                            <IoIosSearch />
+            {!showFilters ?
+                (
+                    // main content
+                    <div className="flex flex-col">
+                        {/* Description */}
+                        <div className="text-m-l">
+                            <p className="text-m-m">
+                                or many films and decide later which one to watch.
+                            </p>
                         </div>
-                        <input
-                            type="text"
-                            placeholder="Search"
-                            value={searchTerm}
-                            onChange={handleSearchChange}
-                            className="flex h-14 w-full pl-12 border-2 border-input bg-primary text-primary-foreground text-m-m ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-border focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+
+                        {/* Search & Filter */}
+                        <div className="flex gap-x-4">
+                            <div className="relative inline-block w-full mt-3 mb-2">
+                                <div className="absolute top-1/2 left-2.5 transform -translate-y-1/2 text-primary-foreground mx-2 text-m-l">
+                                    <IoIosSearch />
+                                </div>
+                                <input
+                                    type="text"
+                                    placeholder="Search"
+                                    value={searchTerm}
+                                    onChange={handleSearchChange}
+                                    className="flex h-14 w-full pl-12 border-2 border-input bg-primary text-primary-foreground text-m-m ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-border focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                                />
+                            </div>
+
+                            {/* Filter Button */}
+                            <button
+                                className={cn("flex items-center text-[30px] mr-2 mt-2 text-primary-foreground/60",
+                                    { "text-accent/70": isFilterApplied })}
+                                onClick={() => setShowFilters(!showFilters)}
+                            >
+                                <CiFilter />
+                            </button>
+                        </div>
+
+                        {/* Filter Displays */}
+                        <div className="flex flex-wrap gap-2 justify-start mt-1 mb-4">
+                            {sortBy !== defaultSortBy && (
+                                <button onClick={() => setShowFilters(true)}>
+                                    <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">{sortBy}</p>
+                                </button>
+                            )}
+                            {watchlistFilter > 0 && (
+                                <button onClick={() => setShowFilters(true)}>
+                                    <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">Watchlists: ≥ {watchlistFilter}</p>
+                                </button>
+                            )}
+                            {specificWatchlistFilter.length > 0 && (
+                                <button onClick={() => setShowFilters(true)}>
+                                    <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">{specificWatchlistFilter.join(" & ")}</p>
+                                </button>
+                            )}
+                            {genreFilter.length > 0 && (
+                                <button onClick={() => setShowFilters(true)}>
+                                    <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">{genreFilter.join(", ")}</p>
+                                </button>
+                            )}
+                            {(yearFilter[0] !== defaultYearFilter[0] || yearFilter[1] !== defaultYearFilter[1]) && (
+                                <button onClick={() => setShowFilters(true)}>
+                                    <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">{yearFilter[0]} - {yearFilter[1]}</p>
+                                </button>
+                            )}
+                            {ratingFilter > 0 && (
+                                <button onClick={() => setShowFilters(true)}>
+                                    <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">≥ {ratingFilter}</p>
+                                </button>
+                            )}
+                            {isFilterApplied && (
+                                <button onClick={() => {
+                                    setSortBy(defaultSortBy);
+                                    setwatchlistFilter(defaultWatchlistFilter);
+                                    setSpecificWatchlistFilter(defaultSpecificWatchlistFilter);
+                                    setGenreFilter(defaultGenreFilter);
+                                    setYearFilter(defaultYearFilter);
+                                    setRatingFilter(defaultRating);
+                                }}>
+                                    <IoMdCloseCircleOutline className="text-accent/50 text-xl" />
+                                </button>
+                            )}
+                        </div>
+
+                        {/* Result */}
+                        <SearchDisplay
+                            filteredItems={filteredItems} // Pass the filtered items to the display
+                            selectedItems={formData.selectedItems} // Pass the selected items to the display
+                            setSelectedItems={updateSelection} // Pass the update function
                         />
-                    </div>
 
-                    {/* Filter Button */}
-                    <button 
-                        className={cn("flex items-center text-[30px] mr-2 mt-2 text-primary-foreground/60",
-                            {"text-accent/70": isFilterApplied})}
-                        onClick={() => setModalIsOpen(true)}
-                    >
-                        <CiFilter />
-                    </button>
-                </div>
+                        {/* Display error message if no film is selected */}
+                        {showNoSelectionError && (
+                            <div className="text-destructive-foreground text-m-m pt-10">
+                                Please select at least one film.
+                            </div>
+                        )}
 
-                {/* Filter Displays */}
-                <div className="flex flex-wrap gap-2 justify-start mt-1 mb-4">
-                    {sortBy !== defaultSortBy && (
-                        <button onClick={() => setModalIsOpen(true)}>
-                            <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">{sortBy}</p>
-                        </button>
-                    )}
-                    {watchlistFilter > 0 && (
-                        <button onClick={() => setModalIsOpen(true)}>
-                            <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">Watchlists: ≥ {watchlistFilter}</p>
-                        </button>
-                    )}
-                    {specificWatchlistFilter.length > 0 && (
-                        <button onClick={() => setModalIsOpen(true)}>
-                            <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">{specificWatchlistFilter.join(" & ")}</p>
-                        </button>
-                    )}
-                    {genreFilter.length > 0 && (
-                        <button onClick={() => setModalIsOpen(true)}>
-                            <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">{genreFilter.join(", ")}</p>
-                        </button>
-                    )}
-                    {(yearFilter[0] !== defaultYearFilter[0] || yearFilter[1] !== defaultYearFilter[1]) && (
-                        <button onClick={() => setModalIsOpen(true)}>
-                            <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">{yearFilter[0]} - {yearFilter[1]}</p>
-                        </button>
-                    )}
-                    {ratingFilter > 0 && (
-                        <button onClick={() => setModalIsOpen(true)}>
-                            <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">≥ {ratingFilter}</p>
-                        </button>
-                    )}
-                    {isFilterApplied && (
-                        <button onClick={() => {
-                            setSortBy(defaultSortBy);
-                            setwatchlistFilter(defaultWatchlistFilter);
-                            setSpecificWatchlistFilter(defaultSpecificWatchlistFilter);
-                            setGenreFilter(defaultGenreFilter);
-                            setYearFilter(defaultYearFilter);
-                            setRatingFilter(defaultRating);
-                        }}>
-                            <IoMdCloseCircleOutline className="text-accent/50 text-xl" />
-                        </button>
-                    )}
-                </div>
+                        {/* Next Step */}
+                        <Button onClick={handleNextStep} type="submit" className="mt-10">
+                            Next
+                        </Button>
+                    </div>) : (
 
-                {/* Result */}
-                <SearchDisplay
-                    filteredItems={filteredItems} // Pass the filtered items to the display
-                    selectedItems={formData.selectedItems} // Pass the selected items to the display
-                    setSelectedItems={updateSelection} // Pass the update function
-                />
+                    // filter modal
+                    <Filters
+                        closeModal={() => setShowFilters(false)}
+                        maxNumWatchlist={6}
+                        minYear={defaultYearFilter[0]}
+                        maxYear={defaultYearFilter[1]}
+                        ratingSteps={10}
+                        selectedSortBy={sortBy}
+                        setSelectedSortBy={(newSortBy) => setSortBy(newSortBy)}
+                        selectedWatchlists={watchlistFilter}
+                        setSelectedWatchlists={(newNumWatchlist) => setwatchlistFilter(newNumWatchlist)}
+                        selectedSpecificWatchlists={specificWatchlistFilter}
+                        setSelectedSpecificWatchlists={(newSpecificWatchlist) => setSpecificWatchlistFilter(newSpecificWatchlist)}
+                        selectedGenres={genreFilter}
+                        setGenre={(newGenre) => setGenreFilter(newGenre)}
+                        selectedYear={yearFilter}
+                        setYear={(newYear) => setYearFilter(newYear)}
+                        selectedRating={ratingFilter}
+                        setRating={(newRating) => setRatingFilter(newRating)}
+                    />
+                )
 
-                {/* Display error message if no film is selected */}
-                {showNoSelectionError && (
-                    <div className="text-destructive-foreground text-m-m pt-10">
-                        Please select at least one film.
-                    </div>
-                )}
-
-                {/* Next Step */}
-                <Button onClick={handleNextStep} type="submit" className="mt-10">
-                    Next
-                </Button>
-            </div>
+            }
 
         </div>
+
     );
 };
 
