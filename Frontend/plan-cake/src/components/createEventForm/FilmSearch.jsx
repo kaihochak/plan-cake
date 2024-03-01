@@ -43,10 +43,10 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     //     fetchData();
     // }, []);
 
-    const updateSelection = (newSelectedItems) => {
+    const updateSelection = (newSelectedFilms) => {
         setFormData(formData => ({
             ...formData,
-            selectedItems: newSelectedItems
+            selectedFilms: newSelectedFilms
         }));
     };
 
@@ -61,7 +61,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     };
 
     const handleNextStep = () => {
-        if (formData.selectedItems.length === 0) {
+        if (formData.selectedFilms.length === 0) {
             setShowNoSelectionError(true); // Show error message if no film is selected
             return;
         } else {
@@ -71,7 +71,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     };
 
     useEffect(() => {
-        console.log("Current Filters:", { watchlistFilter, sortBy, specificWatchlistFilter, genreFilter, yearFilter, ratingFilter });
+        // console.log("Current Filters:", { watchlistFilter, sortBy, specificWatchlistFilter, genreFilter, yearFilter, ratingFilter });
 
         // show the filter button in a different color if any filter has been applied
         const hasChanged = sortBy !== defaultSortBy ||
@@ -138,7 +138,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
     return (
         <div className="w-full">
-
+            <h2 className="text-m-2xl mb-3">Pick A Film</h2>
             {!showFilters ?
                 (
                     // main content
@@ -146,7 +146,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                         {/* Description */}
                         <div className="text-m-l">
                             <p className="text-m-m">
-                                or many films and decide later which one to watch.
+                                or many films and decide later on.
                             </p>
                         </div>
 
@@ -224,8 +224,8 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                         {/* Result */}
                         <SearchDisplay
                             filteredItems={filteredItems} // Pass the filtered items to the display
-                            selectedItems={formData.selectedItems} // Pass the selected items to the display
-                            setSelectedItems={updateSelection} // Pass the update function
+                            selectedFilms={formData.selectedFilms} // Pass the selected items to the display
+                            setSelectedFilms={updateSelection} // Pass the update function
                         />
 
                         {/* Display error message if no film is selected */}

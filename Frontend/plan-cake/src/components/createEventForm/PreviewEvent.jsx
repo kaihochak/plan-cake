@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import filmData from "@/data/filmData";
 
 
-const PreviewEvent = ({ formData, nextStep }) => {
+const PreviewEvent = ({ formData, nextStep, isLoadingCreate }) => {
     // debug
     // useEffect(() => {
     //     console.log(formData);
@@ -20,18 +20,26 @@ const PreviewEvent = ({ formData, nextStep }) => {
     const handleNextStep = () => {
 
         nextStep(formData);
-    
+
     }
 
-    const formattedDate = formData.eventDate instanceof Date ? formData.eventDate.toDateString() : '';
+    const formattedDate = formData.date instanceof Date ? formData.date.toDateString() : '';
 
     return (
         <div className="flex flex-col ">
+            <h2 className="text-m-2xl mb-3">Preview Event</h2>
+
+            {/* event image */}
+            {formData.imageUrl &&
+                <div className="flex flex-1 justify-center p-5 lg:p-10">
+                    <img src={formData.imageUrl} alt="image" className="file_uploader-img" />
+                </div>
+            }
 
             {/* Selected Items Image Carousel */}
             <Carousel className="w-[70%] mx-auto lg:w-[40%]">
                 <CarouselContent className="mx-auto mt-10">
-                    {formData.selectedItems.map((filmID, id) => {
+                    {formData.selectedFilms.map((filmID, id) => {
 
                         const item = filmData.find(item => item.id === filmID);
                         return (
@@ -52,13 +60,13 @@ const PreviewEvent = ({ formData, nextStep }) => {
 
             {/* Event Name */}
             <div>
-                <p className="text-m-xl mt-10">{formData.eventName}</p>
+                <p className="text-m-xl mt-10">{formData.title}</p>
             </div>
 
             {/* Selected Items Title */}
             <div>
                 <p className="mt-8 text-m-m text-border">Selected Movies</p>
-                <div>{formData.selectedItems.map((filmID, id) => {
+                <div>{formData.selectedFilms.map((filmID, id) => {
 
                     const item = filmData.find(item => item.id === filmID);
                     return (
@@ -76,19 +84,25 @@ const PreviewEvent = ({ formData, nextStep }) => {
             {/* Location */}
             <div>
                 <p className="mt-8 text-m-m text-border">Location</p>
-                <p>{formData.eventLocation}</p>
+                <p>{formData.location}</p>
             </div>
 
             {/* Event Description */}
             <div>
                 <p className="mt-8 text-m-m text-border">Guests</p>
-                <p>{formData.eventGuestList}</p>
+                <p>{formData.guestList}</p>
             </div>
 
             {/* Confirm */}
-          <Button onClick={handleNextStep} type="submit" className="mt-10">
-            Confirm
-          </Button>
+            <Button onClick={handleNextStep} type="submit" className="mt-10">
+                {isLoadingCreate ? (
+                    <div className='flex items-center gap-2'>
+                        <Loader />Loading...
+                    </div>
+                ) : (
+                    <div>Confirm</div>
+                )}
+            </Button>
 
         </div>
     )

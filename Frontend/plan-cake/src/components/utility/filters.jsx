@@ -157,7 +157,6 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear, ratingSteps,
             },
         });
 
-
         buttons.push(
             <RatingButton 
                 className='border rounded-md text-m-s ml-3 w-12 h-6 text-center' 

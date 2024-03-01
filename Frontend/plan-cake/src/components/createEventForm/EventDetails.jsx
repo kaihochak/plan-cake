@@ -6,76 +6,80 @@ import { CalendarIcon } from "@radix-ui/react-icons";
 import { addDays, format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
+import { Popover, PopoverContent, PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import FileUploader from "../shared/FileUploader";
+import { convertFileToUrl } from "@/lib/utils";
 
 
 const EventDetails = ({ formData: parentFormData, nextStep }) => {
     const [date, setDate] = useState();
     const [formData, setFormData] = useState(parentFormData);
     const [validationMessages, setValidationMessages] = useState({
-        eventName: "",
-        eventLocation: "",
+        title: "",
+        location: "",
     });
 
     const handleNextStep = () => {
         let isValid = true;
         let newValidationMessages = {};
 
-        if (formData.eventName === "") {
-            newValidationMessages.eventName = "*Required";
+        if (formData.title === "") {
+            newValidationMessages.title = "*Required";
             isValid = false;
         }
         
-        if (formData.eventLocation === "") {
-            newValidationMessages.eventLocation = "*Required";
+        if (formData.location === "") {
+            newValidationMessages.location = "*Required";
             isValid = false;
         }
 
         // Update the state with new validation messages
         setValidationMessages(newValidationMessages);
-
         if (isValid) {
+            console.log(formData);
             nextStep(formData);
         }
-    
     }
 
     const handleDateChange = (date) => {
-        setFormData({ ...formData, eventDate: date });
+        setFormData({ ...formData, date: date });
     }
 
     const handleLocationChange = (e) => {
-        setFormData({ ...formData, eventLocation: e.target.value });
+        setFormData({ ...formData, location: e.target.value });
     }
 
     const handleGuestsChange = (e) => {
         setFormData({ ...formData, guests: e.target.value });
     }
 
+    const handleImageChange = (file) => {
+        setFormData({ ...formData, imageUrl: convertFileToUrl(file[0]), file: file});
+    }
+
     return (
         <div className="space-y-8 mt-6">
+            <h2 className="text-m-2xl mb-3">Event Details</h2>
+            
+            {/* Upload Image*/}
+            <FileUploader
+                fieldChange={(file) => handleImageChange(file)}
+                mediaUrl={formData.imageUrl}
+            />
 
             {/* Event Name */}
             <div>
                 <Input
-                    name="eventName"
+                    name="title"
                     placeholder="Event Name*"
-                    value={formData.eventName}
-                    onChange={(e) => setFormData({ ...formData, eventName: e.target.value })}
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 />
-                {validationMessages.eventName && <p className="text-destructive-foreground text-m-m pt-2">{validationMessages.eventName}</p>}
+                {validationMessages.title && <p className="text-destructive-foreground text-m-m pt-2">{validationMessages.title}</p>}
             </div>
 
             {/* Date */}
@@ -85,12 +89,12 @@ const EventDetails = ({ formData: parentFormData, nextStep }) => {
                         variant='input'
                         className={cn(
                             "w-full rounded-none justify-start text-left font-normal bg-primary border-b-2 h-14 p-2 text-primary-foreground",
-                            !formData.eventDate? "text-input" : ""
+                            !formData.date? "text-input" : ""
                         )}
                     >
                         <CalendarIcon className="mr-2 h-4 w-4" />
-                        {formData.eventDate ? (
-                            format(formData.eventDate, "PPP")
+                        {formData.date ? (
+                            format(formData.date, "PPP")
                         ) : (
                             <span className="text-m-m">Pick A Date</span>
                         )}
@@ -124,12 +128,12 @@ const EventDetails = ({ formData: parentFormData, nextStep }) => {
             {/* Location */}
             <div>
                 <Input
-                    name="eventLocation"
+                    name="location"
                     placeholder="Location*"
                     onChange={handleLocationChange}
-                    value={formData.eventLocation}
+                    value={formData.location}
                 />
-                {validationMessages.eventLocation && <p className="text-destructive-foreground text-m-m pt-2">{validationMessages.eventLocation}</p>}
+                {validationMessages.location && <p className="text-destructive-foreground text-m-m pt-2">{validationMessages.location}</p>}
             </div>
 
             {/* Guests */}

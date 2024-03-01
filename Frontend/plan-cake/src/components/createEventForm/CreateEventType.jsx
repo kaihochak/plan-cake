@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 const CreateEventType = ({ formData: parentFormData, nextStep }) => {
     const [formData, setFormData] = useState(parentFormData);
     const [validationMessages, setValidationMessages] = useState({
-        eventType: "",
+        type: "",
     });
 
     // Handler to validate the event type and move to the next step
@@ -12,8 +12,8 @@ const CreateEventType = ({ formData: parentFormData, nextStep }) => {
         let isValid = true;
         let newValidationMessages = {};
 
-        if (formData.eventType === "") {
-            newValidationMessages.eventType = "*Required";
+        if (formData.type === "") {
+            newValidationMessages.type = "*Required";
             isValid = false;
         }
 
@@ -27,11 +27,13 @@ const CreateEventType = ({ formData: parentFormData, nextStep }) => {
 
     // Handler to update the event type
     const handleSelectEventType = (type) => {
-        setFormData({ ...formData, eventType: type });
+        setFormData({ ...formData, type: type });
     };
 
     return (
         <div>
+            {/* Title */}
+            <h2 className="text-m-2xl mb-3">Create Event</h2>
             <p className="text-m-l mt-10">What type of events are you planning?</p>
             <div className="space-y-8 mt-6">
                 {/* Event Type */}
@@ -41,7 +43,7 @@ const CreateEventType = ({ formData: parentFormData, nextStep }) => {
                         type="button"
                         onClick={() => handleSelectEventType("Film")}
                         className={
-                            formData.eventType === "Film"
+                            formData.type === "Film"
                                 ? "bg-accent text-accent-foreground border-none"
                                 : ""
                         }
@@ -52,7 +54,7 @@ const CreateEventType = ({ formData: parentFormData, nextStep }) => {
                     <Button disabled variant="select">
                         Gig Buddies (coming soon)
                     </Button>
-                    {validationMessages.eventType && <p className="text-destructive-foreground text-m-m">{validationMessages.eventType}</p>}
+                    {validationMessages.type && <p className="text-destructive-foreground text-m-m">{validationMessages.type}</p>}
                 </div>
                 {/* Next */}
                 <Button onClick={handleNextStep} type="submit" className="mt-10">

@@ -2,13 +2,13 @@ import React from "react";
 import "@/styles/utility.css"
 import usersData from "@/data/users";
 
-const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
+const SearchDisplay = ({ filteredItems, selectedFilms, setSelectedFilms }) => {
 
     const handleSelect = (itemId) => {
-        const newSelectedItems = selectedItems.includes(itemId)
-            ? selectedItems.filter(id => id !== itemId) // de-select
-            : [...selectedItems, itemId]; // select
-        setSelectedItems(newSelectedItems);
+        const newSelectedFilms = selectedFilms.includes(itemId)
+            ? selectedFilms.filter(id => id !== itemId) // de-select
+            : [...selectedFilms, itemId]; // select
+        setSelectedFilms(newSelectedFilms);
     };
 
     return (
@@ -29,13 +29,13 @@ const SearchDisplay = ({ filteredItems, selectedItems, setSelectedItems }) => {
                                     <input
                                         type="checkbox"
                                         className="h-8 w-8 border-2 focus:ring-0"
-                                        checked={selectedItems.includes(item.id)}
+                                        checked={selectedFilms.includes(item.id)}
                                         readOnly
                                     />
                                 </div>
     
                                 {/* image */}
-                                <div className={`w-[90%] ${selectedItems.includes(item.id) ? "selected-overlay" : ""}`}>
+                                <div className={`w-[90%] ${selectedFilms.includes(item.id) ? "selected-overlay" : ""}`}>
                                     {/* The image fills the square container */}
                                     <div className="aspect-w-1 aspect-h-1">
                                         <img
