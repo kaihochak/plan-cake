@@ -91,20 +91,22 @@ const CreateEvent = () => {
   }, [formData]);
 
   return (
-    <section className="common-container max-w-[1024px] mx-auto">
-      <header className="w-full">
-        {/* Back Button */}
-        <button className="text-m-2xl ml-1 mt-10 mb-6" onClick={prevStep}>
-          <BsArrowLeft />
-        </button>
-      </header>
-      {/* Current Step Content */}
-      <div className="w-full">
-        {currentStep === 0 && <CreateEventType formData={formData} nextStep={nextStep}/>}
-        {currentStep === 1 && <EventDetails formData={formData} nextStep={nextStep}/>}
-        {currentStep === 2 && <FilmSearch formData={formData} nextStep={nextStep}/>}
-        {currentStep === 3 && <PreviewEvent formData={formData} nextStep={nextStep} isLoadingCreate={isLoadingCreate}/>}
-        {currentStep === 4 && <ConfirmedEvent formData={formData} goToEventPage={nextStep}/>}
+    <section className="common-container">
+      <div className="flex flex-col w-full max-w-[1024px] mx-auto">
+        <header className="w-full">
+          {/* Back Button */}
+          <button className="text-m-2xl ml-1 mt-10 mb-6" onClick={prevStep}>
+            <BsArrowLeft />
+          </button>
+        </header>
+        {/* Current Step Content */}
+        <div className="w-full">
+          {currentStep === 0 && <CreateEventType formData={formData} nextStep={nextStep}/>}
+          {currentStep === 1 && <EventDetails formData={formData} nextStep={nextStep}/>}
+          {currentStep === 2 && <FilmSearch formData={formData} nextStep={nextStep}/>}
+          {currentStep === 3 && <PreviewEvent formData={formData} nextStep={nextStep} isLoadingCreate={isLoadingCreate}/>}
+          {currentStep === 4 && <ConfirmedEvent formData={formData} goToEventPage={nextStep}/>}
+        </div>
       </div>
     </section>
   );

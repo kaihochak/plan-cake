@@ -25,7 +25,7 @@ const Bottombar = () => {
         >
             <IoMdAddCircleOutline className='text-[30px]'/>
         </Link>
-        {/* Search */}
+        {/* Explore */}
         <Link
             to="/search"
             className={`p-4 transition rounded-[10px] 

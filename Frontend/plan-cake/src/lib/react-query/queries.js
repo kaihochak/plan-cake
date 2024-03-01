@@ -26,12 +26,13 @@ export const useSignOutAccount = () => {
 }; 
 
 export const useCreateEvent = () => {
-    const queryClient = useQueryClient();
+    const queryClient = useQueryClient(); //
     return useMutation({
       mutationFn: (event) => createEvent(event),
       onSuccess: () => {
+        // Invalidate and refetch, so we don't have to wait for the next interval
         queryClient.invalidateQueries({
-          queryKey: [QUERY_KEYS.GET_RECENT_EVENTS],
+          queryKey: QUERY_KEYS.GET_RECENT_EVENTS,
         });
       },
     });

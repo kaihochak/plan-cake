@@ -77,14 +77,14 @@ const LeftSidebar = () => {
                         <IoMdAddCircleOutline className='text-accent/80 text-[30px]' />
                         <p>Create</p>
                     </NavLink>
-                    {/* Search */}
+                    {/* Explore */}
                     <NavLink
                         to="/search"
                         className={`leftsidebar-link flex gap-4 p-4 hover:rounded-lg hover:bg-accent [&_*]:hover:text-accent-foreground 
                         ${pathname === "/search" ? "bg-accent [&_*]:text-accent-foreground": ""}`}
                     >
                         <IoIosSearch className='text-accent/80 text-[30px]' />
-                        <p>Search</p>
+                        <p>Explore</p>
                     </NavLink>
                 </ul>
 
