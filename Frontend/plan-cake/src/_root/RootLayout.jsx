@@ -14,7 +14,7 @@ const RootLayout = () => {
       <LeftSidebar />
 
       {/* Routes */}
-      <section className='flex flex-1 h-full px-6 py-8 max-w-[1024px] mx-auto'>
+      <section className='flex flex-1 h-full'>
         <Outlet/>
       </section>
       

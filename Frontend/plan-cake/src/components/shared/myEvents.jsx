@@ -28,8 +28,9 @@ const MyEvents = () => {
   };
 
   return (
-    <section className='my-14'>
-      <header>
+    <section className='w-full'>
+      {/* Title */}
+      <div>
         <div className='flex justify-between items-baseline border-b-2 pb-2 mb-2'>
           <h2 className='text-m-2xl'>My Events</h2>
           <div className='flex items-center'>
@@ -37,21 +38,17 @@ const MyEvents = () => {
             <BsArrowRight />
           </div>
         </div>
-      </header>
-
-      <div
-        className='flex flex-col lg:flex-row lg:space-x-4 lg:gap-4 lg:justify-start '
-      >
-        <List 
-          items={MyEventsData}
-          isFilterVisible={false}
-          isParticipantsVisible={true}
-          mobileLayout="vertical"
-          max="3"
-          hasButton={true}
-          buttonHandler={navigateToCreateEvent}
-        />
       </div>
+
+      <List 
+        items={MyEventsData}
+        isFilterVisible={false}
+        isParticipantsVisible={true}
+        mobileLayout="vertical"
+        max="3"
+        hasButton={true}
+        buttonHandler={navigateToCreateEvent}
+      />
     </section>
   );
 };

@@ -11,7 +11,8 @@ import './index.css';
 
 function App() {
   return (
-    <main className="bg-primary font-Urbanist text-default h-screen">
+    <main className="flex bg-primary font-Urbanist text-default h-screen">
+
       {/* Routes */}
       <Routes>
         {/* public */}

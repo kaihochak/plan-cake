@@ -37,7 +37,7 @@ const CreateEvent = () => {
     // If we're not on the first step, go to the previous step
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
-    } 
+    }
     // If we're on the first step, prompt the user to confirm leaving the page
     else {
       if (window.confirm("Are you sure you want to leave this page?")) {
@@ -49,11 +49,11 @@ const CreateEvent = () => {
   const nextStep = (formData) => {
 
     if (formData) {
-      setFormData({ ...formData, ...formData });      
+      setFormData({ ...formData, ...formData });
     }
     setCurrentStep(currentStep + 1);
   };
-  
+
   // Handler to update the event type
   const handleSelectEventType = (type) => {
     if (type === formData.eventType) {
@@ -70,7 +70,7 @@ const CreateEvent = () => {
       setValidationMessages({ ...validationMessages, eventType: "*Required" });
       isValid = false;
       return;
-    } 
+    }
 
     // Update the state with new validation messages
     setValidationMessages({ ...validationMessages, eventType: "" });
@@ -80,7 +80,7 @@ const CreateEvent = () => {
   // useEffect(() => {
   //   console.log(formData);
   // }, [formData]);
-  
+
   /*
     Step Content:
       1. Create
@@ -91,32 +91,32 @@ const CreateEvent = () => {
   const Create = () => (
     <div>
       <p className="text-m-l mt-10">What type of events are you planning?</p>
-        <div className="space-y-8 mt-6">
-          {/* Event Type */}
-          <div className="flex flex-col gap-y-4">
-            <Button
-              variant="select"
-              type="button"
-              onClick={() => handleSelectEventType("Film")}
-              className={
-                formData.eventType === "Film"
-                  ? "bg-accent text-accent-foreground border-none"
-                  : ""
-              }
-              
-            >
-              Movie Screening
-            </Button>
-            <Button disabled variant="select">
-              Gig Buddies (coming soon)
-            </Button>
-            {validationMessages.eventType && <p className="text-destructive-foreground text-m-m">{validationMessages.eventType}</p>}
-          </div>
-          {/* Next */}
-          <Button onClick={handleEventTypeNextStep} type="submit" className="mt-10">
-            Next
+      <div className="space-y-8 mt-6">
+        {/* Event Type */}
+        <div className="flex flex-col gap-y-4">
+          <Button
+            variant="select"
+            type="button"
+            onClick={() => handleSelectEventType("Film")}
+            className={
+              formData.eventType === "Film"
+                ? "bg-accent text-accent-foreground border-none"
+                : ""
+            }
+
+          >
+            Movie Screening
           </Button>
+          <Button disabled variant="select">
+            Gig Buddies (coming soon)
+          </Button>
+          {validationMessages.eventType && <p className="text-destructive-foreground text-m-m">{validationMessages.eventType}</p>}
         </div>
+        {/* Next */}
+        <Button onClick={handleEventTypeNextStep} type="submit" className="mt-10">
+          Next
+        </Button>
+      </div>
     </div>
   );
 
@@ -128,22 +128,22 @@ const CreateEvent = () => {
   );
 
   const PickAFilm = () => (
-    <FilmSearch 
+    <FilmSearch
       formData={formData}
       nextStep={nextStep}
     />
   );
 
   const PreviewEvent = () => (
-    <PreviewEventForm 
-      formData = {formData}
+    <PreviewEventForm
+      formData={formData}
       nextStep={nextStep}
     />
   );
 
   const ConfirmedEvent = () => (
-    <ConfirmedEventPage 
-      formData = {formData}
+    <ConfirmedEventPage
+      formData={formData}
     />
   );
 
@@ -151,8 +151,8 @@ const CreateEvent = () => {
     Return the appropriate step content based on the current step
   */
   return (
-    <section className="mx-auto sm:min-w-[600px]">
-      <header>
+    <section className="common-container">
+      <header className="w-full">
         {/* Back Button */}
         <button className="text-m-2xl ml-1 mt-10 mb-6" onClick={prevStep}>
           <BsArrowLeft />
@@ -162,13 +162,14 @@ const CreateEvent = () => {
           <h2 className="text-m-2xl mb-3">{title[currentStep]}</h2>
         </div>
       </header>
-
       {/* Current Step Content */}
-      {currentStep === 0 && <Create />}
-      {currentStep === 1 && <EventDetails />}
-      {currentStep === 2 && <PickAFilm />}
-      {currentStep === 3 && <PreviewEvent />}
-      {currentStep === 4 && <ConfirmedEvent />}
+      <div className="w-full">
+        {currentStep === 0 && <Create />}
+        {currentStep === 1 && <EventDetails />}
+        {currentStep === 2 && <PickAFilm />}
+        {currentStep === 3 && <PreviewEvent />}
+        {currentStep === 4 && <ConfirmedEvent />}
+      </div>
     </section>
   );
 };
