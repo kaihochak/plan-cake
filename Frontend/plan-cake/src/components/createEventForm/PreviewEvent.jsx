@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 
 import filmData from "@/data/filmData";
@@ -47,7 +41,7 @@ const PreviewEvent = ({ formData, nextStep, isLoadingCreate }) => {
                                 <img
                                     src={item.image}
                                     alt={item.title || 'Carousel image'} // Fallback text if title is not available
-                                    className="object-cover object-center rounded-xl transition duration-300 ease-in-out transform hover:scale-105" // Added hover effect
+ className="object-cover object-center rounded-xl transition duration-300 ease-in-out transform hover:scale-105" // Added hover effect
                                 />
                             </CarouselItem>
                         )

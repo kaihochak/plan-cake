@@ -4,7 +4,7 @@ import List from './List';
 import dumMyEventData from '@/data/MyEventsData';
 import { BsArrowRight } from 'react-icons/bs';
 
-const MyEvents = () => {
+const MyEvents = ({ isFilterVisible, hasViewMore, hasButton, max}) => {
   const [MyEventsData, setMyEventsData] = useState(dumMyEventData);
   const navigate = useNavigate(); 
 
@@ -33,21 +33,22 @@ const MyEvents = () => {
       <div>
         <div className='flex justify-between items-baseline border-b-2 pb-2 mb-2'>
           <h2 className='text-m-2xl'>My Events</h2>
-          <div className='flex items-center'>
-            <p className='mr-2'>VIEW MORE</p>
-            <BsArrowRight />
-          </div>
+          { hasViewMore &&
+            <div className='flex items-center'>
+              <p className='mr-2'>VIEW MORE</p>
+              <BsArrowRight />
+            </div>
+          }          
         </div>
       </div>
 
       <List 
         items={MyEventsData}
-        isFilterVisible={false}
+        isFilterVisible={isFilterVisible}
         isParticipantsVisible={true}
         mobileLayout="vertical"
-        max="3"
-        hasButton={true}
-        buttonHandler={navigateToCreateEvent}
+        max={max}
+        hasButton={hasButton}
       />
     </section>
   );

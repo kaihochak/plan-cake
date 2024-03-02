@@ -14,6 +14,8 @@ const List = ({
 }) => {
   const [filter, setFilter] = React.useState("");
 
+  if (max === "0") { max = items.length; };
+
   // Handle filter change
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
@@ -42,10 +44,11 @@ const List = ({
       {/* List of items */}
       <div
         className={
-          cn("lg:space-x-4 lg:gap-4", // universal
+          cn("lg:space-x-4 lg:gap-4 lg:grid-cols-4", // universal
           mobileLayout === "grid" ?
-            "grid grid-cols-2 gap-6 lg:grid-cols-4" : // grid view (only for mobile)
-            "grid grid-cols-1 lg:grid-cols-3 lg:w-[75%]" // vertical view (for mobile) button view (for desktop)
+            "grid grid-cols-2 gap-6" : // grid view
+            "grid grid-cols-1",       // vertical view (only for for mobile) 
+            hasButton && "lg:grid-cols-3 lg:w-[75%]"
         )}
       >
         {/* each item */}

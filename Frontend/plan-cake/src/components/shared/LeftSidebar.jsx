@@ -5,6 +5,8 @@ import { GoHome } from "react-icons/go";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { IoIosSearch } from "react-icons/io";
 import { IoMdLogOut } from "react-icons/io";
+import { IoCalendarClearOutline } from "react-icons/io5";
+import { GiDandelionFlower } from "react-icons/gi";
 import Loader from '@/components/utility/Loader'
 import { Button } from "@/components/ui/button";
 import { useSignOutAccount } from "@/lib/react-query/queries";
@@ -44,7 +46,11 @@ const LeftSidebar = () => {
                         <Loader />
                     </div>
                 ) : (
-                    <Link to={`/profile/${user.id}`} className="flex gap-3 items-center">
+                    <NavLink 
+                        to={`/profile/${user.id}`} 
+                        className={`flex gap-3 p-4 items-center [&_*]:hover:text-accent/70
+                        ${pathname.startsWith("/profile") ? "[&_*]:text-accent" : ""}`}
+                    >
                         <img
                             src={user.imageUrl || "/assets/icons/profile-placeholder.svg"}
                             alt="profile"
@@ -54,7 +60,7 @@ const LeftSidebar = () => {
                             <p className="body-bold">{user.name}</p>
                             <p className="small-regular text-light-3">@{user.username}</p>
                         </div>
-                    </Link>
+                    </NavLink>
                 )}
 
                 {/* Links */}
@@ -63,25 +69,36 @@ const LeftSidebar = () => {
                     <NavLink
                         to="/"
                         className={`leftsidebar-link flex gap-4 p-4 hover:rounded-lg hover:bg-accent [&_*]:hover:text-accent-foreground 
-                        ${pathname === "/" ? "bg-accent [&_*]:text-accent-foreground": ""}`}
+                        ${pathname === "/" ? "bg-accent [&_*]:text-accent-foreground" : ""}`}
                     >
                         <GoHome className='text-accent/80 text-[30px]' />
                         <p>Home</p>
                     </NavLink>
+                    {/* PickAFilm */}
+                    <NavLink
+
+                        to="/pickAFilm"
+                        className={`leftsidebar-link flex gap-4 p-4 hover:rounded-lg hover:bg-accent [&_*]:hover:text-accent-foreground
+                        ${pathname === "/pickAFilm" ? "bg-accent [&_*]:text-accent-foreground" : ""}`}
+                    >
+                        <GiDandelionFlower className='text-accent/80 text-[30px]' />
+                        <p>Pick A Film</p>
+                    </NavLink>
+
                     {/* Create */}
                     <NavLink
                         to="/create-event"
                         className={`leftsidebar-link flex gap-4 p-4 hover:rounded-lg hover:bg-accent [&_*]:hover:text-accent-foreground 
-                        ${pathname === "/create-event" ? "bg-accent [&_*]:text-accent-foreground": ""}`}
+                        ${pathname === "/create-event" ? "bg-accent [&_*]:text-accent-foreground" : ""}`}
                     >
                         <IoMdAddCircleOutline className='text-accent/80 text-[30px]' />
                         <p>Create</p>
                     </NavLink>
                     {/* Explore */}
                     <NavLink
-                        to="/search"
+                        to="/explore"
                         className={`leftsidebar-link flex gap-4 p-4 hover:rounded-lg hover:bg-accent [&_*]:hover:text-accent-foreground 
-                        ${pathname === "/search" ? "bg-accent [&_*]:text-accent-foreground": ""}`}
+                        ${pathname.startsWith("/explore") ? "bg-accent [&_*]:text-accent-foreground" : ""}`}
                     >
                         <IoIosSearch className='text-accent/80 text-[30px]' />
                         <p>Explore</p>
@@ -92,7 +109,8 @@ const LeftSidebar = () => {
             </div>
 
             <button
-                className="leftsidebar-link group flex gap-4 p-4 hover:bg-accent [&_*]:hover:text-accent-foreground"
+                 className={`flex gap-3 p-4 items-center [&_*]:hover:text-accent/70
+                 ${pathname.startsWith("/profile") ? "[&_*]:text-accent" : ""}`}
                 onClick={(e) => handleSignOut(e)}>
                 <IoMdLogOut className="text-accent/80 text-[30px]" />
                 <p>Logout</p>
