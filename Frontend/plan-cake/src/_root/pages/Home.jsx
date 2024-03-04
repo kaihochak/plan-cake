@@ -1,7 +1,7 @@
 // Home.jsx
 import React from 'react';
 import SearchBar from '@/components/utility/SearchBar';
-import NewFilms from '@/components/shared/NewFilms';
+import MostWatchlisted from '@/components/shared/MostWatchlisted';
 import MyEvents from '@/components/shared/MyEvents';
 import WhatsNearby from '@/components/shared/WhatsNearby';
 import { NavLink } from 'react-router-dom';
@@ -12,7 +12,7 @@ const Home = () => {
       <div className='flex flex-col w-full max-w-[1024px] mx-auto gap-y-10 pt-6 pb-12 lg:pt-0'>
 
         {/* New Films Section */}
-        <NewFilms
+        <MostWatchlisted
           isFilterVisible={false}
           hasButton={false}
           max="4"
