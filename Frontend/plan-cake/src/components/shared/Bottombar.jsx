@@ -3,6 +3,7 @@ import { GoHome } from "react-icons/go";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { IoIosSearch } from "react-icons/io";
 import { IoMdLogOut } from "react-icons/io";
+import { GiDandelionFlower } from "react-icons/gi";
 
 const Bottombar = () => {
   const { pathname } = useLocation();
@@ -17,6 +18,16 @@ const Bottombar = () => {
           >
             <GoHome className='text-[30px]'/>
         </Link>
+
+        {/* PickAFilm */}
+        <Link
+            to="/pickAFilm"
+            className={`p-4 transition rounded-[10px]
+                      ${pathname === "/pickAFilm" ? "bg-accent [&_*]:text-accent-foreground": "bg-primary [&_*]:text-primary-foreground"}`}
+        >
+            <GiDandelionFlower className='text-[30px]'/>
+        </Link>
+
         {/* Create */}
         <Link
             to="/create-event"
@@ -25,11 +36,12 @@ const Bottombar = () => {
         >
             <IoMdAddCircleOutline className='text-[30px]'/>
         </Link>
+
         {/* Explore */}
         <Link
-            to="/search"
+            to="/explore"
             className={`p-4 transition rounded-[10px] 
-            ${pathname.startsWith("/explore") ? "bg-accent [&_*]:text-accent-foreground": "bg-primary [&_*]:text-primary-foreground"}`}
+                      ${pathname.startsWith("/explore") ? "bg-accent [&_*]:text-accent-foreground": "bg-primary [&_*]:text-primary-foreground"}`}
         >
             <IoIosSearch className='text-[30px]'/>
         </Link>

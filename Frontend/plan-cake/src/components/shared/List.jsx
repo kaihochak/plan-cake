@@ -226,8 +226,8 @@ const List = ({
 
           {/* Button */}
           {hasButton && (
-            <div className='flex justify-center sm:pt-12 lg:pt-0 lg:w-[25%]'>
-              <button className='text-m-2xl sm:text-[50px] lg:text-[60px]' onClick={buttonHandler}>
+            <div className='flex justify-center sm:pt-12'>
+              <button className='text-m-2xl sm:text-[50px]' onClick={buttonHandler}>
                 <BsFillPlusCircleFill />
               </button>
             </div>
