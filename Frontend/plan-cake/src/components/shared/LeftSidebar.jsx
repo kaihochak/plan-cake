@@ -5,10 +5,8 @@ import { GoHome } from "react-icons/go";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { IoIosSearch } from "react-icons/io";
 import { IoMdLogOut } from "react-icons/io";
-import { IoCalendarClearOutline } from "react-icons/io5";
 import { GiDandelionFlower } from "react-icons/gi";
 import Loader from '@/components/utility/Loader'
-import { Button } from "@/components/ui/button";
 import { useSignOutAccount } from "@/lib/react-query/queries";
 import { useUserContext, INITIAL_USER } from "@/context/AuthContext";
 

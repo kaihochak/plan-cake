@@ -92,7 +92,7 @@ module.exports = {
           letterSpacing: '-0.01em',
           fontWeight: '400',
         }],
-        'm-xl': ['1.75rem', {
+        'm-xl': ['1.5rem', {
           lineHeight: '2rem',
           letterSpacing: '-0.01em',
           fontWeight: '400',

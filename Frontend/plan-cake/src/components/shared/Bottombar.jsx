@@ -29,7 +29,7 @@ const Bottombar = () => {
         <Link
             to="/search"
             className={`p-4 transition rounded-[10px] 
-                      ${pathname === "/search" ? "bg-accent [&_*]:text-accent-foreground": "bg-primary [&_*]:text-primary-foreground"}`}
+            ${pathname.startsWith("/explore") ? "bg-accent [&_*]:text-accent-foreground": "bg-primary [&_*]:text-primary-foreground"}`}
         >
             <IoIosSearch className='text-[30px]'/>
         </Link>

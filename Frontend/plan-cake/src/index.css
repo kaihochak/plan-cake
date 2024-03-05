@@ -42,8 +42,11 @@
     --ring: 222.2 84% 4.9%;
  
     --radius: 0.5rem;
+
+    /* for react swipe  */
+    --swiper-theme-color: #febb10; 
   }
- 
+
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
@@ -85,6 +88,7 @@
 }
 
 @layer utilities {
+
   /* TYPOGRAPHY */
   .h1-bold {
     @apply text-[36px] font-bold leading-[140%] tracking-tighter;
@@ -205,7 +209,7 @@
 
   /* Home */
   .home-container {
-    @apply flex flex-col flex-1 items-center gap-10 overflow-scroll py-10 px-5 md:px-8 lg:p-14 custom-scrollbar;
+    @apply flex flex-col flex-1 items-center gap-10 overflow-scroll md:pb-10 px-5 md:px-8 lg:px-14 xl:pt-10 custom-scrollbar;
   }
 
   .home-posts {
@@ -257,7 +261,7 @@
 
   /* Bottom bar */
   .bottom-bar {
-    @apply z-50 flex-between w-full sticky bottom-0 bg-primary px-5 py-4 lg:hidden;
+    @apply z-50 flex-between w-full sticky bottom-0 bg-primary px-5 py-4 xl:hidden;
   }
 
   /* File uploader */
@@ -288,7 +292,7 @@
 
   /* Left sidebar */
   .leftsidebar {
-    @apply hidden lg:flex px-6 py-10 flex-col justify-between min-w-[270px] bg-primary;
+    @apply hidden xl:flex px-6 py-10 flex-col justify-between min-w-[220px] xl:min-w-[270px] bg-primary;
   }
 
   .leftsidebar-link {
@@ -306,7 +310,7 @@
 
   /* Topbar */
   .topbar {
-    @apply sticky top-0 z-50 lg:hidden bg-primary w-full;
+    @apply sticky top-0 z-50 xl:hidden bg-primary w-full;
   }
 
   /* User card */
