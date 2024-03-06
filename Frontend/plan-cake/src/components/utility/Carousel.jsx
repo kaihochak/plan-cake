@@ -1,5 +1,6 @@
 // Import Swiper React components
 // https://swiperjs.com/react#swiper-props
+import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -11,17 +12,16 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 const Carousel = ({ items }) => {
     const [swiper, setSwiper] = useState(null); // hold the Swiper to interact with the Swiper API
-    
+
     // responsive breakpoints
     const bp_768 = useMediaQuery('(min-width:768px)');
     const space = bp_768 ? 30 : 0;
-    // const isPagination = bp_768 ? { clickable: true } : false;
     const isNavigation = bp_768 ? true : false;
     const slidesPerView = bp_768 ? 3 : 2;
     const stretch = bp_768 ? 0 : -20;
     const depth = bp_768 ? 150 : 100;
-    
-    return  (
+
+    return (
         <div >
             <Swiper
                 modules={[Navigation, Pagination, EffectCoverflow]}
@@ -44,10 +44,13 @@ const Carousel = ({ items }) => {
             >
                 {items.map((item, id) => (
                     <SwiperSlide 
-                        key={id} 
-                        className={`${bp_768 ? "aspect-w-[1.3] aspect-h-[0.6]" : "aspect-w-[1] aspect-h-[0.75]" }`
+                        key={id}
+                        className={`${bp_768 ? "aspect-w-[1.3] aspect-h-[0.6]" : "aspect-w-[1] aspect-h-[0.75]"}`
                     }>
-                        <img className="object-cover object-center rounded-lg" src={item.image} alt={item.title} />
+                        <Link
+                            to={`/film/${item.id}`}>
+                            <img className="object-cover object-center rounded-lg w-full h-full" src={item.image} alt={item.title} />
+                        </Link>
                     </SwiperSlide>
                 ))}
             </Swiper>
