@@ -78,8 +78,7 @@ const List = ({
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-xl xl:text-3xl">
-
+                  <h3 className="text-xl xl:text-3xl h-20">
                     {item.title.length > 30 ? item.title.substring(0, 30) + '...' : item.title}
                   </h3>
 
@@ -151,18 +150,22 @@ const List = ({
           )}
 
           {/* List of items */}
-          <div className={`grid ${mobileLayout === "grid" ? "grid-cols-2 sm:grid-cols-3 gap-x-1 gap-y-4" : "grid-cols-1"}`}>
+          <div
+            className={cn("grid", // universal
+              mobileLayout === "grid" ? "grid-cols-2 sm:grid-cols-3 gap-x-1 gap-y-4" : "grid-cols-1 sm:grid-cols-3 sm:gap-x-4",
+              hasButton && "sm:grid-cols-3 sm:w-full")}
+          >
             {/* each item */}
             {filteredItems.slice(0, max).map((item) => (
               <div
                 key={item.id}
-                className={`flex ${mobileLayout === "grid" ? "flex-col gap-y-4" : "justify-between space-x-4 py-4 sm:gap-x-8"}`}
+                className={`flex ${mobileLayout === "grid" ? "flex-col gap-y-4" : "justify-between sm:justify-start py-4 gap-x-6 sm:gap-x-8 sm:flex-col"}`}
               >
 
                 {/* image */}
-                <div className={`${mobileLayout === "grid" ? "w-[90%]" : "inset-0 w-[35%] sm:w-[45%]"}`}>
+                <div className={`${mobileLayout === "grid" ? "w-[90%]" : "inset-0 w-[35%] sm:w-full"}`}>
                   {/* The image fills the square container */}
-                  <div className="aspect-w-1 aspect-h-1">
+                  <div className={`aspect-w-1 aspect-h-1 ${mobileLayout === "grid" ? "" : "sm:aspect-h-[1.47]"}`}>
                     <img
                       src={item.image}
                       alt={item.title}
@@ -172,22 +175,25 @@ const List = ({
                 </div>
 
                 {/* Info */}
-                <div className={`flex flex-col justify-start ${mobileLayout === "grid" ? "gap-y-1 pr-4" : "gap-y-2 sm:gap-y-6 w-[65%] sm:w-[55%]"}`}>
+                <div className={`flex flex-col justify-start 
+                  ${mobileLayout === "grid" ? "gap-y-1 pr-4" : "gap-y-2 sm:pt-3 w-[65%] sm:w-full"}`
+                }>
                   {/* Date & Time */}
-                  <div className={`flex gap-x-2 ${mobileLayout === "grid" ? "text-m-s sm:text-m-m" : "text-m-m sm:text-m-xl"}`}>
+                  <div className={`flex gap-x-2 
+                    ${mobileLayout === "grid" ? "text-m-s sm:text-m-m" : "text-m-m"}`}>
                     <p>{item.date}</p>
                     <p>{item.time}</p>
                   </div>
 
                   {/* Title */}
-                  <h3 className={`${mobileLayout === "grid" ? "text-m-l sm:text-m-xl mb-2 h-10 sm:h-16" : "text-m-xl sm:text-m-3xl"}`}>
+                  <h3 className={`${mobileLayout === "grid" ? "text-m-l sm:text-m-xl mb-2 h-10 sm:h-16" : "text-m-xl sm:h-16"}`}>
                     {item.title.length > 30 ? item.title.substring(0, 30) + '...' : item.title}
                   </h3>
 
                   {/* Location & Participants */}
-                  <div className="flex justify-between">
+                  <div className="flex justify-between items-center">
                     {/* Location */}
-                    <div className={`flex items-center ${mobileLayout === "grid" ? "text-m-s sm:text-m-m gap-x-2" : "space-x-2 text-m-m sm:text-m-xl"}`}>
+                    <div className={`flex items-center ${mobileLayout === "grid" ? "text-m-s sm:text-m-m gap-x-2" : "gap-x-2 text-m-m"}`}>
                       <GoLocation />
                       <p>{item.location}</p>
                     </div>
@@ -199,7 +205,7 @@ const List = ({
                           .slice(0, item.participants.length > 4 ? 3 : 4)
                           .map((participant, index) => (
                             <div
-                              className={`w-6 h-6 sm:w-10 sm:h-10 rounded-full overflow-hidden flex items-center justify-center 
+                              className={`w-6 h-6 rounded-full overflow-hidden flex items-center justify-center 
                                 ${index > 0 ? "-ml-1" : ""} 
                               `}
                               key={participant.id}
@@ -226,7 +232,7 @@ const List = ({
 
           {/* Button */}
           {hasButton && (
-            <div className='flex justify-center sm:pt-12'>
+            <div className='flex justify-center sm:pt-4'>
               <button className='text-m-2xl sm:text-[50px]' onClick={buttonHandler}>
                 <BsFillPlusCircleFill />
               </button>

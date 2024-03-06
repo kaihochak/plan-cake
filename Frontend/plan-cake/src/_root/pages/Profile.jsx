@@ -10,7 +10,7 @@ const Profile = () => {
       <div className='flex flex-col w-full max-w-[1024px] mx-auto gap-y-10 pt-6 pb-12'>
 
         {/* Profile Info */}
-        <div className='flex justify-between items-center lg:justify-evenly'>
+        <div className='flex justify-between items-center sm:justify-evenly'>
           <img
             src="/assets/icons/profile-placeholder.svg"
             alt="profile"
@@ -40,7 +40,7 @@ const Profile = () => {
 
 
         <Tabs defaultValue="myEvents">
-          <TabsList className="flex mx-auto mb-10 w-auto h-[40px] justify-evenly">
+          <TabsList className="flex mx-auto mb-10 w-auto h-[40px] justify-evenly border-2 border-accent">
             <TabsTrigger value="myEvents" className='w-full'>My Events</TabsTrigger>
             <TabsTrigger value="watchlist" className='w-full'>Watchlist</TabsTrigger>
           </TabsList>
