@@ -5,7 +5,7 @@ import { IoIosSearch } from "react-icons/io";
 import { CiFilter } from "react-icons/ci";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import "@/styles/utility.css"
-import Filters from "@/components/utility/filters";
+import Filters from "@/components/utility/Filters";
 import { cn } from "@/lib/utils"
 // dummy
 import dummyFilmData from "@/data/filmData";
