@@ -72,6 +72,7 @@ const LeftSidebar = () => {
                         <GoHome className='text-accent/80 text-[30px]' />
                         <p>Home</p>
                     </NavLink>
+                    
                     {/* PickAFilm */}
                     <NavLink
 
@@ -92,6 +93,7 @@ const LeftSidebar = () => {
                         <IoMdAddCircleOutline className='text-accent/80 text-[30px]' />
                         <p>Create</p>
                     </NavLink>
+
                     {/* Explore */}
                     <NavLink
                         to="/explore"
