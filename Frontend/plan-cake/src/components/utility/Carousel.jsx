@@ -14,12 +14,12 @@ const Carousel = ({ items }) => {
     const [swiper, setSwiper] = useState(null); // hold the Swiper to interact with the Swiper API
 
     // responsive breakpoints
-    const bp_768 = useMediaQuery('(min-width:768px)');
-    const space = bp_768 ? 30 : 0;
-    const isNavigation = bp_768 ? true : false;
-    const slidesPerView = bp_768 ? 3 : 2;
-    const stretch = bp_768 ? 0 : -20;
-    const depth = bp_768 ? 150 : 100;
+    let bp_768 = useMediaQuery('(min-width:768px)');
+    let space = bp_768 ? 30 : 0;
+    let isNavigation = bp_768 ? true : false;
+    let slidesPerView = bp_768 ? 3 : 2;
+    let stretch = bp_768 ? 0 : -20;
+    let depth = bp_768 ? 150 : 100;
 
     return (
         <div >
