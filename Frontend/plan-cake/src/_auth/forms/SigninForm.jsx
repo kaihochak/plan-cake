@@ -79,20 +79,20 @@ const SigninForm = () => {
   // return the form
   return (
     <Form {...form}>
-      <div className='w-full flex flex-col justify-center items-center gap-y-4 pt-10'>
+      <div className='w-full flex flex-col justify-center items-center gap-y-8 pt-10'>
         <img src={Logo} alt="Home" className="w-20 "/>
-        <h1 className="text-2xl text-center">Log in to your account</h1>
+        <h1 className="text-2xl text-center">Sign in to your account</h1>
 
         <form 
           onSubmit={form.handleSubmit(onSubmit)} 
-          className="flex flex-col justify-center items-center space-y-4 w-full"
+          className="flex flex-col justify-center items-center space-y-4 w-full gap-y-6"
         >
           {/* email */}
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem className="w-[80%]">
+              <FormItem className="w-full lg:w-[60%]">
                 <FormControl>
                   <Input type="email" placeholder="Email" {...field} />
                 </FormControl>
@@ -106,7 +106,7 @@ const SigninForm = () => {
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem className="w-[80%]">
+              <FormItem className="w-full lg:w-[60%]">
                 <FormControl>
                   <Input type="password" placeholder="Password" {...field} />
                 </FormControl>
@@ -116,15 +116,17 @@ const SigninForm = () => {
           />
 
           {/* submit */}
-          <Button type="submit" variant="outline" className="w-[80%]">
-            {isSigningInUser ? (
-              <div className='flex items-center gap-2'>
+          {isSigningInUser ? (
+            <Button type="submit" variant="outline" className="w-full lg:w-[60%] bg-accent ">
+              <div className='flex items-center gap-2 '>
                 <Loader/>Loading...
               </div> 
+            </Button>
             ) : (
+              <Button type="submit" variant="outline" className="w-full lg:w-[60%]">
               <div>Sign in</div>
-            )}
-          </Button>
+            </Button>
+          )}
 
           <div className="flex flex-col justify-center items-center space-y-4 w-full">
             <p className="text-md">
