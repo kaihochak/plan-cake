@@ -5,8 +5,8 @@ export const appwriteConfig = {
     endpoint: import.meta.env.VITE_APPWRITE_ENDPOINT,
     databaseId: import.meta.env.VITE_APPWRITE_DATABASE_ID,
     storageId: import.meta.env.VITE_APPWRITE_STORAGE_ID,
-    userCollectionId: import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID,
-    eventCollectionId: import.meta.env.VITE_APPWRITE_EVENT_COLLECTION_ID,
+    usersCollectionId: import.meta.env.VITE_APPWRITE_USERS_COLLECTION_ID,
+    eventsCollectionId: import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID,
     savesCollectionId: import.meta.env.VITE_APPWRITE_SAVES_COLLECTION_ID,
 };
 

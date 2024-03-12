@@ -1,27 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import List from './List';
 import dumMyEventData from '@/data/MyEventsData';
 import { BsArrowRight } from 'react-icons/bs';
 import { useUserContext } from "@/context/AuthContext";
+import { useGetUserEvents } from '@/lib/react-query/queries';
 
 const MyEvents = ({ hasTitle, isFilterVisible, hasViewMore, hasButton, max}) => {
+
   const [MyEventsData, setMyEventsData] = useState(dumMyEventData);
   const navigate = useNavigate(); 
-  const { user, setUser, setIsAuthenticated, isLoading } = useUserContext();
+  // const { id } = useParams();
+  const { user } = useUserContext();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // const data = await fetchEvents();
-        // setMyEventsData(data);
-      } catch (error) {
-        // Handle error, show an error message, etc.
-      }
-    };
+  // console.log('MyEvents id:', id);
 
-    fetchData();
-  }, []);
+  // const { data: event, isPending: isEventLoading } = useGetEvent(id);
+  const { data: userEvents, isPending: isUserEventsLoading } = useGetUserEvents(user.id);
 
   // Event handler for navigating to the CreateEvent page
   const navigateToCreateEvent = () => {
@@ -51,6 +46,17 @@ const MyEvents = ({ hasTitle, isFilterVisible, hasViewMore, hasButton, max}) => 
         </div>
       }
 
+      { isUserEventsLoading ? 
+        <p>Loading...</p> : 
+        // if there are no events
+        userEvents.length === 0 ? 
+          <p>No events found</p> : 
+          console.log('userEvents:', userEvents.documents) 
+
+          
+      }
+
+    
       <List 
         items={MyEventsData}
         isFilterVisible={isFilterVisible}

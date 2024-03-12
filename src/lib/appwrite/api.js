@@ -38,7 +38,7 @@ export async function saveUserToDB(user) {
         // Save the user to the database with Appwrite
         const newUser = await databases.createDocument(
             appwriteConfig.databaseId,
-            appwriteConfig.userCollectionId,
+            appwriteConfig.usersCollectionId,
             ID.unique(),
             user
         );
@@ -94,7 +94,7 @@ export async function getCurrentUser() {
         // Get the user from the database with Appwrite
         const currentUser = await databases.listDocuments(
             appwriteConfig.databaseId,
-            appwriteConfig.userCollectionId,
+            appwriteConfig.usersCollectionId,
             [Query.equal('accountId', currentAccount.$id)]
         );
         if (!currentUser) throw new Error('No user found');
@@ -146,7 +146,7 @@ export async function createEvent(event) {
         // Create event
         const newEvent = await databases.createDocument(
             appwriteConfig.databaseId,
-            appwriteConfig.eventCollectionId,
+            appwriteConfig.eventsCollectionId,
             ID.unique(),
             eventDocument
         );
@@ -215,3 +215,25 @@ export function getFilePreview(fileId) {
         console.log(error);
     }
 }
+
+export async function getUserEvents(userId) {
+    if (!userId) return;
+  
+    console.log("API userId:", userId);
+    try {
+      const events = await databases.listDocuments(
+        appwriteConfig.databaseId,
+        appwriteConfig.eventsCollectionId,
+        [Query.equal("creator", userId), Query.orderDesc("$createdAt")]
+      );
+  
+      if (!events) {
+        console.log("No events found");
+        throw Error;
+      } 
+  
+      return events;
+    } catch (error) {
+      console.log(error);
+    }
+  }
