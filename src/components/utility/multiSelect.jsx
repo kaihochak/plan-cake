@@ -83,7 +83,7 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
 
                 {/* Drawer Content */}
                 <DrawerContent>
-                    <div className="mt-4 border-t">
+                    <div className="mt-4 border-t ">
                         <OptionList
                             options={options}
                             selectedOptions={selectedOptions}

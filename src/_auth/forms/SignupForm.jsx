@@ -90,20 +90,20 @@ const SignupForm = () => {
   // return the form
   return (
     <Form {...form}>
-      <div className='w-full flex flex-col justify-center items-center gap-y-4 pt-10'>
+      <div className='w-full flex flex-col justify-center items-center gap-y-8 pt-10'>
         <img src={Logo} alt="Home" className="w-20 "/>
         <h1 className="text-2xl text-center">Create a account</h1>
 
         <form 
           onSubmit={form.handleSubmit(onSubmit)} 
-          className="flex flex-col justify-center items-center space-y-4 w-full"
+          className="flex flex-col justify-center items-center space-y-4 w-full gap-y-6"
         >
           {/* username */}
           <FormField
             control={form.control}
             name="username"
             render={({ field }) => (
-              <FormItem className="w-[80%]">
+              <FormItem className="w-full lg:w-[60%]">
                 <FormControl>
                   <Input type="text" placeholder="Username" {...field} />
                 </FormControl>
@@ -119,7 +119,7 @@ const SignupForm = () => {
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem className="w-[80%]">
+              <FormItem className="w-full lg:w-[60%]">
                 <FormControl>
                   <Input type="text" placeholder="Name" {...field} />
                 </FormControl>
@@ -133,7 +133,7 @@ const SignupForm = () => {
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem className="w-[80%]">
+              <FormItem className="w-full lg:w-[60%]">
                 <FormControl>
                   <Input type="email" placeholder="Email" {...field} />
                 </FormControl>
@@ -147,7 +147,7 @@ const SignupForm = () => {
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem className="w-[80%]">
+              <FormItem className="w-full lg:w-[60%]">
                 <FormControl>
                   <Input type="password" placeholder="Password" {...field} />
                 </FormControl>
@@ -157,13 +157,13 @@ const SignupForm = () => {
           />
 
           {/* submit */}
-          <Button type="submit" variant="outline" className="w-[80%]">
+          <Button type="submit" variant="outline" className="w-full lg:w-[60%] bg-accent">
             {isCreatingUser ? (
               <div className='flex items-center gap-2'>
                 <Loader/>Loading...
               </div>
             ) : (
-              <div>Sign up</div>
+              <div className='text-accent-foreground'>Sign up</div>
             )}
           </Button>
 

@@ -62,7 +62,7 @@ const EventDetails = ({ formData: parentFormData, nextStep }) => {
     }
 
     return (
-        <div className="space-y-8 mt-6">
+        <div className="space-y-8 mt-6 pb-44 ">
             <h2 className="text-m-2xl mb-3">Event Details</h2>
             
             {/* Upload Image*/}
