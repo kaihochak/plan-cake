@@ -1,5 +1,5 @@
 import React from 'react';
-import List from './List';
+import EventCollection from '@/components/shared/EventCollection';
 // You will need to import your data for what's nearby or fetch it from an API
 import nearbyEventsData from '@/data/nearbyEventsData';
 import { BsArrowRight } from 'react-icons/bs';
@@ -25,10 +25,10 @@ const WhatsNearby = ({hasTitle, isFilterVisible, hasViewMore, hasButton, max}) =
         </div>
       }
 
-      {/* Pass the necessary props to List */}
-      <List
+      {/* Pass the necessary props to EventCollection */}
+      <EventCollection
         items={nearbyEventsData}
-        isFilterVisible={true}
+        isFilterVisible={isFilterVisible}
         isParticipantsVisible={false}
         mobileLayout={"grid"}
         desktopLayout={"square"}

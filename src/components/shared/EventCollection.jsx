@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import { BsFillPlusCircleFill } from 'react-icons/bs';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-const List = ({
+const EventCollection = ({
   items,
   isFilterVisible,
   isParticipantsVisible,
@@ -49,7 +49,7 @@ const List = ({
             </div>
           )}
 
-          {/* List of items */}
+          {/* EventCollection of items */}
           <div
             className={cn("gap-4 xl:gap-6 grid grid-cols-4", // universal
               hasButton && "grid-cols-3 w-[85%] xl:w-[75%]")}
@@ -149,7 +149,7 @@ const List = ({
             </div>
           )}
 
-          {/* List of items */}
+          {/* EventCollection of items */}
           <div
             className={cn("grid", // universal
               mobileLayout === "grid" ? "grid-cols-2 sm:grid-cols-3 gap-x-1 gap-y-4" : "grid-cols-1 sm:grid-cols-3 sm:gap-x-4",
@@ -244,4 +244,4 @@ const List = ({
   );
 };
 
-export default List;
+export default EventCollection;

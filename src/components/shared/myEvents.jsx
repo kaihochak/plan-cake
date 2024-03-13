@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
-import List from './List';
+import EventCollection from './EventCollection';
 import dumMyEventData from '@/data/MyEventsData';
 import { BsArrowRight } from 'react-icons/bs';
 import { useUserContext } from "@/context/AuthContext";
@@ -57,7 +57,7 @@ const MyEvents = ({ hasTitle, isFilterVisible, hasViewMore, hasButton, max}) => 
       }
 
     
-      <List 
+      <EventCollection 
         items={MyEventsData}
         isFilterVisible={isFilterVisible}
         isParticipantsVisible={true}

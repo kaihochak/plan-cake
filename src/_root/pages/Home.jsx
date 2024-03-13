@@ -24,7 +24,7 @@ const Home = () => {
         {/* What's Nearby Section */}
         <WhatsNearby
           hasTitle={true}
-          isFilterVisible={true}
+          isFilterVisible={false}
           hasViewMore={false}
           hasButton={false}
           max="4"
