@@ -12,13 +12,15 @@ const DummyFilmData = [
         genre: 'Drama',
 
         // user-related info
-        avgRating: 9.3,     // average rating from ratingReviews collection
-        ratingsIDs: ["1", "2", "3"], // ratings from ratingReviews collection
-        numWatchlists: 100, // number of watchlists
-        watchlistedBy: ["3", "4", "5", "6"], // users who have watchlisted this film
-        likes: 100,         // number of likes
-        likedBy: ["1", "2", "3"], // users who have liked this film
-        inEvents: ["1", "2", "3", "4", "5", "6"] // events that this film is in
+        userInformation: {
+            avgRating: 9.3,     // average rating from ratingReviews collection
+            ratingsIDs: ["1", "2", "3"], // ratings from ratingReviews collection
+            numWatchlists: 100, // number of watchlists
+            watchlistedBy: ["3", "4", "5", "6"], // users who have watchlisted this film
+            likes: 100,         // number of likes
+            likedBy: ["1", "2", "3"], // users who have liked this film
+            inEvents: ["1", "2", "3", "4", "5", "6"] // events that this film is in
+        }
     },
     {
         // film info
@@ -80,7 +82,6 @@ const DummyFilmData = [
         likes: 100,         // number of likes
         likedBy: ["1", "2", "3"], // users who have liked this film
     },
-]
-
+];
 
 export default DummyFilmData;
