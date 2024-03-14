@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import EventCollection from './EventCollection';
-import dumMyEventData from '@/data/MyEventsData';
+import { DummyEventData } from '@/data/DummyEventData';
 import { BsArrowRight } from 'react-icons/bs';
 import { useUserContext } from "@/context/AuthContext";
 import { useGetUserEvents } from '@/lib/react-query/queries';
 
 const MyEvents = ({ hasTitle, isFilterVisible, hasViewMore, hasButton, max}) => {
 
-  const [MyEventsData, setMyEventsData] = useState(dumMyEventData);
+  const [events, setEvents] = useState(DummyEventData) ;
   const navigate = useNavigate(); 
   // const { id } = useParams();
   const { user } = useUserContext();
@@ -52,13 +52,11 @@ const MyEvents = ({ hasTitle, isFilterVisible, hasViewMore, hasButton, max}) => 
         userEvents.length === 0 ? 
           <p>No events found</p> : 
           console.log('userEvents:', userEvents.documents) 
-
-          
       }
 
     
       <EventCollection 
-        items={MyEventsData}
+        items={events}
         isFilterVisible={isFilterVisible}
         isParticipantsVisible={true}
         mobileLayout="vertical"
