@@ -4,7 +4,7 @@ import SigninForm from './_auth/forms/SigninForm';
 import SignupForm from './_auth/forms/SignupForm';
 import AuthLayout from './_auth/AuthLayout';
 import RootLayout from './_root/RootLayout';
-import { Home, PickAFilm, CreateEvent, Explore, Profile } from './_root/pages';
+import { Home, PickAFilm, CreateEvent, Explore, Profile, FilmPage, EventPage } from './_root/pages';
 import { Toaster } from "@/components/ui/toaster"
 import './index.css';
 
@@ -27,6 +27,8 @@ function App() {
           <Route path="/create-event" element={<CreateEvent />} />
           <Route path='/explore/*' element={<Explore/>} />
           <Route path='/profile/:id/*' element={<Profile/>} />
+          <Route path='/film/:id' element={<FilmPage/>} />
+          <Route path='/event/:id' element={<EventPage/>} />
         </Route>
       </Routes>
 
