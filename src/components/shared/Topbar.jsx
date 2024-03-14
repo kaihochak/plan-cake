@@ -20,7 +20,7 @@ const TopBar = () => {
             <nav className="flex-between py-4 px-5">
                 {/* Logo as Home Button */}
                 <Link to="/" className="home-logo">
-                    <img src={Logo} alt="Home" className="w-20 " />
+                    <img src={Logo} alt="Home" className=" w-32 " />
                 </Link>
 
                 {/* Right side of TopBar */}
