@@ -17,6 +17,7 @@ const Home = () => {
           hasViewMore={true}
           hasButton={true}
           max="3"
+          maxMobile="3"
         />
         {/* What's Nearby Section */}
         <WhatsNearby
@@ -25,6 +26,7 @@ const Home = () => {
           hasViewMore={false}
           hasButton={false}
           max="4"
+          maxMobile="4"
         />
       </div>
     </section>

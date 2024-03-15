@@ -5,7 +5,7 @@ import nearbyEventsData from '@/data/nearbyEventsData';
 import { BsArrowRight } from 'react-icons/bs';
 import { NavLink } from 'react-router-dom';
 
-const WhatsNearby = ({hasTitle, isFilterVisible, hasViewMore, hasButton, max}) => {
+const WhatsNearby = ({hasTitle, isFilterVisible, hasViewMore, hasButton, max, maxMobile}) => {
 
   return (
     <section className='w-full mb-14'>
@@ -32,7 +32,8 @@ const WhatsNearby = ({hasTitle, isFilterVisible, hasViewMore, hasButton, max}) =
         isParticipantsVisible={false}
         mobileLayout={"grid"}
         desktopLayout={"square"}
-        max='8'
+        max={max}
+        maxMobile={maxMobile}
         hasButton={false}
       />
     </section>

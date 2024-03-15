@@ -6,7 +6,7 @@ import { BsArrowRight } from 'react-icons/bs';
 import { useUserContext } from "@/context/AuthContext";
 import { useGetUserEvents } from '@/lib/react-query/queries';
 
-const MyEvents = ({ hasTitle, isFilterVisible, hasViewMore, hasButton, max}) => {
+const MyEvents = ({ hasTitle, isFilterVisible, hasViewMore, hasButton, max, maxMobile}) => {
 
   const [events, setEvents] = useState(DummyEventData) ;
   const navigate = useNavigate(); 
@@ -62,6 +62,7 @@ const MyEvents = ({ hasTitle, isFilterVisible, hasViewMore, hasButton, max}) => 
         mobileLayout="vertical"
         desktopLayout="tall"
         max={max}
+        maxMobile={maxMobile}
         hasButton={hasButton}
         buttonHandler={navigateToCreateEvent}
       />
