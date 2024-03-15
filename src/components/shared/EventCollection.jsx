@@ -4,13 +4,14 @@ import { cn } from "@/lib/utils"
 import { BsFillPlusCircleFill } from 'react-icons/bs';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-const List = ({
+const EventCollection = ({
   items,
   isFilterVisible,
   isParticipantsVisible,
   mobileLayout, // grid or vertical
   desktopLayout, // tall or square
   max,
+  maxMobile,
   hasButton,
   buttonHandler,
 }) => {
@@ -31,11 +32,9 @@ const List = ({
 
   return (
     <div className="py-2">
-
       {/* Desktop  */}
       {bp_768 ?
         <div className={hasButton ? "flex" : ""}>
-
           {/* Filter */}
           {isFilterVisible && (
             <div>
@@ -48,8 +47,7 @@ const List = ({
               />
             </div>
           )}
-
-          {/* List of items */}
+          {/* EventCollection of items */}
           <div
             className={cn("gap-4 xl:gap-6 grid grid-cols-4", // universal
               hasButton && "grid-cols-3 w-[85%] xl:w-[75%]")}
@@ -123,7 +121,6 @@ const List = ({
               </div>
             ))}
           </div>
-
           {/* Button */}
           {hasButton && (
             <div className='flex justify-center w-[15%] xl:w-[25%]'>
@@ -132,9 +129,9 @@ const List = ({
               </button>
             </div>
           )}
-
-        </div>
-        : // Mobile
+        </div>: 
+        
+      // Mobile
         <div>
           {/* Filter */}
           {isFilterVisible && (
@@ -148,15 +145,14 @@ const List = ({
               />
             </div>
           )}
-
-          {/* List of items */}
+          {/* Collection */}
           <div
             className={cn("grid", // universal
               mobileLayout === "grid" ? "grid-cols-2 sm:grid-cols-3 gap-x-1 gap-y-4" : "grid-cols-1 sm:grid-cols-3 sm:gap-x-4",
               hasButton && "sm:grid-cols-3 sm:w-full")}
           >
             {/* each item */}
-            {filteredItems.slice(0, max).map((item) => (
+            {filteredItems.slice(0, maxMobile).map((item) => (
               <div
                 key={item.id}
                 className={`flex ${mobileLayout === "grid" ? "flex-col gap-y-4" : "justify-between sm:justify-start py-4 gap-x-6 sm:gap-x-8 sm:flex-col"}`}
@@ -229,7 +225,6 @@ const List = ({
               </div>
             ))}
           </div>
-
           {/* Button */}
           {hasButton && (
             <div className='flex justify-center sm:pt-4'>
@@ -244,4 +239,4 @@ const List = ({
   );
 };
 
-export default List;
+export default EventCollection;

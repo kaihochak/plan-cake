@@ -15,7 +15,7 @@ const SearchDisplay = ({ filteredItems, selectedFilms, setSelectedFilms }) => {
         <div>
             {filteredItems.length > 0 ? (
                 <div>
-                    {/* List of items */}
+                    {/* EventCollection of items */}
                     <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
                         {/* each item */}
                         {filteredItems.slice(0, 10).map((item) => (
