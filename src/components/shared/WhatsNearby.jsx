@@ -27,7 +27,7 @@ const WhatsNearby = ({hasTitle, isFilterVisible, hasViewMore, hasButton, max, ma
 
       {/* Pass the necessary props to EventCollection */}
       <EventCollection
-        items={nearbyEventsData}
+        events={nearbyEventsData}
         isFilterVisible={isFilterVisible}
         isParticipantsVisible={false}
         mobileLayout={"grid"}

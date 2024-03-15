@@ -10,7 +10,6 @@ const MyEvents = ({ hasTitle, isFilterVisible, hasViewMore, hasButton, max, maxM
 
   const [events, setEvents] = useState(DummyEventData) ;
   const navigate = useNavigate(); 
-  // const { id } = useParams();
   const { user } = useUserContext();
 
   // console.log('MyEvents id:', id);
@@ -56,7 +55,7 @@ const MyEvents = ({ hasTitle, isFilterVisible, hasViewMore, hasButton, max, maxM
 
     
       <EventCollection 
-        items={events}
+        events={events}
         isFilterVisible={isFilterVisible}
         isParticipantsVisible={true}
         mobileLayout="vertical"

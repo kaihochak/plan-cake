@@ -72,7 +72,7 @@ const FilmCollection = ({
 								</h3>
 								{/* Rating */}
 								<div className="flex items-center gap-x-1">
-									<p className="text-m-2xl">{item.rating}</p>
+									{/* <p className="text-m-2xl">{item.}</p> */}
 								</div>
 							</div>
 						</div>

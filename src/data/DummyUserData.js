@@ -1,4 +1,4 @@
-export default DummyUserData = [
+const DummyUserData = [
     {
         _id: 1,
         username: 'Alice',
@@ -186,3 +186,4 @@ export default DummyUserData = [
     }
 ]
 
+export default DummyUserData;

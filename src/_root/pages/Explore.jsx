@@ -32,7 +32,7 @@ const Explore = () => {
             </NavLink>
           </div>
           <EventCollection
-            items={events}
+            events={events}
             isFilterVisible={false}
             isParticipantsVisible={false}
             mobileLayout="vertical"
