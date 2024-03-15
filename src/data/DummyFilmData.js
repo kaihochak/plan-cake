@@ -10,9 +10,10 @@ const DummyFilmData = [
         releasedDate: '1994-10-14',
         duration: '142 min',
         genre: 'Drama',
+        cast: [3, 4, 5, 6, 7], // id from  tmdb
 
         // user-related info
-        userInformation: {
+        userInfo: {
             avgRating: 9.3,     // average rating from ratingReviews collection
             ratingsIDs: ["1", "2", "3"], // ratings from ratingReviews collection
             numWatchlists: 100, // number of watchlists
@@ -35,12 +36,14 @@ const DummyFilmData = [
         genre: 'Crime, Drama',
 
         // user-related info
-        avgRating: 9.2,     // average rating from ratingReviews collection
-        ratingsIDs: ["4", "5", "6"], // ratings from ratingReviews collection
-        numWatchlists: 100, // number of watchlists
-        watchlistedBy: ["3", "4", "5", "6"], // users who have watchlisted this film
-        likes: 100,         // number of likes
-        likedBy: ["1", "2", "3"], // users who have liked this film
+        userInfo: {
+            avgRating: 9.2,     // average rating from ratingReviews collection
+            ratingsIDs: ["4", "5", "6"], // ratings from ratingReviews collection
+            numWatchlists: 100, // number of watchlists
+            watchlistedBy: ["3", "4", "5", "6"], // users who have watchlisted this film
+            likes: 100,         // number of likes
+            likedBy: ["1", "2", "3"], // users who have liked this film
+        }
     },
     {
         // film info
@@ -55,12 +58,14 @@ const DummyFilmData = [
         genre: 'Action, Crime, Drama',
 
         // user-related info
-        avgRating: 9.0,     // average rating from ratingReviews collection
-        ratingsIDs: ["7", "8", "9"], // ratings from ratingReviews collection
-        numWatchlists: 100, // number of watchlists
-        watchlistedBy: ["3", "4", "5", "6"], // users who have watchlisted this film
-        likes: 100,         // number of likes
-        likedBy: ["1", "2", "3"], // users who have liked this film
+        userInfo: {
+            avgRating: 9.0,     // average rating from ratingReviews collection
+            ratingsIDs: ["7", "8", "9"], // ratings from ratingReviews collection
+            numWatchlists: 100, // number of watchlists
+            watchlistedBy: ["3", "4", "5", "6"], // users who have watchlisted this film
+            likes: 100,         // number of likes
+            likedBy: ["1", "2", "3"], // users who have liked this film
+        }
     },
     {
         // film info
@@ -75,12 +80,14 @@ const DummyFilmData = [
         genre: 'Crime',
 
         // user-related info
-        avgRating: 9.0,     // average rating from ratingReviews collection
-        ratingsIDs: ["10", "11", "12"], // ratings from ratingReviews collection
-        numWatchlists: 100, // number of watchlists
-        watchlistedBy: ["3", "4", "5", "6"], // users who have watchlisted this film
-        likes: 100,         // number of likes
-        likedBy: ["1", "2", "3"], // users who have liked this film
+        userInfo: {
+            avgRating: 9.0,     // average rating from ratingReviews collection
+            ratingsIDs: ["10", "11", "12"], // ratings from ratingReviews collection
+            numWatchlists: 100, // number of watchlists
+            watchlistedBy: ["3", "4", "5", "6"], // users who have watchlisted this film
+            likes: 100,         // number of likes
+            likedBy: ["1", "2", "3"], // users who have liked this film
+        }
     },
 ];
 
