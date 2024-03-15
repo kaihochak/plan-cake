@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import EventCollection from './EventCollection';
-import { DummyEventData } from '@/data/DummyEventData';
+import DummyEventData from '@/data/DummyEventData';
 import { BsArrowRight } from 'react-icons/bs';
 import { useUserContext } from "@/context/AuthContext";
 import { useGetUserEvents } from '@/lib/react-query/queries';

@@ -1,5 +1,3 @@
-
-
 const DummyEventData = [
     {
       _id: 1,

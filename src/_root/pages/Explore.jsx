@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import SearchBar from '@/components/utility/SearchBar'
 import EventCollection from '@/components/shared/EventCollection'
-import { DummyEventData } from '@/data/DummyEventData';
-import { DummyFilmData } from '@/data/DummyFilmData';
+import DummyEventData from '@/data/DummyEventData';
+import DummyFilmData from '@/data/DummyFilmData';
 import { NavLink } from 'react-router-dom/dist';
 import { BsArrowRight } from 'react-icons/bs';
 import FilmCollection from '../../components/shared/FilmCollection';

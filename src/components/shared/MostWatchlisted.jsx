@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import Carousel from '@/components/utility/Carousel';
-import { DummyEventData } from '@/data/DummyEventData';
+import DummyEventData from '@/data/DummyEventData';
 import { BsArrowRight } from 'react-icons/bs';
 
 const MostWatchlisted = ({ isFilterVisible, hasButton, max }) => {
