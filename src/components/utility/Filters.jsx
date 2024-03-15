@@ -188,7 +188,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear, ratingSteps,
             > {ratingSteps} </RatingButton>
         );
         return (
-            <div className='flex gap-2 flex-wrap'>
+            <div className='flex gap-2 flex-wrap flex-evenly'>
                 {buttons}
             </div>
         );
@@ -217,7 +217,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear, ratingSteps,
 
                 <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="outline">{sortBy}</Button>
+                    <Button variant="outline" className=" bg-accent text-accent-foreground">{sortBy}</Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56">
                     <DropdownMenuRadioGroup value={sortBy} onValueChange={handleSortByChange}>
