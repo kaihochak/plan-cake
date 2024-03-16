@@ -6,7 +6,7 @@ import { IoMdLogOut } from "react-icons/io";
 import { useUserContext } from "@/context/AuthContext";
 import { useSignOutAccount } from '@/lib/react-query/queries'
 
-const TopBar = () => {
+const TopBar = ({isSticky}) => {
     const { mutate: signOut, isSuccess } = useSignOutAccount();
     const navigate = useNavigate();
     const { user } = useUserContext();
@@ -16,8 +16,8 @@ const TopBar = () => {
     }, [isSuccess]);
 
     return (
-        <section className='topbar'>
-            <nav className="flex-between py-4 px-5">
+        <section className={`topbar ${isSticky ? "sticky" : "absolute"}`}>
+            <nav className="flex-between px-5 py-6">
                 {/* Logo as Home Button */}
                 <Link to="/" className="home-logo">
                     <img src={Logo} alt="Home" className=" w-32 " />

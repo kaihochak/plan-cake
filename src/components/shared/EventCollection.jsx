@@ -19,6 +19,7 @@ const EventCollection = ({
 }) => {
   const [filter, setFilter] = useState("");
   const [users, setUsers] = useState(DummyUserData);
+  
   const bp_768 = useMediaQuery('(min-width:768px)');
 
   if (max === "0") { max = events.length; };
@@ -152,6 +153,7 @@ const EventCollection = ({
             className={cn("grid", // universal
               mobileLayout === "grid" ? "grid-cols-2 sm:grid-cols-3 gap-x-1 gap-y-4" : "grid-cols-1 sm:grid-cols-3 sm:gap-x-4",
               hasButton && "sm:grid-cols-3 sm:w-full")}
+              key={events.id}
           >
             {/* each event */}
             {filteredEvents.slice(0, maxMobile).map((event) => (
@@ -179,8 +181,7 @@ const EventCollection = ({
                   {/* Date & Time */}
                   <div className={`flex gap-x-2 
                     ${mobileLayout === "grid" ? "text-m-s sm:text-m-m" : "text-m-m"}`}>
-                    <p>{event.date}</p>
-                    <p>{event.time}</p>
+                    <TimeConvertor confirmedDateTime={event.confirmedDateTime} />
                   </div>
 
                   {/* Title */}
@@ -210,8 +211,8 @@ const EventCollection = ({
                             >
                               <img
                                 className="min-w-full min-h-full object-cover"
-                                src={participant.avatar}
-                                alt={participant.name}
+                                src={users.find(user => user._id === participant).profile.avatar}
+                                alt={users.find(user => user._id === participant).profile.username}
                               />
                             </div>
                           ))

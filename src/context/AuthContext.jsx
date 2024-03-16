@@ -29,6 +29,8 @@ const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false) // authentication state
     const [isLoading, setisLoading] = useState(false) // loading state
 
+    const [topbarSticky, setTopbarSticky] = useState(true);
+
     // check if we have a logged in user, whenever the page is refreshed
     const checkAuthUser = async () => {
         setisLoading(true);
@@ -76,6 +78,8 @@ const AuthProvider = ({ children }) => {
         isAuthenticated,
         setIsAuthenticated,
         checkAuthUser,
+        topbarSticky, 
+        setTopbarSticky,
     }
 
     return (

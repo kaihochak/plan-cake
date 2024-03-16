@@ -77,6 +77,11 @@ module.exports = {
         '2xl': '1536px',
       },y: 'oklch(45% 0.2 270)',
       fontSize: {
+        'm-xs': ['0.625rem', {
+          // lineHeight: '0.75rem',
+          letterSpacing: '-0.01em',
+          fontWeight: '400',
+        }],
         'm-s': ['0.75rem', {
           // lineHeight: '1rem',
           letterSpacing: '-0.01em',

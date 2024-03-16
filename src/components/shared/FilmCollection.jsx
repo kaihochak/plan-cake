@@ -44,8 +44,8 @@ const FilmCollection = ({
 
 	return (
 		<div className="py-2">
-			{/* Desktop  */}
 			<div >
+				{/* optional */}
 				<CategoryFilter />
 
 				{/* FilmCollection of items */}
@@ -72,7 +72,8 @@ const FilmCollection = ({
 								</h3>
 								{/* Rating */}
 								<div className="flex items-center gap-x-1">
-									{/* <p className="text-m-2xl">{item.}</p> */}
+									<p>⭐️</p>
+									<p>{item.userInfo.avgRating}</p>
 								</div>
 							</div>
 						</div>

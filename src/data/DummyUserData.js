@@ -6,7 +6,7 @@ const DummyUserData = [
         passwordHash: '123',
         profile: {
             bio: "Short biography or description about the user",
-            location: "User's location (optional)",
+            location: "Chicago, IL, USA",
             avatar: '/assets/avatars/avatar1.jpg',
             followers: [2, 3, 4], // Array of UserIDs who follow the user
             following: [2, 3, 4],

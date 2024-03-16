@@ -1,7 +1,6 @@
 import React from 'react';
 import EventCollection from '@/components/shared/EventCollection';
-// You will need to import your data for what's nearby or fetch it from an API
-import nearbyEventsData from '@/data/nearbyEventsData';
+import DummyEventData from '@/data/DummyEventData';
 import { BsArrowRight } from 'react-icons/bs';
 import { NavLink } from 'react-router-dom';
 
@@ -27,7 +26,7 @@ const WhatsNearby = ({hasTitle, isFilterVisible, hasViewMore, hasButton, max, ma
 
       {/* Pass the necessary props to EventCollection */}
       <EventCollection
-        events={nearbyEventsData}
+        events={DummyEventData}
         isFilterVisible={isFilterVisible}
         isParticipantsVisible={false}
         mobileLayout={"grid"}

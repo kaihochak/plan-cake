@@ -4,17 +4,26 @@ import { Skeleton } from "@/components/ui/skeleton"
 import DummyFilmData from '@/data/DummyFilmData'
 import DummyEventData from '@/data/DummyEventData'
 import DummyCastData from '@/data/DummyCastData'
+import { useUserContext } from '@/context/AuthContext'
 
 const FilmPage = () => {
   const [event, setEvent] = useState(null);
   const [film, setFilm] = useState(null);
   const [cast, setCast] = useState(null);
+  const { setTopbarSticky } = useUserContext();
 
   // Get the film id from the URL
   const { id } = useParams();
 
+  // Set the topbar to absolute
+  useEffect(() => {
+    setTopbarSticky(false);
+    return () => setTopbarSticky(true);
+  },[]);
+
   // Get the film from the database
   useEffect(() => {
+
     // film data
     const film = DummyFilmData.find(film => film._id.toString() === id);
     if (!film)
@@ -25,9 +34,6 @@ const FilmPage = () => {
     }
 
     // cast data
-
-
-
     const cast = film?.cast.map(id => DummyCastData[id])
     if (!cast)
       return console.log('Cast not found');
@@ -91,7 +97,7 @@ const FilmPage = () => {
 
       {/* In Current Events */}
       <div>
-
+        
       </div>
 
       {/* Similar Films */}
