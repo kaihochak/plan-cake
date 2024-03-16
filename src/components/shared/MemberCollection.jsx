@@ -1,11 +1,14 @@
+import { useMediaQuery } from '@react-hook/media-query';
 import React from 'react'
 import { GoLocation } from "react-icons/go";
 
-const MemberCollection = ({ members }) => {
+const MemberCollection = ({ members, max, maxMobile }) => {
+
+	const bp_768 = useMediaQuery('(min-width:768px)');
+  max = bp_768 ? max : maxMobile;
   return (
     <div className='flex flex-col w-full'>
-
-      {members && members.map(member => (
+      { members && members.slice(0, max).map(member => (
         <div className='flex gap-x-5 md:gap-x-10 p-4 mx-auto '>
           {/* image */}
           <div className='min-w-[70px]'>

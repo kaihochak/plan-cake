@@ -152,7 +152,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                         </div>
 
                         {/* Search & Filter */}
-                        <div className="flex gap-x-4">
+                        <div className="flex gap-x-4 pt-6">
                             <SearchBar 
                                 searchTerm={searchTerm} 
                                 handleSearchChange={handleSearchChange}

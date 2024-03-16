@@ -10,16 +10,10 @@ const FilmPage = () => {
   const [event, setEvent] = useState(null);
   const [film, setFilm] = useState(null);
   const [cast, setCast] = useState(null);
-  const { setTopbarSticky } = useUserContext();
+  const { setTransTopBar } = useUserContext();
 
   // Get the film id from the URL
   const { id } = useParams();
-
-  // Set the topbar to absolute
-  useEffect(() => {
-    setTopbarSticky(false);
-    return () => setTopbarSticky(true);
-  },[]);
 
   // Get the film from the database
   useEffect(() => {

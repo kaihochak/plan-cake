@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import { GoLocation } from "react-icons/go";
-import { cn } from "@/lib/utils"
-import { BsFillPlusCircleFill } from 'react-icons/bs';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 const FilmCollection = ({
 	items,
 	isFilterVisible,
 	max,
+	maxMobile,
 }) => {
 
 	const [filter, setFilter] = useState("");
@@ -51,9 +49,10 @@ const FilmCollection = ({
 				{/* FilmCollection of items */}
 				<div className="gap-4 xl:gap-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
 					{/* each item */}
-					{filteredItems.slice(0, max).map((item) => (
+					{ max = bp_768 ? max : maxMobile }
+					{filteredItems.slice(0, max).map((item, index) => (
 						<div
-							key={item.id}
+							key={index}
 							className="flex flex-col justify-start"
 						>
 							{/* image */}
