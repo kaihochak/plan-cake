@@ -3,7 +3,7 @@ import { GoLocation } from "react-icons/go";
 
 const MemberCollection = ({ members }) => {
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col w-full'>
 
       {members && members.map(member => (
         <div className='flex gap-x-5 md:gap-x-10 p-4 mx-auto '>

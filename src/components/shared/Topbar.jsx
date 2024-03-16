@@ -15,6 +15,8 @@ const TopBar = ({isSticky}) => {
         if (isSuccess) navigate(0);
     }, [isSuccess]);
 
+    console.log("topbar: ", isSticky)
+
     return (
         <section className={`topbar ${isSticky ? "sticky" : "absolute"}`}>
             <nav className="flex-between px-5 py-6">

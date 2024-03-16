@@ -18,106 +18,88 @@ const Explore = () => {
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
     if (category === "All") {
-      setEvents(DummyEventData);
-      setFilms(DummyFilmData);
     } else if (category === "Events") {
-      setEvents(DummyEventData);
-      setFilms([]);
     } else if (category === "Films") {
-      setEvents([]);
-      setFilms(DummyFilmData);
     }
   }
 
   return (
-    <div className="common-container mb-12">
-      <div className='flex flex-col w-full max-w-[1024px] mx-auto gap-y-4 pb-24 lg:pt-0'>
+    <div className="explore-container w-full max-w-[1024px] mx-auto gap-y-4 pb-24 mb-12 pt-0">
 
+      <section className='w-full sticky top-0 z-50 bg-primary'>
         {/* Search */}
-        <SearchBar isSticky={true} />
-
-        {/* categorical filters */}
-        <div className='flex pb-2'>
-          {categories.map((category, index) => (
-            <div
-              key={index}
-              className={`text-xl flex items-center justify-center px-4 bg-primary 
-                  ${category === selectedCategory ? "text-primary-foreground underline" : "text-primary-foreground/50"}
-              `}>
-              {category}
-            </div>
-          ))}
-        </div>
+        <SearchBar
+          categories={categories}
+          selectedCategory={selectedCategory}
+          handleCategoryChange={handleCategoryChange}
+        />
+      </section>
 
 
+      <section className='w-full overflow-scroll custom-scrollbar'>
         {/* Events */}
-        <section>
-          <div className='flex justify-between items-baseline border-b-2 pb-2 mb-2'>
-            <h2 className='text-m-2xl sm:text-m-3xl'>Events</h2>
-            <NavLink
-              to={`/explore/events`}
-              className='flex items-center'
-            >
-              <div className='flex items-center'>
-                <p className='mr-2 sm:text-m-l'>VIEW MORE</p>
-                <BsArrowRight />
-              </div>
-            </NavLink>
-          </div>
-          <EventCollection
-            events={events}
-            isFilterVisible={false}
-            isParticipantsVisible={true}
-            mobileLayout="vertical"
-            desktopLayout="tall"
-            max='4'
-            maxMobile='3'
-            hasButton={false}
-          />
-        </section>
+        <div className='flex justify-between items-baseline border-b-2 pb-2 mb-2'>
+          <h2 className='text-m-2xl sm:text-m-3xl'>Events</h2>
+          <NavLink
+            to={`/explore/events`}
+            className='flex items-center'
+          >
+            <div className='flex items-center'>
+              <p className='mr-2 sm:text-m-l'>VIEW MORE</p>
+              <BsArrowRight />
+            </div>
+          </NavLink>
+        </div>
+        <EventCollection
+          events={events}
+          isFilterVisible={false}
+          isParticipantsVisible={true}
+          mobileLayout="vertical"
+          desktopLayout="tall"
+          max='4'
+          maxMobile='3'
+          hasButton={false}
+        />
 
-        {/* Films */}
-        <section>
-          <div className='flex justify-between items-baseline border-b-2 pb-2 mb-2'>
-            <h2 className='text-m-2xl sm:text-m-3xl'>Films</h2>
-            <NavLink
-              to={`/explore/films`}
-              className='flex items-center'
-            >
-              <div className='flex items-center'>
-                <p className='mr-2 sm:text-m-l'>VIEW MORE</p>
-                <BsArrowRight />
-              </div>
-            </NavLink>
-          </div>
-          <FilmCollection
-            items={films}
-            isFilterVisible={false}
-            max='4'
-          />
-        </section>
+      {/* Films */}
 
-        {/* members */}
-        <section>
-          <div className='flex justify-between items-baseline border-b-2 pb-2 mb-2'>
-            <h2 className='text-m-2xl sm:text-m-3xl'>Members</h2>
-            <NavLink
-              to={`/explore/members`}
-              className='flex items-center'
-            >
-              <div className='flex items-center'>
-                <p className='mr-2 sm:text-m-l'>VIEW MORE</p>
-                <BsArrowRight />
-              </div>
-            </NavLink>
-          </div>
-          <MemberCollection
-            members={DummyUserData}
-            isFilterVisible={false}
-            max='4'
-          />
-        </section>
-      </div>
+        <div className='flex justify-between items-baseline border-b-2 pb-2 mb-2'>
+          <h2 className='text-m-2xl sm:text-m-3xl'>Films</h2>
+          <NavLink
+            to={`/explore/films`}
+            className='flex items-center'
+          >
+            <div className='flex items-center'>
+              <p className='mr-2 sm:text-m-l'>VIEW MORE</p>
+              <BsArrowRight />
+            </div>
+          </NavLink>
+        </div>
+        <FilmCollection
+          items={films}
+          isFilterVisible={false}
+          max='4'
+        />
+
+      {/* members */}
+        <div className='flex justify-between  items-baseline border-b-2 pb-2 mb-2'>
+          <h2 className='text-m-2xl sm:text-m-3xl'>Members</h2>
+          <NavLink
+            to={`/explore/members`}
+            className='flex items-center'
+          >
+            <div className='flex items-center'>
+              <p className='mr-2 sm:text-m-l'>VIEW MORE</p>
+              <BsArrowRight />
+            </div>
+          </NavLink>
+        </div>
+        <MemberCollection
+          members={DummyUserData}
+          isFilterVisible={false}
+          max='4'
+        />
+      </section>
     </div>
   )
 }
