@@ -1,7 +1,7 @@
 import React from 'react'
 import { Skeleton } from "@/components/ui/skeleton"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import dumMyEventData from '@/data/MyEventsData';
+import {DummyEventData} from '@/data/DummyEventData';
 
 const WatchlistBuilder = () => {
     return (
