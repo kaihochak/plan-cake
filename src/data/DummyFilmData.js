@@ -7,7 +7,7 @@ const DummyFilmData = [
         title: 'The Shawshank Redemption',
         director: 'Frank Darabont',
         image: 'https://m.media-amazon.com/images/M/MV5BNDE3ODcxYzMtY2YzZC00NmNlLWJiNDMtZDViZWM2MzIxZDYwXkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_.jpg',
-        releasedDate: '1994-10-14',
+        releasedYear: '1994',
         duration: '142 min',
         genre: 'Drama',
         cast: [3, 4, 5, 6, 7], // id from  tmdb
@@ -31,7 +31,7 @@ const DummyFilmData = [
         title: 'The Godfather',
         director: 'Francis Ford Coppola',
         image: '/assets/posters/godfather.jpg',
-        releasedDate: '1972-03-24',
+        releasedYear: '1972',
         duration: '175 min',
         genre: 'Crime, Drama',
 
@@ -53,7 +53,7 @@ const DummyFilmData = [
         title: 'The Dark Knight',
         director: 'Christopher Nolan',
         image: '/assets/posters/darkknight.jpg',
-        releasedDate: '2008-07-18',
+        releasedYear: '2008',
         duration: '152 min',
         genre: 'Action, Crime, Drama',
 
@@ -75,7 +75,7 @@ const DummyFilmData = [
         title: 'The Godfather: Part II',
         director: 'Francis Ford Coppola',
         image: '/assets/posters/godfather2.jpg',
-        releasedDate: '1974-12-20',
+        releasedYear: '1974',
         duration: '202 min',
         genre: 'Crime',
 

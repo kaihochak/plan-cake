@@ -4,14 +4,22 @@ import { Skeleton } from "@/components/ui/skeleton"
 import DummyFilmData from '@/data/DummyFilmData'
 import DummyEventData from '@/data/DummyEventData'
 import DummyCastData from '@/data/DummyCastData'
+import { useUserContext } from '@/context/AuthContext'
 
 const FilmPage = () => {
   const [event, setEvent] = useState(null);
   const [film, setFilm] = useState(null);
   const [cast, setCast] = useState(null);
 
+  const { setTopbarSticky } = useUserContext();
+
   // Get the film id from the URL
   const { id } = useParams();
+
+  useEffect(() => {
+    setTopbarSticky(false);
+    return() => setTopbarSticky(true);
+  },[]);
 
   // Get the film from the database
   useEffect(() => {
@@ -38,7 +46,7 @@ const FilmPage = () => {
   }, []);
 
   return (
-    <div className='common-container'>
+    <div className='common-container flex justify-between p-4 mb-20'>
 
       {!film ?
         <div className='flex flex-col gap-2 '>
@@ -49,45 +57,46 @@ const FilmPage = () => {
           <Skeleton className="w-[250px] h-[20px] rounded-xl" /> 
           <Skeleton className="w-[250px] h-[20px] rounded-xl" /> 
         </div>:
-        <div>
-          <div className='aspect-w-[0.9] aspect-h-[1.5] max-w-2xl mx-auto'>
-            <img src={film?.image} alt={film?.title} />
+        <div className='inset-0 w-[100%]'>
+          <div className='aspect-w-[1] aspect-h-[1.5] max-w-2xl -mx-5 -mt-10 mb-4'>
+            <img src={film?.image} alt={film?.title} className=''/>
           </div>
-          <div className="space-y-3">
-            <div>
-              <h1>{film?.title}</h1>
-              <p>{film?.description}</p>
-              <p>{film?.genre}</p>
-              <p>{film?.duration}</p>
-              <p>{film?.releaseDate}</p>
+          <div className="">
+            <div className='flex flex-col justify-center text-center gap-y-1'>
+              <h1 className="text-m-l my-2">{film?.title}</h1>
+              <p className='text-m-s'>{film?.releasedYear} | {film?.duration}</p>
+              <p className='text-m-s'>{film?.description}</p>
+              <p className='text-m-s'>{film?.genre}</p>
             </div>
           </div>
         </div>
       }
 
       {/* Cast */}
-      <h2>Cast</h2>
-      {!cast ?
-        <div className='flex gap-x-2'>
-          <Skeleton className="w-[50px] h-[50px] rounded-full"/>
-          <Skeleton className="w-[50px] h-[50px] rounded-full"/>
-          <Skeleton className="w-[50px] h-[50px] rounded-full"/>
-          <Skeleton className="w-[50px] h-[50px] rounded-full"/>
-          <Skeleton className="w-[50px] h-[50px] rounded-full"/>
-          <Skeleton className="w-[50px] h-[50px] rounded-full"/>
-        </div>:
-        <div>
-          <div className='flex gap-x-2'>
-            {cast.map((actor, index) => (
-              <div key={index}>
-                <img src={actor.image} alt={actor.name} />
-                <p>{actor.name}</p>
-                <p>{actor.character}</p>
-              </div>
-            ))}
+      <div className="flex flex-col flex-shrink-0 w-full">
+        <h2 className='text-m-l text-center mb-3'>Cast</h2>
+        {!cast ?
+          <div className='flex gap-x-2 '>
+            <Skeleton className="w-[50px] h-[50px] rounded-full"/>
+            <Skeleton className="w-[50px] h-[50px] rounded-full"/>
+            <Skeleton className="w-[50px] h-[50px] rounded-full"/>
+            <Skeleton className="w-[50px] h-[50px] rounded-full"/>
+            <Skeleton className="w-[50px] h-[50px] rounded-full"/>
+            <Skeleton className="w-[50px] h-[50px] rounded-full"/>
+          </div>:
+          <div className="overflow-x-auto">
+            <div className='flex gap-x-3 py-2' style={{ minWidth: '600px' }}>
+              {cast.map((actor, index) => (
+                <div key={index} className='w-[80px] h-auto flex-shrink-0 relative'>
+                  <img src={actor?.image} alt={actor?.name} className='rounded-md inset-0 object-cover mb-2'/>
+                  <p className='text-m-s'>{actor.name}</p>
+                  <p className='text-m-s'>{actor.character}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      }
+        }
+      </div>
 
       {/* In Current Events */}
       <div>

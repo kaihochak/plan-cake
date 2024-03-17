@@ -310,7 +310,7 @@
 
   /* Topbar */
   .topbar {
-    @apply sticky top-0 z-50 xl:hidden bg-primary w-full;
+    @apply top-0 z-50 xl:hidden bg-transparent w-full;
   }
 
   /* User card */
