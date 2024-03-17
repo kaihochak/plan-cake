@@ -22,7 +22,7 @@ const SearchBar = ({ searchTerm, handleSearchChange,
             </div>
 
             {/* filter */}
-            {categories && (
+            {/* {categories && (
                 <div className='flex py-4 cursor-pointer'>
                     {categories.map((category, index) => (
                         <div
@@ -38,7 +38,7 @@ const SearchBar = ({ searchTerm, handleSearchChange,
                         </div>
                     ))}
                 </div>
-            )}
+            )} */}
         </div>
     );
 };

@@ -12,6 +12,8 @@ const FilmCollection = ({
 	const bp_768 = useMediaQuery('(min-width:768px)');
 
 	if (max === "0") { max = items.length; };
+	if (maxMobile === "0") { maxMobile = items.length; };
+	if (!bp_768) { max = maxMobile; }
 
 	// Handle filter change
 	const handleFilterChange = (e) => {
@@ -49,7 +51,6 @@ const FilmCollection = ({
 				{/* FilmCollection of items */}
 				<div className="gap-4 xl:gap-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
 					{/* each item */}
-					{ max = bp_768 ? max : maxMobile }
 					{filteredItems.slice(0, max).map((item, index) => (
 						<div
 							key={index}

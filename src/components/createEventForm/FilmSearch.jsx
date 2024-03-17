@@ -35,15 +35,6 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const [ratingFilter, setRatingFilter] = useState(defaultRating);
     const [showFilters, setShowFilters] = useState(false);
 
-    // Fetch data initially
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //     const result = await axios('https://api.example.com/data');
-    //     setData(result.data);
-    //     };
-    //     fetchData();
-    // }, []);
-
     const updateSelection = (newSelectedFilms) => {
         setFormData(formData => ({
             ...formData,
@@ -72,8 +63,6 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     };
 
     useEffect(() => {
-        // console.log("Current Filters:", { watchlistFilter, sortBy, specificWatchlistFilter, genreFilter, yearFilter, ratingFilter });
-
         // show the filter button in a different color if any filter has been applied
         const hasChanged = sortBy !== defaultSortBy ||
             watchlistFilter !== defaultWatchlistFilter ||
