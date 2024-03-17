@@ -7,6 +7,7 @@ import DummyUserData from '@/data/DummyUserData';
 import FilmCollection from '@/components/shared/FilmCollection';
 import MemberCollection from '@/components/shared/MemberCollection';
 import { set } from 'date-fns';
+import { CiFilter } from 'react-icons/ci';
 
 const Explore = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -16,6 +17,7 @@ const Explore = () => {
   const [films, setFilms] = useState(DummyFilmData);
   const [members, setMembers] = useState(DummyUserData);
   const categories = ["All", "Events", "Films", "Members"];
+  const [isFilterApplied, setIsFilterApplied] = useState(false);
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
@@ -27,9 +29,9 @@ const Explore = () => {
       <section className='explore-inner_container'>
         <div className='explore-innermost'>
           {selectedCategory === "All" && (<>
-              <EventContent title={true} />
-              <FilmContent title={true} />
-              <MemberContent title={true} />
+            <EventContent title={true} />
+            <FilmContent title={true} />
+            <MemberContent title={true} />
           </>)}
           {selectedCategory === "Events" && (<EventContent />)}
           {selectedCategory === "Films" && (<FilmContent />)}
@@ -98,13 +100,18 @@ const Explore = () => {
 
       {/* this part is sticky with max width */}
       <section className='explore-search_container'>
-        {/* Search */}
-        <SearchBar
-          // searchTerm={searchTerm}
-          // handleSearchChange={handleSearchChange}
-        />
+        <div className="flex-between gap-x-4 ">
+          {/* Search */}
+          <SearchBar/>
+          {/* Filter */}
+          {selectedCategory !== "All" && <button
+            className={`flex items-center text-[30px] mr-2 mt-2 text-primary-foreground/60" 
+              ${ isFilterApplied ? "text-accent/70" : ""}`}
+            onClick={() => setShowFilters(!showFilters)}
+          ><CiFilter /></button>}
+        </div>
 
-        {/* Filter */}
+        {/* Category */}
         <div className='flex py-4 cursor-pointer'>
           {categories.map((category, index) => (
             <div
