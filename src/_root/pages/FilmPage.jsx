@@ -12,12 +12,6 @@ const FilmPage = () => {
   const [film, setFilm] = useState(null);
   const [cast, setCast] = useState(null);
   const bp_768 = useMediaQuery('(min-width:768px)');
-
-  let bannerSrc = film?.image;
-
-  if (bp_768) 
-    bannerSrc = film?.banner;
-
   const { setTopbarSticky } = useUserContext();
 
   // Get the film id from the URL
@@ -25,8 +19,8 @@ const FilmPage = () => {
 
   useEffect(() => {
     setTopbarSticky(false);
-    return() => setTopbarSticky(true);
-  },[]);
+    return () => setTopbarSticky(true);
+  }, []);
 
   // Get the film from the database
   useEffect(() => {
@@ -40,9 +34,6 @@ const FilmPage = () => {
     }
 
     // cast data
-
-
-
     const cast = film?.cast.map(id => DummyCastData[id])
     if (!cast)
       return console.log('Cast not found');
@@ -52,75 +43,89 @@ const FilmPage = () => {
     }
   }, []);
 
-  return (
-    <div className='common-container flex justify-between p-4 mb-20'>
 
-      {!film ?
-        <div className='flex flex-col gap-2 '>
-          <Skeleton className="w-[250px] h-[400px] rounded-xl" /> 
-          <Skeleton className="w-[250px] h-[20px] rounded-xl" /> 
-          <Skeleton className="w-[250px] h-[20px] rounded-xl" /> 
-          <Skeleton className="w-[250px] h-[20px] rounded-xl" /> 
-          <Skeleton className="w-[250px] h-[20px] rounded-xl" /> 
-          <Skeleton className="w-[250px] h-[20px] rounded-xl" /> 
-        </div>:
-        <div className='inset-0 w-[100%] mb-4 '>
-          <div className='film-container'>
-            <img src={bannerSrc} alt={film?.title} className=''/>
-            <div className='film-img-gradient'></div>
-          </div>
-          {bp_768 && 
-            <div>
-              <img src={film?.image} alt={film?.title} className=''/>
-            </div>}
-          <div className='relative'>
-            <div className="absolute -top-20 left-[12.5%]">
-              <div className='flex flex-col justify-center text-center gap-y-1'>
-                <h1 className="text-m-l my-2 font-bold">{film?.title}</h1>
-                <p className='text-m-s'>{film?.releasedYear} | {film?.duration}</p>
-                <p className='text-m-s'>{film?.description}</p>
-                <p className='text-m-s'>{film?.genre}</p>
-              </div>
+  const FilmInfo = () => {
+    return (
+      <div className='inset-0 w-[100%] mb-4 '>
+        {/* image & title*/}
+        <div className='film-container'>
+          <img src={bannerSrc} alt={film?.title} className='' />
+          <div className='film-img-gradient'></div>
+        </div>
+        {bp_768 &&
+          <div>
+            <img src={film?.image} alt={film?.title} className='' />
+          </div>}
+
+        {/* Info */}
+        <div className='relative'>
+          <div className="absolute -top-20 left-[12.5%]">
+            <div className='flex flex-col justify-center text-center gap-y-1'>
+              <h1 className="text-m-l my-2 font-bold">{film?.title}</h1>
+              <p className='text-m-s'>{film?.releasedYear} | {film?.duration}</p>
+              <p className='text-m-s'>{film?.description}</p>
+              <p className='text-m-s'>{film?.genre}</p>
             </div>
           </div>
         </div>
-      }
+      </div>
+    )
+  }
 
-      {/* Cast */}
-      <div className="flex flex-col flex-shrink-0 w-full">
-        <h2 className='text-m-m text-center mb-2 font-bold'>Cast</h2>
-        {!cast ?
-          <div className='flex gap-x-2 '>
-            <Skeleton className="w-[50px] h-[50px] rounded-full"/>
-            <Skeleton className="w-[50px] h-[50px] rounded-full"/>
-            <Skeleton className="w-[50px] h-[50px] rounded-full"/>
-            <Skeleton className="w-[50px] h-[50px] rounded-full"/>
-            <Skeleton className="w-[50px] h-[50px] rounded-full"/>
-            <Skeleton className="w-[50px] h-[50px] rounded-full"/>
-          </div>:
-          <div className="overflow-x-auto">
-            <div className='flex gap-x-3 py-2' style={{ minWidth: '600px' }}>
-              {cast.map((actor, index) => (
-                <div key={index} className='w-[80px] h-auto flex-shrink-0 relative'>
-                  <img src={actor?.image} alt={actor?.name} className='rounded-md inset-0 object-cover mb-2'/>
-                  <p className='text-m-s'>{actor.name}</p>
-                  <p className='text-m-s'>{actor.character}</p>
-                </div>
-              ))}
+  let bannerSrc = film?.image;
+  if (bp_768) bannerSrc = film?.banner;
+
+  return (
+    <div className='film-page-container justify-between p-4 mb-20'>
+      {/* <div className='max-w-[1024px]'> */}
+        {/* Film Info */}
+        {!film ?
+          <div className='flex flex-col gap-2 '>
+            <Skeleton className="w-[250px] h-[400px] rounded-xl" />
+            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
+            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
+            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
+            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
+            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
+          </div> :
+          <FilmInfo />}
+
+        {/* Cast */}
+        <div className="flex flex-col flex-shrink-0 w-full">
+          <h2 className='text-m-m text-center mb-2 font-bold'>Cast</h2>
+          {!cast ?
+            <div className='flex gap-x-2 '>
+              <Skeleton className="w-[50px] h-[50px] rounded-full" />
+              <Skeleton className="w-[50px] h-[50px] rounded-full" />
+              <Skeleton className="w-[50px] h-[50px] rounded-full" />
+              <Skeleton className="w-[50px] h-[50px] rounded-full" />
+              <Skeleton className="w-[50px] h-[50px] rounded-full" />
+              <Skeleton className="w-[50px] h-[50px] rounded-full" />
+            </div> :
+            <div className="overflow-x-auto">
+              <div className='flex gap-x-3 py-2' style={{ minWidth: '600px' }}>
+                {cast.map((actor, index) => (
+                  <div key={index} className='w-[80px] h-auto flex-shrink-0 relative'>
+                    <img src={actor?.image} alt={actor?.name} className='rounded-md inset-0 object-cover mb-2' />
+                    <p className='text-m-s'>{actor.name}</p>
+                    <p className='text-m-s'>{actor.character}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        }
-      </div>
+          }
+        </div>
 
-      {/* In Current Events */}
-      <div>
+        {/* In Current Events */}
+        <div>
 
-      </div>
+        </div>
 
-      {/* Similar Films */}
-      <div className="mt-2">
-        {/* FilmList component */}
-      </div>
+        {/* Similar Films */}
+        <div className="mt-2">
+          {/* FilmList component */}
+        </div>
+      {/* </div> */}
     </div>
 
   )
