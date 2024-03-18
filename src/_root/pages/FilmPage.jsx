@@ -48,14 +48,13 @@ const FilmPage = () => {
     return (
       <div className='inset-0 w-[100%] mb-4 '>
         {/* image & title*/}
-        <div className='film-container'>
+        <div className='film-img-container'>
           <img src={bannerSrc} alt={film?.title} className='' />
           <div className='film-img-gradient'></div>
         </div>
-        {bp_768 &&
-          <div>
-            <img src={film?.image} alt={film?.title} className='' />
-          </div>}
+        {bp_768 &&<div className='flex justify-start'>
+          <img src={film?.image} alt={film?.title} className='w-[100px]' />
+        </div>}
 
         {/* Info */}
         <div className='relative'>
@@ -76,8 +75,8 @@ const FilmPage = () => {
   if (bp_768) bannerSrc = film?.banner;
 
   return (
-    <div className='film-page-container justify-between p-4 mb-20'>
-      {/* <div className='max-w-[1024px]'> */}
+    <div className='film-container justify-between p-4 mb-20'>
+      <div className='film-page-inner'>
         {/* Film Info */}
         {!film ?
           <div className='flex flex-col gap-2 '>
@@ -103,7 +102,7 @@ const FilmPage = () => {
               <Skeleton className="w-[50px] h-[50px] rounded-full" />
             </div> :
             <div className="overflow-x-auto">
-              <div className='flex gap-x-3 py-2' style={{ minWidth: '600px' }}>
+              <div className='flex gap-x-3 py-2'>
                 {cast.map((actor, index) => (
                   <div key={index} className='w-[80px] h-auto flex-shrink-0 relative'>
                     <img src={actor?.image} alt={actor?.name} className='rounded-md inset-0 object-cover mb-2' />
@@ -125,7 +124,7 @@ const FilmPage = () => {
         <div className="mt-2">
           {/* FilmList component */}
         </div>
-      {/* </div> */}
+      </div>
     </div>
 
   )

@@ -260,12 +260,17 @@
   }
 
   /* Film details */
-  .film-page-container {
-    @apply flex flex-col flex-1 items-center gap-10 overflow-scroll py-10 px-5 md:px-8 lg:p-14 custom-scrollbar;
+  .film-container {
+    @apply flex flex-1 p-0 custom-scrollbar overflow-scroll ;
   }
 
-  .film-container {
-    @apply aspect-w-[1] aspect-h-[1.5] max-w-2xl -mx-5 -mt-10 
+  .film-page-inner {
+    @apply flex flex-col top-0 mx-auto max-w-[1024px] gap-10 py-10 px-5 md:px-8 lg:p-10 overflow-hidden;
+  }
+
+  .film-img-container {
+    @apply aspect-w-[1] aspect-h-[1.5] -mx-10 -mt-10;
+    @apply md:aspect-w-[1.778] md:aspect-h-1;
   }
 
   .film-img-gradient {
