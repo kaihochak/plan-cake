@@ -5,11 +5,18 @@ import DummyFilmData from '@/data/DummyFilmData'
 import DummyEventData from '@/data/DummyEventData'
 import DummyCastData from '@/data/DummyCastData'
 import { useUserContext } from '@/context/AuthContext'
+import { useMediaQuery } from '@react-hook/media-query'
 
 const FilmPage = () => {
   const [event, setEvent] = useState(null);
   const [film, setFilm] = useState(null);
   const [cast, setCast] = useState(null);
+  const bp_768 = useMediaQuery('(min-width:768px)');
+
+  let bannerSrc = film?.image;
+
+  if (bp_768) 
+    bannerSrc = film?.banner;
 
   const { setTopbarSticky } = useUserContext();
 
@@ -57,16 +64,23 @@ const FilmPage = () => {
           <Skeleton className="w-[250px] h-[20px] rounded-xl" /> 
           <Skeleton className="w-[250px] h-[20px] rounded-xl" /> 
         </div>:
-        <div className='inset-0 w-[100%]'>
-          <div className='aspect-w-[1] aspect-h-[1.5] max-w-2xl -mx-5 -mt-10 mb-4'>
-            <img src={film?.image} alt={film?.title} className=''/>
+        <div className='inset-0 w-[100%] mb-4 '>
+          <div className='film-container'>
+            <img src={bannerSrc} alt={film?.title} className=''/>
+            <div className='film-img-gradient'></div>
           </div>
-          <div className="">
-            <div className='flex flex-col justify-center text-center gap-y-1'>
-              <h1 className="text-m-l my-2">{film?.title}</h1>
-              <p className='text-m-s'>{film?.releasedYear} | {film?.duration}</p>
-              <p className='text-m-s'>{film?.description}</p>
-              <p className='text-m-s'>{film?.genre}</p>
+          {bp_768 && 
+            <div>
+              <img src={film?.image} alt={film?.title} className=''/>
+            </div>}
+          <div className='relative'>
+            <div className="absolute -top-20 left-[12.5%]">
+              <div className='flex flex-col justify-center text-center gap-y-1'>
+                <h1 className="text-m-l my-2 font-bold">{film?.title}</h1>
+                <p className='text-m-s'>{film?.releasedYear} | {film?.duration}</p>
+                <p className='text-m-s'>{film?.description}</p>
+                <p className='text-m-s'>{film?.genre}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -74,7 +88,7 @@ const FilmPage = () => {
 
       {/* Cast */}
       <div className="flex flex-col flex-shrink-0 w-full">
-        <h2 className='text-m-l text-center mb-3'>Cast</h2>
+        <h2 className='text-m-m text-center mb-2 font-bold'>Cast</h2>
         {!cast ?
           <div className='flex gap-x-2 '>
             <Skeleton className="w-[50px] h-[50px] rounded-full"/>

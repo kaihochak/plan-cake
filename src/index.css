@@ -259,6 +259,15 @@
     @apply flex flex-col flex-1 items-center gap-10 overflow-scroll py-10 px-5 md:p-14 custom-scrollbar;
   }
 
+  /* Film details */
+  .film-container {
+    @apply aspect-w-[1] aspect-h-[1.5] max-w-2xl -mx-5 -mt-10 
+  }
+
+  .film-img-gradient {
+    @apply absolute bg-gradient-to-b from-transparent to-primary bottom-1 
+  }
+
   /* Bottom bar */
   .bottom-bar {
     @apply z-50 flex-between w-full sticky bottom-0 bg-primary px-5 py-4 xl:hidden;
