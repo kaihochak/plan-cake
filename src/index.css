@@ -261,16 +261,18 @@
 
   /* Film details */
   .film-container {
-    @apply flex flex-1 p-0 custom-scrollbar overflow-scroll ;
+    @apply flex flex-1 p-0 custom-scrollbar overflow-scroll;
   }
 
   .film-page-inner {
-    @apply flex flex-col top-0 mx-auto max-w-[1024px] gap-10 py-10 px-5 md:px-8 lg:p-10 overflow-hidden;
+    @apply flex flex-col mx-auto top-0 w-full max-w-[1024px] ;
+    @apply gap-10 py-10 md:py-0 px-5 md:px-8 ;
+
   }
 
   .film-img-container {
-    @apply aspect-w-[1] aspect-h-[1.5] -mx-10 -mt-10;
-    @apply md:aspect-w-[1.778] md:aspect-h-1;
+    @apply aspect-w-[1] aspect-h-[1.778] -mx-10 -mt-20 -mb-36;
+    @apply md:aspect-w-[1.778] md:aspect-h-1 md:-mx-10 md:-my-0;
   }
 
   .film-img-gradient {
