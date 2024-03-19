@@ -11,7 +11,7 @@ const FilmPage = () => {
   const [event, setEvent] = useState(null);
   const [film, setFilm] = useState(null);
   const [cast, setCast] = useState(null);
-  const bp_768 = useMediaQuery('(min-width:768px)');
+  const bp_640 = useMediaQuery('(min-width:640px)');
   const { setTopbarSticky } = useUserContext();
 
   // Get the film id from the URL
@@ -47,16 +47,18 @@ const FilmPage = () => {
   const FilmInfo = () => {
     return (
       <div className='inset-0 w-full mb-4'>
-        {/* image & title*/}
+        {/* image*/}
         <div className='film-img-container'>
-          <img src={bannerSrc} alt={film?.title} className='' />
-          <div className='film-img-gradient'></div>
+          <img src={bannerSrc} alt={film?.title} className='film-img' />
+          {/* fade mask */}
+          <div className='film-img-masks'></div> 
         </div>
+
         {/* Info */}
-        <div className='relative flex -top-30'>
-          {bp_768 &&
+        <div className='film-info-container'>
+          {bp_640 &&
             <div className='flex justify-start'>
-              <img src={film?.image} alt={film?.title} className='w-[200px]' />
+              <img src={film?.image} alt={film?.title} className='film-small-poster' />
             </div>}
           <div className="flex mx-auto">
             <div className='flex flex-col justify-center text-center gap-y-1'>
@@ -71,7 +73,7 @@ const FilmPage = () => {
     )
   }
   let bannerSrc = film?.image;
-  if (bp_768) bannerSrc = film?.banner;
+  if (bp_640) bannerSrc = film?.banner;
 
   // Cast
   const Cast = () => {
