@@ -38,6 +38,8 @@ const RootLayout = () => {
   };
 
 
+  const { topbarSticky } = useUserContext(); // some pages would not need a sticky topbar
+
   return (
     <div className="w-full xl:flex">
       {isTransparentRoute() ? <TransTopBar /> : <TopBar />}

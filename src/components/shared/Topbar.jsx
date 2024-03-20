@@ -11,6 +11,8 @@ const TopBar = ({isSticky}) => {
     const navigate = useNavigate();
     const { user } = useUserContext();
 
+    console.log(isSticky);
+
     useEffect(() => {
         if (isSuccess) navigate(0);
     }, [isSuccess]);
