@@ -5,14 +5,13 @@ import DummyFilmData from '@/data/DummyFilmData'
 import DummyEventData from '@/data/DummyEventData'
 import DummyCastData from '@/data/DummyCastData'
 import { useUserContext } from '@/context/AuthContext'
-import { useMediaQuery } from '@react-hook/media-query'
 
 const FilmPage = () => {
   const [event, setEvent] = useState(null);
   const [film, setFilm] = useState(null);
   const [cast, setCast] = useState(null);
   const bp_640 = useMediaQuery('(min-width:640px)');
-  const { setTopbarSticky } = useUserContext();
+  const { setTransTopBar } = useUserContext();
 
   // Get the film id from the URL
   const { id } = useParams();
@@ -24,6 +23,7 @@ const FilmPage = () => {
 
   // Get the film from the database
   useEffect(() => {
+
     // film data
     const film = DummyFilmData.find(film => film._id.toString() === id);
     if (!film)

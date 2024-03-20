@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
-import List from './List';
-import dumMyEventData from '@/data/MyEventsData';
+import EventCollection from './EventCollection';
+import DummyEventData from '@/data/DummyEventData';
 import { BsArrowRight } from 'react-icons/bs';
 import { useUserContext } from "@/context/AuthContext";
 import { useGetUserEvents } from '@/lib/react-query/queries';
 
-const MyEvents = ({ hasTitle, isFilterVisible, hasViewMore, hasButton, max}) => {
+const MyEvents = ({ hasTitle, isFilterVisible, hasViewMore, hasButton, max, maxMobile}) => {
 
-  const [MyEventsData, setMyEventsData] = useState(dumMyEventData);
+  const [events, setEvents] = useState(DummyEventData) ;
   const navigate = useNavigate(); 
-  // const { id } = useParams();
   const { user } = useUserContext();
 
   // console.log('MyEvents id:', id);
@@ -52,18 +51,17 @@ const MyEvents = ({ hasTitle, isFilterVisible, hasViewMore, hasButton, max}) => 
         userEvents.length === 0 ? 
           <p>No events found</p> : 
           console.log('userEvents:', userEvents.documents) 
-
-          
       }
 
     
-      <List 
-        items={MyEventsData}
+      <EventCollection 
+        events={events}
         isFilterVisible={isFilterVisible}
         isParticipantsVisible={true}
         mobileLayout="vertical"
         desktopLayout="tall"
         max={max}
+        maxMobile={maxMobile}
         hasButton={hasButton}
         buttonHandler={navigateToCreateEvent}
       />
