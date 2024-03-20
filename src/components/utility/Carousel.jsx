@@ -48,7 +48,7 @@ const Carousel = ({ items }) => {
                         className={`${bp_768 ? "aspect-w-[1.3] aspect-h-[0.6]" : "aspect-w-[1] aspect-h-[0.75]"}`
                     }>
                         <Link
-                            to={`/film/${item.id}`}>
+                            to={`/film/${item._id}`}>
                             <img className="object-cover object-center rounded-lg w-full h-full" src={item.image} alt={item.title} />
                         </Link>
                     </SwiperSlide>

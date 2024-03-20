@@ -2,30 +2,23 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Skeleton } from "@/components/ui/skeleton"
 import DummyFilmData from '@/data/DummyFilmData'
-import DummyEventData from '@/data/DummyEventData'
 import DummyCastData from '@/data/DummyCastData'
-import { useUserContext } from '@/context/AuthContext'
+import { useMediaQuery } from '@react-hook/media-query'
 
 const FilmPage = () => {
   const [event, setEvent] = useState(null);
   const [film, setFilm] = useState(null);
   const [cast, setCast] = useState(null);
   const bp_640 = useMediaQuery('(min-width:640px)');
-  const { setTransTopBar } = useUserContext();
 
   // Get the film id from the URL
   const { id } = useParams();
 
-  useEffect(() => {
-    setTopbarSticky(false);
-    return () => setTopbarSticky(true);
-  }, []);
-
   // Get the film from the database
   useEffect(() => {
-
     // film data
     const film = DummyFilmData.find(film => film._id.toString() === id);
+    console.log('Film ID:', id);
     if (!film)
       return console.log('Film not found');
     else {

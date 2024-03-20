@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import Carousel from '@/components/utility/Carousel';
-import DummyEventData from '@/data/DummyEventData';
+import DummyFilmData from '@/data/DummyFilmData';
 import { BsArrowRight } from 'react-icons/bs';
 
 const MostWatchlisted = ({ isFilterVisible, hasButton, max }) => {
-  const [mostWatchlistedData, setMostWatchlistedData] = useState(DummyEventData) ;
+  const [mostWatchlistedData, setMostWatchlistedData] = useState(DummyFilmData) ;
   const navigate = useNavigate();
   return (
     <section className='w-full '>
