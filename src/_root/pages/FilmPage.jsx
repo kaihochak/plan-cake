@@ -51,7 +51,7 @@ const FilmPage = () => {
         <div className='film-img-container'>
           <img src={bannerSrc} alt={film?.title} className='film-img' />
           {/* fade mask */}
-          <div className='film-img-masks'></div> 
+          <div className='film-img-mask'></div> 
         </div>
 
         {/* Info */}
