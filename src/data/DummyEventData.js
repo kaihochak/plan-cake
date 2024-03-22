@@ -37,7 +37,7 @@ const DummyEventData = [
       addFilmEnabled: 0,
       filmPollEnabled: 0,
       voteLimit: 3,
-      filmsPool: {
+      filmsPoll: {
         1: [1, 2],
         2: [2, 3],
         3: [3, 1],
