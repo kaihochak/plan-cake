@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import Logo from '/assets/icons/logo.png';
 import ProfilePlaceholder from '/assets/icons/profile-placeholder.svg';
-import { IoMdLogOut } from "react-icons/io";
 import { useUserContext } from "@/context/AuthContext";
 import { useSignOutAccount } from '@/lib/react-query/queries'
+import { IoMdLogOut } from 'react-icons/io';
 
-const TopBar = ({isSticky}) => {
+const TransTopBar = ({isSticky}) => {
     const { mutate: signOut, isSuccess } = useSignOutAccount();
     const navigate = useNavigate();
     const { user } = useUserContext();
@@ -15,15 +15,17 @@ const TopBar = ({isSticky}) => {
         if (isSuccess) navigate(0);
     }, [isSuccess]);
 
+    console.log("transparentTopBar: ", isSticky)
+
     return (
-        <section className="topbar">
+        <section className="transTopbar">
             <nav className="flex-between px-5 py-6">
                 {/* Logo as Home Button */}
                 <Link to="/" className="home-logo">
                     <img src={Logo} alt="Home" className=" w-32 " />
                 </Link>
 
-                {/* Right side of TopBar */}
+                {/* Right side of TransTopBar */}
                 <div className='flex gap-4'>
                     {/* Logout */}
                     <button 
@@ -46,4 +48,4 @@ const TopBar = ({isSticky}) => {
     )
 }
 
-export default TopBar
+export default TransTopBar

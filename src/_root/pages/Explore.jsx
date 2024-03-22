@@ -1,36 +1,140 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import SearchBar from '@/components/utility/SearchBar'
-import WhatsNearby from '@/components/shared/WhatsNearby'
+import EventCollection from '@/components/shared/EventCollection'
+import DummyEventData from '@/data/DummyEventData';
+import DummyFilmData from '@/data/DummyFilmData';
+import DummyUserData from '@/data/DummyUserData';
+import FilmCollection from '@/components/shared/FilmCollection';
+import MemberCollection from '@/components/shared/MemberCollection';
+import { set } from 'date-fns';
+import { CiFilter } from 'react-icons/ci';
 
 const Explore = () => {
-  return (
-    <div className="explore-container">
-      <div className="explore-inner_container">
-        <h2 className="h3-bold md:h2-bold w-full">Explore Posts</h2>
-        <SearchBar />
-      </div>
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [events, setEvents] = useState(DummyEventData);
+  const [films, setFilms] = useState(DummyFilmData);
+  const [members, setMembers] = useState(DummyUserData);
+  const categories = ["All", "Events", "Films", "Members"];
+  const [isFilterApplied, setIsFilterApplied] = useState(false);
 
-      {/* Filter Tags */}
-      <div>
-        Filters
-      </div>
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
 
-      <div className="flex-between w-full max-w-5xl mt-16 mb-7">
-        {/* What's Nearby Section */}
-        <WhatsNearby
-          isFilterVisible={true}
-          hasViewMore={false}
+  // Content
+  const FilterContent = () => {
+    return (
+      <section className='explore-inner_container'>
+        <div className='explore-innermost'>
+          {selectedCategory === "All" && (<>
+            <EventContent title={true} />
+            <FilmContent title={true} />
+            <MemberContent title={true} />
+          </>)}
+          {selectedCategory === "Events" && (<EventContent />)}
+          {selectedCategory === "Films" && (<FilmContent />)}
+          {selectedCategory === "Members" && (<MemberContent />)}
+        </div>
+      </section>
+    )
+  };
+
+  const EventContent = ({ title }) => {
+    return (
+      <div id="events" className='w-full'>
+        {title &&
+          <div className='flex justify-between items-baseline border-b-2 pb-2 mb-2'>
+            <h2 className='text-m-2xl sm:text-m-3xl'>Events</h2>
+          </div>}
+        <EventCollection
+          events={events}
+          isFilterVisible={false}
+          isParticipantsVisible={true}
+          mobileLayout="vertical"
+          desktopLayout="tall"
+          max='8'
+          maxMobile='4'
           hasButton={false}
-          max="10"
         />
       </div>
+    )
+  }
 
-      <div className="flex flex-wrap gap-9 w-full max-w-5xl">
-
+  const FilmContent = ({ title }) => {
+    return (
+      <div id="films">
+        {title && <div className='flex justify-between items-baseline border-b-2 pb-2 mb-2'>
+          <h2 className='text-m-2xl sm:text-m-3xl'>Films</h2>
+        </div>}
+        <FilmCollection
+          items={films}
+          isFilterVisible={false}
+          max='8'
+          maxMobile='4'
+        />
       </div>
+    )
+  }
+
+  const MemberContent = ({ title }) => {
+    return (
+      <div id="members" className='w-full' >
+        {title &&
+          <div className='flex justify-between items-baseline border-b-2 pb-2 mb-2'>
+            <h2 className='text-m-2xl sm:text-m-3xl'>Members</h2>
+          </div>}
+        <MemberCollection
+          members={DummyUserData}
+          isFilterVisible={false}
+          max='8'
+          maxMobile='4'
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="explore-container w-full mx-auto gap-y-4 mb-12 pt-0">
+
+      {/* this part is sticky with max width */}
+      <section className='explore-search_container'>
+        <div className="flex-between gap-x-4 ">
+          {/* Search */}
+          <SearchBar/>
+          {/* Filter */}
+          {selectedCategory !== "All" && <button
+            className={`flex items-center text-[30px] mr-2 mt-2 text-primary-foreground/60" 
+              ${ isFilterApplied ? "text-accent/70" : ""}`}
+            onClick={() => setShowFilters(!showFilters)}
+          ><CiFilter /></button>}
+        </div>
+
+        {/* Category */}
+        <div className='flex py-4 cursor-pointer'>
+          {categories.map((category, index) => (
+            <div
+              key={index}
+              onClick={() => {
+                handleCategoryChange(category);
+              }}
+              className={`text-xl flex items-center justify-center px-4 bg-primary 
+                          ${category === selectedCategory ? "text-primary-foreground underline" : "text-primary-foreground/50"}`}
+            >
+              {category}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Content */}
+      <FilterContent />
 
     </div>
   )
 }
 
 export default Explore
+
+
