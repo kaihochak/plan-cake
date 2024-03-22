@@ -5,6 +5,7 @@ import { BsFillPlusCircleFill } from 'react-icons/bs';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import DummyUserData from "@/data/DummyUserData";
 import TimeConvertor from "@/components/utility/TimeConvertor";
+import { Link } from 'react-router-dom';
 
 const EventCollection = ({
   events,
@@ -58,6 +59,8 @@ const EventCollection = ({
           >
             {/* each event */}
             {filteredEvents.slice(0, max).map((event, index) => (
+              <Link
+							to={`/event/${event._id}`}>
               <div
                 key={index}
                 className="flex flex-col justify-start"
@@ -120,6 +123,7 @@ const EventCollection = ({
                 </div>
 
               </div>
+              </Link>
             ))}
           </div>
           {/* Button */}
