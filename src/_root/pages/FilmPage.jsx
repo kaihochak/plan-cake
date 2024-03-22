@@ -3,15 +3,15 @@ import { useParams } from 'react-router-dom'
 import { Skeleton } from "@/components/ui/skeleton"
 import DummyFilmData from '@/data/DummyFilmData'
 import DummyCastData from '@/data/DummyCastData'
+import FilmCollection from '@/components/shared/FilmCollection'
 import { useMediaQuery } from '@react-hook/media-query'
-import List from '@/components/shared/List'
-import nearbyEventsData from '@/data/nearbyEventsData';
 
 const FilmPage = () => {
   const [event, setEvent] = useState(null);
+  const [films, setFilms] = useState(DummyFilmData);
   const [film, setFilm] = useState(null);
   const [cast, setCast] = useState(null);
-  const bp_640 = useMediaQuery('(min-width:640px)');
+  const bp_768 = useMediaQuery('(min-width:768px)');
 
   // Get the film id from the URL
   const { id } = useParams();
@@ -46,7 +46,7 @@ const FilmPage = () => {
         <div className='film-img-container'>
           <img src={bannerSrc} alt={film?.title} className='film-img' />
           {/* fade mask */}
-          <div className='film-img-mask'></div> 
+          <div className='film-img-mask'></div>
         </div>
 
         {/* Info */}
@@ -67,7 +67,7 @@ const FilmPage = () => {
     )
   }
   let bannerSrc = film?.image;
-  if (bp_640) bannerSrc = film?.banner;
+  if (bp_768) bannerSrc = film?.banner;
 
   // Cast
   const Cast = () => {
@@ -90,7 +90,7 @@ const FilmPage = () => {
   }
 
   return (
-    <div className='film-container justify-between p-4 mb-32'>
+    <div className='film-container justify-between p-4 pb-20'>
       <div className='film-page-inner'>
         {/* Film Info */}
         {!film ?
@@ -105,7 +105,7 @@ const FilmPage = () => {
           <FilmInfo />}
 
         {/* Cast */}
-        <Cast/>
+        <Cast />
 
         {/* Similar Films */}
         <div>
@@ -115,15 +115,12 @@ const FilmPage = () => {
         {/* In Current Events */}
         <div>
           <h2 className='text-m-l mb-2 font-bold'>You might also be interested in...</h2>
-          <List
-          items={nearbyEventsData}
-          isFilterVisible={false}
-          isParticipantsVisible={false}
-          mobileLayout={"grid"}
-          desktopLayout={"square"}
-          max='2'
-          hasButton={false}
-        />
+          <FilmCollection
+            items={films}
+            isFilterVisible={false}
+            max='8'
+            maxMobile='4'
+          />
         </div>
 
       </div>
