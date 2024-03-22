@@ -96,7 +96,7 @@ const Explore = () => {
   }
 
   return (
-    <div className="explore-container w-full mx-auto gap-y-4 mb-12 pt-0">
+    <div className="explore-container w-full mx-auto gap-y-4 mb-12 pt-0 pb-30 md:pb-32">
 
       {/* this part is sticky with max width */}
       <section className='explore-search_container'>

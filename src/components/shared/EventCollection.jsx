@@ -5,7 +5,7 @@ import { BsFillPlusCircleFill } from 'react-icons/bs';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import DummyUserData from "@/data/DummyUserData";
 import TimeConvertor from "@/components/utility/TimeConvertor";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const EventCollection = ({
   events,
@@ -20,7 +20,7 @@ const EventCollection = ({
 }) => {
   const [filter, setFilter] = useState("");
   const [users, setUsers] = useState(DummyUserData);
-  
+
   const bp_768 = useMediaQuery('(min-width:768px)');
 
   if (max === "0") { max = events.length; };
@@ -59,70 +59,69 @@ const EventCollection = ({
           >
             {/* each event */}
             {filteredEvents.slice(0, max).map((event, index) => (
-              <Link
-							to={`/event/${event._id}`}>
-              <div
-                key={index}
-                className="flex flex-col justify-start"
-              >
-                {/* image */}
-                <div className={`${desktopLayout === "tall" ? "aspect-w-1 aspect-h-[1.47]" : "aspect-w-1 aspect-h-1"}`}>
-                  <img
-                    src={event.imageURL}
-                    alt={event.title}
-                    className="object-cover object-center rounded-xl"
-                  />
-                </div>
-                {/* Info */}
-                <div className="flex flex-col justify-start pt-4 gap-y-1 xl:gap-y-3">
-                  {/* Date & Time */}
-                  <div className="flex gap-x-2 text-m xl:text-l">
-                    <TimeConvertor confirmedDateTime={event.confirmedDateTime} />
+              <Link to={`/event/${event._id}`}>
+                <div
+                  key={index}
+                  className="flex flex-col justify-start"
+                >
+                  {/* image */}
+                  <div className={`${desktopLayout === "tall" ? "aspect-w-1 aspect-h-[1.47]" : "aspect-w-1 aspect-h-1"}`}>
+                    <img
+                      src={event.imageURL}
+                      alt={event.title}
+                      className="object-cover object-center rounded-xl"
+                    />
                   </div>
-
-                  {/* Title */}
-                  <h3 className="text-xl xl:text-3xl h-20">
-                    {event.title.length > 30 ? event.title.substring(0, 30) + '...' : event.title}
-                  </h3>
-
-                  {/* Location & Participants */}
-                  <div className="flex justify-between gap-y-2 ">
-
-                    {/* Location */}
-                    <div className="flex events-center text-m xl:text-l gap-x-2">
-                      <GoLocation />
-                      <p>{event.location}</p>
+                  {/* Info */}
+                  <div className="flex flex-col justify-start pt-4 gap-y-1 xl:gap-y-3">
+                    {/* Date & Time */}
+                    <div className="flex gap-x-2 text-m xl:text-l">
+                      <TimeConvertor confirmedDateTime={event.confirmedDateTime} />
                     </div>
 
-                    {/* participants */}
-                    {isParticipantsVisible && (
-                      <div className="flex" >
-                        {event.attendingUsers
-                          .slice(0, event.attendingUsers.length > 4 ? 3 : 4)
-                          .map((participant, index) => (
-                            <div
-                              className={`w-6 h-6 rounded-full overflow-hidden flex events-center justify-center 
-                                        ${index > 0 ? "-ml-1" : ""}`}
-                              key={index}
-                            >
-                              <img
-                                className="min-w-full min-h-full object-cover"
-                                src={users.find(user => user._id === participant).profile.avatar}
-                                alt={users.find(user => user._id === participant).profile.username}
-                              />
-                            </div>
-                          ))
-                        }
-                        {/* plus sign + how many more people */}
-                        {event.attendingUsers.length > 4 && (
-                          <div>+{event.attendingUsers.length - 3}</div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
+                    {/* Title */}
+                    <h3 className="text-xl xl:text-3xl h-20">
+                      {event.title.length > 30 ? event.title.substring(0, 30) + '...' : event.title}
+                    </h3>
 
-              </div>
+                    {/* Location & Participants */}
+                    <div className="flex justify-between gap-y-2 ">
+
+                      {/* Location */}
+                      <div className="flex events-center text-m xl:text-l gap-x-2">
+                        <GoLocation />
+                        <p>{event.location}</p>
+                      </div>
+
+                      {/* participants */}
+                      {isParticipantsVisible && (
+                        <div className="flex" >
+                          {event.attendingUsers
+                            .slice(0, event.attendingUsers.length > 4 ? 3 : 4)
+                            .map((participant, index) => (
+                              <div
+                                className={`w-6 h-6 rounded-full overflow-hidden flex events-center justify-center 
+                                          ${index > 0 ? "-ml-1" : ""}`}
+                                key={index}
+                              >
+                                <img
+                                  className="min-w-full min-h-full object-cover"
+                                  src={users.find(user => user._id === participant).profile.avatar}
+                                  alt={users.find(user => user._id === participant).profile.username}
+                                />
+                              </div>
+                            ))
+                          }
+                          {/* plus sign + how many more people */}
+                          {event.attendingUsers.length > 4 && (
+                            <div>+{event.attendingUsers.length - 3}</div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                </div>
               </Link>
             ))}
           </div>
@@ -157,79 +156,81 @@ const EventCollection = ({
             className={cn("grid", // universal
               mobileLayout === "grid" ? "grid-cols-2 sm:grid-cols-3 gap-x-1 gap-y-4" : "grid-cols-1 sm:grid-cols-3 sm:gap-x-4",
               hasButton && "sm:grid-cols-3 sm:w-full")}
-              key={events.id}
+            key={events.id}
           >
             {/* each event */}
             {filteredEvents.slice(0, maxMobile).map((event) => (
-              <div
-                key={event.id}
-                className={`flex ${mobileLayout === "grid" ? "flex-col gap-y-4" : "justify-between sm:justify-start py-4 gap-x-6 sm:gap-x-8 sm:flex-col"}`}
-              >
+              <Link to={`/event/${event._id}`}>
+                <div
+                  key={event.id}
+                  className={`flex ${mobileLayout === "grid" ? "flex-col gap-y-4" : "justify-between sm:justify-start py-4 gap-x-6 sm:gap-x-8 sm:flex-col"}`}
+                >
 
-                {/* image */}
-                <div className={`${mobileLayout === "grid" ? "w-[90%]" : "inset-0 w-[35%] sm:w-full"}`}>
-                  {/* The image fills the square container */}
-                  <div className={`aspect-w-1 aspect-h-1 ${mobileLayout === "grid" ? "" : "sm:aspect-h-[1.47]"}`}>
-                    <img
-                      src={event.imageURL}
-                      alt={event.title}
-                      className="object-cover object-center rounded-xl"
-                    />
+                  {/* image */}
+                  <div className={`${mobileLayout === "grid" ? "w-[90%]" : "inset-0 w-[35%] sm:w-full"}`}>
+                    {/* The image fills the square container */}
+                    <div className={`aspect-w-1 aspect-h-1 ${mobileLayout === "grid" ? "" : "sm:aspect-h-[1.47]"}`}>
+                      <img
+                        src={event.imageURL}
+                        alt={event.title}
+                        className="object-cover object-center rounded-xl"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                {/* Info */}
-                <div className={`flex flex-col justify-start 
+                  {/* Info */}
+                  <div className={`flex flex-col justify-start 
                   ${mobileLayout === "grid" ? "gap-y-1 pr-4" : "gap-y-2 sm:pt-3 w-[65%] sm:w-full"}`
-                }>
-                  {/* Date & Time */}
-                  <div className={`flex gap-x-2 
+                  }>
+                    {/* Date & Time */}
+                    <div className={`flex gap-x-2 
                     ${mobileLayout === "grid" ? "text-m-s sm:text-m-m" : "text-m-m"}`}>
-                    <TimeConvertor confirmedDateTime={event.confirmedDateTime} />
-                  </div>
-
-                  {/* Title */}
-                  <h3 className={`${mobileLayout === "grid" ? "text-m-l sm:text-m-xl mb-2 h-10 sm:h-16" : "text-m-xl sm:h-16"}`}>
-                    {event.title.length > 30 ? event.title.substring(0, 30) + '...' : event.title}
-                  </h3>
-
-                  {/* Location & Participants */}
-                  <div className="flex justify-between events-center">
-                    {/* Location */}
-                    <div className={`flex events-center ${mobileLayout === "grid" ? "text-m-s sm:text-m-m gap-x-2" : "gap-x-2 text-m-m"}`}>
-                      <GoLocation />
-                      <p>{event.location}</p>
+                      <TimeConvertor confirmedDateTime={event.confirmedDateTime} />
                     </div>
 
-                    {/* participants */}
-                    {isParticipantsVisible && (
-                      <div className="flex">
-                        {event.attendingUsers
-                          .slice(0, event.attendingUsers.length > 4 ? 3 : 4)
-                          .map((participant, index) => (
-                            <div
-                              className={`w-6 h-6 rounded-full overflow-hidden flex events-center justify-center 
+                    {/* Title */}
+                    <h3 className={`${mobileLayout === "grid" ? "text-m-l sm:text-m-xl mb-2 h-10 sm:h-16" : "text-m-xl sm:h-16"}`}>
+                      {event.title.length > 30 ? event.title.substring(0, 30) + '...' : event.title}
+                    </h3>
+
+                    {/* Location & Participants */}
+                    <div className="flex justify-between events-center">
+                      {/* Location */}
+                      <div className={`flex events-center ${mobileLayout === "grid" ? "text-m-s sm:text-m-m gap-x-2" : "gap-x-2 text-m-m"}`}>
+                        <GoLocation />
+                        <p>{event.location}</p>
+                      </div>
+
+                      {/* participants */}
+                      {isParticipantsVisible && (
+                        <div className="flex">
+                          {event.attendingUsers
+                            .slice(0, event.attendingUsers.length > 4 ? 3 : 4)
+                            .map((participant, index) => (
+                              <div
+                                className={`w-6 h-6 rounded-full overflow-hidden flex events-center justify-center 
                                 ${index > 0 ? "-ml-1" : ""} 
                               `}
-                              key={index}
-                            >
-                              <img
-                                className="min-w-full min-h-full object-cover"
-                                src={users.find(user => user._id === participant).profile.avatar}
-                                alt={users.find(user => user._id === participant).profile.username}
-                              />
-                            </div>
-                          ))
-                        }
-                        {/* plus sign + how many more people */}
-                        {event.attendingUsers.length > 4 && (
-                          <div>+{event.attendingUsers.length - 3}</div>
-                        )}
-                      </div>
-                    )}
+                                key={index}
+                              >
+                                <img
+                                  className="min-w-full min-h-full object-cover"
+                                  src={users.find(user => user._id === participant).profile.avatar}
+                                  alt={users.find(user => user._id === participant).profile.username}
+                                />
+                              </div>
+                            ))
+                          }
+                          {/* plus sign + how many more people */}
+                          {event.attendingUsers.length > 4 && (
+                            <div>+{event.attendingUsers.length - 3}</div>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
           {/* Button */}
