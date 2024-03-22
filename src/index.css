@@ -181,6 +181,17 @@
     background: #7878a3;
   }
 
+  /* For Webkit-based browsers (Chrome, Safari and Opera) */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* For IE, Edge and Firefox */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
   .common-container {
     @apply flex flex-col flex-1 items-center gap-x-10 gap-y-6 overflow-scroll px-5 md:px-8 lg:p-14 custom-scrollbar;
   }
@@ -275,7 +286,7 @@
 
   .film-page-inner {
     @apply flex flex-col mx-auto top-0 w-full max-w-[1024px] ;
-    @apply gap-10 py-10 md:py-0 px-5 md:px-8;
+    @apply gap-10 md:gap-0 py-10 md:py-0 px-5 md:px-8 ;
   }
 
   .film-img-container {

@@ -4,6 +4,8 @@ import { Skeleton } from "@/components/ui/skeleton"
 import DummyFilmData from '@/data/DummyFilmData'
 import DummyCastData from '@/data/DummyCastData'
 import { useMediaQuery } from '@react-hook/media-query'
+import List from '@/components/shared/List'
+import nearbyEventsData from '@/data/nearbyEventsData';
 
 const FilmPage = () => {
   const [event, setEvent] = useState(null);
@@ -39,8 +41,8 @@ const FilmPage = () => {
   // banner changes based on screen size
   const FilmInfo = () => {
     return (
-      <div className='inset-0 w-full mb-4'>
-        {/* image*/}
+      <div className='inset-0 w-full mb-4 md:mb-0'>
+        {/* image & title*/}
         <div className='film-img-container'>
           <img src={bannerSrc} alt={film?.title} className='film-img' />
           {/* fade mask */}
@@ -48,17 +50,16 @@ const FilmPage = () => {
         </div>
 
         {/* Info */}
-        <div className='film-info-container'>
-          {bp_640 &&
+        <div className='relative flex gap-x-8 -top-30 md:-top-52 md:mb-[-150px]'>
+          {bp_768 &&
             <div className='flex justify-start'>
-              <img src={film?.image} alt={film?.title} className='film-small-poster' />
+              <img src={film?.image} alt={film?.title} className='min-w-[200px] md:min-w-[250px]' />
             </div>}
           <div className="flex mx-auto">
-            <div className='flex flex-col justify-center text-center gap-y-1'>
-              <h1 className="text-m-l my-2 font-bold">{film?.title}</h1>
-              <p className='text-m-s'>{film?.releasedYear} | {film?.duration}</p>
-              <p className='text-m-s'>{film?.description}</p>
-              <p className='text-m-s'>{film?.genre}</p>
+            <div className='flex flex-col justify-center gap-y-1 md:gap-y-2 '>
+              <h1 className="text-m-l md:text-[30px] md:my-4 my-2 font-bold ">{film?.title}</h1>
+              <p className='text-m-m md:text-[15px]'>{film?.releasedYear} | {film?.duration} | {film?.genre}</p>
+              <p className='text-m-m md:text-[15px]'>{film?.description}</p>
             </div>
           </div>
         </div>
@@ -71,9 +72,9 @@ const FilmPage = () => {
   // Cast
   const Cast = () => {
     return (
-      <div className='flex flex-col flex-shrink-0 w-full'>
-        <h2 className='text-m-m text-center mb-2 font-bold'>Cast</h2>
-        <div className="overflow-x-auto">
+      <div className='flex flex-col flex-shrink-0 w-full md:mb-10'>
+        <h2 className='text-m-l mb-2 font-bold'>Cast</h2>
+        <div className="overflow-x-auto scrollbar-hide">
           <div className='flex gap-x-3 py-2'>
             {cast?.map((actor, index) => (
               <div key={index} className='w-[80px] h-auto flex-shrink-0 relative'>
@@ -89,7 +90,7 @@ const FilmPage = () => {
   }
 
   return (
-    <div className='film-container justify-between p-4 mb-20'>
+    <div className='film-container justify-between p-4 mb-32'>
       <div className='film-page-inner'>
         {/* Film Info */}
         {!film ?
@@ -105,18 +106,26 @@ const FilmPage = () => {
 
         {/* Cast */}
         <Cast/>
-        <Cast/>
-        <Cast/>
-        <Cast/>
-        <Cast/>
-
-        {/* In Current Events */}
-        {/* <div>
-        </div> */}
 
         {/* Similar Films */}
-        {/* <div className="mt-2">
-        </div> */}
+        <div>
+          <h2 className='text-m-l mb-2 font-bold md:mb-10'>Similar Film</h2>
+        </div>
+
+        {/* In Current Events */}
+        <div>
+          <h2 className='text-m-l mb-2 font-bold'>You might also be interested in...</h2>
+          <List
+          items={nearbyEventsData}
+          isFilterVisible={false}
+          isParticipantsVisible={false}
+          mobileLayout={"grid"}
+          desktopLayout={"square"}
+          max='2'
+          hasButton={false}
+        />
+        </div>
+
       </div>
     </div>
 
