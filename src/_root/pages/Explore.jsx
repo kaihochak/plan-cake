@@ -32,10 +32,11 @@ const Explore = () => {
             <EventContent title={true} />
             <FilmContent title={true} />
             <MemberContent title={true} />
+            <Gap />
           </>)}
-          {selectedCategory === "Events" && (<EventContent />)}
-          {selectedCategory === "Films" && (<FilmContent />)}
-          {selectedCategory === "Members" && (<MemberContent />)}
+          {selectedCategory === "Events" && (<><EventContent /><Gap/></>)}
+          {selectedCategory === "Films" && (<><FilmContent /><Gap/></>)}
+          {selectedCategory === "Members" && (<><MemberContent /><Gap/></>)}
         </div>
       </section>
     )
@@ -48,6 +49,7 @@ const Explore = () => {
           <div className='flex justify-between items-baseline border-b-2 pb-2 mb-2'>
             <h2 className='text-m-2xl sm:text-m-3xl'>Events</h2>
           </div>}
+
         <EventCollection
           events={events}
           isFilterVisible={false}
@@ -95,18 +97,24 @@ const Explore = () => {
     )
   }
 
+  const Gap = () => {
+    return (
+      <div className="h-[150px] md:h-96"></div>
+    )
+  }
+
   return (
-    <div className="explore-container w-full mx-auto gap-y-4 mb-12 pt-0 pb-30 md:pb-32">
+    <div className="explore-container">
 
       {/* this part is sticky with max width */}
       <section className='explore-search_container'>
         <div className="flex-between gap-x-4 ">
           {/* Search */}
-          <SearchBar/>
+          <SearchBar />
           {/* Filter */}
           {selectedCategory !== "All" && <button
             className={`flex items-center text-[30px] mr-2 mt-2 text-primary-foreground/60" 
-              ${ isFilterApplied ? "text-accent/70" : ""}`}
+              ${isFilterApplied ? "text-accent/70" : ""}`}
             onClick={() => setShowFilters(!showFilters)}
           ><CiFilter /></button>}
         </div>
@@ -119,7 +127,7 @@ const Explore = () => {
               onClick={() => {
                 handleCategoryChange(category);
               }}
-              className={`text-xl flex items-center justify-center px-4 bg-primary 
+              className={`text-xl flex items-center justify-center px-4 bg-primary-dark
                           ${category === selectedCategory ? "text-primary-foreground underline" : "text-primary-foreground/50"}`}
             >
               {category}

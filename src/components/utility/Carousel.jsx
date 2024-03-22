@@ -22,7 +22,7 @@ const Carousel = ({ items }) => {
     let depth = bp_768 ? 150 : 100;
 
     return (
-        <div >
+        <div>
             <Swiper
                 modules={[Navigation, Pagination, EffectCoverflow]}
                 spaceBetween={space} // Space between slides

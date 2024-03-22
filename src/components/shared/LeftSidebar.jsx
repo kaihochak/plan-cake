@@ -27,9 +27,9 @@ const LeftSidebar = () => {
 
     return (
         <nav className="leftsidebar">
-            <div className="flex flex-col gap-11">
+            <div className="flex flex-col gap-11 ">
                 {/* Logo */}
-                <Link to="/" className="flex gap-3 items-center">
+                <Link to="/" className="flex-center px-10">
                     <img
                         src={Logo}
                         alt="logo"
@@ -46,13 +46,13 @@ const LeftSidebar = () => {
                 ) : (
                     <NavLink 
                         to={`/profile/${user.id}`} 
-                        className={`flex gap-3 p-4 items-center [&_*]:hover:text-accent/70
-                        ${pathname.startsWith("/profile") ? "[&_*]:text-accent" : ""}`}
+                        className={`leftsidebar-link ${pathname.startsWith("/profile") ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
                     >
+                        <h2 className='pl-1 h-20 w-[0.5px] rounded-xl mr-8'></h2>
                         <img
                             src={user.imageUrl || "/assets/icons/profile-placeholder.svg"}
                             alt="profile"
-                            className="h-14 w-14 rounded-full"
+                            className="h-12 w-12 rounded-full"
                         />
                         <div className="flex flex-col">
                             <p className="body-bold">{user.name}</p>
@@ -61,57 +61,51 @@ const LeftSidebar = () => {
                     </NavLink>
                 )}
 
+
                 {/* Links */}
                 <ul className="flex flex-col gap-6">
                     {/* Home */}
-                    <NavLink
-                        to="/"
-                        className={`leftsidebar-link flex gap-4 p-4 hover:rounded-lg hover:bg-accent [&_*]:hover:text-accent-foreground 
-                        ${pathname === "/" ? "bg-accent [&_*]:text-accent-foreground" : ""}`}
+                    <NavLink to="/"
+                        className={`leftsidebar-link ${pathname === "/" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
                     >
+                        <h2 className='pl-1 h-20 w-[0.5px] rounded-xl mr-8'></h2>
                         <GoHome className='text-accent/80 text-[30px]' />
                         <p>Home</p>
                     </NavLink>
                     
                     {/* PickAFilm */}
-                    <NavLink
-
-                        to="/pickAFilm"
-                        className={`leftsidebar-link flex gap-4 p-4 hover:rounded-lg hover:bg-accent [&_*]:hover:text-accent-foreground
-                        ${pathname === "/pickAFilm" ? "bg-accent [&_*]:text-accent-foreground" : ""}`}
+                    <NavLink to="/pickAFilm"
+                        className={`leftsidebar-link ${pathname === "/pickAFilm" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
                     >
+                        <h2 className='pl-1 h-20 w-[0.5px] rounded-xl mr-8'></h2>
                         <GiDandelionFlower className='text-accent/80 text-[30px]' />
-                        <p>Pick A Film</p>
+                        <p>PickAFilm</p>
                     </NavLink>
 
                     {/* Create */}
-                    <NavLink
-                        to="/create-event"
-                        className={`leftsidebar-link flex gap-4 p-4 hover:rounded-lg hover:bg-accent [&_*]:hover:text-accent-foreground 
-                        ${pathname === "/create-event" ? "bg-accent [&_*]:text-accent-foreground" : ""}`}
+                    <NavLink to="/create-event"
+                        className={`leftsidebar-link ${pathname === "/create-event" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
                     >
+                        <h2 className='pl-1 h-20 w-[0.5px] rounded-xl mr-8'></h2>
                         <IoMdAddCircleOutline className='text-accent/80 text-[30px]' />
                         <p>Create</p>
                     </NavLink>
 
                     {/* Explore */}
-                    <NavLink
-                        to="/explore"
-                        className={`leftsidebar-link flex gap-4 p-4 hover:rounded-lg hover:bg-accent [&_*]:hover:text-accent-foreground 
-                        ${pathname.startsWith("/explore") ? "bg-accent [&_*]:text-accent-foreground" : ""}`}
+                    <NavLink to="/explore"
+                        className={`leftsidebar-link ${pathname === "/explore" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
                     >
+                        <h2 className='pl-1 h-20 w-[0.5px] rounded-xl mr-8'></h2>
                         <IoIosSearch className='text-accent/80 text-[30px]' />
                         <p>Explore</p>
                     </NavLink>
                 </ul>
 
-
             </div>
 
-            <button
-                 className={`flex gap-3 p-4 items-center [&_*]:hover:text-accent/70
-                 ${pathname.startsWith("/profile") ? "[&_*]:text-accent" : ""}`}
-                onClick={(e) => handleSignOut(e)}>
+            {/* Logout */}
+            <button className="leftsidebar-link" onClick={(e) => handleSignOut(e)}>
+                <h2 className='pl-1 h-20 w-[0.5px] rounded-xl mr-8'></h2>
                 <IoMdLogOut className="text-accent/80 text-[30px]" />
                 <p>Logout</p>
             </button>

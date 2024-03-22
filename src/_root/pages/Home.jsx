@@ -9,7 +9,8 @@ const Home = () => {
     <section className='home-container'>
       <div className='flex flex-col w-full max-w-[1024px] mx-auto gap-y-10 pt-6 pb-24 lg:pt-0'>
         {/* Most Watchlisted Section */}
-        <MostWatchlisted/>
+        <MostWatchlisted />
+
         {/* My Events Section */}
         <MyEvents
           hasTitle={true}
@@ -28,6 +29,8 @@ const Home = () => {
           max="4"
           maxMobile="4"
         />
+        {/* Gap */}
+        <div className="h-8 md:h-0"></div>
       </div>
     </section>
   );

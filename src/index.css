@@ -202,17 +202,17 @@
   }
 
   .user-grid {
-    @apply w-full grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-7 max-w-5xl;
+    @apply w-full grid grid-cols-1 xs:grid-cols-2 md:chgrid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-7 max-w-5xl;
   }
 
   /* Explore Container */
   .explore-container {
-    @apply flex flex-col flex-1 items-center overflow-hidden;
+    @apply flex flex-col flex-1 items-center w-full h-full mx-auto gap-y-0 md:gap-y-4 mb-12 pt-0;
   }
 
   /* Search Container */
   .explore-search_container {
-    @apply px-5 pt-2 mx-auto max-w-[1024px] w-full sticky top-0 z-50 bg-primary;
+    @apply bg-primary-dark px-5 md:pt-4 mx-auto max-w-[1024px] w-full sticky top-0 z-50 ;
     @apply md:px-8 lg:p-14 lg:py-0 lg:px-14 xl:pt-10 gap-x-10 gap-y-10;
   }
 
@@ -456,7 +456,7 @@
 
   /* Bottom bar */
   .bottom-bar {
-    @apply z-50 flex-between w-full sticky bottom-0 bg-primary px-5 py-4 xl:hidden;
+    @apply z-50 flex-between w-full sticky bottom-0 bg-primary-dark px-5 py-4 xl:hidden;
   }
 
   /* File uploader */
@@ -487,11 +487,11 @@
 
   /* Left sidebar */
   .leftsidebar {
-    @apply hidden xl:flex pl-6 py-10 flex-col justify-between xl:min-w-[200px] bg-primary;
+    @apply hidden xl:flex py-10 flex-col justify-between xl:min-w-[200px] bg-primary-dark;
   }
 
   .leftsidebar-link {
-    @apply rounded-lg base-medium items-center hover:bg-primary/50 transition;
+    @apply flex gap-4 pr-14 rounded-lg base-medium items-center transition [&_h2]:hover:bg-accent [&_*]:hover:text-accent;
   }
 
   /* Post Card */
@@ -505,7 +505,7 @@
 
   /* Topbar */
   .topbar {
-    @apply top-0 z-50 xl:hidden w-full h-[80px] sticky bg-primary;  
+    @apply bg-primary-dark  top-0 z-50 xl:hidden w-full h-[80px] sticky;  
   }
 
   .transTopbar {
