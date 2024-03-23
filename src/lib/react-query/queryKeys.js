@@ -17,4 +17,8 @@ export const QUERY_KEYS = {
 
   //  SEARCH KEYS
   SEARCH_EVENTS: "getSearchEvents",
+
+
+  // FILM KEYS
+  GET_FILM_BY_ID: "fetchFilmDetails",
 }

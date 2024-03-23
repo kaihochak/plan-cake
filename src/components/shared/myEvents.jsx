@@ -44,14 +44,11 @@ const MyEvents = ({ hasTitle, isFilterVisible, hasViewMore, hasButton, max, maxM
           </div>
         </div>
       }
-
+{/* 
       { isUserEventsLoading ? 
         <p>Loading...</p> : 
         // if there are no events
-        userEvents.length === 0 ? 
-          <p>No events found</p> : 
-          console.log('userEvents:', userEvents.documents) 
-      }
+        userEvents.length === 0 && <p>No events found</p> } */}
 
     
       <EventCollection 

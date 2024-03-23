@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Link } from "react-router-dom";
+import { image342 } from "@/lib/tmdb/config";
 
 const FilmCollection = ({
 	items,
@@ -8,7 +9,6 @@ const FilmCollection = ({
 	max,
 	maxMobile,
 }) => {
-
 	const [filter, setFilter] = useState("");
 	const bp_768 = useMediaQuery('(min-width:768px)');
 
@@ -23,7 +23,7 @@ const FilmCollection = ({
 
 	// Filter items based on filter state
 	const filteredItems = items.filter((item) =>
-		item.title.toLowerCase().includes(filter.toLowerCase())
+		item?.original_title?.toLowerCase().includes(filter.toLowerCase())
 	);
 
 	// Category Filter
@@ -53,17 +53,15 @@ const FilmCollection = ({
 				<div className="gap-4 xl:gap-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
 					{/* each item */}
 					{filteredItems.slice(0, max).map((item, index) => (
-						<Link
-							to={`/film/${item._id}`}>
+						<Link to={`/film/${item?.id}`} key={index} >
 							<div
-								key={index}
 								className="flex flex-col justify-start"
 							>
 								{/* image */}
 								<div className="aspect-w-1 aspect-h-[1.47]">
 									<img
-										src={item.image}
-										alt={item.title}
+										src={image342(item?.poster_path)}
+										alt={item?.original_title}
 										className="object-cover object-center rounded-xl"
 									/>
 								</div>
@@ -71,17 +69,17 @@ const FilmCollection = ({
 								<div className="flex justify-between pt-4 gap-y-1 xl:gap-y-3">
 									{/* Title */}
 									<h3 className="text-md xl:text-xl h-20">
-										{item.title.length > 30 ? item.title.substring(0, 30) + '...' : item.title}
+										{item.original_title.length > 30 ? item.title.substring(0, 30) + '...' : item.original_title}
 									</h3>
 									{/* Rating */}
 									<div className="flex items-center gap-x-1">
 										<p>⭐️</p>
-										<p>{item.userInfo.avgRating}</p>
+										<p>{item?.vote_average}</p> 
+										{/* use imdb rating for now */}
 									</div>
 								</div>
 							</div>
 						</Link>
-
 					))}
 				</div>
 			</div>

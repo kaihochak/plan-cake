@@ -15,8 +15,6 @@ const TransTopBar = ({isSticky}) => {
         if (isSuccess) navigate(0);
     }, [isSuccess]);
 
-    console.log("transparentTopBar: ", isSticky)
-
     return (
         <section className="transTopbar">
             <nav className="flex-between px-5 py-6">
