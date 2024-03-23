@@ -4,10 +4,10 @@ const PickATime = () => {
   return (
     <Button
         size="md"
-        className="w-full"
+        className="w-[100px] h-[25px] border-none bg-accent"
         onClick={() => console.log('PickATime')}
     >
-        PickATime
+        <p className='text-m-s text-accent-foreground'>Add Availability</p>
     </Button>
   )
 }

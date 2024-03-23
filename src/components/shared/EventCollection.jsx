@@ -61,7 +61,6 @@ const EventCollection = ({
             {filteredEvents.slice(0, max).map((event, index) => (
               <Link to={`/event/${event._id}`} key={index}>
                 <div
-                  key={index}
                   className="flex flex-col justify-start"
                 >
                   {/* image */}

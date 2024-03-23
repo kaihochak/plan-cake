@@ -38,25 +38,37 @@ const EventPage = () => {
         </div>
 
         {/* Info */}
-        <div className='relative flex gap-x-8 -top-30 md:-top-52 md:mb-[-150px]'>
+        <div className='relative flex top-14 md:-top-52 md:mb-[-150px]'>
           {/* Poster */}
           <div className='hidden md:flex justify-start'>
             <img src={event?.imageURL} alt={event?.title} className='min-w-[200px] md:min-w-[250px]' />
-          </div>
-          {/* Date & Time */}
-          <div className="flex mx-auto">
-            <div className='flex flex-col justify-center gap-y-1 md:gap-y-2 '>
-              {/* Date & Time */}
+          </div>          
+          {/* Details */}
+          <div className='flex flex-col justify-start gap-4 md:gap-y-2 '>
+            {/* Event Name */}
+            <p className='text-m-xl md:text-[30px] font-bold'>{event?.title}</p>
+            {/* Date & Time */}
+            <div className='flex justify-start flex-row'>
               <div>
-                <h1 className="text-m-l md:text-[30px] md:my-4 my-2 font-bold ">
-                  Date & Time
-                  <TimeConvertor confirmedDateTime={event?.confirmedDateTime} />
-                </h1>
-                <PickATime />
+                <p className="text-m-m text-border md:text-[30px]">Date & Time</p>
+                <p className="text-m-m md:text-[30px]"><TimeConvertor confirmedDateTime={event?.confirmedDateTime} /></p>
               </div>
-              {/* Location */}
-              <p className='text-m-m md:text-[15px]'>{event?.releasedYear} | {event?.duration} | {event?.genre}</p>
-              <p className='text-m-m md:text-[15px]'>{event?.description}</p>
+              <PickATime />
+            </div>
+            {/* Location */}
+            <div>
+                <p className="text-m-m text-border md:text-[30px]">Location</p>
+                <p className="text-m-m md:text-[30px]">{event?.location}</p>
+            </div>
+            {/* Desc */}
+            <div>
+              <p className="text-m-m text-border md:text-[30px]">Describtion</p>
+              <p className="text-m-m md:text-[30px]">{event?.description}</p>
+            </div>
+            {/* Guests */}
+            <div>
+              <p className="text-m-m text-border md:text-[30px]">Guests</p>
+              <GuestList />
             </div>
           </div>
         </div>
@@ -78,9 +90,6 @@ const EventPage = () => {
             <Skeleton className="w-[250px] h-[20px] rounded-xl" />
           </div> : <EventInfo />
         }
-
-        {/* Guests */}
-        <GuestList />
 
         {/* Film Poll */}
         <FilmPoll/>
