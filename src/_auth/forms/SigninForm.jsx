@@ -119,7 +119,7 @@ const SigninForm = () => {
           {isSigningInUser ? (
             <Button type="submit" variant="outline" className="w-full lg:w-[60%] bg-accent ">
               <div className='flex items-center gap-2 '>
-                <Loader/>Loading...
+                <Loader height="h-6" weight="w-6"/>Loading...
               </div> 
             </Button>
             ) : (

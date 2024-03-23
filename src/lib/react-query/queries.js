@@ -53,3 +53,13 @@ export const useGetUserEvents = (userId) => {
     enabled: !!userId, // Only fetch if we have a userId
   });
 };
+
+
+// FILMS
+export const useGetFilmById = (filmId) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_FILM_BY_ID, filmId],
+    queryFn: () => fetchFilmDetails(filmId),
+    enabled: !!filmId,
+  });
+};

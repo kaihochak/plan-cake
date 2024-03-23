@@ -219,7 +219,6 @@ export function getFilePreview(fileId) {
 export async function getUserEvents(userId) {
     if (!userId) return;
   
-    console.log("API userId:", userId);
     try {
       const events = await databases.listDocuments(
         appwriteConfig.databaseId,

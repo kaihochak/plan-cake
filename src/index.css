@@ -80,10 +80,10 @@
  
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border scroll-smooth;
   }
   body {
-    @apply bg-background text-foreground overflow-hidden;
+    @apply bg-background text-foreground  min-h-screen;
   }
 }
 
@@ -229,7 +229,7 @@
 
   /* Home */
   .home-container {
-    @apply flex flex-col flex-1 items-center gap-10 overflow-scroll md:pb-10 px-5 md:px-8 lg:px-14 xl:pt-10 custom-scrollbar;
+    @apply flex flex-col flex-1 items-center gap-10 overflow-scroll custom-scrollbar md:pb-10 px-5 md:px-8 lg:px-14 xl:pt-10;
   }
 
   .home-posts {
@@ -281,7 +281,7 @@
 
   /* Film details */
   .film-container {
-    @apply flex flex-1 p-0 custom-scrollbar overflow-scroll;
+    @apply flex flex-1 p-0 custom-scrollbar overflow-y-scroll;
   }
 
   .film-page-inner {

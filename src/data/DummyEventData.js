@@ -201,7 +201,7 @@ const DummyEventData = [
       title: "Kais Birthday",
       description: "A night of fun and laughter",
       eventURL: "https://www.eventbrite.com/e/afrobeat-festival-tickets-193286664407",
-      imageURL: "https://images.unsplash.com/photo-1631368853945-6e1b2e3a5f5b",
+      imageURL: "/assets/posters/godfather.jpg",
       location: "Lekki",
       usernames: {
         "1": "Alice",

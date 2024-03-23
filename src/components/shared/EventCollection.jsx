@@ -59,7 +59,7 @@ const EventCollection = ({
           >
             {/* each event */}
             {filteredEvents.slice(0, max).map((event, index) => (
-              <Link to={`/event/${event._id}`}>
+              <Link to={`/event/${event._id}`} key={index}>
                 <div
                   key={index}
                   className="flex flex-col justify-start"
@@ -156,13 +156,13 @@ const EventCollection = ({
             className={cn("grid", // universal
               mobileLayout === "grid" ? "grid-cols-2 sm:grid-cols-3 gap-x-1 gap-y-4" : "grid-cols-1 sm:grid-cols-3 sm:gap-x-4",
               hasButton && "sm:grid-cols-3 sm:w-full")}
-            key={events.id}
+              key={events._id}
           >
             {/* each event */}
             {filteredEvents.slice(0, maxMobile).map((event) => (
-              <Link to={`/event/${event._id}`}>
+              <Link to={`/event/${event._id}`} key={event._id}>
                 <div
-                  key={event.id}
+                  
                   className={`flex ${mobileLayout === "grid" ? "flex-col gap-y-4" : "justify-between sm:justify-start py-4 gap-x-6 sm:gap-x-8 sm:flex-col"}`}
                 >
 
