@@ -24,7 +24,7 @@ const MostWatchlisted = ({ isFilterVisible, hasButton, max }) => {
   }
 
   return (
-    <section className='w-full '>
+    <section className='w-full'>
       {/* Title */}
       <div>
         <div className='flex justify-between items-baseline border-b-2 pb-2 mb-2'>

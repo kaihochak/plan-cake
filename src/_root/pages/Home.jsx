@@ -8,9 +8,9 @@ import WhatsNearby from '@/components/shared/WhatsNearby';
 const Home = () => {
 
   return (
-    // <div className='flex flex-1'>
+    <div className='flex flex-1'>
       <section className='home-container'>
-        <div className='flex flex-col w-full max-w-[1024px] mx-auto gap-y-6 md:gap-y-10 pt-6 pb-24 lg:pt-0'>
+        <div className='home-posts'>
           {/* Most Watchlisted Section */}
           <MostWatchlisted />
 
@@ -37,7 +37,7 @@ const Home = () => {
         </div>
       </section>
 
-    // </div>
+    </div>
   );
 };
 

@@ -5,6 +5,7 @@ import FilmCollection from '@/components/shared/FilmCollection'
 import { useMediaQuery } from '@react-hook/media-query'
 import { fetchFilmDetails, fetchCast, fetchSimilarMovies } from '@/lib/tmdb/api'
 import { image342, image500, imagePath } from '@/lib/tmdb/config'
+// import ScrollToTop from '@/components/utility/ScrollToTop'
 
 const FilmPage = () => {
   const [loading, setLoading] = useState(true);
@@ -36,14 +37,11 @@ const FilmPage = () => {
   };
 
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth"});
-  };
 
   // Get the film from the database
   useEffect(() => {
-    scrollToTop();
     getFilmData();
+    // ScrollToTop();
   }, [id]);
 
 
@@ -51,6 +49,7 @@ const FilmPage = () => {
     film && getCastData();
     film && getSimilarFilms();
   }, [film]);
+
 
 
   // banner changes based on screen size

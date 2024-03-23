@@ -7,10 +7,14 @@ import RootLayout from './_root/RootLayout';
 import { Home, PickAFilm, CreateEvent, Explore, Profile, FilmPage, EventPage } from './_root/pages';
 import { Toaster } from "@/components/ui/toaster"
 import './index.css';
+import ScrollToTop from '@/components/utility/ScrollToTop';
 
 function App() {
   return (
     <main className="flex bg-primary font-Urbanist text-default h-screen">
+
+      {/* To solve a  vite issue:navigate to new page with same path */}
+      {/* <ScrollToTop /> */}
 
       {/* Routes */}
       <Routes>

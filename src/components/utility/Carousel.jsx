@@ -16,15 +16,16 @@ const Carousel = ({ items }) => {
 
     // responsive breakpoints
     let bp_768 = useMediaQuery('(min-width:768px)');
-    let space = bp_768 ? 10 : 0;
+    let space = bp_768 ? 0 : 0;
     let isNavigation = bp_768 ? true : false;
-    let slidesPerView = bp_768 ? 3 : 2;
+    let slidesPerView = bp_768 ? 2 : 2;
     let stretch = bp_768 ? 0 : 0;
-    let depth = bp_768 ? 150 : 120;
+    let depth = bp_768 ? 50 : 120;
 
     return (
-        <div>
+        <div className="flex-center">
             <Swiper
+                className="w-[320px] xs:w-[350px] sm:w-[500px] md:w-[680px] lg:w-[900px] xl:[1200px]"
                 modules={[Navigation, Pagination, EffectCoverflow]}
                 spaceBetween={space} // Space between slides
                 pagination={false} // Enable and make pagination dots clickable
@@ -46,7 +47,7 @@ const Carousel = ({ items }) => {
                 {items.map((item, id) => (
                     <SwiperSlide 
                         key={id}
-                        className={`${bp_768 ? "aspect-w-[1.3] aspect-h-[0.6]" : "aspect-w-[1] aspect-h-[0.75]"}`
+                        className={`${bp_768 ? "aspect-w-[1] aspect-h-[0.75]" : "aspect-w-[1] aspect-h-[0.75]"}`
                     }>
                         <Link
                             to={`/film/${item.id}`}>

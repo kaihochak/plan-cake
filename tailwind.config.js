@@ -73,7 +73,7 @@ module.exports = {
         'lg': '12px'
       },
       screens: {
-        'xs': '380px', // mobile SE not included
+        'xs': '380px', // mobile SE not included: se us 370px
         'sm': '640px', // tablet
         'md': '768px', 
         'lg': '1024px', // desktop
