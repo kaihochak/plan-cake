@@ -2,7 +2,7 @@ import React from 'react'
 
 const PickAFilm = () => {
   return (
-    <div>
+    <div className='ww-[100px]'>
       
     </div>
   )
