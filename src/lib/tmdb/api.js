@@ -1,18 +1,18 @@
 import axios from "axios";
-import { movieCreditsEndpoint, movieDetailsEndpoint, similarMoviesEndpoint, trendingMoviesEndpoint } from "./config.js";
+import { latestMoviesEndpoint, movieCreditsEndpoint, movieDetailsEndpoint, searchMoviesEndpoint, similarMoviesEndpoint, trendingMoviesEndpoint, upcomingMoviesEndpoint } from "./config.js";
 
 // home screen apis
 export const fetchTrending = () => {
     return apiCall(trendingMoviesEndpoint);
 }
-// export const fetchWatchlist = () => {
-//     return apiCall(upcomingMoviesEndpoint);
-// }
 export const fetchTopRated = () => {
     return apiCall(topRatedMoviesEndpoint);
 }
 export const fetchUpcoming = () => {
     return apiCall(upcomingMoviesEndpoint);
+}
+export const fetchLatest = () => {
+    return apiCall(latestMoviesEndpoint);
 }
 
 // film screen apis
