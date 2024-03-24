@@ -37,7 +37,6 @@ const FilmPage = () => {
   };
 
 
-
   // Get the film from the database
   useEffect(() => {
     getFilmData();

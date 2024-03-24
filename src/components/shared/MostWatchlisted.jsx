@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import Carousel from '@/components/utility/Carousel';
-import DummyFilmData from '@/data/DummyFilmData';
 import { BsArrowRight } from 'react-icons/bs';
 import { fetchTrending } from '@/lib/tmdb/api';
 import Loader from '@/components/utility/Loader';
@@ -9,7 +8,7 @@ import Loader from '@/components/utility/Loader';
 const MostWatchlisted = ({ isFilterVisible, hasButton, max }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [mostWatchlistedData, setMostWatchlistedData] = useState(DummyFilmData);
+  const [mostWatchlistedData, setMostWatchlistedData] = useState([]);
 
   // call api, fetch data
   useEffect(() => {
