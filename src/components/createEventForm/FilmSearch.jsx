@@ -7,7 +7,7 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 import "@/styles/utility.css"
 import Filters from "@/components/utility/Filters";
 import { cn } from "@/lib/utils"
-import dummyUser from "@/data/dummyUser";
+import dummyUser from "@/data/dummyUserData";
 import SearchBar from "@/components/utility/SearchBar";
 import Loader from "@/components/utility/Loader";
 import debounce from "lodash.debounce";
@@ -15,14 +15,6 @@ import { fetchUpcoming, searchFilms } from "../../lib/tmdb/api";
 import { defaultSortBy, defaultWatchlistFilter, defaultSpecificWatchlistFilter, defaultGenreFilter, defaultYearFilter, defaultRating } from "@/constants";
 
 const FilmSearch = ({ formData: parentFormData, nextStep }) => {
-
-    // FILTER SETTINGS
-    // const defaultSortBy = "Watchlists: Most to Least";
-    // const defaultWatchlistFilter = 0;
-    // const defaultSpecificWatchlistFilter = [];
-    // const defaultGenreFilter = [];
-    // const defaultYearFilter = [1860, new Date().getFullYear()];
-    // const defaultRating = 0;
     const [isFilterApplied, setIsFilterApplied] = useState(false);
     const [sortBy, setSortBy] = useState(defaultSortBy);
     const [watchlistFilter, setwatchlistFilter] = useState(defaultWatchlistFilter);
@@ -34,11 +26,12 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const [loading, setLoading] = useState(false);
 
     const [formData, setFormData] = useState(parentFormData);
-    const [upcomingFilms, setUpcomingFilms] = useState([]);
-    const [filmData, setFilmData] = useState([]);
-    const [filteredItems, setFilteredItems] = useState(filmData);
-    const [searchTerm, setSearchTerm] = useState("");
     const [showNoSelectionError, setShowNoSelectionError] = useState(false);
+    
+    const [filmData, setFilmData] = useState([]);
+    const [upcomingFilms, setUpcomingFilms] = useState([]);
+    const [filteredItems, setFilteredItems] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
 
     // Update selected films
     const updateSelection = (newSelectedFilms) => {
@@ -65,21 +58,20 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
      */
 
     // Fetch initial film data
-    const getInitialFilmData = async () => {
-        setLoading(true);
-        fetchUpcoming().then(data => {
-            setFilmData(data.results);
-            setUpcomingFilms(data.results);
-            setLoading(false);
-        });
-    }
     useEffect(() => {
-        getInitialFilmData();
+        setLoading(true);
+        getInitialFilms();
     }, []);
 
-    useEffect(() => {
-        console.log("filmData", filmData);
-    }, [filmData]);
+    const getInitialFilms = async () => {
+        const data = await fetchUpcoming();
+        if (data && data.results) {
+            setFilmData(data.results);
+            setFilteredItems(data.results);
+            setUpcomingFilms(data.results);
+            setLoading(false);
+        }
+    }
 
     // handle search should be debounced to avoid multiple API calls
     const handleSearchChange = (e) => {
@@ -87,32 +79,31 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         debouncedSearch(e.target.value);
     };
     const debouncedSearch = useCallback(
-        (searchTerm) => requestSearch(searchTerm),[]
+        (searchTerm) => requestSearch(searchTerm), []
     );
     const requestSearch = debounce(async (searchTerm) => {
-        setLoading(true);
+        console.log("searching for", searchTerm);
         // if search term is not empty, fetch search results
         if (searchTerm && searchTerm.length > 0) {
             setLoading(true);
-            searchFilms({
+            const data = await searchFilms({
                 query: searchTerm,
                 include_adult: false,
                 language: 'en-US',
-                page: 1
-            }).then(data => {
-                if (data && data.results) setFilmData(data.results);
+                page: 10
             })
-        // if search term is empty, fetch latest films
-        } else { setFilmData(upcomingFilms) }
-
-        // apply filters and sort
-        // const filtered = filmData.filter(item =>
-        //     item.title.toLowerCase().includes(value.toLowerCase())
-        // );
-        // setFilteredItems(filtered);
-    
+            if (data && data.results) {
+                setFilmData(data.results);
+                // apply filters and sort
+                // setFilteredItems(filmData.filter(item =>
+                //     item.original_title.toLowerCase().includes(value.toLowerCase())
+                // ));
+            }
+            else setFilmData(upcomingFilms);
+        }
         setLoading(false);
     }, 500);
+
 
     /**
      * FILTERS & SORTING
@@ -129,17 +120,13 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             yearFilter[1] !== defaultYearFilter[1] ||
             ratingFilter !== defaultRating;
         setIsFilterApplied(hasChanged);
-
         
         const results = applyFiltersAndSort();
         setFilteredItems(results);
     }, [searchTerm, sortBy, watchlistFilter, specificWatchlistFilter, genreFilter, yearFilter, ratingFilter]);
 
     const applyFiltersAndSort = () => {
-        console.log("filmData", filmData);
-
         let results = applyFilters(); // Apply filters based on the current state
-        console.log("results", results);
         return applySort(results); // Then, sort those results before returning them
     };
 
@@ -147,16 +134,15 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const applyFilters = () => {
         // if empty string, return all items
         if (!searchTerm) {
-            console.log("filmData", filmData);
-            return filmData;
+            return upcomingFilms;
         } else {
             return filmData.filter(item => {
                 item.original_title.toLowerCase().includes(searchTerm.toLowerCase())
-                && ( watchlistFilter === 0 || item.watchlists.length >= watchlistFilter )
-                && ( specificWatchlistFilter.length === 0 || (Array.isArray(item.watchlists) && item.watchlists.some(user => specificWatchlistFilter.includes(user))))
-                && ( genreFilter.length === 0 || (Array.isArray(item.genres) && item.genres.some(genre => genreFilter.includes(genre))))
-                && ( yearFilter[0] <= item.year && item.year <= yearFilter[1])
-                && ( ratingFilter === 0 || item.rating >= ratingFilter)
+                    && (watchlistFilter === 0 || item.watchlists.length >= watchlistFilter)
+                    && (specificWatchlistFilter.length === 0 || (Array.isArray(item.watchlists) && item.watchlists.some(user => specificWatchlistFilter.includes(user))))
+                    && (genreFilter.length === 0 || (Array.isArray(item.genres) && item.genres.some(genre => genreFilter.includes(genre))))
+                    && (yearFilter[0] <= item.year && item.year <= yearFilter[1])
+                    && (ratingFilter === 0 || item.rating >= ratingFilter)
             });
         }
     };
@@ -166,24 +152,24 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         let sortedItems = results;
         console.log("sortedItems", sortedItems);
         switch (sortBy) {
-            case "Watchlists: Most to Least":
-                sortedItems = sortedItems.sort((a, b) => b.watchlists.length - a.watchlists.length);
-                break;
-            case "Watchlists: Least to Most":
-                sortedItems = sortedItems.sort((a, b) => a.watchlists.length - b.watchlists.length);
-                break;
-            case "Rating: High to Low":
-                sortedItems = sortedItems.sort((a, b) => b.rating - a.rating);
-                break;
-            case "Rating: Low to High":
-                sortedItems = sortedItems.sort((a, b) => a.rating - b.rating);
-                break;
-            case "Year: Newest to Oldest":
-                sortedItems = sortedItems.sort((a, b) => b.year - a.year);
-                break;
-            case "Year: Oldest to Newest":
-                sortedItems = sortedItems.sort((a, b) => a.year - b.year);
-                break;
+            // case "Watchlists: Most to Least":
+            //     sortedItems = sortedItems.sort((a, b) => b.watchlists.length - a.watchlists.length);
+            //     break;
+            // case "Watchlists: Least to Most":
+            //     sortedItems = sortedItems.sort((a, b) => a.watchlists.length - b.watchlists.length);
+            //     break;
+            // case "Rating: High to Low":
+            //     sortedItems = sortedItems.sort((a, b) => b.rating - a.rating);
+            //     break;
+            // case "Rating: Low to High":
+            //     sortedItems = sortedItems.sort((a, b) => a.rating - b.rating);
+            //     break;
+            // case "Year: Newest to Oldest":
+            //     sortedItems = sortedItems.sort((a, b) => b.year - a.year);
+            //     break;
+            // case "Year: Oldest to Newest":
+            //     sortedItems = sortedItems.sort((a, b) => a.year - b.year);
+            //     break;
             default:
                 break;
         }
@@ -239,7 +225,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         )
     }
 
-    
+
     return (
         <div className="w-full">
             <h2 className="text-m-2xl mb-3">Pick A Film</h2>

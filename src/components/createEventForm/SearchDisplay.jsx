@@ -1,6 +1,7 @@
 import React from "react";
 import "@/styles/utility.css"
 import usersData from "@/data/users";
+import { image500 } from "../../lib/tmdb/config";
 
 const SearchDisplay = ({ filteredItems, selectedFilms, setSelectedFilms }) => {
 
@@ -39,7 +40,7 @@ const SearchDisplay = ({ filteredItems, selectedFilms, setSelectedFilms }) => {
                                     {/* The image fills the square container */}
                                     <div className="aspect-w-1 aspect-h-1">
                                         <img
-                                            src={item.image}
+                                            src={image500(item.poster_path)}
                                             alt={item.title}
                                             className="object-cover object-center rounded-xl"
                                         />
@@ -64,7 +65,7 @@ const SearchDisplay = ({ filteredItems, selectedFilms, setSelectedFilms }) => {
     
                                         {/* watchlist */}
                                         <div className="flex">
-                                            {item.watchlists
+                                            {/* {item.watchlists
                                                 .slice(0, item.watchlists.length > 4 ? 3 : 4)
                                                 .map((participantName, index) => {
                                                 // Find the user in usersData that matches the participant's id
@@ -83,11 +84,11 @@ const SearchDisplay = ({ filteredItems, selectedFilms, setSelectedFilms }) => {
                                                         />
                                                     </div>
                                                 )
-                                            })}
+                                            })} */}
                                             {/* plus sign + how many more people */}
-                                            {item.watchlists.length > 4 && (
+                                            {/* {item.watchlists.length > 4 && (
                                                 <div>+{item.watchlists.length - 3}</div>
-                                            )}
+                                            )} */}
                                         </div>
 
                                         {/* Rating */}
