@@ -1,28 +1,24 @@
 import React, { useState, useEffect, useCallback } from "react";
 import SearchDisplay from "./SearchDisplay";
 import { Button } from "@/components/ui/button";
-import { IoIosSearch } from "react-icons/io";
 import { CiFilter } from "react-icons/ci";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import "@/styles/utility.css"
 import Filters from "@/components/utility/Filters";
+import DummyUserData from "@/data/users";
 import { cn } from "@/lib/utils"
-import dummyUser from "@/data/dummyUserData";
 import SearchBar from "@/components/utility/SearchBar";
 import Loader from "@/components/utility/Loader";
 import debounce from "lodash.debounce";
 import { fetchUpcoming, searchFilms } from "../../lib/tmdb/api";
-import { defaultSortBy, defaultWatchlistFilter, defaultSpecificWatchlistFilter, defaultGenreFilter, defaultYearFilter, defaultRating } from "@/constants";
+import { defaultFilters, defaultSortBy } from "@/constants";
 
 const FilmSearch = ({ formData: parentFormData, nextStep }) => {
-    const [isFilterApplied, setIsFilterApplied] = useState(false);
     const [sortBy, setSortBy] = useState(defaultSortBy);
-    const [watchlistFilter, setwatchlistFilter] = useState(defaultWatchlistFilter);
-    const [specificWatchlistFilter, setSpecificWatchlistFilter] = useState(defaultSpecificWatchlistFilter);
-    const [genreFilter, setGenreFilter] = useState(defaultGenreFilter);
-    const [yearFilter, setYearFilter] = useState(defaultYearFilter);
-    const [ratingFilter, setRatingFilter] = useState(defaultRating);
+    const [filters, setFilters] = useState(defaultFilters);
     const [showFilters, setShowFilters] = useState(false);
+    const [isFilterApplied, setIsFilterApplied] = useState(false);
+
     const [loading, setLoading] = useState(false);
 
     const [formData, setFormData] = useState(parentFormData);
@@ -32,6 +28,9 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const [upcomingFilms, setUpcomingFilms] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+
+    const [users, setUsers] = useState(DummyUserData);
+
 
     // Update selected films
     const updateSelection = (newSelectedFilms) => {
@@ -52,7 +51,6 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         nextStep(formData);
     };
 
-
     /**
      * FILM DATA
      */
@@ -62,7 +60,6 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         setLoading(true);
         getInitialFilms();
     }, []);
-
     const getInitialFilms = async () => {
         const data = await fetchUpcoming();
         if (data && data.results) {
@@ -92,15 +89,9 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                 language: 'en-US',
                 page: 10
             })
-            if (data && data.results) {
-                setFilmData(data.results);
-                // apply filters and sort
-                // setFilteredItems(filmData.filter(item =>
-                //     item.original_title.toLowerCase().includes(value.toLowerCase())
-                // ));
-            }
-            else setFilmData(upcomingFilms);
-        }
+            if (data && data.results) setFilmData(data.results);
+        } else setFilmData(upcomingFilms);
+
         setLoading(false);
     }, 500);
 
@@ -109,42 +100,42 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
      * FILTERS & SORTING
      */
 
-    // when filters/sort settings change, reapply filters and sort
+    // keep track of whether any filter or sort has been applied
     useEffect(() => {
-        // show the filter button in a different color if any filter has been applied
-        const hasChanged = sortBy !== defaultSortBy ||
-            watchlistFilter !== defaultWatchlistFilter ||
-            (specificWatchlistFilter && specificWatchlistFilter.length > 0) ||
-            (genreFilter && genreFilter.length > 0) ||
-            yearFilter[0] !== defaultYearFilter[0] ||
-            yearFilter[1] !== defaultYearFilter[1] ||
-            ratingFilter !== defaultRating;
+        const hasChanged = Object.keys(filters).some(key => filters[key] !== defaultFilters[key]) && sortBy !== defaultSortBy;
         setIsFilterApplied(hasChanged);
-        
-        const results = applyFiltersAndSort();
-        setFilteredItems(results);
-    }, [searchTerm, sortBy, watchlistFilter, specificWatchlistFilter, genreFilter, yearFilter, ratingFilter]);
-
-    const applyFiltersAndSort = () => {
-        let results = applyFilters(); // Apply filters based on the current state
-        return applySort(results); // Then, sort those results before returning them
-    };
+    }, [sortBy, filters]);
+  
+    // Filter & sort the film data based on the current state
+    useEffect(() => {
+        const filteredResults = applyFilters(filmData); // Apply filters based on the current state
+        const sortedResults = applySort(filteredResults); // Then, sort those results before returning them
+        setFilteredItems(sortedResults);
+    }, [filmData, sortBy, filters]);    
 
     // Filter the film data based on the search term & filters
-    const applyFilters = () => {
-        // if empty string, return all items
-        if (!searchTerm) {
-            return upcomingFilms;
-        } else {
-            return filmData.filter(item => {
-                item.original_title.toLowerCase().includes(searchTerm.toLowerCase())
-                    && (watchlistFilter === 0 || item.watchlists.length >= watchlistFilter)
-                    && (specificWatchlistFilter.length === 0 || (Array.isArray(item.watchlists) && item.watchlists.some(user => specificWatchlistFilter.includes(user))))
-                    && (genreFilter.length === 0 || (Array.isArray(item.genres) && item.genres.some(genre => genreFilter.includes(genre))))
-                    && (yearFilter[0] <= item.year && item.year <= yearFilter[1])
-                    && (ratingFilter === 0 || item.rating >= ratingFilter)
-            });
-        }
+    const applyFilters = (filmData) => {
+
+        return filmData.filter(item => {
+            return item.original_title.toLowerCase().includes(searchTerm.toLowerCase());
+        });
+
+        // return filmData.filter(item => {
+
+        //     console.log("item", item);
+        //     console.log("searchTerm", searchTerm);
+
+        //     item.original_title.toLowerCase().includes(searchTerm.toLowerCase())
+
+
+
+
+        //         // && (filters.watchlistFilter === 0 || (item.watchlists.length >= filters.watchlistFilter))
+        //         // && (filters.specificWatchlistFilter.length === 0 || (Array.isArray(item.watchlists) && item.watchlists.some(user => filters.specificWatchlistFilter.includes(user))))
+        //         // && (filters.genreFilter.length === 0 || (Array.isArray(item.genres) && item.genres.some(genre => filters.genreFilter.includes(genre))))
+        //         // && (filters.yearFilter[0] <= item.year && item.year <= filters.yearFilter[1])
+        //         // && (filters.ratingFilter === 0 || item.rating >= filters.ratingFilter)
+        // });
     };
 
     // Sort the film data based on the selected sort option
@@ -176,10 +167,10 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         return sortedItems;
     }
 
-    const AppliedFilters = () => {
+    const DisplayAppliedFilters = () => {
         return (
             <div className="flex flex-wrap gap-2 justify-start mt-1 mb-4">
-                {sortBy !== defaultSortBy && (
+                {/* {sortBy !== defaultSortBy && (
                     <button onClick={() => setShowFilters(true)}>
                         <p className="py-2 px-4 h-auto border-2 border-accent/30 rounded-full text-m-s text-accent/60">{sortBy}</p>
                     </button>
@@ -220,7 +211,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     }}>
                         <IoMdCloseCircleOutline className="text-accent/50 text-xl" />
                     </button>
-                )}
+                )} */}
             </div>
         )
     }
@@ -229,7 +220,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     return (
         <div className="w-full">
             <h2 className="text-m-2xl mb-3">Pick A Film</h2>
-            {showFilters ?
+            {/* {showFilters ?
                 <Filters
                     closeModal={() => setShowFilters(false)}
                     maxNumWatchlist={6}
@@ -248,11 +239,8 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     setYear={(newYear) => setYearFilter(newYear)}
                     selectedRating={ratingFilter}
                     setRating={(newRating) => setRatingFilter(newRating)}
-                /> :
+                /> : */}
 
-                /**
-                 * Main content
-                 */
                 <div className="flex flex-col">
                     {/* Description */}
                     <div className="text-m-l">
@@ -269,7 +257,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     </div>
 
                     {/* Applied Filter Displays */}
-                    <AppliedFilters />
+                    <DisplayAppliedFilters />
 
                     {/* Result */}
                     {loading ?
@@ -295,7 +283,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                         Next
                     </Button>
                 </div>
-            }
+            {/* } */}
         </div>
 
     );

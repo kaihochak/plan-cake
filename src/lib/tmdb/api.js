@@ -1,5 +1,10 @@
 import axios from "axios";
-import { latestMoviesEndpoint, movieCreditsEndpoint, movieDetailsEndpoint, searchMoviesEndpoint, similarMoviesEndpoint, trendingMoviesEndpoint, upcomingMoviesEndpoint } from "./config.js";
+import { latestMoviesEndpoint, movieCreditsEndpoint, movieDetailsEndpoint, movieGenresEndpoint, searchMoviesEndpoint, similarMoviesEndpoint, trendingMoviesEndpoint, upcomingMoviesEndpoint } from "./config.js";
+
+// event screen apis
+export const fetchMovieGenres = () => {
+    return apiCall(movieGenresEndpoint);
+}
 
 // home screen apis
 export const fetchTrending = () => {
@@ -25,6 +30,8 @@ export const fetchCast = (FilmId) => {
 export const fetchSimilarMovies = (FilmId) => {
     return apiCall(similarMoviesEndpoint(FilmId));
 }
+
+
 
 // person screen apis
 export const fetchPersonDetails = (personId) => {

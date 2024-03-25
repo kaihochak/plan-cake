@@ -7,6 +7,7 @@ export const upcomingMoviesEndpoint = `${apiBaseUrl}/movie/upcoming?api_key=${ap
 export const topRatedMoviesEndpoint = `${apiBaseUrl}/movie/top_rated?api_key=${apiKey}`;
 export const latestMoviesEndpoint = `${apiBaseUrl}/movie/latest?api_key=${apiKey}`;
 export const searchMoviesEndpoint = `${apiBaseUrl}/search/movie?api_key=${apiKey}`;
+export const movieGenresEndpoint = `${apiBaseUrl}/genre/movie/list?api_key=${apiKey}`;
 
 // dynamic endpoints
 export const movieDetailsEndpoint = id => `${apiBaseUrl}/movie/${id}?api_key=${apiKey}`;
