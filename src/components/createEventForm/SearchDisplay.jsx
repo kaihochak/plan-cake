@@ -3,7 +3,9 @@ import "@/styles/utility.css"
 import usersData from "@/data/users";
 import { image500 } from "../../lib/tmdb/config";
 
-const SearchDisplay = ({ filteredItems, selectedFilms, setSelectedFilms }) => {
+const SearchDisplay = ({ filteredItems, selectedFilms, setSelectedFilms, max }) => {
+
+    if (max == null) max = 100;
 
     const handleSelect = (itemId) => {
         const newSelectedFilms = selectedFilms.includes(itemId)
@@ -19,7 +21,7 @@ const SearchDisplay = ({ filteredItems, selectedFilms, setSelectedFilms }) => {
                     {/* EventCollection of items */}
                     <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
                         {/* each item */}
-                        {filteredItems.slice(0, 10).map((item) => (
+                        {filteredItems.slice(0, max).map((item) => (
                             <div
                                 key={item.id}
                                 className="flex flex-col gap-y-2 relative"
