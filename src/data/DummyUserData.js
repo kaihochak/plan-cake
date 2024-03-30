@@ -24,6 +24,14 @@ const DummyUserData = [
             invitedEvents: [1, 2, 3],
             participatingEvents: [1, 2, 3],
         },
+        watchlist: [
+            {
+                _id: '24', name: 'The Kill Bill', poster: '/assets/posters/killbill.jpg'
+            },
+            {
+                _id: '604755', name: 'Kill My Brother', poster: '/assets/posters/matrix.jpg'
+            },
+        ],
         messages: [1, 2, 3],
         preferences: {
             notificationSettings: {
