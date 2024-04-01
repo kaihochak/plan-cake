@@ -7,13 +7,11 @@ import SearchBar from "@/components/utility/SearchBar";
 import Loader from "@/components/utility/Loader";
 import debounce from "lodash.debounce";
 import { fetchUpcoming, searchFilms } from "../../lib/tmdb/api";
-import { defaultFilters, defaultSortBy } from "@/constants";
 import FilmFilters from "../utility/FilmFilters";
 import FilmFiltersDisplay from "../utility/FilmFiltersDisplay";
 
 const FilmSearch = ({ formData: parentFormData, nextStep }) => {
-    const [sortBy, setSortBy] = useState(defaultSortBy);
-    const [filters, setFilters] = useState(defaultFilters);
+
     const [isFilterApplied, setIsFilterApplied] = useState(false);
 
     const [loading, setLoading] = useState(false);
@@ -126,13 +124,8 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     <FilmFilters
                         filmData={filmData}
                         isFilterApplied={isFilterApplied} // for highlighting the filter button and filter displays
-                        filteredResults={filteredResults}
                         setFilteredResults={setFilteredResults}
                         users={users}
-                        sortBy={sortBy}
-                        setSortBy={setSortBy}
-                        filters={filters}
-                        setFilters={setFilters}
                     />
                 </div>
 
