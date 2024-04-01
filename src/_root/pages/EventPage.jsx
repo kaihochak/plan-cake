@@ -5,8 +5,9 @@ import DummyEventData from '@/data/DummyEventData'
 import PickATime from '@/components/filmPage/PickATime'
 import FilmPoll from '@/components/filmPage/FilmPoll'
 import GuestList from '@/components/filmPage/GuestList'
-import Threads from '@/components/filmPage/Threads'
+import CommentSection from '@/components/eventPage/CommentSection'
 import TimeConvertor from '../../components/utility/TimeConvertor'
+
 
 const EventPage = () => {
   const [event, setEvent] = useState(null);
@@ -94,8 +95,8 @@ const EventPage = () => {
         {/* Film Poll */}
         <FilmPoll/>
 
-        {/* Threads */}
-        <Threads />
+        {/* CommentSection */}
+        <CommentSection />
 
       </div>
     </div>
