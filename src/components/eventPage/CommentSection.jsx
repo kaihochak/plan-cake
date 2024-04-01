@@ -9,7 +9,7 @@ const CommentSection = () => {
   let user = DummyUserData[0];
 
   return (
-    <div className='pb-10'>
+    <div className='pb-10 w-full'>
       <PostComment
         key={comment._id}
         id={comment._id}

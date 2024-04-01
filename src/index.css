@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
     --background: 0 0% 12%;
@@ -9,24 +9,24 @@
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
- 
+
     /* Off White */
     --popover: 0 0% 85%;
     --popover-foreground: 0 0% 12%;
- 
+
     /* Off Black */
-    --primary: 0 0% 8%; 
+    --primary: 0 0% 8%;
     --primary-foreground: 0 0% 85%;
- 
+
     /* Off White */
     --secondary: 0 0% 85%;
     --secondary-foreground: 0 0% 12%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
- 
+
     /* Yellow - Off Black */
-    --accent: 43 99% 53%;  
+    --accent: 43 99% 53%;
     --accent-foreground: 0 0% 12%;
 
     /* Purple */
@@ -40,50 +40,51 @@
     --border: 0 0% 50%;
     --input: 0 0% 50%;
     --ring: 222.2 84% 4.9%;
- 
+
     --radius: 0.5rem;
 
     /* for react swipe  */
-    --swiper-theme-color: #febb10; 
+    --swiper-theme-color: #febb10;
   }
 
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
- 
+
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
- 
+
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
- 
+
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
- 
+
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
- 
+
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
- 
+
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
- 
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
- 
+
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border scroll-smooth;
   }
+
   body {
-    @apply bg-background text-foreground  min-h-screen;
+    @apply bg-background text-foreground min-h-screen;
   }
 }
 
@@ -188,8 +189,10 @@
 
   /* For IE, Edge and Firefox */
   .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
 
   .common-container {
@@ -212,7 +215,7 @@
 
   /* Search Container */
   .explore-search_container {
-    @apply bg-primary-dark px-5 md:pt-4 mx-auto max-w-[1024px] w-full sticky top-0 z-50 ;
+    @apply bg-primary-dark px-5 md:pt-4 mx-auto max-w-[1024px] w-full sticky top-0 z-50;
     @apply md:px-8 lg:p-14 lg:py-0 lg:px-14 xl:pt-10 gap-x-10 gap-y-10;
   }
 
@@ -237,7 +240,7 @@
   }
 
   .home-creators {
-    @apply hidden xl:flex flex-col w-72 2xl:w-465 px-6 py-10 gap-10  overflow-scroll custom-scrollbar;
+    @apply hidden xl:flex flex-col w-72 2xl:w-465 px-6 py-10 gap-10 overflow-scroll custom-scrollbar;
   }
 
   /* Post Details */
@@ -258,7 +261,7 @@
   }
 
   .post_details-delete_btn {
-    @apply p-0 flex gap-3 hover:bg-transparent hover:text-secondary  text-secondary small-medium lg:base-medium;
+    @apply p-0 flex gap-3 hover:bg-transparent hover:text-secondary text-secondary small-medium lg:base-medium;
   }
 
   /* Profile */
@@ -271,7 +274,7 @@
   }
 
   .profile-tab {
-    @apply flex-center gap-3 py-4 w-48 bg-primary  transition flex-1 xl:flex-initial;
+    @apply flex-center gap-3 py-4 w-48 bg-primary transition flex-1 xl:flex-initial;
   }
 
   /* Saved */
@@ -285,8 +288,8 @@
   }
 
   .film-page-inner {
-    @apply flex flex-col mx-auto top-0 w-full max-w-[1024px] ;
-    @apply gap-10 md:gap-0 py-10 md:py-0 px-5 md:px-8 ;
+    @apply flex flex-col mx-auto top-0 w-full max-w-[1024px];
+    @apply gap-10 md:gap-0 py-10 md:py-0 px-5 md:px-8;
   }
 
   .film-img-container {
@@ -298,15 +301,14 @@
   .film-img {
     @apply h-full w-full object-cover;
   }
-  
+
   .film-img-mask {
     @apply absolute;
-    background-image: 
+    background-image:
       /* left and right */
-      linear-gradient(
-        90deg,
+      linear-gradient(90deg,
         hsl(var(--primary)/100%) 0,
-        hsl(var(--primary)/98.6%) .97%,  
+        hsl(var(--primary)/98.6%) .97%,
         hsl(var(--primary)/94.5%) 2%,
         hsl(var(--primary)/88.3%) 3.3%,
         hsl(var(--primary)/80.3%) 4.6%,
@@ -334,11 +336,10 @@
         hsl(var(--primary)/80.3%) 95.4%,
         hsl(var(--primary)/88.3%) 96.7%,
         hsl(var(--primary)/94.5%) 97.9%,
-        hsl(var(--primary)/98.6%) 99%, 
+        hsl(var(--primary)/98.6%) 99%,
         hsl(var(--primary)/100%)),
       /* bottom to top */
-      linear-gradient(
-        0deg,
+      linear-gradient(0deg,
         hsl(var(--primary)/100%) 0,
         hsl(var(--primary)/100%) 21.5%,
         hsl(var(--primary)/98%) 23.6%,
@@ -360,98 +361,96 @@
   .film-info-container {
     @apply relative flex -top-52 md:-top-72
   }
-  
+
 
   .film-small-poster {
     @apply w-[200px] md:w-[250px] rounded-md border border-secondary/30
   }
 
-    /* Event details */
-    .event-container {
-      @apply flex flex-1 p-0 custom-scrollbar overflow-scroll;
-    }
-  
-    .event-page-inner {
-      @apply flex flex-col w-full max-w-[1024px] ;
-      @apply gap-10 md:gap-0 py-10 md:py-0 px-5 md:px-8 ;
-    }
-  
-    .event-img-container {
-      @apply aspect-w-[1] aspect-h-[0.99] -mx-10 -mt-20 -mb-36;
-      @apply sm:aspect-w-[1.6] sm:aspect-h-1 sm:-mx-20 sm:-mt-8 sm:-mb-2;
-      @apply md:aspect-w-[1.4] md:aspect-h-1 md:-mx-20 md:-mt-0 md:-mb-0;
-    }
-  
-    .event-img {
-      @apply h-full w-full object-cover;
-    }
-    
-    .event-img-mask {
-      @apply absolute;
-      background-image: 
-        /* left and right */
-        linear-gradient(
-          90deg,
-          hsl(var(--primary)/100%) 0,
-          hsl(var(--primary)/98.6%) .97%,  
-          hsl(var(--primary)/94.5%) 2%,
-          hsl(var(--primary)/88.3%) 3.3%,
-          hsl(var(--primary)/80.3%) 4.6%,
-          hsl(var(--primary)/71.1%) 6%,
-          hsl(var(--primary)/61%) 7.4%,
-          hsl(var(--primary)/50.4%) 8.8%,
-          hsl(var(--primary)/39.8%) 10.2%,
-          hsl(var(--primary)/29.6%) 11.5%,
-          hsl(var(--primary)/20.3%) 12.8%,
-          hsl(var(--primary)/12.2%) 14%,
-          hsl(var(--primary)/5.9%) 15%,
-          hsl(var(--primary)/1.6%) 15.9%,
-          hsl(var(--primary)/0%) 16.7%,
-          hsl(var(--primary)/0%) 83.3%,
-          hsl(var(--primary)/0) 83.3%,
-          hsl(var(--primary)/1.6%) 84.1%,
-          hsl(var(--primary)/5.9%) 84.9%,
-          hsl(var(--primary)/12.2%) 86%,
-          hsl(var(--primary)/20.3%) 87.2%,
-          hsl(var(--primary)/29.6%) 88.5%,
-          hsl(var(--primary)/39.8%) 89.8%,
-          hsl(var(--primary)/50.4%) 91.2%,
-          hsl(var(--primary)/61%) 92.6%,
-          hsl(var(--primary)/71.1%) 94%,
-          hsl(var(--primary)/80.3%) 95.4%,
-          hsl(var(--primary)/88.3%) 96.7%,
-          hsl(var(--primary)/94.5%) 97.9%,
-          hsl(var(--primary)/98.6%) 99%, 
-          hsl(var(--primary)/100%)),
-        /* bottom to top */
-        linear-gradient(
-          0deg,
-          hsl(var(--primary)/100%) 0,
-          hsl(var(--primary)/100%) 21.5%,
-          hsl(var(--primary)/98%) 23.6%,
-          hsl(var(--primary)/94.5%) 26.1%,
-          hsl(var(--primary)/88.3%) 28.8%,
-          hsl(var(--primary)/80.3%) 31.7%,
-          hsl(var(--primary)/71.1%) 34.7%,
-          hsl(var(--primary)/61%) 37.8%,
-          hsl(var(--primary)/50.4%) 41%,
-          hsl(var(--primary)/39.8%) 44.1%,
-          hsl(var(--primary)/29.6%) 47.1%,
-          hsl(var(--primary)/20.3%) 49.9%,
-          hsl(var(--primary)/12.2%) 52.5%,
-          hsl(var(--primary)/5.9%) 54.9%,
-          hsl(var(--primary)/1.6%) 56.9%,
-          hsl(var(--primary)/0) 58.5%);
-    }
-  
-    .event-info-container {
-      @apply relative flex -top-52 md:-top-72
-    }
-    
-  
-    .event-small-poster {
-      @apply w-[200px] md:w-[250px] rounded-md border border-secondary/30
-    }
+  /* Event details */
+  .event-container {
+    @apply flex flex-1 p-0 custom-scrollbar overflow-scroll;
+  }
+
+  .event-page-inner {
+    @apply flex flex-col w-full max-w-[1024px] mx-auto;
+    @apply gap-10 md:gap-0 py-10 md:py-0 px-5 md:px-8;
+  }
+
+  .event-img-container {
+    @apply aspect-w-[1] aspect-h-[0.99] -mx-10 -mt-20 -mb-36;
+    @apply sm:aspect-w-[1.6] sm:aspect-h-1 sm:-mx-20 sm:-mt-8 sm:-mb-2;
+    @apply md:aspect-w-[1.4] md:aspect-h-1 md:-mx-20 md:-mt-0 md:-mb-0;
+  }
+
+  .event-img {
+    @apply h-full w-full object-cover;
+  }
+
+  .event-img-mask {
+    @apply absolute;
+    background-image:
+      /* left and right */
+      linear-gradient(90deg,
+        hsl(var(--primary)/100%) 0,
+        hsl(var(--primary)/98.6%) .97%,
+        hsl(var(--primary)/94.5%) 2%,
+        hsl(var(--primary)/88.3%) 3.3%,
+        hsl(var(--primary)/80.3%) 4.6%,
+        hsl(var(--primary)/71.1%) 6%,
+        hsl(var(--primary)/61%) 7.4%,
+        hsl(var(--primary)/50.4%) 8.8%,
+        hsl(var(--primary)/39.8%) 10.2%,
+        hsl(var(--primary)/29.6%) 11.5%,
+        hsl(var(--primary)/20.3%) 12.8%,
+        hsl(var(--primary)/12.2%) 14%,
+        hsl(var(--primary)/5.9%) 15%,
+        hsl(var(--primary)/1.6%) 15.9%,
+        hsl(var(--primary)/0%) 16.7%,
+        hsl(var(--primary)/0%) 83.3%,
+        hsl(var(--primary)/0) 83.3%,
+        hsl(var(--primary)/1.6%) 84.1%,
+        hsl(var(--primary)/5.9%) 84.9%,
+        hsl(var(--primary)/12.2%) 86%,
+        hsl(var(--primary)/20.3%) 87.2%,
+        hsl(var(--primary)/29.6%) 88.5%,
+        hsl(var(--primary)/39.8%) 89.8%,
+        hsl(var(--primary)/50.4%) 91.2%,
+        hsl(var(--primary)/61%) 92.6%,
+        hsl(var(--primary)/71.1%) 94%,
+        hsl(var(--primary)/80.3%) 95.4%,
+        hsl(var(--primary)/88.3%) 96.7%,
+        hsl(var(--primary)/94.5%) 97.9%,
+        hsl(var(--primary)/98.6%) 99%,
+        hsl(var(--primary)/100%)),
+      /* bottom to top */
+      linear-gradient(0deg,
+        hsl(var(--primary)/100%) 0,
+        hsl(var(--primary)/100%) 21.5%,
+        hsl(var(--primary)/98%) 23.6%,
+        hsl(var(--primary)/94.5%) 26.1%,
+        hsl(var(--primary)/88.3%) 28.8%,
+        hsl(var(--primary)/80.3%) 31.7%,
+        hsl(var(--primary)/71.1%) 34.7%,
+        hsl(var(--primary)/61%) 37.8%,
+        hsl(var(--primary)/50.4%) 41%,
+        hsl(var(--primary)/39.8%) 44.1%,
+        hsl(var(--primary)/29.6%) 47.1%,
+        hsl(var(--primary)/20.3%) 49.9%,
+        hsl(var(--primary)/12.2%) 52.5%,
+        hsl(var(--primary)/5.9%) 54.9%,
+        hsl(var(--primary)/1.6%) 56.9%,
+        hsl(var(--primary)/0) 58.5%);
+  }
+
+  .event-info-container {
+    @apply relative flex -top-52 md:-top-72
+  }
+
+
+  .event-small-poster {
+    @apply w-[200px] md:w-[250px] rounded-md border border-secondary/30
+  }
 
 
   /* Bottom bar */
@@ -505,7 +504,7 @@
 
   /* Topbar */
   .topbar {
-    @apply bg-primary-dark  top-0 z-50 xl:hidden w-full h-[80px] sticky;  
+    @apply bg-primary-dark top-0 z-50 xl:hidden w-full h-[80px] sticky;
   }
 
   .transTopbar {
@@ -524,6 +523,7 @@
 }
 
 @layer components {
+
   /* SHADCN COMPONENTS */
   /* Form */
   .shad-form_label {

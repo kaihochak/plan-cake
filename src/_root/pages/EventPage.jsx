@@ -11,9 +11,7 @@ import TimeConvertor from '../../components/utility/TimeConvertor'
 
 const EventPage = () => {
   const [event, setEvent] = useState(null);
-
-  // Get the event id from the URL
-  const { id } = useParams();
+  const { id } = useParams(); // Get the event id from the URL
 
   // Get the event from the database
   useEffect(() => {
@@ -45,7 +43,7 @@ const EventPage = () => {
             <img src={event?.imageURL} alt={event?.title} className='min-w-[200px] md:min-w-[250px]' />
           </div>          
           {/* Details */}
-          <div className='flex flex-col justify-start gap-4 md:gap-y-4 '>
+          <div className='flex flex-col w-full justify-start gap-4 md:gap-y-4 '>
             {/* Event Name */}
             <p className='text-m-xl md:text-[35px] font-bold'>{event?.title}</p>
             {/* Date & Time */}

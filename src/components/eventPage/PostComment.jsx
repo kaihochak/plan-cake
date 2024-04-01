@@ -21,15 +21,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { CommentValidation } from "@/lib/validation";
 // import { createThread } from "@/lib/actions/thread.actions";
 
-function PostComment({ 
-  id, 
-  currentUserId, 
-  parentId, 
-  content, 
-  author, 
-  community, 
-  createdAt, 
-  comments 
+function PostComment({
+  id,
+  currentUserId,
+  parentId,
+  content,
+  author,
+  community,
+  createdAt,
+  comments
 }) {
   // const router = useRouter();
   // const pathname = usePathname();
@@ -52,7 +52,7 @@ function PostComment({
     //   path: pathname,
     // });
 
-   // router.push("/");
+    // router.push("/");
   };
 
   console.log(author);
@@ -71,21 +71,27 @@ function PostComment({
               <FormLabel className=''>
                 <p className='text-m-m text-border md:text-[20px]'>Comments</p>
               </FormLabel>
-              <div className="flex gap-3 flex-row items-center md:gap-8">
+
+
+              <div className="flex-start gap-3 md:gap-5 w-full">
+                {/* Profile Image */}
                 <Link href={`/profile/${author?.id}`} className='relative h-11 w-11 md:h-14 md:w-14 '>
-                <img
-                  src={author?.image}
-                  alt='user_community_image'
-                  className='cursor-pointer rounded-full w-full h-full object-cover'
+                  <img
+                    src={author?.image}
+                    alt='user_community_image'
+                    className='cursor-pointer rounded-full w-full h-full object-cover'
                   />
                 </Link>
+                {/* Comment Input */}
                 <FormControl className='no-focus'>
-                  <input className=' bg-transparent border-[1.5px] rounded-sm p-1 pl-2 text-m-m text-border md:w-[100%]' placeholder="Add a comment" {...field} />
+                  <input className=' bg-transparent border-[1.5px] rounded-sm p-1 pl-3 text-m-m text-border w-[75%] h-[40px] md:h-[50px]' 
+                        placeholder="Add a comment" {...field} />
                 </FormControl>
 
+                {/* Button */}
                 <img
                   src='/assets/icons/share.svg'
-                  alt='heart'
+                  alt='share'
                   className='w-6 h-6 md:w-8 md:h-8 cursor-pointer object-contain'
                 />
               </div>
