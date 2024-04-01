@@ -63,7 +63,9 @@ const AuthProvider = ({ children }) => {
             cookieFallback === null ||
             cookieFallback === undefined
         ) {
-          navigate("/sign-in");
+        //   navigate("/sign-in");
+        // temporary open for test purposes
+            navigate("/");
         }
         // check if we have a logged in user
         checkAuthUser();

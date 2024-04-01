@@ -19,10 +19,10 @@ function App() {
       {/* Routes */}
       <Routes>
         {/* public */}
-        {/* <Route element={<AuthLayout />}>
+        <Route element={<AuthLayout />}>
           <Route path="/sign-in" element={<SigninForm />} />
           <Route path="/sign-up" element={<SignupForm />} />
-        </Route> */}
+        </Route>
 
         {/* private */}
         <Route element={<RootLayout />}>
@@ -33,12 +33,6 @@ function App() {
           <Route path='/profile/:id/*' element={<Profile/>} />
           <Route path='/film/:id' element={<FilmPage/>} />
           <Route path='/event/:id' element={<EventPage/>} />
-        </Route>
-
-        {/* temporary */}
-        <Route element={<AuthLayout />}>
-          <Route path="/sign-in" element={<SigninForm />} />
-          <Route path="/sign-up" element={<SignupForm />} />
         </Route>
       </Routes>
 
