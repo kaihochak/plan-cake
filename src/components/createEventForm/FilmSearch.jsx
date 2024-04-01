@@ -74,6 +74,15 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         setLoading(false);
     }, 500);
 
+    // Filter the film data based on the search term
+    useEffect(() => {
+        if (searchTerm && searchTerm.length > 0) {
+            setFilteredResults(filmData);
+        } else {
+            setFilteredResults(filmData);
+        }
+    }, [filmData]);
+
     /**
      * FILTERS & SORTING
      */
@@ -115,9 +124,10 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                         handleSearchChange={handleSearchChange}
                     />
                     <FilmFilters
-                        openFilterModal={openFilterModal}
+                        filmData={filmData}
                         isFilterApplied={isFilterApplied} // for highlighting the filter button and filter displays
                         filteredResults={filteredResults}
+                        setFilteredResults={setFilteredResults}
                         users={users}
                         sortBy={sortBy}
                         setSortBy={setSortBy}
@@ -127,14 +137,13 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                 </div>
 
                 {/* Applied Filter Displays */}
-                <FilmFiltersDisplay 
-                    openFilterModal={openFilterModal}
+                {/* <FilmFiltersDisplay 
                     filters={filters}
                     setFilters={setFilters}
                     sortBy={sortBy}
                     setSortBy={setSortBy}
                     isFilterApplied={isFilterApplied}
-                />
+                /> */}
 
                 {/* Result */}
                 {loading ?

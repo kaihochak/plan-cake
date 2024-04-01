@@ -8,17 +8,10 @@ import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { IoClose } from "react-icons/io5";
 import RatingButton from '@mui/material/Button';
-
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
  
-const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear, ratingSteps,
+const Filters = ({ closeModal, users, minYear, maxYear, ratingSteps,
     selectedSortBy: parentSelectedSortBy, setSelectedSortBy: parentSetSelectedSortBy,
     selectedWatchlists: parentSelectedWatchlists, setSelectedWatchlists: parentSetSelectedWatchlists,
     selectedSpecificWatchlists: parentSelectedSpecificWatchlists, setSelectedSpecificWatchlists: parentSetSelectedSpecificWatchlists,
@@ -35,6 +28,8 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear, ratingSteps,
     const [tempStartYear, setTempStartYear] = useState(parentSelectedYear[0]);
     const [tempEndYear, setTempEndYear] = useState(parentSelectedYear[1]);
     const [selectedRating, setSelectedRating] = useState(parentSelectedRating);
+
+    let maxNumWatchlist = users.length || 0;
 
     const handleSortByChange = (newSortBy) => {
         setSortBy(newSortBy);
@@ -194,14 +189,7 @@ const Filters = ({ closeModal, maxNumWatchlist, minYear, maxYear, ratingSteps,
         );
     };
 
-    // Desktop
-    // if (isDesktop) {
-    //     return (
-    //         <div></div>
-    //     )
-    // }
 
-    // Mobile
     return (
         <div className="flex flex-col gap-y-4 text-primary-foreground w-full pt-10 pb-32 px-8 z-50 lg:mx-auto  ">
             <div className='flex justify-between mb-4 place-items-end'>

@@ -3,10 +3,10 @@ import { cn } from "@/lib/utils"
 import { CiFilter } from 'react-icons/ci'
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, Button } from '@mantine/core';
+import Filters from './Filters';
 
 const FilmFilters = ({
-    openFilterModal, isFilterApplied,
-    filteredResults, users,
+    filmData, isFilterApplied, users, filteredResults, setFilteredResults,
     sortBy, setSortBy, filters, setFilters
 }) => {
     const [opened, { open, close }] = useDisclosure(false);
@@ -68,12 +68,13 @@ const FilmFilters = ({
         setFilteredResults(sortedResults);
     }, [filmData, sortBy, filters]);
 
-
-
-
     return (
         <div>
-            <button onClick={() => setShowFilters(!showFilters)}
+            <Modal opened={opened} onClose={close} centered>
+                <Filters filters={filters} setFilters={setFilters} sortBy={sortBy} setSortBy={setSortBy} closeModal={close} users={users} />   
+            </Modal>
+
+            <button onClick={open}
                 className={cn("flex items-center text-[30px] mr-2 mt-2 text-primary-foreground/60",
                     { "text-accent/70": isFilterApplied })}>
                 <CiFilter />
