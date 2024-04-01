@@ -3,7 +3,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import TopBar from '@/components/shared/TopBar';
 import LeftSidebar from '@/components/shared/LeftSidebar';
 import Bottombar from '@/components/shared/Bottombar';
-import TransTopBar from '../components/shared/TransTopbar';
+import TransTopBar from '@/components/shared/TransTopbar';
 
 const RootLayout = () => {
   const location = useLocation();
