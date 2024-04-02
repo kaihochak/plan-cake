@@ -13,17 +13,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenu
 import { defaultFilters, defaultSortBy } from "@/constants";
 
 
-const FilmFilters = ({ filmData, users, setIsFilterApplied,
-    filters: parentFilters, setFilteredResults: parentSetFilteredResults }) => {
+const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen, sortBy: parentSortBy,
+                        filters: parentFilters, setFilteredResults: parentSetFilteredResults }) => {
     const isDesktop = useMediaQuery('only screen and (min-width: 768px)');
-    const [sortBy, setSortBy] = useState(defaultSortBy);
-    const [filters, setFilters] = useState({
-        watchlistFilter: defaultFilters.defaultWatchlistFilter,
-        specificWatchlistFilter: defaultFilters.defaultSpecificWatchlistFilter,
-        genreFilter: defaultFilters.defaultGenreFilter,
-        yearFilter: defaultFilters.defaultYearFilter,
-        ratingFilter: defaultFilters.defaultRating,
-    });
+    const [sortBy, setSortBy] = useState(parentSortBy);
+    const [filters, setFilters] = useState(parentFilters);
 
     useEffect(() => {
         console.log('sorting by', sortBy);
@@ -171,12 +165,12 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied,
     const resetFilters = () => {
         setSortBy(defaultSortBy);
         setFilters(defaultFilters);
-        // setIsOpen(false);
+        setModalOpen(false);
     };
 
     // apply filters
     const applyFilters = () => {
-        // setIsOpen(false);
+        setModalOpen(false);
     };
 
 
@@ -409,7 +403,8 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied,
         <div className="flex flex-col gap-y-4 bg-primary text-primary-foreground w-full h-full pt-10 pb-32 px-8 z-50 lg:mx-auto  ">
             <div className='flex justify-between mb-4 place-items-end'>
                 <h3 className='text-m-xl'>Filters & Sort</h3>
-                <div onClick={setIsOpen(false)} className='text-m-xl cursor-pointer'>
+                <div onClick={() => setModalOpen(false)}
+                    className='text-m-xl cursor-pointer'>
                     <IoClose />
                 </div>
             </div>

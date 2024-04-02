@@ -11,6 +11,7 @@ import FilmFilters from "../utility/FilmFilters";
 import FilmFiltersDisplay from "../utility/FilmFiltersDisplay";
 import { CiFilter } from 'react-icons/ci'
 import { cn } from "@/lib/utils"
+import { defaultFilters, defaultSortBy } from "@/constants";
 
 const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
@@ -26,6 +27,15 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const [upcomingFilms, setUpcomingFilms] = useState([]);
     const [filteredResults, setFilteredResults] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+
+    const [sortBy, setSortBy] = useState(defaultSortBy);
+    const [filters, setFilters] = useState({
+        watchlistFilter: defaultFilters.defaultWatchlistFilter,
+        specificWatchlistFilter: defaultFilters.defaultSpecificWatchlistFilter,
+        genreFilter: defaultFilters.defaultGenreFilter,
+        yearFilter: defaultFilters.defaultYearFilter,
+        ratingFilter: defaultFilters.defaultRating,
+    });
 
     let users = DummyUserData;
 
@@ -48,7 +58,6 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             setLoading(false);
         }
     }
-
 
     /**
      * SEARCH
@@ -114,21 +123,27 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         nextStep(formData);
     };
 
+
+    useEffect(() => {
+        console.log("modalOpen", modalOpen);
+    }, [modalOpen]);
+
     if (modalOpen) {
         return (
             <FilmFilters
                 filmData={filmData}
                 users={users}
-                filters={filters}
+                setIsFilterApplied={setIsFilterApplied}
+                setModalOpen={setModalOpen}
                 sortBy={sortBy}
-
+                filters={filters}
+                setFilteredResults={setFilteredResults}
             />
         );
     } else {
         return (
             <div className="w-full">
                 <h2 className="text-m-2xl mb-3">Pick A Film</h2>
-
                 <div className="flex flex-col">
                     {/* Description */}
                     <div className="text-m-l">
@@ -181,9 +196,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                         Next
                     </Button>
                 </div>
-                {/* } */}
             </div>
-
         );
     }
 };

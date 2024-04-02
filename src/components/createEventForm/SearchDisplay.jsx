@@ -16,7 +16,7 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, max }
 
     return (
         <div>
-            {filteredResults.length > 0 ? (
+            {filteredResults?.length > 0 ? (
                 <div>
                     {/* EventCollection of items */}
                     <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
