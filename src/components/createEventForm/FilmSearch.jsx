@@ -9,10 +9,13 @@ import debounce from "lodash.debounce";
 import { fetchUpcoming, searchFilms } from "../../lib/tmdb/api";
 import FilmFilters from "../utility/FilmFilters";
 import FilmFiltersDisplay from "../utility/FilmFiltersDisplay";
+import { CiFilter } from 'react-icons/ci'
+import { cn } from "@/lib/utils"
 
 const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
     const [isFilterApplied, setIsFilterApplied] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
 
     const [loading, setLoading] = useState(false);
 
@@ -51,8 +54,8 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
      * SEARCH
      */
 
-     // Filter the film data based on the search term
-     useEffect(() => {
+    // Filter the film data based on the search term
+    useEffect(() => {
         if (searchTerm && searchTerm.length > 0) {
             setFilteredResults(filmData);
         } else {
@@ -111,32 +114,42 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         nextStep(formData);
     };
 
-    return (
-        <div className="w-full">
-            <h2 className="text-m-2xl mb-3">Pick A Film</h2>
+    if (modalOpen) {
+        return (
+            <FilmFilters
+                filmData={filmData}
+                users={users}
+                filters={filters}
+                sortBy={sortBy}
 
-            <div className="flex flex-col">
-                {/* Description */}
-                <div className="text-m-l">
-                    <p className="text-m-m"> or many films and decide later on.</p>
-                </div>
+            />
+        );
+    } else {
+        return (
+            <div className="w-full">
+                <h2 className="text-m-2xl mb-3">Pick A Film</h2>
 
-                {/* Search & Filter */}
-                <div className="flex gap-x-4 pt-6">
-                    <SearchBar
-                        searchTerm={searchTerm}
-                        handleSearchChange={handleSearchChange}
-                    />
-                    <FilmFilters
-                        filmData={filmData}
-                        isFilterApplied={isFilterApplied} // for highlighting the filter button and filter displays
-                        setFilteredResults={setFilteredResults}
-                        users={users}
-                    />
-                </div>
+                <div className="flex flex-col">
+                    {/* Description */}
+                    <div className="text-m-l">
+                        <p className="text-m-m"> or many films and decide later on.</p>
+                    </div>
 
-                {/* Applied Filter Displays */}
-                {/* <FilmFiltersDisplay 
+                    {/* Search & Filter */}
+                    <div className="flex gap-x-4 pt-6">
+                        <SearchBar
+                            searchTerm={searchTerm}
+                            handleSearchChange={handleSearchChange}
+                        />
+                        <button onClick={() => setModalOpen(true)}
+                            className={cn("flex items-center text-[30px] mr-2 mt-2 text-primary-foreground/60",
+                                { "text-accent/70": isFilterApplied })}>
+                            <CiFilter />
+                        </button>
+                    </div>
+
+                    {/* Applied Filter Displays */}
+                    {/* <FilmFiltersDisplay 
                     filters={filters}
                     setFilters={setFilters}
                     sortBy={sortBy}
@@ -144,34 +157,35 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     isFilterApplied={isFilterApplied}
                 /> */}
 
-                {/* Result */}
-                {loading ?
-                    <div className="flex-center h-[400px] md:h-[800px]">
-                        <Loader height="h-[60px]" weight="h-[60px]" />
-                    </div> :
-                    <SearchDisplay
-                        filteredResults={filteredResults}
-                        selectedFilms={formData.selectedFilms}
-                        setSelectedFilms={updateSelection}
-                    />
-                }
+                    {/* Result */}
+                    {loading ?
+                        <div className="flex-center h-[400px] md:h-[800px]">
+                            <Loader height="h-[60px]" weight="h-[60px]" />
+                        </div> :
+                        <SearchDisplay
+                            filteredResults={filteredResults}
+                            selectedFilms={formData.selectedFilms}
+                            setSelectedFilms={updateSelection}
+                        />
+                    }
 
-                {/* Display error message if no film is selected */}
-                {showNoSelectionError && (
-                    <div className="text-destructive-foreground text-m-m pt-10">
-                        Please select at least one film.
-                    </div>
-                )}
+                    {/* Display error message if no film is selected */}
+                    {showNoSelectionError && (
+                        <div className="text-destructive-foreground text-m-m pt-10">
+                            Please select at least one film.
+                        </div>
+                    )}
 
-                {/* Next Step */}
-                <Button onClick={handleNextStep} type="submit" className="mt-10">
-                    Next
-                </Button>
+                    {/* Next Step */}
+                    <Button onClick={handleNextStep} type="submit" className="mt-10">
+                        Next
+                    </Button>
+                </div>
+                {/* } */}
             </div>
-            {/* } */}
-        </div>
 
-    );
+        );
+    }
 };
 
 
