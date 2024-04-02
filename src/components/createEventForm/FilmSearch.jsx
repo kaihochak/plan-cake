@@ -24,7 +24,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const [filteredResults, setFilteredResults] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
 
-    const [users, setUsers] = useState(DummyUserData);
+    let users = DummyUserData;
 
     /**
      * FILM DATA
@@ -35,6 +35,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         setLoading(true);
         getInitialFilms();
     }, []);
+
     const getInitialFilms = async () => {
         const upcoming = await fetchUpcoming();
         if (upcoming && upcoming.results) {
@@ -44,6 +45,20 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             setLoading(false);
         }
     }
+
+
+    /**
+     * SEARCH
+     */
+
+     // Filter the film data based on the search term
+     useEffect(() => {
+        if (searchTerm && searchTerm.length > 0) {
+            setFilteredResults(filmData);
+        } else {
+            setFilteredResults(upcomingFilms);
+        }
+    }, [filmData]);
 
     // handle search should be debounced to avoid multiple API calls
     const handleSearchChange = (e) => {
@@ -71,15 +86,6 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         } else setFilmData(upcomingFilms);
         setLoading(false);
     }, 500);
-
-    // Filter the film data based on the search term
-    useEffect(() => {
-        if (searchTerm && searchTerm.length > 0) {
-            setFilteredResults(filmData);
-        } else {
-            setFilteredResults(filmData);
-        }
-    }, [filmData]);
 
     /**
      * FILTERS & SORTING

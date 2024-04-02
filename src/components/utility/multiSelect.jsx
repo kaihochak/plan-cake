@@ -133,9 +133,9 @@ function OptionList({ options, selectedOptions, label, setOpen, setSelectedOptio
     };
 
     return (
-        <Command>
+        <Command >
             <CommandInput placeholder={`Filter by ${label}` + "s"} />
-            <CommandList>
+            <CommandList >
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup>
                     {options.map((option) => (

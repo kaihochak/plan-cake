@@ -13,13 +13,14 @@ import { Link } from 'react-router-dom';
 import { TbExternalLink } from "react-icons/tb";
 
 const Home = () => {
-  const [opened, { open, close }] = useDisclosure(true);
+  const [opened, { open, close }] = useDisclosure(false);
 
 
   return (
     <div className='flex flex-1'>
       <section className='home-container'>
 
+        {/* Kai's introduction */}
         <Modal
           opened={opened}
           onClose={close}
@@ -70,7 +71,6 @@ const Home = () => {
 
           </div>
         </Modal>
-
 
         <div className='home-posts'>
           {/* Most Watchlisted Section */}

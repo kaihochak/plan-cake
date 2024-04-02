@@ -12,17 +12,28 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { useDisclosure } from '@mantine/hooks';
-import { Modal } from '@mantine/core';
+// import { useDisclosure } from '@mantine/hooks';
+// import { Modal } from '@mantine/core';
 import { defaultFilters, defaultSortBy } from "@/constants";
 
 
-const FilmFilters = ({filmData, isFilterApplied, users, setFilteredResults: parentSetFilteredResults}) => {
+const FilmFilters = ({ filmData, isFilterApplied, users, setFilteredResults: parentSetFilteredResults }) => {
     const isDesktop = useMediaQuery('only screen and (min-width: 768px)');
-    const [opened, { open, close }] = useDisclosure(false);
+    // const [opened, { open, close }] = useDisclosure(false);
+    const [isOpen, setIsOpen] = useState(false);
     const [sortBy, setSortBy] = useState(defaultSortBy);
-    const [filters, setFilters] = useState(defaultFilters);
-    const [selectedWatchlists, setSelectedWatchlists] = useState(filters.watchlistFilter);
+    const [filters, setFilters] = useState({
+        watchlistFilter: defaultFilters.defaultWatchlistFilter,
+        specificWatchlistFilter: defaultFilters.defaultSpecificWatchlistFilter,
+        genreFilter: defaultFilters.defaultGenreFilter,
+        yearFilter: defaultFilters.defaultYearFilter,
+        ratingFilter: defaultFilters.defaultRating,
+    });
+
+    useEffect(() => {
+        console.log('sorting by', sortBy);
+        console.log("filters", filters);
+    }, []);
 
     // Filter the film data based on the search term & filters
     const applyFilters = (filmData) => {
@@ -39,7 +50,7 @@ const FilmFilters = ({filmData, isFilterApplied, users, setFilteredResults: pare
     // Sort the film data based on the selected sort option
     const applySort = (results) => {
         let sortedItems = results;
-        console.log("sortedItems", sortedItems);
+        // console.log("sortedItems", sortedItems);
         switch (sortBy) {
             // case "Watchlists: Most to Least":
             //     sortedItems = sortedItems.sort((a, b) => b.watchlists.length - a.watchlists.length);
@@ -67,16 +78,20 @@ const FilmFilters = ({filmData, isFilterApplied, users, setFilteredResults: pare
 
     // Filter & sort the film data based on the current state
     useEffect(() => {
-        console.log("filmData", filmData);
+        // console.log("filmData", filmData);
         const filteredResults = applyFilters(filmData); // Apply filters based on the current state
         const sortedResults = applySort(filteredResults); // Then, sort those results before returning them
-        console.log("filteredResults", filteredResults);
-        console.log("sortedResults", sortedResults);
+        // console.log("filteredResults", filteredResults);
+        // console.log("sortedResults", sortedResults);
         parentSetFilteredResults(sortedResults);
     }, [filmData, sortBy, filters]);
 
 
     const Filters = () => {
+
+        const handleFiltersChange = (filters) => {
+            setFilters(...filters,);
+        };
 
         const handleSortByChange = (newSortBy) => {
             setSortBy(newSortBy);
@@ -101,7 +116,7 @@ const FilmFilters = ({filmData, isFilterApplied, users, setFilteredResults: pare
         };
 
         const handleGenreChange = (newGenre) => {
-            setSelectedGenres(newGenre);
+            handleFiltersChange({ ...filters, genreFilter: newGenre });
         };
 
         const handleYearsSliderChange = (event, newValue) => {
@@ -131,7 +146,6 @@ const FilmFilters = ({filmData, isFilterApplied, users, setFilteredResults: pare
                 return newYears;
             });
         };
-
 
         const handleYearsInputChange = (type) => (event) => {
             const value = event.target.value;
@@ -164,81 +178,17 @@ const FilmFilters = ({filmData, isFilterApplied, users, setFilteredResults: pare
         const resetFilters = () => {
             setSortBy(defaultSortBy);
             setFilters(defaultFilters);
+            // setIsOpen(false);
         };
 
         // apply filters
         const applyFilters = () => {
-            parentSetSelectedSortBy(sortBy);
-            parentSetSelectedWatchlists(selectedWatchlists);
-            parentSetSelectedSpecificWatchlists(selectedSpecificWatchlists);
-            parentSetGenre(selectedGenres);
-            parentSetYear(selectedYear);
-            parentSetRating(selectedRating);
-            closeModal();
+            // setIsOpen(false);
         };
 
-        // rating buttons
-        const RatingBtnGroup = () => {
-            const buttons = [];
-            const getSx = (index) => ({
-                color: selectedRating === index ? 'hsl(var(--accent-foreground))' : 'hsl(var(--primary-foreground))',
-                backgroundColor: selectedRating === index ? 'hsl(var(--accent))' : 'hsl(var(--primary))',
-                borderColor: 'hsl(var(--border))',
-                borderWidth: '1px',
-                '&:hover': {
-                    color: 'hsl(var(--primary))',
-                    backgroundColor: 'hsl(var(--accent))',
-                    borderStyle: 'none'
-                },
-            });
 
-            buttons.push(
-                <RatingButton
-                    className='border rounded-md text-m-s ml-3 w-12 h-6 text-center'
-                    variant={selectedRating === 0 ? "contained" : "outlined"}
-                    sx={getSx(0)}
-                    onClick={() => handleRatingChange(0)}
-                    key={0}
-                >Any
-                </RatingButton>
-            );
-            for (let i = 1; i < ratingSteps; i++) {
-                buttons.push(
-                    <RatingButton
-                        className='border rounded-md text-m-s ml-3 w-12 h-6 text-center'
-                        variant={selectedRating === i ? "contained" : "outlined"}
-                        sx={getSx(i)}
-                        onClick={() => handleRatingChange(i)}
-                        key={i}
-                    > {i}+ </RatingButton>
-                );
-            }
-            buttons.push(
-                <RatingButton
-                    className='border rounded-md text-m-s ml-3 w-12 h-6 text-center'
-                    variant={selectedRating === ratingSteps ? "contained" : "outlined"}
-                    sx={getSx(ratingSteps)}
-                    onClick={() => handleRatingChange(ratingSteps)}
-                    key={ratingSteps}
-                > {ratingSteps} </RatingButton>
-            );
+        const SortOptions = () => {
             return (
-                <div className='flex gap-2 flex-wrap flex-evenly'>
-                    {buttons}
-                </div>
-            );
-        };
-
-        return (
-            <div className="flex flex-col gap-y-4 text-primary-foreground w-full pt-10 pb-32 px-8 z-50 lg:mx-auto  ">
-                <div className='flex justify-between mb-4 place-items-end'>
-                    <h3 className='text-m-xl'>Filters & Sort</h3>
-                    <div onClick={closeModal} className='text-m-xl cursor-pointer'>
-                        <IoClose />
-                    </div>
-                </div>
-
-                {/* Sort By */}
                 <div className='flex flex-col py-3'>
                     <div className='text-m-l pb-4'>Sort by </div>
 
@@ -258,10 +208,11 @@ const FilmFilters = ({filmData, isFilterApplied, users, setFilteredResults: pare
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
+            )
+        }
 
-                <Separator />
-
-                {/* Is in watchlist */}
+        const WatchlistOptions = () => {
+            return (
                 <div className='flex flex-col py-3'>
                     <div className='text-m-l pb-2'>Watchlists
                         <p className='text-m-s pt-2 text-primary-foreground/70'>The minimum number of watchlists they're on.</p>
@@ -320,22 +271,28 @@ const FilmFilters = ({filmData, isFilterApplied, users, setFilteredResults: pare
                     </div>
 
                 </div>
+            )
+        }
 
-                {/* Genres */}
+        const GenreOptions = () => {
+            return (
                 <div className='flex flex-col py-3'>
                     <div className='text-m-l pb-4'>Genres</div>
-                    <div className='w-[100%] mx-auto'>
+                    <div className='w-[100%] mx-auto z-50'>
                         <MultiSelect
                             options={genresData}
                             label="All"
-                            selected={selectedGenres}
-                            setSelected={handleGenreChange}
+                            selected={filters.genreFilter}
+                            setSelected={setFilters.genreFilter}
                             separator=",&nbsp;"
                         />
                     </div>
                 </div>
+            )
+        }
 
-                {/* Years */}
+        const YearsOptions = () => {
+            return (
                 <div className='flex flex-col py-3 '>
                     <div className='text-m-l pb-4'>Years</div>
 
@@ -390,44 +347,109 @@ const FilmFilters = ({filmData, isFilterApplied, users, setFilteredResults: pare
 
                     </div>
                 </div>
+            )
+        }
 
-                {/* Rating */}
+        const RatingOptions = () => {
+            const RatingBtnGroup = () => {
+                const buttons = [];
+                const getSx = (index) => ({
+                    color: selectedRating === index ? 'hsl(var(--accent-foreground))' : 'hsl(var(--primary-foreground))',
+                    backgroundColor: selectedRating === index ? 'hsl(var(--accent))' : 'hsl(var(--primary))',
+                    borderColor: 'hsl(var(--border))',
+                    borderWidth: '1px',
+                    '&:hover': {
+                        color: 'hsl(var(--primary))',
+                        backgroundColor: 'hsl(var(--accent))',
+                        borderStyle: 'none'
+                    },
+                });
+
+                buttons.push(
+                    <RatingButton
+                        className='border rounded-md text-m-s ml-3 w-12 h-6 text-center'
+                        variant={selectedRating === 0 ? "contained" : "outlined"}
+                        sx={getSx(0)}
+                        onClick={() => handleRatingChange(0)}
+                        key={0}
+                    >Any
+                    </RatingButton>
+                );
+                for (let i = 1; i < ratingSteps; i++) {
+                    buttons.push(
+                        <RatingButton
+                            className='border rounded-md text-m-s ml-3 w-12 h-6 text-center'
+                            variant={selectedRating === i ? "contained" : "outlined"}
+                            sx={getSx(i)}
+                            onClick={() => handleRatingChange(i)}
+                            key={i}
+                        > {i}+ </RatingButton>
+                    );
+                }
+                buttons.push(
+                    <RatingButton
+                        className='border rounded-md text-m-s ml-3 w-12 h-6 text-center'
+                        variant={selectedRating === ratingSteps ? "contained" : "outlined"}
+                        sx={getSx(ratingSteps)}
+                        onClick={() => handleRatingChange(ratingSteps)}
+                        key={ratingSteps}
+                    > {ratingSteps} </RatingButton>
+                );
+                return (
+                    <div className='flex gap-2 flex-wrap flex-evenly'>
+                        {buttons}
+                    </div>
+                );
+            };
+
+            return (
                 <div className='flex flex-col py-3 '>
                     <div className='text-m-l pb-4'>Rating </div>
-
                     <div className='w-[100%] mx-auto3.79'>
-
                         <RatingBtnGroup />
+                    </div>
+                </div>
+            )
+        }
 
+        return (
+            <div className="flex flex-col gap-y-4 bg-primary text-primary-foreground w-full h-full pt-10 pb-32 px-8 z-50 lg:mx-auto  ">
+                <div className='flex justify-between mb-4 place-items-end'>
+                    <h3 className='text-m-xl'>Filters & Sort</h3>
+                    <div onClick={setIsOpen(false)} className='text-m-xl cursor-pointer'>
+                        <IoClose />
                     </div>
                 </div>
 
+                {/* <SortOptions /> */}
+
                 <Separator />
 
-                <div className='flex w-full space-x-2'>
-                    {/* reset */}
-                    <button onClick={resetFilters} className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent py-2 px-4">Reset</button>
+                {/* <WatchlistOptions /> */}
+                <GenreOptions />
+                {/* <YearsOptions /> */}
+                {/* <RatingOptions */}
 
-                    {/* apply */}
+                <Separator />
+
+                {/* Buttons */}
+                <div className='flex w-full space-x-2'>
+                    <button onClick={resetFilters} className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent py-2 px-4">Reset</button>
                     <button onClick={applyFilters} className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent py-2 px-4">Apply</button>
                 </div>
             </div>
         )
     }
 
-
-
     return (
         <div>
-            <Modal opened={opened} onClose={close} centered>
-                <Filters/>
-            </Modal>
-
-            <button onClick={open}
+            <button onClick={() => setIsOpen(true)}
                 className={cn("flex items-center text-[30px] mr-2 mt-2 text-primary-foreground/60",
                     { "text-accent/70": isFilterApplied })}>
                 <CiFilter />
             </button>
+
+            <Filters/>
         </div>
     )
 }
