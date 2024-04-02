@@ -128,29 +128,19 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         console.log("modalOpen", modalOpen);
     }, [modalOpen]);
 
-    if (modalOpen) {
-        return (
-            <FilmFilters
-                filmData={filmData}
-                users={users}
-                setIsFilterApplied={setIsFilterApplied}
-                setModalOpen={setModalOpen}
-                sortBy={sortBy}
-                filters={filters}
-                setFilteredResults={setFilteredResults}
-            />
-        );
-    } else {
-        return (
-            <div className="w-full">
-                <h2 className="text-m-2xl mb-3">Pick A Film</h2>
+
+    return (
+        <div className="w-full">
+            <h2 className="text-m-2xl mb-3">Pick A Film</h2>
+
+
+            {!modalOpen ? (
+
                 <div className="flex flex-col">
-                    {/* Description */}
                     <div className="text-m-l">
                         <p className="text-m-m"> or many films and decide later on.</p>
                     </div>
 
-                    {/* Search & Filter */}
                     <div className="flex gap-x-4 pt-6">
                         <SearchBar
                             searchTerm={searchTerm}
@@ -163,14 +153,14 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                         </button>
                     </div>
 
-                    {/* Applied Filter Displays */}
+
                     {/* <FilmFiltersDisplay 
-                    filters={filters}
-                    setFilters={setFilters}
-                    sortBy={sortBy}
-                    setSortBy={setSortBy}
-                    isFilterApplied={isFilterApplied}
-                /> */}
+                     filters={filters}
+                     setFilters={setFilters}
+                     sortBy={sortBy}
+                     setSortBy={setSortBy}
+                     isFilterApplied={isFilterApplied}
+                 /> */}
 
                     {/* Result */}
                     {loading ?
@@ -196,11 +186,21 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                         Next
                     </Button>
                 </div>
-            </div>
-        );
-    }
+
+            ) : (
+                <FilmFilters
+                    filmData={filmData}
+                    users={users}
+                    setIsFilterApplied={setIsFilterApplied}
+                    setModalOpen={setModalOpen}
+                    sortBy={sortBy}
+                    filters={filters}
+                    setFilteredResults={setFilteredResults}
+                />
+            )}
+        </div>
+    );
 };
 
-
-
 export default FilmSearch;
+

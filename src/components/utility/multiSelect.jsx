@@ -1,27 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useMediaQuery } from '@react-hook/media-query'
 import { Button } from "@/components/ui/button"
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from "@/components/ui/command"
-import {
-    Drawer,
-    DrawerContent,
-    DrawerTrigger,
-} from "@/components/ui/drawer"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { RxCross1 } from "react-icons/rx";
-
 
 const MultiSelect = ({ options, label, selected: parentSelected, setSelected: parentSetSelected, separator }) => {
 
@@ -58,6 +42,7 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
                         label={label}
                         setOpen={setOpen}
                         setSelectedOptions={setSelectedOptions}
+                        parentSetSelected={parentSetSelected}
                     />
                 </PopoverContent>
             </Popover>
@@ -122,7 +107,6 @@ function OptionList({ options, selectedOptions, label, setOpen, setSelectedOptio
             : [...selectedOptions, value]; // Add the item to the selection array
 
         setSelectedOptions(newSelectedOptions); // Update local state
-        parentSetSelected(newSelectedOptions); // Update parent state
     };
 
     // Reset options
@@ -131,6 +115,12 @@ function OptionList({ options, selectedOptions, label, setOpen, setSelectedOptio
         parentSetSelected([]);
         setOpen(false);
     };
+
+    // apply options
+    const applyOptions = () => {
+        parentSetSelected(selectedOptions); // Update parent state
+        setOpen(false);
+    }
 
     return (
         <Command >
@@ -160,7 +150,7 @@ function OptionList({ options, selectedOptions, label, setOpen, setSelectedOptio
                 </button>
                 {/* apply */}
                 <button 
-                    onClick={() => setOpen(false)}
+                    onClick={applyOptions}
                     className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent/10 py-2 px-4"
                 >
                     Apply

@@ -11,10 +11,11 @@ import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { defaultFilters, defaultSortBy } from "@/constants";
+import { set } from 'date-fns';
 
 
 const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen, sortBy: parentSortBy,
-                        filters: parentFilters, setFilteredResults: parentSetFilteredResults }) => {
+    filters: parentFilters, setFilteredResults: parentSetFilteredResults }) => {
     const isDesktop = useMediaQuery('only screen and (min-width: 768px)');
     const [sortBy, setSortBy] = useState(parentSortBy);
     const [filters, setFilters] = useState(parentFilters);
@@ -22,22 +23,22 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen, sortBy
     useEffect(() => {
         console.log('sorting by', sortBy);
         console.log("filters", filters);
-    }, []);
+    }, [sortBy, filters]);
 
     // Filter the film data based on the search term & filters
-    // const applyFilters = (filmData) => {
-    //     return filmData.filter(film => {
-    //     })
-    //     //         // && (filters.watchlistFilter === 0 || (item.watchlists.length >= filters.watchlistFilter))
-    //     //         // && (filters.specificWatchlistFilter.length === 0 || (Array.isArray(item.watchlists) && item.watchlists.some(user => filters.specificWatchlistFilter.includes(user))))
-    //     //         // && (filters.genreFilter.length === 0 || (Array.isArray(item.genres) && item.genres.some(genre => filters.genreFilter.includes(genre))))
-    //     //         // && (filters.yearFilter[0] <= item.year && item.year <= filters.yearFilter[1])
-    //     //         // && (filters.ratingFilter === 0 || item.rating >= filters.ratingFilter)
-    //     // });
-    // };
+    const filterResults = (filmData) => {
+        return filmData.filter(film => {
+        })
+        //         // && (filters.watchlistFilter === 0 || (item.watchlists.length >= filters.watchlistFilter))
+        //         // && (filters.specificWatchlistFilter.length === 0 || (Array.isArray(item.watchlists) && item.watchlists.some(user => filters.specificWatchlistFilter.includes(user))))
+        //         // && (filters.genreFilter.length === 0 || (Array.isArray(item.genres) && item.genres.some(genre => filters.genreFilter.includes(genre))))
+        //         // && (filters.yearFilter[0] <= item.year && item.year <= filters.yearFilter[1])
+        //         // && (filters.ratingFilter === 0 || item.rating >= filters.ratingFilter)
+        // });
+    };
 
     // Sort the film data based on the selected sort option
-    const applySort = (results) => {
+    const sortResults = (results) => {
         let sortedItems = results;
         // console.log("sortedItems", sortedItems);
         switch (sortBy) {
@@ -68,17 +69,12 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen, sortBy
     // Filter & sort the film data based on the current state
     useEffect(() => {
         // console.log("filmData", filmData);
-        const filteredResults = applyFilters(filmData); // Apply filters based on the current state
-        const sortedResults = applySort(filteredResults); // Then, sort those results before returning them
+        const filteredResults = filterResults(filmData); // Apply filters based on the current state
+        const sortedResults = sortResults(filteredResults); // Then, sort those results before returning them
         // console.log("filteredResults", filteredResults);
         // console.log("sortedResults", sortedResults);
         parentSetFilteredResults(sortedResults);
     }, [filmData, sortBy, filters]);
-
-
-    const handleFiltersChange = (filters) => {
-        setFilters(...filters,);
-    };
 
     const handleSortByChange = (newSortBy) => {
         setSortBy(newSortBy);
@@ -102,46 +98,13 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen, sortBy
         setSelectedSpecificWatchlists(newSpecificWatchlist);
     };
 
-    const handleGenreChange = (newGenre) => {
-        handleFiltersChange({ ...filters, genreFilter: newGenre });
-    };
-
     const handleYearsSliderChange = (event, newValue) => {
         setSelectedYear(newValue);
         setTempStartYear(newValue[0].toString());
         setTempEndYear(newValue[1].toString());
     };
 
-    const handleYearsInputBlur = (type) => (event) => {
-        const newValue = parseInt(event.target.value, 10);
-        setSelectedYear((currentYears) => {
-            let startYear = currentYears[0], endYear = currentYears[1];
 
-            if (type === "start") {
-                // Adjust the start year within the boundaries
-                startYear = isNaN(newValue) ? minYear : Math.min(Math.max(newValue, minYear), endYear);
-            } else {
-                // Adjust the end year within the boundaries
-                endYear = isNaN(newValue) ? maxYear : Math.max(Math.min(newValue, maxYear), startYear);
-            }
-
-            // Update temporary states to reflect the new value or the adjusted boundary value
-            const newYears = [startYear, endYear];
-            setTempStartYear(newYears[0].toString());
-            setTempEndYear(newYears[1].toString());
-
-            return newYears;
-        });
-    };
-
-    const handleYearsInputChange = (type) => (event) => {
-        const value = event.target.value;
-        if (type === "start") {
-            setTempStartYear(value);
-        } else { // Assuming type is "end"
-            setTempEndYear(value);
-        }
-    };
 
     const handleRatingChange = (value) => {
         setSelectedRating(value);
@@ -165,12 +128,12 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen, sortBy
     const resetFilters = () => {
         setSortBy(defaultSortBy);
         setFilters(defaultFilters);
-        setModalOpen(false);
+        // setModalOpen(false);
     };
 
     // apply filters
     const applyFilters = () => {
-        setModalOpen(false);
+        // setModalOpen(false);
     };
 
 
@@ -262,15 +225,23 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen, sortBy
     }
 
     const GenreOptions = () => {
+
+        const handleGenreChange = (newGenre) => {
+            setFilters((currentFilters) => ({
+                ...currentFilters,
+                genreFilter: newGenre
+            }));
+        };
+
         return (
             <div className='flex flex-col py-3'>
                 <div className='text-m-l pb-4'>Genres</div>
                 <div className='w-[100%] mx-auto z-50'>
                     <MultiSelect
                         options={genresData}
-                        label="All"
+                        label="Genre"
                         selected={filters.genreFilter}
-                        setSelected={setFilters.genreFilter}
+                        setSelected={(newGenre) => handleGenreChange(newGenre)}
                         separator=",&nbsp;"
                     />
                 </div>
@@ -279,6 +250,37 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen, sortBy
     }
 
     const YearsOptions = () => {
+        const handleYearsInputBlur = (type) => (event) => {
+            const newValue = parseInt(event.target.value, 10);
+            setSelectedYear((currentYears) => {
+                let startYear = currentYears[0], endYear = currentYears[1];
+
+                if (type === "start") {
+                    // Adjust the start year within the boundaries
+                    startYear = isNaN(newValue) ? minYear : Math.min(Math.max(newValue, minYear), endYear);
+                } else {
+                    // Adjust the end year within the boundaries
+                    endYear = isNaN(newValue) ? maxYear : Math.max(Math.min(newValue, maxYear), startYear);
+                }
+
+                // Update temporary states to reflect the new value or the adjusted boundary value
+                const newYears = [startYear, endYear];
+                setTempStartYear(newYears[0].toString());
+                setTempEndYear(newYears[1].toString());
+
+                return newYears;
+            });
+        };
+
+        const handleYearsInputChange = (type) => (event) => {
+            const value = event.target.value;
+            if (type === "start") {
+                setTempStartYear(value);
+            } else { // Assuming type is "end"
+                setTempEndYear(value);
+            }
+        };
+
         return (
             <div className='flex flex-col py-3 '>
                 <div className='text-m-l pb-4'>Years</div>
@@ -307,15 +309,7 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen, sortBy
                         onChange={handleYearsSliderChange}
                         max={maxYear}
                         min={minYear}
-                        sx={
-                            {
-                                color: 'hsl(var(--accent))',
-                                height: 2,
-                                '& .MuiSlider-thumb': {
-                                    height: 12,
-                                    width: 12,
-                                }
-                            }}
+                        sx={{ color: 'hsl(var(--accent))', height: 2, '& .MuiSlider-thumb': { height: 12, width: 12, } }}
                     />
 
                     {/* End Year Input */}
@@ -415,16 +409,16 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen, sortBy
 
             {/* <WatchlistOptions /> */}
             <GenreOptions />
-            {/* <YearsOptions /> */}
+            <YearsOptions />
             {/* <RatingOptions */}
 
             <Separator />
 
             {/* Buttons */}
-            <div className='flex w-full space-x-2'>
+            {/* <div className='flex w-full space-x-2'>
                 <button onClick={resetFilters} className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent py-2 px-4">Reset</button>
                 <button onClick={applyFilters} className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent py-2 px-4">Apply</button>
-            </div>
+            </div> */}
         </div>
     )
 }
