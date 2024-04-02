@@ -14,6 +14,9 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
     const [selectedOptions, setSelectedOptions] = useState(parentSelected);
 
     useEffect(() => {
+        if (parentSelected.length === 0) {
+            setSelectedOptions([]);
+        }
         setSelectedOptions(parentSelected);
     }, [parentSelected]);
 
