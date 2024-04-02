@@ -105,9 +105,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
     // keep track of whether any filter or sort has been applied
     useEffect(() => {
-        const hasChanged = Object.keys(filters).some(key => filters[key] !== defaultFilters[key]) && sortBy !== defaultSortBy;
-        // setIsFilterApplied(hasChanged);
-
+        
         // Apply the filters and close the modal
         let filteredResults = filterResults(filmData);
         filteredResults = sortResults(filteredResults);
