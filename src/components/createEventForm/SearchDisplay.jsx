@@ -95,7 +95,7 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, max }
 
                                         {/* Rating */}
                                         <div className="flex items-center">
-                                            <div className="text-m-s">{item.rating}</div>
+                                            <div className="text-m-m">{item.vote_average.toFixed(1)}</div>
                                             <div className="text-m-s ml-1">⭐</div>
                                         </div>
                                     </div>

@@ -12,26 +12,27 @@ import { Separator } from "@/components/ui/separator"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { defaultFilters, defaultSortBy } from "@/constants";
 
-const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen, sortBy: parentSortBy,
-    filters: parentFilters, setFilteredResults: parentSetFilteredResults }) => {
+const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen, 
+    sortBy: parentSortBy, setSortBy: parentSetSortBy, 
+    filters: parentFilters, setFilters: parentSetFilters,
+    setFilteredResults: parentSetFilteredResults }) => {
     const isDesktop = useMediaQuery('only screen and (min-width: 768px)');
     const [sortBy, setSortBy] = useState(parentSortBy);
     const [filters, setFilters] = useState(parentFilters);
 
-    useEffect(() => {
-        console.log('sorting by', sortBy);
-        console.log("filters", filters);
-    }, [sortBy, filters]);
+    // useEffect(() => {
+    //     console.log('sorting by', sortBy);
+    //     console.log("filters", filters);
+    // }, [sortBy, filters]);
 
     /**
-     *  WATCHLISTS
+     *  SORTS
      */
 
     const SortOptions = () => {
         return (
             <div className='flex flex-col py-3'>
                 <div className='text-m-l pb-4'>Sort by </div>
-
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className=" bg-accent text-accent-foreground">{sortBy}</Button>
@@ -241,84 +242,31 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen, sortBy
     const resetFilters = () => {
         setSortBy(defaultSortBy);
         setFilters({
-            watchlistFilter: defaultFilters.defaultWatchlistFilter,
-            specificWatchlistFilter: defaultFilters.defaultSpecificWatchlistFilter,
-            genreFilter: defaultFilters.defaultGenreFilter,
-            yearFilter: defaultFilters.defaultYearFilter,
-            ratingFilter: defaultFilters.defaultRating,
+            watchlistFilter: defaultFilters.watchlistFilter,
+            specificWatchlistFilter: defaultFilters.specificWatchlistFilter,
+            genreFilter: defaultFilters.genreFilter,
+            yearFilter: defaultFilters.yearFilter,
+            ratingFilter: defaultFilters.ratingFilter,
         });
     };
 
     // apply filters
     const applyFilters = () => {
         // Update the parent state with if there is any filters or sorting applied
-        if (sortBy !== defaultSortBy || 
-            filters.watchlistFilter !== defaultFilters.defaultWatchlistFilter ||
-            filters.specificWatchlistFilter !== defaultFilters.defaultSpecificWatchlistFilter ||
-            filters.genreFilter !== defaultFilters.defaultGenreFilter ||
-            filters.yearFilter !== defaultFilters.defaultYearFilter ||
-            filters.ratingFilter !== defaultFilters.defaultRating
-        ) {
+        if ( Object.keys(filters).some(key => filters[key] !== defaultFilters[key]) 
+            || sortBy !== defaultSortBy ) {
             setIsFilterApplied(true);
         } else {
             setIsFilterApplied(false);
-            console.log("No filters");
         }
 
-        // Apply the filters and close the modal
-        let filteredResults = filterResults(filmData);
-        filteredResults = sortResults(filteredResults);
-        parentSetFilteredResults(filteredResults);
+        // Update the parent state with the new filters and sorting
+        parentSetSortBy(sortBy);
+        parentSetFilters(filters);
+
+        // Close the modal
         setModalOpen(false);
     };
-
-
-    /**
-     *  RESET & APPLY BUTTONS
-    */
-
-     // Filter the film data based on the search term & filters
-     const filterResults = (filmData) => {
-        // Watchlist filter
-        
-        return filmData.filter(film => {
-        })
-        //         // && (filters.watchlistFilter === 0 || (item.watchlists.length >= filters.watchlistFilter))
-        //         // && (filters.specificWatchlistFilter.length === 0 || (Array.isArray(item.watchlists) && item.watchlists.some(user => filters.specificWatchlistFilter.includes(user))))
-        //         // && (filters.genreFilter.length === 0 || (Array.isArray(item.genres) && item.genres.some(genre => filters.genreFilter.includes(genre))))
-        //         // && (filters.yearFilter[0] <= item.year && item.year <= filters.yearFilter[1])
-        //         // && (filters.ratingFilter === 0 || item.rating >= filters.ratingFilter)
-        // });
-    };
-
-    // Sort the film data based on the selected sort option
-    const sortResults = (results) => {
-        let sortedItems = results;
-        // console.log("sortedItems", sortedItems);
-        switch (sortBy) {
-            // case "Watchlists: Most to Least":
-            //     sortedItems = sortedItems.sort((a, b) => b.watchlists.length - a.watchlists.length);
-            //     break;
-            // case "Watchlists: Least to Most":
-            //     sortedItems = sortedItems.sort((a, b) => a.watchlists.length - b.watchlists.length);
-            //     break;
-            // case "Rating: High to Low":
-            //     sortedItems = sortedItems.sort((a, b) => b.rating - a.rating);
-            //     break;
-            // case "Rating: Low to High":
-            //     sortedItems = sortedItems.sort((a, b) => a.rating - b.rating);
-            //     break;
-            // case "Year: Newest to Oldest":
-            //     sortedItems = sortedItems.sort((a, b) => b.year - a.year);
-            //     break;
-            // case "Year: Oldest to Newest":
-            //     sortedItems = sortedItems.sort((a, b) => a.year - b.year);
-            //     break;
-            default:
-                break;
-        }
-        return sortedItems;
-    }
 
     // Filter & sort the film data based on the current state
     // useEffect(() => {
@@ -333,8 +281,6 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen, sortBy
     // const handleSortByChange = (newSortBy) => {
     //     setSortBy(newSortBy);
     // };
-
-
 
     return (
         <div className="flex flex-col gap-y-4 bg-primary text-primary-foreground w-full h-full pt-10 pb-32 px-8 z-50 lg:mx-auto  ">

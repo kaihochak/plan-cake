@@ -30,11 +30,11 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
     const [sortBy, setSortBy] = useState(defaultSortBy);
     const [filters, setFilters] = useState({
-        watchlistFilter: defaultFilters.defaultWatchlistFilter,
-        specificWatchlistFilter: defaultFilters.defaultSpecificWatchlistFilter,
-        genreFilter: defaultFilters.defaultGenreFilter,
-        yearFilter: defaultFilters.defaultYearFilter,
-        ratingFilter: defaultFilters.defaultRating,
+        watchlistFilter: defaultFilters.watchlistFilter,
+        specificWatchlistFilter: defaultFilters.specificWatchlistFilter,
+        genreFilter: defaultFilters.genreFilter,
+        yearFilter: defaultFilters.yearFilter,
+        ratingFilter: defaultFilters.ratingFilter,
     });
 
     let users = DummyUserData;
@@ -103,11 +103,66 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
      * FILTERS & SORTING
      */
 
-    // // keep track of whether any filter or sort has been applied
-    // useEffect(() => {
-    //     const hasChanged = Object.keys(filters).some(key => filters[key] !== defaultFilters[key]) && sortBy !== defaultSortBy;
-    //     setIsFilterApplied(hasChanged);
-    // }, [sortBy, filters]);
+    // keep track of whether any filter or sort has been applied
+    useEffect(() => {
+        const hasChanged = Object.keys(filters).some(key => filters[key] !== defaultFilters[key]) && sortBy !== defaultSortBy;
+        // setIsFilterApplied(hasChanged);
+
+        // Apply the filters and close the modal
+        let filteredResults = filterResults(filmData);
+        filteredResults = sortResults(filteredResults);
+        setFilteredResults(filteredResults);
+
+    }, [sortBy, filters]);
+
+
+    // Filter the film data based on the search term & filters
+    const filterResults = (filmData) => {
+
+        function filterByRating(film) {
+            return film.vote_average >= filters.ratingFilter;
+        }
+
+        return filmData.filter(film => {
+            return filterByRating(film);
+
+            //         // && (filters.watchlistFilter === 0 || (item.watchlists.length >= filters.watchlistFilter))
+            //         // && (filters.specificWatchlistFilter.length === 0 || (Array.isArray(item.watchlists) && item.watchlists.some(user => filters.specificWatchlistFilter.includes(user))))
+            //         // && (filters.genreFilter.length === 0 || (Array.isArray(item.genres) && item.genres.some(genre => filters.genreFilter.includes(genre))))
+            //         // && (filters.yearFilter[0] <= item.year && item.year <= filters.yearFilter[1])
+            //         // && (filters.ratingFilter === 0 || item.rating >= filters.ratingFilter)
+        });
+    };
+
+    // Sort the film data based on the selected sort option
+    const sortResults = (results) => {
+        let sortedItems = results;
+        // console.log("sortedItems", sortedItems);
+        switch (sortBy) {
+            // case "Watchlists: Most to Least":
+            //     sortedItems = sortedItems.sort((a, b) => b.watchlists.length - a.watchlists.length);
+            //     break;
+            // case "Watchlists: Least to Most":
+            //     sortedItems = sortedItems.sort((a, b) => a.watchlists.length - b.watchlists.length);
+            //     break;
+            // case "Rating: High to Low":
+            //     sortedItems = sortedItems.sort((a, b) => b.rating - a.rating);
+            //     break;
+            // case "Rating: Low to High":
+            //     sortedItems = sortedItems.sort((a, b) => a.rating - b.rating);
+            //     break;
+            // case "Year: Newest to Oldest":
+            //     sortedItems = sortedItems.sort((a, b) => b.year - a.year);
+            //     break;
+            // case "Year: Oldest to Newest":
+            //     sortedItems = sortedItems.sort((a, b) => a.year - b.year);
+            //     break;
+            default:
+                break;
+        }
+        return sortedItems;
+    }
+
 
     // Update selected films
     const updateSelection = (newSelectedFilms) => {
@@ -123,44 +178,38 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         nextStep(formData);
     };
 
-
-    useEffect(() => {
-        console.log("modalOpen", modalOpen);
-    }, [modalOpen]);
-
-
     return (
         <div className="w-full">
             <h2 className="text-m-2xl mb-3">Pick A Film</h2>
 
-
             {!modalOpen ? (
-
                 <div className="flex flex-col">
                     <div className="text-m-l">
                         <p className="text-m-m"> or many films and decide later on.</p>
                     </div>
 
+                    {/* Search & Filters */}
                     <div className="flex gap-x-4 pt-6">
                         <SearchBar
                             searchTerm={searchTerm}
                             handleSearchChange={handleSearchChange}
                         />
+                        {/* Filters Modal defined at the bottmo */}
                         <button onClick={() => setModalOpen(true)}
                             className={cn("flex items-center text-[30px] mr-2 mt-2 text-primary-foreground/60",
                                 { "text-accent/70": isFilterApplied })}>
                             <CiFilter />
                         </button>
                     </div>
-
-
-                    {/* <FilmFiltersDisplay 
-                     filters={filters}
-                     setFilters={setFilters}
-                     sortBy={sortBy}
-                     setSortBy={setSortBy}
-                     isFilterApplied={isFilterApplied}
-                 /> */}
+                    <FilmFiltersDisplay
+                        openFilterModal={setModalOpen}
+                        isFilterApplied={isFilterApplied}
+                        setIsFilterApplied={setIsFilterApplied}
+                        filters={filters}
+                        setFilters={setFilters}
+                        sortBy={sortBy}
+                        setSortBy={setSortBy}
+                    />
 
                     {/* Result */}
                     {loading ?
@@ -194,7 +243,9 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     setIsFilterApplied={setIsFilterApplied}
                     setModalOpen={setModalOpen}
                     sortBy={sortBy}
+                    setSortBy={setSortBy}
                     filters={filters}
+                    setFilters={setFilters}
                     setFilteredResults={setFilteredResults}
                 />
             )}
