@@ -13,8 +13,8 @@ const Bottombar = () => {
         {/* Home */}
         <Link
             to="/"
-            className={`p-4 transition rounded-[10px] 
-                      ${pathname === "/" ? "bg-accent [&_*]:text-accent-foreground": "bg-primary-dark [&_*]:text-primary-foreground"}`}
+            className={`p-2 transition rounded-[10px] 
+                      ${pathname === "/" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
           >
             <GoHome className='text-[30px]'/>
         </Link>
@@ -22,8 +22,8 @@ const Bottombar = () => {
         {/* PickAFilm */}
         <Link
             to="/pickAFilm"
-            className={`p-4 transition rounded-[10px]
-                      ${pathname === "/pickAFilm" ? "bg-accent [&_*]:text-accent-foreground": "bg-primary-dark [&_*]:text-primary-foreground"}`}
+            className={`p-2 transition rounded-[10px]
+                      ${pathname === "/pickAFilm" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
         >
             <GiDandelionFlower className='text-[30px]'/>
         </Link>
@@ -31,8 +31,8 @@ const Bottombar = () => {
         {/* Create */}
         <Link
             to="/create-event"
-            className={`p-4 transition rounded-[10px] 
-                      ${pathname === "/create-event" ? "bg-accent [&_*]:text-accent-foreground": "bg-primary-dark [&_*]:text-primary-foreground"}`}
+            className={`p-2 transition rounded-[10px] 
+                      ${pathname === "/create-event" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
         >
             <IoMdAddCircleOutline className='text-[30px]'/>
         </Link>
@@ -40,8 +40,8 @@ const Bottombar = () => {
         {/* Explore */}
         <Link
             to="/explore"
-            className={`p-4 transition rounded-[10px] 
-                      ${pathname.startsWith("/explore") ? "bg-accent [&_*]:text-accent-foreground": "bg-primary-dark [&_*]:text-primary-foreground"}`}
+            className={`p-2 transition rounded-[10px] 
+                      ${pathname.startsWith("/explore") ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
         >
             <IoIosSearch className='text-[30px]'/>
         </Link>

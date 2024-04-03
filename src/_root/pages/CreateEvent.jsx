@@ -9,6 +9,18 @@ import { BsArrowLeft } from "react-icons/bs";
 import { useCreateEvent } from "../../lib/react-query/queries";
 import { useToast } from "@/components/ui/use-toast";
 import { useUserContext } from "@/context/AuthContext";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 
 const CreateEvent = () => {
   const navigate = useNavigate();
@@ -27,6 +39,7 @@ const CreateEvent = () => {
     imageId: "",
   });
   const [newPost, setNewPost] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Query to create a new event
   const { mutateAsync: createEventToDB, isPending: isLoadingCreate } = useCreateEvent();
@@ -37,11 +50,30 @@ const CreateEvent = () => {
     if (currentStep > 0) { setCurrentStep(currentStep - 1); }
     // If we're on the first step, prompt the user to confirm leaving the page
     else {
-      if (window.confirm("Are you sure you want to leave this page?")) {
-        navigate("/");
+      setIsDialogOpen(true);     
       }
-    }
-  };
+    };
+
+  const Alert = () => {
+    return (
+        <AlertDialog>
+          <AlertDialogTrigger>Open</AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete your account
+                and remove your data from our servers.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction>Continue</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )
+  }
 
   // Go to the next step
   const nextStep = (formData) => {
@@ -55,7 +87,6 @@ const CreateEvent = () => {
       } else {
         return;
       }
-      
     }
 
     // If we're on the last step, navigate to the event page
@@ -85,7 +116,6 @@ const CreateEvent = () => {
     }
   };
 
-
   useEffect(() => {
     console.log("formData", formData);
   }, [formData]);
@@ -96,9 +126,11 @@ const CreateEvent = () => {
         <header className="w-full">
           {/* Back Button */}
           <button className="text-m-2xl ml-1 mt-10 mb-6" onClick={prevStep}>
+            {/* <BsArrowLeft /> */}
             <BsArrowLeft />
           </button>
         </header>
+
         {/* Current Step Content */}
         <div className="w-full">
           {currentStep === 0 && <CreateEventType formData={formData} nextStep={nextStep}/>}
@@ -107,6 +139,9 @@ const CreateEvent = () => {
           {currentStep === 3 && <PreviewEvent formData={formData} nextStep={nextStep} isLoadingCreate={isLoadingCreate}/>}
           {currentStep === 4 && <ConfirmedEvent formData={formData} goToEventPage={nextStep}/>}
         </div>
+
+        {isDialogOpen && <Alert />}
+
       </div>
     </section>
   );

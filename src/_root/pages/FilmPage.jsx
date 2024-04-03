@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import FilmCollection from '@/components/shared/FilmCollection'
 import { useMediaQuery } from '@react-hook/media-query'
 import { fetchFilmDetails, fetchCast, fetchSimilarMovies } from '@/lib/tmdb/api'
-import { image342, image500, imagePath } from '@/lib/tmdb/config'
+import { fallbackPersonImage, fallbackMoviePoster, image342, image500, imagePath } from '@/lib/tmdb/config'
 // import ScrollToTop from '@/components/utility/ScrollToTop'
 
 const FilmPage = () => {
@@ -68,7 +68,7 @@ const FilmPage = () => {
           {/* image */}
           {bp_768 &&
             <div className='flex justify-start'>
-              <img src={image500(film?.poster_path)} alt={film?.title} className='min-w-[200px] md:min-w-[250px]' />
+              <img src={film?.poster_path ? image500(film.poster_path) : fallbackMoviePoster} alt={film?.title} className='min-w-[200px] md:min-w-[250px]' />
             </div>
           }
           <div className="flex mx-auto">
@@ -105,7 +105,7 @@ const FilmPage = () => {
                 {/* profile pic */}
                 {/* <div className="overflow-hidden items-center h-32 w-32 rounded-full shadow-md object-cover"> */}
                 <div className="min-w-[90px]">
-                  <img src={image342(person?.profile_path)} className="w-[90px] h-[90px] md:w-[120px] md:h-[120px] rounded-full object-cover" />
+                  <img src={person?.profile_path ? image342(person.profile_path) : fallbackPersonImage} className="w-[90px] h-[90px] md:w-[120px] rounded-full object-cover" />
                 </div>
                 {/* character */}
                 <p className="text-s mt-1 pt-1" >
