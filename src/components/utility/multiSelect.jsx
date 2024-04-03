@@ -13,16 +13,18 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
     const [open, setOpen] = useState(false)
     const [selectedOptions, setSelectedOptions] = useState(parentSelected);
 
-    console.log(options);
+    // Convert options to array if it's a set
+    const optionArray = Array.isArray(options) ? options
+        : Object.entries(options).map(([id, name]) => ({
+            id: parseInt(id),
+            name: name,
+        }));
 
-    // Convert options to an array if it's a Set
-    const optionArray = options instanceof Set ? [...options] : options;
     console.log(optionArray);
 
+    // Update selected options when parent selected changes
     useEffect(() => {
-        if (parentSelected.length === 0) {
-            setSelectedOptions([]);
-        }
+        if (parentSelected.length === 0) { setSelectedOptions([]);}
         setSelectedOptions(parentSelected);
     }, [parentSelected]);
 
@@ -30,17 +32,17 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
         return (
             <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild >
-                    <Button variant="outline" 
-                            className={cn(
-                                "w-full justify-start",
-                                {'bg-accent/80 text-secondary-foreground': selectedOptions.length !== 0},
-                            )}
+                    <Button variant="outline"
+                        className={cn(
+                            "w-full justify-start",
+                            { 'bg-accent/80 text-secondary-foreground': selectedOptions.length !== 0 },
+                        )}
                     >
-                        {selectedOptions.length === 0 ? <>{label}</> : 
+                        {selectedOptions.length === 0 ? <>{label}</> :
                             <>{selectedOptions.map((option, index) => (
-                                    <span key={index}>
-                                        {option}{index < selectedOptions.length - 1 ? ',' : ''}
-                                    </span>
+                                <span key={index}>
+                                    {option.name}{index < selectedOptions.length - 1 ? ',' : ''}
+                                </span>
                             ))}</>}
                     </Button>
                 </PopoverTrigger>
@@ -64,14 +66,14 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
             <Drawer open={open} onOpenChange={setOpen} className="py-2 absolute">
                 <DrawerTrigger asChild>
                     <Button variant="outline" className={cn("w-full justify-start",
-                        {'bg-accent/80 text-accent-foreground border-none': selectedOptions.length !== 0},
+                        { 'bg-accent/80 text-accent-foreground border-none': selectedOptions.length !== 0 },
                     )}>
-                        {selectedOptions.length === 0 ? 
-                            <>{label}</> 
+                        {selectedOptions.length === 0 ?
+                            <>{label}</>
                             : <>{selectedOptions.map((option, index) => (
-                                    <span key={index}>
-                                        {option}{index < selectedOptions.length - 1 ? separator : ''}
-                                    </span>
+                                <span key={index}>
+                                    {option}{index < selectedOptions.length - 1 ? separator : ''}
+                                </span>
                             ))}</>}
                     </Button>
                 </DrawerTrigger>
@@ -103,7 +105,7 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
             </div>
 
         </div>
-        
+
     )
 
 }
@@ -111,11 +113,12 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
 function OptionList({ options, selectedOptions, label, setOpen, setSelectedOptions, parentSetSelected }) {
 
     // Handle selection change
-    const handleSelect = (value) => {
-        const newSelectedOptions = selectedOptions.includes(value)
-            ? selectedOptions.filter(item => item !== value) // Remove the item if it's already selected
-            : [...selectedOptions, value]; // Add the item to the selection array
-
+    const handleSelect = (option) => {
+        console.log(option);
+        console.log(selectedOptions);
+        const newSelectedOptions = selectedOptions.includes(option)
+            ? selectedOptions.filter(item => item !== option) // Remove the item if it's already selected
+            : [...selectedOptions, option]; // Add the item to the selection array
         setSelectedOptions(newSelectedOptions); // Update local state
     };
 
@@ -142,24 +145,24 @@ function OptionList({ options, selectedOptions, label, setOpen, setSelectedOptio
                         <CommandItem
                             key={option.id}
                             value={option.id}
-                            isSelected={selectedOptions.includes(option.id)}
-                            onSelect={() => handleSelect(option.id)}
+                            isSelected={selectedOptions.find(item => item.id === option.id)}
+                            onSelect={() => handleSelect(option)}
                         >
-                            {option.label}
+                            {option.name}
                         </CommandItem>
                     ))}
                 </CommandGroup>
             </CommandList>
             <div className='flex justify-between space-x-2 px-4 pb-4'>
                 {/* reset */}
-                <button 
+                <button
                     onClick={resetOptions}
                     className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent/10 py-2 px-4"
                 >
                     Reset
                 </button>
                 {/* apply */}
-                <button 
+                <button
                     onClick={applyOptions}
                     className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent/10 py-2 px-4"
                 >
@@ -179,11 +182,11 @@ function ClearSelection({ setSelectedOptions, parentSetSelected }) {
 
     return (
         <div>
-            <button 
+            <button
                 className="p-4 text-secondary-foreground"
                 onClick={handleClear}
             >
-                <RxCross1/>
+                <RxCross1 />
             </button>
         </div>
     );

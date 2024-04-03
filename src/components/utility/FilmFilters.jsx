@@ -31,10 +31,9 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen,
     const getGenres = async () => {
         const data = await fetchMovieGenres();
         if (data) {
-            data.genres.forEach(genre => {
-                const newGenre = genre.name;
-                setGenres(prevGenres => new Set(prevGenres.add(newGenre)));
-            });
+            const newGenresObject = {};
+            data.genres.forEach(genre => { newGenresObject[genre.id] = genre.name; });
+            setGenres(newGenresObject);
         }
         setLoading(false);
     };
