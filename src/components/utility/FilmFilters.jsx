@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMediaQuery } from '@react-hook/media-query'
 import MultiSelect from "@/components/utility/multiSelect";
-import genresData from "@/data/genres";
 import usersData from "@/data/users";
 import Slider from '@mui/material/Slider';
 import { IoClose } from "react-icons/io5";
@@ -11,19 +10,47 @@ import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { defaultFilters, defaultSortBy } from "@/constants";
+import { fetchMovieGenres } from '../../lib/tmdb/api';
 
-const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen, 
-    sortBy: parentSortBy, setSortBy: parentSetSortBy, 
+const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen,
+    sortBy: parentSortBy, setSortBy: parentSetSortBy,
     filters: parentFilters, setFilters: parentSetFilters,
     setFilteredResults: parentSetFilteredResults }) => {
     const isDesktop = useMediaQuery('only screen and (min-width: 768px)');
     const [sortBy, setSortBy] = useState(parentSortBy);
     const [filters, setFilters] = useState(parentFilters);
+    const [genres, setGenres] = useState(new Set());
+    const [loading, setLoading] = useState(true);
+
+    // call api, fetch data
+    useEffect(() => {
+        getGenres();
+    }, []);
+
+    // fetch data for most watchlisted films
+    const getGenres = async () => {
+        const data = await fetchMovieGenres();
+        if (data) {
+            data.genres.forEach(genre => {
+                const newGenre = genre.name;
+                setGenres(prevGenres => new Set(prevGenres.add(newGenre)));
+            });
+        }
+        setLoading(false);
+    };
+    
+    useEffect(() => {   
+        console.log('genres', genres);
+    }),[genres];
 
     // useEffect(() => {
     //     console.log('sorting by', sortBy);
     //     console.log("filters", filters);
     // }, [sortBy, filters]);
+
+
+
+
 
     /**
      *  SORTS
@@ -253,8 +280,8 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen,
     // apply filters
     const applyFilters = () => {
         // Update the parent state with if there is any filters or sorting applied
-        if ( Object.keys(filters).some(key => filters[key] !== defaultFilters[key]) 
-            || sortBy !== defaultSortBy ) {
+        if (Object.keys(filters).some(key => filters[key] !== defaultFilters[key])
+            || sortBy !== defaultSortBy) {
             setIsFilterApplied(true);
         } else {
             setIsFilterApplied(false);
@@ -350,7 +377,7 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen,
                 <div className='text-m-l pb-4'>Genres</div>
                 <div className='w-[100%] mx-auto z-50'>
                     <MultiSelect
-                        options={genresData}
+                        options={genres}
                         label="Genre"
                         selected={filters.genreFilter}
                         setSelected={(newGenre) => handleGenreChange(newGenre)}

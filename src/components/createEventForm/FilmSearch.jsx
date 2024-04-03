@@ -117,12 +117,19 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     // Filter the film data based on the search term & filters
     const filterResults = (filmData) => {
 
+        console.log("film", filmData);
+
+        function filterbyGenre(film) {
+            return filters.genreFilter.length === 0
+        }
+
         function filterByRating(film) {
             return film.vote_average >= filters.ratingFilter;
         }
 
         return filmData.filter(film => {
-            return filterByRating(film);
+            return filterbyGenre(film) && filterByRating(film);
+
 
             //         // && (filters.watchlistFilter === 0 || (item.watchlists.length >= filters.watchlistFilter))
             //         // && (filters.specificWatchlistFilter.length === 0 || (Array.isArray(item.watchlists) && item.watchlists.some(user => filters.specificWatchlistFilter.includes(user))))

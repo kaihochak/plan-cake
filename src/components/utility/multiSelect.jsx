@@ -13,6 +13,12 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
     const [open, setOpen] = useState(false)
     const [selectedOptions, setSelectedOptions] = useState(parentSelected);
 
+    console.log(options);
+
+    // Convert options to an array if it's a Set
+    const optionArray = options instanceof Set ? [...options] : options;
+    console.log(optionArray);
+
     useEffect(() => {
         if (parentSelected.length === 0) {
             setSelectedOptions([]);
@@ -32,7 +38,7 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
                     >
                         {selectedOptions.length === 0 ? <>{label}</> : 
                             <>{selectedOptions.map((option, index) => (
-                                    <span key={option.value}>
+                                    <span key={index}>
                                         {option}{index < selectedOptions.length - 1 ? ',' : ''}
                                     </span>
                             ))}</>}
@@ -40,7 +46,7 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0" align="start">
                     <OptionList
-                        options={options}
+                        options={optionArray}
                         selectedOptions={selectedOptions}
                         label={label}
                         setOpen={setOpen}
@@ -60,8 +66,9 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
                     <Button variant="outline" className={cn("w-full justify-start",
                         {'bg-accent/80 text-accent-foreground border-none': selectedOptions.length !== 0},
                     )}>
-                        {selectedOptions.length === 0 ? <>{label}</> : 
-                            <>{selectedOptions.map((option, index) => (
+                        {selectedOptions.length === 0 ? 
+                            <>{label}</> 
+                            : <>{selectedOptions.map((option, index) => (
                                     <span key={index}>
                                         {option}{index < selectedOptions.length - 1 ? separator : ''}
                                     </span>
@@ -73,7 +80,7 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
                 <DrawerContent>
                     <div className="mt-4 border-t ">
                         <OptionList
-                            options={options}
+                            options={optionArray}
                             selectedOptions={selectedOptions}
                             label={label}
                             setOpen={setOpen}
@@ -133,10 +140,10 @@ function OptionList({ options, selectedOptions, label, setOpen, setSelectedOptio
                 <CommandGroup>
                     {options.map((option) => (
                         <CommandItem
-                            key={option.value}
-                            value={option.value}
-                            isSelected={selectedOptions.includes(option.value)}
-                            onSelect={() => handleSelect(option.value)}
+                            key={option.id}
+                            value={option.id}
+                            isSelected={selectedOptions.includes(option.id)}
+                            onSelect={() => handleSelect(option.id)}
                         >
                             {option.label}
                         </CommandItem>
