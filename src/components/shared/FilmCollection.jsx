@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Link } from "react-router-dom";
-import { image342 } from "@/lib/tmdb/config";
+import { fallbackMoviePoster, image342 } from "@/lib/tmdb/config";
 
 const FilmCollection = ({
 	items,
@@ -60,7 +60,7 @@ const FilmCollection = ({
 								{/* image */}
 								<div className="aspect-w-1 aspect-h-[1.47]">
 									<img
-										src={image342(item?.poster_path)}
+										src={item?.poster_path ? image342(item.poster_path) : fallbackMoviePoster}
 										alt={item?.original_title}
 										className="object-cover object-center rounded-xl"
 									/>

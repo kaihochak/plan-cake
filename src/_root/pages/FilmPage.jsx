@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import FilmCollection from '@/components/shared/FilmCollection'
 import { useMediaQuery } from '@react-hook/media-query'
 import { fetchFilmDetails, fetchCast, fetchSimilarMovies } from '@/lib/tmdb/api'
-import { image342, image500, imagePath } from '@/lib/tmdb/config'
+import { fallbackPersonImage, fallbackMoviePoster, image342, image500, imagePath } from '@/lib/tmdb/config'
 // import ScrollToTop from '@/components/utility/ScrollToTop'
 
 const FilmPage = () => {
@@ -62,7 +62,7 @@ const FilmPage = () => {
           {/* image */}
           {bp_768 &&
             <div className='flex justify-start'>
-              <img src={image500(film?.poster_path)} alt={film?.title} className='min-w-[200px] md:min-w-[250px]' />
+              <img src={film?.poster_path ? image500(film.poster_path) : fallbackMoviePoster} alt={film?.title} className='min-w-[200px] md:min-w-[250px]' />
             </div>
           }
           <div className="flex mx-auto">
@@ -99,7 +99,7 @@ const FilmPage = () => {
                 {/* profile pic */}
                 {/* <div className="overflow-hidden items-center h-32 w-32 rounded-full shadow-md object-cover"> */}
                 <div className="min-w-[90px]">
-                  <img src={image342(person?.profile_path)} className="w-[90px] h-[90px] md:w-[120px] md:h-[120px] rounded-full object-cover" />
+                  <img src={person?.profile_path ? image342(person.profile_path) : fallbackPersonImage} className="w-[90px] h-[90px] md:w-[120px] rounded-full object-cover" />
                 </div>
                 {/* character */}
                 <p className="text-s mt-1 pt-1" >
@@ -122,13 +122,23 @@ const FilmPage = () => {
       <div className='film-page-inner'>
         {/* Film Info */}
         {loading ?
-          <div className='flex flex-col gap-2'>
-            <Skeleton className="w-[250px] h-[400px] rounded-xl" />
-            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
-            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
-            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
-            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
-            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
+          <div className='flex flex-col gap-6 mt-20 justify-items-center'>
+            <Skeleton className="w-[250px] h-[400px] rounded-xl md:w-[800px] md:h-[350px]" />
+            <Skeleton className="w-[250px] h-[20px] rounded-xl md:w-[800px] md:h-[30px]" />
+            <Skeleton className="w-[250px] h-[20px] rounded-xl md:w-[800px] md:h-[30px]" />
+            <Skeleton className="w-[250px] h-[20px] rounded-xl md:w-[800px] md:h-[30px]" />
+            <div className='flex flex-row gap-4 md:gap-10 '>
+              <Skeleton className="w-[80px] h-[80px] rounded-full" />
+              <Skeleton className="w-[80px] h-[80px] rounded-full" />
+              <Skeleton className="w-[80px] h-[80px] rounded-full" />
+            </div>
+            <div className='grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-0' >
+              <Skeleton className="w-[120px] h-[200px] rounded-xl  md:w-[180px] md:h-[240px]" />
+              <Skeleton className="w-[120px] h-[200px] rounded-xl  md:w-[180px] md:h-[240px]" />
+              <Skeleton className="w-[120px] h-[200px] rounded-xl  md:w-[180px] md:h-[240px]" />
+              <Skeleton className="w-[120px] h-[200px] rounded-xl  md:w-[180px] md:h-[240px]" />
+            </div>
+            
           </div> :
           <FilmInfo />}
 

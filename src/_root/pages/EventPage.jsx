@@ -5,14 +5,13 @@ import DummyEventData from '@/data/DummyEventData'
 import PickATime from '@/components/filmPage/PickATime'
 import FilmPoll from '@/components/filmPage/FilmPoll'
 import GuestList from '@/components/filmPage/GuestList'
-import Threads from '@/components/filmPage/Threads'
+import CommentSection from '@/components/eventPage/CommentSection'
 import TimeConvertor from '../../components/utility/TimeConvertor'
+
 
 const EventPage = () => {
   const [event, setEvent] = useState(null);
-
-  // Get the event id from the URL
-  const { id } = useParams();
+  const { id } = useParams(); // Get the event id from the URL
 
   // Get the event from the database
   useEffect(() => {
@@ -38,36 +37,36 @@ const EventPage = () => {
         </div>
 
         {/* Info */}
-        <div className='relative flex top-14 md:-top-52 md:mb-[-150px]'>
+        <div className='relative flex top-14 md:-top-52 md:mb-[-150px] md:gap-10 md:flex-start'>
           {/* Poster */}
           <div className='hidden md:flex justify-start'>
             <img src={event?.imageURL} alt={event?.title} className='min-w-[200px] md:min-w-[250px]' />
           </div>          
           {/* Details */}
-          <div className='flex flex-col justify-start gap-4 md:gap-y-2 '>
+          <div className='flex flex-col w-full justify-start gap-4 md:gap-y-4 '>
             {/* Event Name */}
-            <p className='text-m-xl md:text-[30px] font-bold'>{event?.title}</p>
+            <p className='text-m-xl md:text-[35px] font-bold'>{event?.title}</p>
             {/* Date & Time */}
-            <div className='flex justify-start flex-row'>
+            <div className='flex-between flex-row md:gap-10'>
               <div>
-                <p className="text-m-m text-border md:text-[30px]">Date & Time</p>
-                <p className="text-m-m md:text-[30px]"><TimeConvertor confirmedDateTime={event?.confirmedDateTime} /></p>
+                <p className="text-m-m text-border md:text-[20px]">Date & Time</p>
+                <p className="text-m-m md:text-[20px]"><TimeConvertor confirmedDateTime={event?.confirmedDateTime} /></p>
               </div>
               <PickATime />
             </div>
             {/* Location */}
             <div>
-                <p className="text-m-m text-border md:text-[30px]">Location</p>
-                <p className="text-m-m md:text-[30px]">{event?.location}</p>
+                <p className="text-m-m text-border md:text-[20px]">Location</p>
+                <p className="text-m-m md:text-[20px]">{event?.location}</p>
             </div>
             {/* Desc */}
             <div>
-              <p className="text-m-m text-border md:text-[30px]">Describtion</p>
-              <p className="text-m-m md:text-[30px]">{event?.description}</p>
+              <p className="text-m-m text-border md:text-[20px]">Describtion</p>
+              <p className="text-m-m md:text-[20px]">{event?.description}</p>
             </div>
             {/* Guests */}
             <div>
-              <p className="text-m-m text-border md:text-[30px]">Guests</p>
+              <p className="text-m-m text-border md:text-[20px]">Guests</p>
               <GuestList />
             </div>
           </div>
@@ -94,8 +93,8 @@ const EventPage = () => {
         {/* Film Poll */}
         <FilmPoll/>
 
-        {/* Threads */}
-        <Threads />
+        {/* CommentSection */}
+        <CommentSection />
 
       </div>
     </div>

@@ -4,7 +4,7 @@ import filmData from '@/data/filmData';
 import { TiSocialFacebookCircular } from "react-icons/ti";
 import { RiWhatsappLine, RiInstagramLine } from "react-icons/ri";
 import { FaLink } from "react-icons/fa6";
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 const ConfirmedEvent = ({formData, goToEventPage}) => {
   const formattedDate = formData.date instanceof Date ? formData.date.toDateString() : '';
