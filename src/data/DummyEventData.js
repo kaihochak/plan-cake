@@ -9,7 +9,7 @@ const DummyEventData = [
       isOnline: true,
       price: 0,
       title: "Before Trilogy Bovie Night",
-      description: "A night of fun and laughter",
+      description: "A night of fun and laughter!",
       eventURL: "https://www.eventbrite.com/e/afrobeat-festival-tickets-193286664407",
       imageURL: "/assets/posters/before.jpeg",
       location: "Lekki",
