@@ -15,7 +15,6 @@ const FilmPage = () => {
   const bp_768 = useMediaQuery('(min-width:768px)');
   const { id } = useParams();   // Get the film id from the URL
 
-
   // const { data: film, isPending: isLoading } = useGetFilmById(id);
   // console.log('film', film);
 
@@ -36,21 +35,16 @@ const FilmPage = () => {
     data && data.results && setSimilarFilms(data.results);
   };
 
-
-
   // Get the film from the database
   useEffect(() => {
     getFilmData();
     // ScrollToTop();
   }, [id]);
 
-
   useEffect(() => {
     film && getCastData();
     film && getSimilarFilms();
   }, [film]);
-
-
 
   // banner changes based on screen size
   const FilmInfo = () => {
