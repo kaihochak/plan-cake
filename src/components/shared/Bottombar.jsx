@@ -5,6 +5,7 @@ import { IoIosSearch } from "react-icons/io";
 import { IoMdLogOut } from "react-icons/io";
 import { GiDandelionFlower } from "react-icons/gi";
 
+
 const Bottombar = () => {
   const { pathname } = useLocation();
 
@@ -25,7 +26,8 @@ const Bottombar = () => {
             className={`p-2 transition rounded-[10px]
                       ${pathname === "/pickAFilm" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
         >
-            <GiDandelionFlower className='text-[30px]'/>
+            <GiDandelionFlower className='text-[30px]' /> 
+
         </Link>
 
         {/* Create */}
