@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMediaQuery } from '@react-hook/media-query'
 import MultiSelect from "@/components/utility/multiSelect";
-import usersData from "@/data/users";
 import Slider from '@mui/material/Slider';
 import { IoClose } from "react-icons/io5";
 import RatingButton from '@mui/material/Button';
@@ -11,20 +10,23 @@ import { Separator } from "@/components/ui/separator"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { defaultFilters, defaultSortBy } from "@/constants";
 import { fetchMovieGenres } from '../../lib/tmdb/api';
+import { Ampersand } from "lucide-react"
+import { z } from 'zod';
 
-const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen,
-    sortBy: parentSortBy, setSortBy: parentSetSortBy,
-    filters: parentFilters, setFilters: parentSetFilters,
-    setFilteredResults: parentSetFilteredResults }) => {
+const FilmFilters = ({ filmData, users: parentUsers, setIsFilterApplied, setModalOpen, sortBy: parentSortBy, setSortBy: parentSetSortBy,
+    filters: parentFilters, setFilters: parentSetFilters, setFilteredResults: parentSetFilteredResults }) => {
+
     const isDesktop = useMediaQuery('only screen and (min-width: 768px)');
     const [sortBy, setSortBy] = useState(parentSortBy);
     const [filters, setFilters] = useState(parentFilters);
     const [genres, setGenres] = useState(new Set());
+    const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
 
     // call api, fetch data
     useEffect(() => {
         getGenres();
+        convertUsers();
     }, []);
 
     // fetch data for most watchlisted films
@@ -37,19 +39,17 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen,
         }
         setLoading(false);
     };
-    
-    useEffect(() => {   
-        console.log('genres', genres);
-    }),[genres];
+
+    // convert users to the format required by the MultiSelect component
+    const convertUsers = () => {
+        const newUsers = parentUsers.map(user => ({ id: user._id, name: user.username }));
+        setUsers(newUsers);
+    };
 
     // useEffect(() => {
     //     console.log('sorting by', sortBy);
     //     console.log("filters", filters);
     // }, [sortBy, filters]);
-
-
-
-
 
     /**
      *  SORTS
@@ -102,11 +102,19 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen,
 
     const handleSpecificWatchlistChange = (newSpecificWatchlist) => {
 
-        // Update the watchlist filter if the new specific watchlist is larger
-        if (newSpecificWatchlist.length > filters.watchlistFilter) {
+        // if AND is selected, number of watchlist should be at least the number of selected users
+        if ( filters.isSpecificAnd && newSpecificWatchlist.length > filters.watchlistFilter) {
             setFilters((currentFilters) => ({
                 ...currentFilters,
                 watchlistFilter: newSpecificWatchlist.length
+            }));
+        }
+
+        // if OR is selected, number of watchlist should be at least 1
+        if ( !filters.isSpecificAnd && newSpecificWatchlist.length > 0 && filters.watchlistFilter === 0) {
+            setFilters((currentFilters) => ({
+                ...currentFilters,
+                watchlistFilter: 1
             }));
         }
 
@@ -124,6 +132,33 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen,
             specificWatchlistFilter: newSpecificWatchlist
         }));
     };
+
+    const handleIsSpecificAnd = () => {
+
+        // toggle the isSpecificAnd filter
+        setFilters((currentFilters) => ({
+            ...currentFilters,
+            isSpecificAnd: !filters.isSpecificAnd
+        }));
+    };
+
+    useEffect(() => {
+        // if OR is selected and specific watchlist is not empty, set watchlist filter to 1
+        if ( !filters.isSpecificAnd && filters.specificWatchlistFilter.length > 0) {
+            setFilters((currentFilters) => ({
+                ...currentFilters,
+                watchlistFilter: 1
+            }));
+        }
+
+        // if AND is selected, number of watchlist should be at least the number of selected users
+        if ( filters.isSpecificAnd && filters.specificWatchlistFilter.length > filters.watchlistFilter) {
+            setFilters((currentFilters) => ({
+                ...currentFilters,
+                watchlistFilter: filters.specificWatchlistFilter.length
+            }));
+        }
+    }, [filters.isSpecificAnd]);
 
     /**
      *  GENRES
@@ -186,7 +221,6 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen,
      *  RATING
     */
     let ratingSteps = 10;
-
     const RatingBtnGroup = () => {
         const buttons = [];
         const getSx = (index) => ({
@@ -259,7 +293,6 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen,
     //     }
     // };
 
-
     /**
      *  RESET & APPLY BUTTONS
     */
@@ -270,6 +303,7 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen,
         setFilters({
             watchlistFilter: defaultFilters.watchlistFilter,
             specificWatchlistFilter: defaultFilters.specificWatchlistFilter,
+            isSpecificAnd: defaultFilters.isSpecificAnd,
             genreFilter: defaultFilters.genreFilter,
             yearFilter: defaultFilters.yearFilter,
             ratingFilter: defaultFilters.ratingFilter,
@@ -278,15 +312,9 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen,
 
     // apply filters
     const applyFilters = () => {
-        // Update the parent state with if there is any filters or sorting applied
-        if (Object.keys(filters).some(key => filters[key] !== defaultFilters[key])
-            || sortBy !== defaultSortBy) {
-            setIsFilterApplied(true);
-        } else {
-            setIsFilterApplied(false);
-        }
 
         // Update the parent state with the new filters and sorting
+        checkIsFilterApplied(filters);
         parentSetSortBy(sortBy);
         parentSetFilters(filters);
 
@@ -294,19 +322,32 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen,
         setModalOpen(false);
     };
 
-    // Filter & sort the film data based on the current state
-    // useEffect(() => {
-    //     // console.log("filmData", filmData);
-    //     const filteredResults = filterResults(filmData); // Apply filters based on the current state
-    //     const sortedResults = sortResults(filteredResults); // Then, sort those results before returning them
-    //     // console.log("filteredResults", filteredResults);
-    //     // console.log("sortedResults", sortedResults);
-    //     parentSetFilteredResults(sortedResults);
-    // }, [filmData, sortBy, filters]);
+    // check if any filters are applied
+    const checkIsFilterApplied = (filters) => {
 
-    // const handleSortByChange = (newSortBy) => {
-    //     setSortBy(newSortBy);
-    // };
+        /**
+         * if isSpecificAnd is the ONLY filter applied, no need to indicate that the filter is applied
+         */
+
+        // count the number of filters that are different from the parent state
+        let count = 0;
+        for (const key in filters) {
+            if (filters[key] !== defaultFilters[key]) count++
+        }
+
+        if (filters.isSpecificAnd === parentFilters.isSpecificAnd) {
+            console.log(count);
+            if (count < 2) setIsFilterApplied(false); // if only isSpecificAnd is different from the parent state
+            else setIsFilterApplied(true);
+        }
+        // Update the parent state if there is any filters or sorting applied
+        // if (Object.keys(filters).some(key => filters[key] !== defaultFilters[key]) || sortBy !== defaultSortBy) {
+        //     setIsFilterApplied(true);
+        // } else {
+        //     setIsFilterApplied(false);
+        // }
+        // if isSpecificAnd is different from the parent state
+    }
 
     return (
         <div className="flex flex-col gap-y-4 bg-primary text-primary-foreground w-full h-full pt-10 pb-32 px-8 z-50 lg:mx-auto  ">
@@ -320,6 +361,7 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen,
 
             {/* SORTS */}
             <SortOptions />
+
             <Separator />
 
             {/* WATCHLISTS */}
@@ -358,14 +400,24 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen,
                     <div className='mt-4'>
                         <p className='text-m-s pb-4 text-primary-foreground/70'>Whose watchlists they appear on.</p>
                     </div>
-                    <div className='w-[100%] mx-auto'>
-                        <MultiSelect
-                            options={usersData}
-                            label="Member"
-                            selected={filters.specificWatchlistFilter}
-                            setSelected={handleSpecificWatchlistChange}
-                            separator=" &&nbsp;"
-                        />
+                    <div className='flex items-center gap-2 '>
+                        {/* set AND OR */}
+                        <Button variant="outline" size="icon" className="bg-accent text-accent-foreground" onClick={() => handleIsSpecificAnd()} >
+                            <div className={` h-[1.2rem] w-[1.4rem] rotate-0  transition-all ${filters.isSpecificAnd ? "-rotate-90 scale-0 hidden md:block" : "scale-100"}`}>OR</div>
+                            <Ampersand className={`md:absolute h-[1.4rem] w-[1.4rem] transition-all ${filters.isSpecificAnd ? "rotate-0 scale-100" : "hidden md:scale-0 rotate-90"}`} />
+                            <span className="sr-only">Toggle theme</span>
+                        </Button>
+                        {/* Selection */}
+                        <div className='w-full'>
+                            <MultiSelect
+                                options={users}
+                                label="Member"
+                                selected={filters.specificWatchlistFilter}
+                                setSelected={handleSpecificWatchlistChange}
+                                separator={filters.isSpecificAnd ? " &\u00A0" : ",\u00A0"}
+                                className="w-full"
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -380,7 +432,7 @@ const FilmFilters = ({ filmData, users, setIsFilterApplied, setModalOpen,
                         label="Genre"
                         selected={filters.genreFilter}
                         setSelected={(newGenre) => handleGenreChange(newGenre)}
-                        separator=",&nbsp;"
+                        separator={",\u00A0"}
                     />
                 </div>
             </div>

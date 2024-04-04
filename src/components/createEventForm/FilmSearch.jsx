@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import SearchDisplay from "./SearchDisplay";
 import { Button } from "@/components/ui/button";
 import "@/styles/utility.css"
-import DummyUserData from "@/data/users";
+import DummyUserData from "@/data/DummyUserData";
 import SearchBar from "@/components/utility/SearchBar";
 import Loader from "@/components/utility/Loader";
 import debounce from "lodash.debounce";
@@ -32,6 +32,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const [filters, setFilters] = useState({
         watchlistFilter: defaultFilters.watchlistFilter,
         specificWatchlistFilter: defaultFilters.specificWatchlistFilter,
+        isSpecificAnd: defaultFilters.isSpecificAnd,
         genreFilter: defaultFilters.genreFilter,
         yearFilter: defaultFilters.yearFilter,
         ratingFilter: defaultFilters.ratingFilter,
@@ -105,7 +106,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
     // keep track of whether any filter or sort has been applied
     useEffect(() => {
-        
+
         // Apply the filters and close the modal
         let filteredResults = filterResults(filmData);
         filteredResults = sortResults(filteredResults);
@@ -118,25 +119,74 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const filterResults = (filmData) => {
 
         console.log("film", filmData);
+        console.log("filters", filters);
 
-        function filterbyGenre(film) {
-            return filters.genreFilter.length === 0
+        /**
+         *  FOR SPECIFIC WATCHLISTS
+         */
+
+        // Filtering: Filter users based on selected users
+        const specificUserIDs = filters.specificWatchlistFilter.map(filter => filter.id);
+        const specificUsers = users.filter(user => specificUserIDs.includes(user._id));
+        // Preprocessing: store the list of films in specific user's watchlist
+        //      OR operation
+        const watchlistedFilms_OR = specificUsers.flatMap(user => user.films.watchlist);
+        //      AND operation
+        const watchlistedFilms_AND = specificUsers.reduce((acc, user) => {
+            // Filter the accumulated films to only include films that exist in the current user's watchlist
+            return acc.filter(film => user.films.watchlist.some(watchlistedFilm => watchlistedFilm._id === film._id));
+        }, specificUsers.length > 0 ? specificUsers[0].films.watchlist : []); // Initialize with the first user's watchlist
+
+        /**
+         *  FOR OTHER FILTERS
+         */
+        const watchlistFilterActive = filters.watchlistFilter > 0;
+        const specificWatchlistFilterActive = filters.specificWatchlistFilter.length > 0;
+        const genreFilterActive = filters.genreFilter.length > 0;
+        const yearFilterActive = filters.yearFilter[0] !== defaultFilters.yearFilter[0] || filters.yearFilter[1] !== defaultFilters.yearFilter[1];
+        const ratingFilterActive = filters.ratingFilter > 0;
+
+        return filmData.filter(film => {
+            return (specificWatchlistFilterActive ? filterBySpecificWatchlist(film) : true) &&
+                (watchlistFilterActive ? filterByWatchlist(film) : true) &&
+                (genreFilterActive ? filterByGenre(film) : true) &&
+                (yearFilterActive ? filterByYears(film) : true) &&
+                (ratingFilterActive ? filterByRating(film) : true);
+        });
+
+        function filterBySpecificWatchlist(film) {
+            // Check if the film is in the watchlist of all the selected users
+            if (filters.isSpecificAnd) {
+                if (watchlistedFilms_AND.some(watchlistedFilm => watchlistedFilm._id === film.id.toString())) return true;
+            // Check if the film is in the watchlist of any of the selected users
+            } else {
+                if (watchlistedFilms_OR.some(watchlistedFilm => watchlistedFilm._id === film.id.toString())) return true;
+            }
+        }
+
+        function filterByWatchlist(film) {
+            let counter = 0;
+            users.forEach(user => {
+                user.films.watchlist.forEach(watchlistedFilm => {
+                    if (watchlistedFilm._id === film.id.toString()) counter++;
+                });
+            });
+            return counter >= filters.watchlistFilter;
+        }
+
+        function filterByGenre(film) {
+            return filters.genreFilter.some(selectedGenre => film.genre_ids.some(genre => genre === selectedGenre.id));
+        }
+
+        function filterByYears(film) {
+            let year = film.release_date.split("-")[0];
+            return filters.yearFilter[0] <= year && year <= filters.yearFilter[1];
         }
 
         function filterByRating(film) {
             return film.vote_average >= filters.ratingFilter;
         }
 
-        return filmData.filter(film => {
-            return filterbyGenre(film) && filterByRating(film);
-
-
-            //         // && (filters.watchlistFilter === 0 || (item.watchlists.length >= filters.watchlistFilter))
-            //         // && (filters.specificWatchlistFilter.length === 0 || (Array.isArray(item.watchlists) && item.watchlists.some(user => filters.specificWatchlistFilter.includes(user))))
-            //         // && (filters.genreFilter.length === 0 || (Array.isArray(item.genres) && item.genres.some(genre => filters.genreFilter.includes(genre))))
-            //         // && (filters.yearFilter[0] <= item.year && item.year <= filters.yearFilter[1])
-            //         // && (filters.ratingFilter === 0 || item.rating >= filters.ratingFilter)
-        });
     };
 
     // Sort the film data based on the selected sort option

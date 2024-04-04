@@ -20,8 +20,6 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
             name: name,
         }));
 
-    console.log(optionArray);
-
     // Update selected options when parent selected changes
     useEffect(() => {
         if (parentSelected.length === 0) { setSelectedOptions([]);}
@@ -41,7 +39,7 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
                         {selectedOptions.length === 0 ? <>{label}</> :
                             <>{selectedOptions.map((option, index) => (
                                 <span key={index}>
-                                    {option.name}{index < selectedOptions.length - 1 ? ',' : ''}
+                                    {option.name}{index < selectedOptions.length - 1 ? separator : ''}
                                 </span>
                             ))}</>}
                     </Button>
@@ -72,7 +70,7 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
                             <>{label}</>
                             : <>{selectedOptions.map((option, index) => (
                                 <span key={index}>
-                                    {option}{index < selectedOptions.length - 1 ? separator : ''}
+                                    {option.name}{index < selectedOptions.length - 1 ? separator : ''}
                                 </span>
                             ))}</>}
                     </Button>
@@ -114,10 +112,9 @@ function OptionList({ options, selectedOptions, label, setOpen, setSelectedOptio
 
     // Handle selection change
     const handleSelect = (option) => {
-        console.log(option);
-        console.log(selectedOptions);
-        const newSelectedOptions = selectedOptions.includes(option)
-            ? selectedOptions.filter(item => item !== option) // Remove the item if it's already selected
+        // Check if the option is already selected
+        const newSelectedOptions = selectedOptions.find(item => item.id === option.id)
+            ? selectedOptions.filter(item => item.id !== option.id) // Remove the item from the selection array
             : [...selectedOptions, option]; // Add the item to the selection array
         setSelectedOptions(newSelectedOptions); // Update local state
     };
