@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 import { TbExternalLink } from "react-icons/tb";
 
 const Home = () => {
-  const [opened, { open, close }] = useDisclosure(false);
+  const [opened, { open, close }] = useDisclosure(true);
 
 
   return (
