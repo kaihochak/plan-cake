@@ -455,7 +455,7 @@
 
   /* Bottom bar */
   .bottom-bar {
-    @apply z-50 flex-between w-full sticky bottom-0 bg-primary-dark px-5 py-4 xl:hidden;
+    @apply z-50 flex-between w-full sticky bottom-0 bg-primary-dark px-2 py-1 xl:hidden;
   }
 
   /* File uploader */

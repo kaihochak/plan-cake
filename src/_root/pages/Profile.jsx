@@ -2,6 +2,7 @@ import React from 'react'
 import MyEvents from '@/components/shared/MyEvents'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { VscLocation } from "react-icons/vsc";
+import MyWatchlist from '../../components/shared/MyWatchlist';
 
 
 const Profile = () => {
@@ -48,7 +49,7 @@ const Profile = () => {
           {/* My Events Section */}
           <TabsContent value="myEvents">
             <MyEvents
-              isFilterVisible={true}
+              isFilterVisible={false}
               hasViewMore={false}
               hasButton={false}
               max="0"
@@ -57,7 +58,7 @@ const Profile = () => {
 
           {/* Watchlist */}
           <TabsContent value="watchlist">
-            Watchlist
+            <MyWatchlist />
           </TabsContent>
         </Tabs>
 
