@@ -1,8 +1,11 @@
 import React from "react";
 import "@/styles/utility.css"
 import usersData from "@/data/users";
+import { image500 } from "../../lib/tmdb/config";
 
-const SearchDisplay = ({ filteredItems, selectedFilms, setSelectedFilms }) => {
+const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, max }) => {
+
+    if (max == null) max = 100;
 
     const handleSelect = (itemId) => {
         const newSelectedFilms = selectedFilms.includes(itemId)
@@ -13,12 +16,12 @@ const SearchDisplay = ({ filteredItems, selectedFilms, setSelectedFilms }) => {
 
     return (
         <div>
-            {filteredItems.length > 0 ? (
+            {filteredResults?.length > 0 ? (
                 <div>
                     {/* EventCollection of items */}
                     <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
                         {/* each item */}
-                        {filteredItems.slice(0, 10).map((item) => (
+                        {filteredResults.slice(0, max).map((item) => (
                             <div
                                 key={item.id}
                                 className="flex flex-col gap-y-2 relative"
@@ -39,7 +42,7 @@ const SearchDisplay = ({ filteredItems, selectedFilms, setSelectedFilms }) => {
                                     {/* The image fills the square container */}
                                     <div className="aspect-w-1 aspect-h-1">
                                         <img
-                                            src={item.image}
+                                            src={image500(item.poster_path)}
                                             alt={item.title}
                                             className="object-cover object-center rounded-xl"
                                         />
@@ -64,7 +67,7 @@ const SearchDisplay = ({ filteredItems, selectedFilms, setSelectedFilms }) => {
     
                                         {/* watchlist */}
                                         <div className="flex">
-                                            {item.watchlists
+                                            {/* {item.watchlists
                                                 .slice(0, item.watchlists.length > 4 ? 3 : 4)
                                                 .map((participantName, index) => {
                                                 // Find the user in usersData that matches the participant's id
@@ -83,16 +86,16 @@ const SearchDisplay = ({ filteredItems, selectedFilms, setSelectedFilms }) => {
                                                         />
                                                     </div>
                                                 )
-                                            })}
+                                            })} */}
                                             {/* plus sign + how many more people */}
-                                            {item.watchlists.length > 4 && (
+                                            {/* {item.watchlists.length > 4 && (
                                                 <div>+{item.watchlists.length - 3}</div>
-                                            )}
+                                            )} */}
                                         </div>
 
                                         {/* Rating */}
                                         <div className="flex items-center">
-                                            <div className="text-m-s">{item.rating}</div>
+                                            <div className="text-m-m">{item.vote_average.toFixed(1)}</div>
                                             <div className="text-m-s ml-1">⭐</div>
                                         </div>
                                     </div>

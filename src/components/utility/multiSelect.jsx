@@ -1,27 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useMediaQuery } from '@react-hook/media-query'
 import { Button } from "@/components/ui/button"
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from "@/components/ui/command"
-import {
-    Drawer,
-    DrawerContent,
-    DrawerTrigger,
-} from "@/components/ui/drawer"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { RxCross1 } from "react-icons/rx";
-
 
 const MultiSelect = ({ options, label, selected: parentSelected, setSelected: parentSetSelected, separator }) => {
 
@@ -29,7 +13,16 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
     const [open, setOpen] = useState(false)
     const [selectedOptions, setSelectedOptions] = useState(parentSelected);
 
+    // Convert options to array if it's a set
+    const optionArray = Array.isArray(options) ? options
+        : Object.entries(options).map(([id, name]) => ({
+            id: parseInt(id),
+            name: name,
+        }));
+
+    // Update selected options when parent selected changes
     useEffect(() => {
+        if (parentSelected.length === 0) { setSelectedOptions([]);}
         setSelectedOptions(parentSelected);
     }, [parentSelected]);
 
@@ -37,27 +30,28 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
         return (
             <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild >
-                    <Button variant="outline" 
-                            className={cn(
-                                "w-full justify-start",
-                                {'bg-accent/80 text-secondary-foreground': selectedOptions.length !== 0},
-                            )}
+                    <Button variant="outline"
+                        className={cn(
+                            "w-full justify-start",
+                            { 'bg-accent/80 text-secondary-foreground': selectedOptions.length !== 0 },
+                        )}
                     >
-                        {selectedOptions.length === 0 ? <>{label}</> : 
+                        {selectedOptions.length === 0 ? <>{label}</> :
                             <>{selectedOptions.map((option, index) => (
-                                    <span key={option.value}>
-                                        {option}{index < selectedOptions.length - 1 ? ',' : ''}
-                                    </span>
+                                <span key={index}>
+                                    {option.name}{index < selectedOptions.length - 1 ? separator : ''}
+                                </span>
                             ))}</>}
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0" align="start">
                     <OptionList
-                        options={options}
+                        options={optionArray}
                         selectedOptions={selectedOptions}
                         label={label}
                         setOpen={setOpen}
                         setSelectedOptions={setSelectedOptions}
+                        parentSetSelected={parentSetSelected}
                     />
                 </PopoverContent>
             </Popover>
@@ -70,13 +64,14 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
             <Drawer open={open} onOpenChange={setOpen} className="py-2 absolute">
                 <DrawerTrigger asChild>
                     <Button variant="outline" className={cn("w-full justify-start",
-                        {'bg-accent/80 text-accent-foreground border-none': selectedOptions.length !== 0},
+                        { 'bg-accent/80 text-accent-foreground border-none': selectedOptions.length !== 0 },
                     )}>
-                        {selectedOptions.length === 0 ? <>{label}</> : 
-                            <>{selectedOptions.map((option, index) => (
-                                    <span key={index}>
-                                        {option}{index < selectedOptions.length - 1 ? separator : ''}
-                                    </span>
+                        {selectedOptions.length === 0 ?
+                            <>{label}</>
+                            : <>{selectedOptions.map((option, index) => (
+                                <span key={index}>
+                                    {option.name}{index < selectedOptions.length - 1 ? separator : ''}
+                                </span>
                             ))}</>}
                     </Button>
                 </DrawerTrigger>
@@ -85,7 +80,7 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
                 <DrawerContent>
                     <div className="mt-4 border-t ">
                         <OptionList
-                            options={options}
+                            options={optionArray}
                             selectedOptions={selectedOptions}
                             label={label}
                             setOpen={setOpen}
@@ -108,7 +103,7 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
             </div>
 
         </div>
-        
+
     )
 
 }
@@ -116,13 +111,12 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
 function OptionList({ options, selectedOptions, label, setOpen, setSelectedOptions, parentSetSelected }) {
 
     // Handle selection change
-    const handleSelect = (value) => {
-        const newSelectedOptions = selectedOptions.includes(value)
-            ? selectedOptions.filter(item => item !== value) // Remove the item if it's already selected
-            : [...selectedOptions, value]; // Add the item to the selection array
-
+    const handleSelect = (option) => {
+        // Check if the option is already selected
+        const newSelectedOptions = selectedOptions.find(item => item.id === option.id)
+            ? selectedOptions.filter(item => item.id !== option.id) // Remove the item from the selection array
+            : [...selectedOptions, option]; // Add the item to the selection array
         setSelectedOptions(newSelectedOptions); // Update local state
-        parentSetSelected(newSelectedOptions); // Update parent state
     };
 
     // Reset options
@@ -132,35 +126,41 @@ function OptionList({ options, selectedOptions, label, setOpen, setSelectedOptio
         setOpen(false);
     };
 
+    // apply options
+    const applyOptions = () => {
+        parentSetSelected(selectedOptions); // Update parent state
+        setOpen(false);
+    }
+
     return (
-        <Command>
+        <Command >
             <CommandInput placeholder={`Filter by ${label}` + "s"} />
-            <CommandList>
+            <CommandList >
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup>
                     {options.map((option) => (
                         <CommandItem
-                            key={option.value}
-                            value={option.value}
-                            isSelected={selectedOptions.includes(option.value)}
-                            onSelect={() => handleSelect(option.value)}
+                            key={option.id}
+                            value={option.id}
+                            isSelected={selectedOptions.find(item => item.id === option.id)}
+                            onSelect={() => handleSelect(option)}
                         >
-                            {option.label}
+                            {option.name}
                         </CommandItem>
                     ))}
                 </CommandGroup>
             </CommandList>
             <div className='flex justify-between space-x-2 px-4 pb-4'>
                 {/* reset */}
-                <button 
+                <button
                     onClick={resetOptions}
                     className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent/10 py-2 px-4"
                 >
                     Reset
                 </button>
                 {/* apply */}
-                <button 
-                    onClick={() => setOpen(false)}
+                <button
+                    onClick={applyOptions}
                     className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent/10 py-2 px-4"
                 >
                     Apply
@@ -179,11 +179,11 @@ function ClearSelection({ setSelectedOptions, parentSetSelected }) {
 
     return (
         <div>
-            <button 
+            <button
                 className="p-4 text-secondary-foreground"
                 onClick={handleClear}
             >
-                <RxCross1/>
+                <RxCross1 />
             </button>
         </div>
     );

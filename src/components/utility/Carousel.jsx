@@ -3,7 +3,7 @@
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Navigation, Pagination } from 'swiper/modules';
-import { fallbackMoviePoster, image500 } from '@/lib/tmdb/api';
+import { fallbackMoviePoster, image500 } from '@/lib/tmdb/config';  
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';

@@ -1,18 +1,23 @@
 import axios from "axios";
-import { movieCreditsEndpoint, movieDetailsEndpoint, similarMoviesEndpoint, trendingMoviesEndpoint } from "./config.js";
+import { latestMoviesEndpoint, movieCreditsEndpoint, movieDetailsEndpoint, movieGenresEndpoint, searchMoviesEndpoint, similarMoviesEndpoint, trendingMoviesEndpoint, upcomingMoviesEndpoint } from "./config.js";
+
+// event screen apis
+export const fetchMovieGenres = () => {
+    return apiCall(movieGenresEndpoint);
+}
 
 // home screen apis
 export const fetchTrending = () => {
     return apiCall(trendingMoviesEndpoint);
 }
-// export const fetchWatchlist = () => {
-//     return apiCall(upcomingMoviesEndpoint);
-// }
 export const fetchTopRated = () => {
     return apiCall(topRatedMoviesEndpoint);
 }
 export const fetchUpcoming = () => {
     return apiCall(upcomingMoviesEndpoint);
+}
+export const fetchLatest = () => {
+    return apiCall(latestMoviesEndpoint);
 }
 
 // film screen apis
@@ -25,6 +30,8 @@ export const fetchCast = (FilmId) => {
 export const fetchSimilarMovies = (FilmId) => {
     return apiCall(similarMoviesEndpoint(FilmId));
 }
+
+
 
 // person screen apis
 export const fetchPersonDetails = (personId) => {
@@ -56,11 +63,3 @@ const apiCall = async (endpoint, params) => {
     }
 }
 
-// functions to get images of different widths, (show images using these to improve the loading times)
-export const image500 = posterPath => posterPath ? 'https://image.tmdb.org/t/p/w500' + posterPath : null;
-export const image342 = posterPath => posterPath ? 'https://image.tmdb.org/t/p/w342' + posterPath : null;
-export const image185 = posterPath => posterPath ? 'https://image.tmdb.org/t/p/w185' + posterPath : null;
-
-// fallback images 
-export const fallbackMoviePoster = "/assets/images/fallbackMoviePoster.jpg";
-export const fallbackPersonImage = "/assets/images/fallbackPersonImage.jpg";

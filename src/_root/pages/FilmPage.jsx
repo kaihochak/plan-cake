@@ -15,7 +15,6 @@ const FilmPage = () => {
   const bp_768 = useMediaQuery('(min-width:768px)');
   const { id } = useParams();   // Get the film id from the URL
 
-
   // const { data: film, isPending: isLoading } = useGetFilmById(id);
   // console.log('film', film);
 
@@ -36,21 +35,16 @@ const FilmPage = () => {
     data && data.results && setSimilarFilms(data.results);
   };
 
-
-
   // Get the film from the database
   useEffect(() => {
     getFilmData();
     // ScrollToTop();
   }, [id]);
 
-
   useEffect(() => {
     film && getCastData();
     film && getSimilarFilms();
   }, [film]);
-
-
 
   // banner changes based on screen size
   const FilmInfo = () => {
@@ -128,13 +122,23 @@ const FilmPage = () => {
       <div className='film-page-inner'>
         {/* Film Info */}
         {loading ?
-          <div className='flex flex-col gap-2'>
-            <Skeleton className="w-[250px] h-[400px] rounded-xl" />
-            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
-            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
-            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
-            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
-            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
+          <div className='flex flex-col gap-6 mt-20 justify-items-center'>
+            <Skeleton className="w-[250px] h-[400px] rounded-xl md:w-[800px] md:h-[350px]" />
+            <Skeleton className="w-[250px] h-[20px] rounded-xl md:w-[800px] md:h-[30px]" />
+            <Skeleton className="w-[250px] h-[20px] rounded-xl md:w-[800px] md:h-[30px]" />
+            <Skeleton className="w-[250px] h-[20px] rounded-xl md:w-[800px] md:h-[30px]" />
+            <div className='flex flex-row gap-4 md:gap-10 '>
+              <Skeleton className="w-[80px] h-[80px] rounded-full" />
+              <Skeleton className="w-[80px] h-[80px] rounded-full" />
+              <Skeleton className="w-[80px] h-[80px] rounded-full" />
+            </div>
+            <div className='grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-0' >
+              <Skeleton className="w-[120px] h-[200px] rounded-xl  md:w-[180px] md:h-[240px]" />
+              <Skeleton className="w-[120px] h-[200px] rounded-xl  md:w-[180px] md:h-[240px]" />
+              <Skeleton className="w-[120px] h-[200px] rounded-xl  md:w-[180px] md:h-[240px]" />
+              <Skeleton className="w-[120px] h-[200px] rounded-xl  md:w-[180px] md:h-[240px]" />
+            </div>
+            
           </div> :
           <FilmInfo />}
 
