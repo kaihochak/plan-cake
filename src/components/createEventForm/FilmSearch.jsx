@@ -55,8 +55,6 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
     const [filmData, setFilmData] = useState([]);
     const [watchlistObject, setWatchlistObject] = useState({}); // key: film ID, value: array of user IDs
     const [sortedWatchlist, setSortedWatchlist] = useState([]); // sorted watchlisted films in tmdb format
-    const [hasWatchlist, setHasWatchlist] = useState(false); // flag to indicate that no watchlist is available
-    const [doneSettingWatchlist, setDoneSettingWatchlist] = useState(false); // flag to indicate that watchlist has been stored
     const [upcomingFilms, setUpcomingFilms] = useState([]); // upcoming films in tmdb format
     const [filteredResults, setFilteredResults] = useState([]); // filtered results to be displayed
 
@@ -205,11 +203,11 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                 language: 'en-US',
                 page: 1
             })
-            if (data && data.results) {
-                console.log("search results", data);
-                setFilmData(data.results);
-            }
-        } else setFilmData(upcomingFilms);
+            if (data && data.results) setFilmData(data.results);
+        } else {
+            if (sortedWatchlist.length > 0 && upcomingFilms.length > 0) setFilmData([...sortedWatchlist, ...upcomingFilms]);
+            else setFilmData(upcomingFilms);
+        }
         setLoading(false);
     }, 500);
 
