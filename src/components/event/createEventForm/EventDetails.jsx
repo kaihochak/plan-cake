@@ -11,7 +11,7 @@ import { Popover, PopoverContent, PopoverTrigger,
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import FileUploader from "../shared/FileUploader";
+import FileUploader from "@/components/shared/FileUploader";
 import { convertFileToUrl } from "@/lib/utils";
 
 
@@ -62,8 +62,8 @@ const EventDetails = ({ formData: parentFormData, nextStep }) => {
     }
 
     return (
-        <div className="space-y-8 mt-6 pb-44 ">
-            <h2 className="text-m-2xl mb-3">Event Details</h2>
+        <div className="mt-6 space-y-8 pb-44 ">
+            <h2 className="mb-3 text-m-2xl">Event Details</h2>
             
             {/* Upload Image*/}
             <FileUploader
@@ -79,7 +79,7 @@ const EventDetails = ({ formData: parentFormData, nextStep }) => {
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 />
-                {validationMessages.title && <p className="text-destructive-foreground text-m-m pt-2">{validationMessages.title}</p>}
+                {validationMessages.title && <p className="pt-2 text-destructive-foreground text-m-m">{validationMessages.title}</p>}
             </div>
 
             {/* Date */}
@@ -92,7 +92,7 @@ const EventDetails = ({ formData: parentFormData, nextStep }) => {
                             !formData.date? "text-input" : ""
                         )}
                     >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        <CalendarIcon className="w-4 h-4 mr-2" />
                         {formData.date ? (
                             format(formData.date, "PPP")
                         ) : (
@@ -102,7 +102,7 @@ const EventDetails = ({ formData: parentFormData, nextStep }) => {
                 </PopoverTrigger>
                 <PopoverContent
                     align="start"
-                    className="flex w-auto flex-col space-y-2 p-2"
+                    className="flex flex-col w-auto p-2 space-y-2"
                 >
                     <Select
                         onValueChange={(value) =>
@@ -119,7 +119,7 @@ const EventDetails = ({ formData: parentFormData, nextStep }) => {
                             <SelectItem value="7">In a week</SelectItem>
                         </SelectContent>
                     </Select>
-                    <div className="rounded-md border">
+                    <div className="border rounded-md">
                         <Calendar mode="single" selected={date} onSelect={handleDateChange} />
                     </div>
                 </PopoverContent>
@@ -133,7 +133,7 @@ const EventDetails = ({ formData: parentFormData, nextStep }) => {
                     onChange={handleLocationChange}
                     value={formData.location}
                 />
-                {validationMessages.location && <p className="text-destructive-foreground text-m-m pt-2">{validationMessages.location}</p>}
+                {validationMessages.location && <p className="pt-2 text-destructive-foreground text-m-m">{validationMessages.location}</p>}
             </div>
 
             {/* Guests */}

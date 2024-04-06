@@ -54,7 +54,7 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
     const SortOptions = () => {
         return (
             <div className='flex flex-col py-3'>
-                <div className='text-m-l pb-4'>Sort by </div>
+                <div className='pb-4 text-m-l'>Sort by </div>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className=" bg-accent text-accent-foreground">{sortBy}</Button>
@@ -232,7 +232,7 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
 
         buttons.push(
             <RatingButton
-                className='border rounded-md text-m-s ml-3 w-12 h-6 text-center'
+                className='w-12 h-6 ml-3 text-center border rounded-md text-m-s'
                 variant={filters.ratingFilter === 0 ? "contained" : "outlined"}
                 sx={getSx(0)}
                 onClick={() => handleRatingChange(0)}
@@ -243,7 +243,7 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
         for (let i = 1; i < ratingSteps; i++) {
             buttons.push(
                 <RatingButton
-                    className='border rounded-md text-m-s ml-3 w-12 h-6 text-center'
+                    className='w-12 h-6 ml-3 text-center border rounded-md text-m-s'
                     variant={filters.ratingFilter === i ? "contained" : "outlined"}
                     sx={getSx(i)}
                     onClick={() => handleRatingChange(i)}
@@ -253,7 +253,7 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
         }
         buttons.push(
             <RatingButton
-                className='border rounded-md text-m-s ml-3 w-12 h-6 text-center'
+                className='w-12 h-6 ml-3 text-center border rounded-md text-m-s'
                 variant={filters.ratingFilter === ratingSteps ? "contained" : "outlined"}
                 sx={getSx(ratingSteps)}
                 onClick={() => handleRatingChange(ratingSteps)}
@@ -261,7 +261,7 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
             > {ratingSteps} </RatingButton>
         );
         return (
-            <div className='flex gap-2 flex-wrap flex-evenly'>
+            <div className='flex flex-wrap gap-2 flex-evenly'>
                 {buttons}
             </div>
         );
@@ -346,11 +346,11 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
     }
 
     return (
-        <div className="flex flex-col gap-y-4 bg-primary text-primary-foreground w-full h-full pt-10 pb-32 px-8 z-50 lg:mx-auto  ">
+        <div className="z-50 flex flex-col w-full h-full px-8 pt-10 pb-32 gap-y-4 bg-primary text-primary-foreground lg:mx-auto ">
             <div className='flex justify-between mb-4 place-items-end'>
                 <h3 className='text-m-xl'>Filters & Sort</h3>
                 <div onClick={() => setModalOpen(false)}
-                    className='text-m-xl cursor-pointer'>
+                    className='cursor-pointer text-m-xl'>
                     <IoClose />
                 </div>
             </div>
@@ -362,8 +362,8 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
 
             {/* WATCHLISTS */}
             <div className='flex flex-col py-3'>
-                <div className='text-m-l pb-2'>Watchlists
-                    <p className='text-m-s pt-2 text-primary-foreground/70'>The minimum number of watchlists they're on.</p>
+                <div className='pb-2 text-m-l'>Watchlists
+                    <p className='pt-2 text-m-s text-primary-foreground/70'>The minimum number of watchlists they're on.</p>
                 </div>
 
                 <div className='w-[100%] mx-auto'>
@@ -381,7 +381,7 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
                         />
                         <Input
                             type="text"
-                            className="border rounded-md text-m-s ml-2 w-12 h-6 text-center bg-primary/80 "
+                            className="w-12 h-6 ml-2 text-center border rounded-md text-m-s bg-primary/80 "
                             value={filters.watchlistFilter}
                             onChange={handleWatchlistChange}
                             onKeyPress={(event) => {
@@ -394,7 +394,7 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
 
                     {/* Specific Watchlist */}
                     <div className='mt-4'>
-                        <p className='text-m-s pb-4 text-primary-foreground/70'>Whose watchlists they appear on.</p>
+                        <p className='pb-4 text-m-s text-primary-foreground/70'>Whose watchlists they appear on.</p>
                     </div>
                     <div className='flex items-center gap-2 '>
                         {/* set AND OR */}
@@ -421,7 +421,7 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
 
             {/* GENRES */}
             <div className='flex flex-col py-3'>
-                <div className='text-m-l pb-4'>Genres</div>
+                <div className='pb-4 text-m-l'>Genres</div>
                 <div className='w-[100%] mx-auto z-50'>
                     <MultiSelect
                         options={genres}
@@ -435,13 +435,13 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
 
             {/* YEARS */}
             <div className='flex flex-col py-3 '>
-                <div className='text-m-l pb-4'>Years</div>
+                <div className='pb-4 text-m-l'>Years</div>
                 <div className='w-[100%] mx-auto flex items-center'>
                     {/* https://mui.com/material-ui/react-slider/ */}
                     {/* Start Year Input */}
                     <Input
                         type="text"
-                        className='border rounded-md text-m-s mr-3 w-12 h-6 text-center bg-primary/80'
+                        className='w-12 h-6 mr-3 text-center border rounded-md text-m-s bg-primary/80'
                         value={filters.yearFilter[0]}
                         onChange={handleYearsInputChange("start")}
                         onBlur={handleYearsInputBlur("start")}
@@ -464,7 +464,7 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
                     {/* End Year Input */}
                     <Input
                         type="text"
-                        className='border rounded-md text-m-s ml-3 w-12 h-6 text-center bg-primary/80'
+                        className='w-12 h-6 ml-3 text-center border rounded-md text-m-s bg-primary/80'
                         value={filters.yearFilter[1]}
                         onChange={handleYearsInputChange("end")}
                         onBlur={handleYearsInputBlur("end")}
@@ -480,7 +480,7 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
 
             {/* RATING */}
             <div className='flex flex-col py-3 '>
-                <div className='text-m-l pb-4'>Rating </div>
+                <div className='pb-4 text-m-l'>Rating </div>
                 <div className='w-[100%] mx-auto3.79'>
                     <RatingBtnGroup />
                 </div>
@@ -490,8 +490,8 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
 
             {/* Buttons */}
             <div className='flex w-full space-x-2'>
-                <button onClick={resetFilters} className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent py-2 px-4">Reset</button>
-                <button onClick={applyFilters} className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent py-2 px-4">Apply</button>
+                <button onClick={resetFilters} className="flex-grow px-4 py-2 bg-transparent border rounded-md border-secondary-default text-secondary-default">Reset</button>
+                <button onClick={applyFilters} className="flex-grow px-4 py-2 bg-transparent border rounded-md border-secondary-default text-secondary-default">Apply</button>
             </div>
         </div>
     )

@@ -79,7 +79,7 @@ const EventCollection = ({
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-xl xl:text-3xl h-20">
+                    <h3 className="h-20 text-xl xl:text-3xl">
                       {event.title.length > 30 ? event.title.substring(0, 30) + '...' : event.title}
                     </h3>
 
@@ -104,7 +104,7 @@ const EventCollection = ({
                                 key={index}
                               >
                                 <img
-                                  className="min-w-full min-h-full object-cover"
+                                  className="object-cover min-w-full min-h-full"
                                   src={users.find(user => user._id === participant).profile.avatar}
                                   alt={users.find(user => user._id === participant).profile.username}
                                 />
@@ -213,7 +213,7 @@ const EventCollection = ({
                                 key={index}
                               >
                                 <img
-                                  className="min-w-full min-h-full object-cover"
+                                  className="object-cover min-w-full min-h-full"
                                   src={users.find(user => user._id === participant).profile.avatar}
                                   alt={users.find(user => user._id === participant).profile.username}
                                 />

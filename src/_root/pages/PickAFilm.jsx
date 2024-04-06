@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { motion } from "framer-motion";
-import FilmPoll from '@/components/filmPage/FilmPoll'
-import GuestList from '@/components/filmPage/GuestList'
-import CommentSection from '@/components/eventPage/CommentSection'
-import FilmSearch from '../../components/createEventForm/FilmSearch';
+import FilmPoll from '@/components/event/FilmPoll'
+import GuestList from '@/components/event/GuestList'
+import CommentSection from '@/components/event/CommentSection'
+import FilmSearch from '@/components/film/FilmSearch';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
 
 const PickAFilm = () => {
@@ -48,10 +48,10 @@ const PickAFilm = () => {
 
 
   return (
-    <div className='mx-auto w-full p-10'>
+    <div className='w-full p-10 mx-auto'>
       <ResizablePanelGroup
         direction="horizontal"
-        className="rounded-lg border"
+        className="border rounded-lg"
       >
 
         <ResizablePanel defaultSize={50}>

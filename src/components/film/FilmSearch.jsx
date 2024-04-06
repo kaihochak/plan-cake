@@ -6,9 +6,9 @@ import DummyUserData from "@/data/DummyUserData";
 import SearchBar from "@/components/utility/SearchBar";
 import Loader from "@/components/utility/Loader";
 import debounce from "lodash.debounce";
-import { fetchFilmDetails, fetchUpcoming, searchFilms } from "../../lib/tmdb/api";
-import FilmFilters from "../utility/FilmFilters";
-import FilmFiltersDisplay from "../utility/FilmFiltersDisplay";
+import { fetchFilmDetails, fetchUpcoming, searchFilms } from "@/lib/tmdb/api";
+import FilmFilters from "@/components/film/FilmFilters";
+import FilmFiltersDisplay from "@/components/film/FilmFiltersDisplay";
 import { CiFilter } from 'react-icons/ci'
 import { cn } from "@/lib/utils"
 import { defaultFilters, defaultSortBy } from "@/constants";
