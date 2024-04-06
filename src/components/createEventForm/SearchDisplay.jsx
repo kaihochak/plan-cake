@@ -24,14 +24,14 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, max }
                         {filteredResults.slice(0, max).map((item) => (
                             <div
                                 key={item.id}
-                                className="flex flex-col gap-y-2 relative"
+                                className="relative flex flex-col gap-y-2"
                                 onClick={() => handleSelect(item.id)}
                             >
                                 {/* Checkbox */}
-                                <div className="absolute top-3 right-3 mr-4 z-10">
+                                <div className="absolute z-10 mr-4 top-3 right-3">
                                     <input
                                         type="checkbox"
-                                        className="h-8 w-8 border-2 focus:ring-0"
+                                        className="w-8 h-8 border-2 focus:ring-0"
                                         checked={selectedFilms.includes(item.id)}
                                         readOnly
                                     />
@@ -50,14 +50,14 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, max }
                                 </div>
     
                                 {/* Info */}
-                                <div className="flex flex-col justify-start gap-y-1 pr-4">
+                                <div className="flex flex-col justify-start pr-4 gap-y-1">
                                     {/* Date & Time */}
-                                    <div className="text-m-s flex gap-x-2">
+                                    <div className="flex text-m-s gap-x-2">
                                         <p>{item.date}</p>
                                         <p>{item.time}</p>
                                     </div>
     
-                                    <h3 className="text-m-l mb-2 h-12">
+                                    <h3 className="h-12 mb-2 text-m-l">
                                         {item.title.length > 30
                                             ? item.title.substring(0, 30) + "..."
                                             : item.title}
@@ -80,7 +80,7 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, max }
                                                         key={index}
                                                     >
                                                         <img
-                                                            className="min-w-full min-h-full object-cover"
+                                                            className="object-cover min-w-full min-h-full"
                                                             src={user ? user.avatar : 'defaultAvatarUrl'} // Use the found user's avatar or a default avatar URL
                                                             alt={user ? user.name : 'Default Name'}
                                                         />
@@ -96,7 +96,7 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, max }
                                         {/* Rating */}
                                         <div className="flex items-center">
                                             <div className="text-m-m">{item.vote_average.toFixed(1)}</div>
-                                            <div className="text-m-s ml-1">⭐</div>
+                                            <div className="ml-1 text-m-s">⭐</div>
                                         </div>
                                     </div>
                                 </div>
@@ -105,7 +105,7 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, max }
                     </div>
                 </div>
             ) : (
-                <div className="text-m-l mt-4 text-center">No results found...</div>
+                <div className="mt-4 text-center text-m-l">No results found...</div>
             )}
         </div>
     );

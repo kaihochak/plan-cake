@@ -65,10 +65,7 @@ const EventPage = () => {
               <p className="text-m-m md:text-[20px]">{event?.description}</p>
             </div>
             {/* Guests */}
-            <div>
-              <p className="text-m-m text-border md:text-[20px]">Guests</p>
-              <GuestList />
-            </div>
+            <GuestList />
           </div>
         </div>
       </div>

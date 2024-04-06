@@ -6,28 +6,64 @@ import DummyUserData from "@/data/DummyUserData";
 import SearchBar from "@/components/utility/SearchBar";
 import Loader from "@/components/utility/Loader";
 import debounce from "lodash.debounce";
-import { fetchUpcoming, searchFilms } from "../../lib/tmdb/api";
+import { fetchFilmDetails, fetchUpcoming, searchFilms } from "../../lib/tmdb/api";
 import FilmFilters from "../utility/FilmFilters";
 import FilmFiltersDisplay from "../utility/FilmFiltersDisplay";
 import { CiFilter } from 'react-icons/ci'
 import { cn } from "@/lib/utils"
 import { defaultFilters, defaultSortBy } from "@/constants";
 
+/**
+ * The Film Search component consists of three main parts:
+ * 
+ * 1. Search Bar - "searchTerm" is the variable that affects "filmData":
+ *    a. when "searchTerm" is empty: "filmData" is "sortedWatchlist" + "upcomingFilms"
+ *    b. when "searchTerm" is not empty: "filmData" is the search results from TMDB API
+ * 
+ * 2. Filters - "filters" and "sortBy" are the variables that affect "filteredResults" from "filmData":
+ * 
+ * 3. Results - "filteredResults" is the final list of films that are displayed to the user
+ * 
+ * 
+ * So basically, the flow is:
+ * 
+ *      1. If the search term is empty,
+ *             - get the watchlisted films
+ *             - fetch the upcoming films form TMDB API
+ *             - set the film data to the watchlisted films + upcoming films 
+ *             - apply filters & sorting if needed
+ * 
+ *      2. If the search term is not empty,
+*              - match the search term with watchlisted films
+ *             - fetch the search results from TMDB API
+ *             - set the film data to the matched watchlisted films + search results 
+ *             - apply filters & sorting if needed
+ * 
+ *      3. Display the filtered results
+ *
+ */
+
 const FilmSearch = ({ formData: parentFormData, nextStep }) => {
-
-    const [isFilterApplied, setIsFilterApplied] = useState(false);
-    const [modalOpen, setModalOpen] = useState(false);
-
     const [loading, setLoading] = useState(false);
 
+    // Form 
     const [formData, setFormData] = useState(parentFormData);
     const [showNoSelectionError, setShowNoSelectionError] = useState(false);
+    const [users, setUsers] = useState(DummyUserData);
 
+    // Film Data
     const [filmData, setFilmData] = useState([]);
-    const [upcomingFilms, setUpcomingFilms] = useState([]);
-    const [filteredResults, setFilteredResults] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
+    const [watchlistObject, setWatchlistObject] = useState({}); // key: film ID, value: array of user IDs
+    const [sortedWatchlist, setSortedWatchlist] = useState([]); // sorted watchlisted films in tmdb format
+    const [hasWatchlist, setHasWatchlist] = useState(false); // flag to indicate that no watchlist is available
+    const [doneSettingWatchlist, setDoneSettingWatchlist] = useState(false); // flag to indicate that watchlist has been stored
+    const [upcomingFilms, setUpcomingFilms] = useState([]); // upcoming films in tmdb format
+    const [filteredResults, setFilteredResults] = useState([]); // filtered results to be displayed
 
+    // Filter and Search
+    const [searchTerm, setSearchTerm] = useState("");
+    const [isFilterApplied, setIsFilterApplied] = useState(false);
+    const [filterModalOpen, setModalOpen] = useState(false);
     const [sortBy, setSortBy] = useState(defaultSortBy);
     const [filters, setFilters] = useState({
         watchlistFilter: defaultFilters.watchlistFilter,
@@ -38,40 +74,117 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         ratingFilter: defaultFilters.ratingFilter,
     });
 
-    let users = DummyUserData;
+    /************************************************************************
+     * INITIAL FILM DATA
+     * 
+     *  - Store user watchlists in a map 
+     *  - Fetch user watchlists from TMDB API (if there is watchlist)
+     *  - Fetch upcoming films from TMDB API
+     *  - Set watchlisted films first 
+     *  - then, set upcoming films
+     * 
+     * WATCHLISTS
+     * 
+     * "watchlistObject" is a map where key is the film ID and value is an array of user IDs
+     *   - used to quickly check if a film is watchlisted by a user
+     * 
+     * "sortedWatchlist" is an array of films that are watchlisted by at least one user
+     *   - has the same TMDB structure as "filmData"
+     * 
+     ************************************************************************/
 
-    /**
-     * FILM DATA
-     */
-
-    // Fetch initial film data
+    // Start from storing user watchlist
     useEffect(() => {
         setLoading(true);
-        getInitialFilms();
+        storeUserWatchlist();
     }, []);
 
-    const getInitialFilms = async () => {
-        const upcoming = await fetchUpcoming();
-        if (upcoming && upcoming.results) {
-            setFilmData(upcoming.results);
-            setFilteredResults(upcoming.results);
-            setUpcomingFilms(upcoming.results);
-            setLoading(false);
-        }
-    }
+    // Store user watchlist in a map, where key is the film ID and value is an array of user IDs
+    const storeUserWatchlist = () => {
+        let tempWatchlistedFilms = {};
+        users.forEach(user => {
+            user.films.watchlist.forEach(film => {
+                if (tempWatchlistedFilms[film._id]) {
+                    if (!tempWatchlistedFilms[film._id].includes(user._id)) {
+                        tempWatchlistedFilms[film._id].push(user._id);
+                    }
+                } else {
+                    tempWatchlistedFilms[film._id] = [user._id];
+                }
+            });
+        });
 
-    /**
-     * SEARCH
-     */
+        // If there is watchlist, fetch user watchlist first, then fetch upcoming films
+        if (Object.keys(tempWatchlistedFilms).length > 0) setWatchlistObject(tempWatchlistedFilms)
+        // If there is no watchlist, simply fetch upcoming films 
+        else getAndSetUpcomingFilms();
+    };
 
-    // Filter the film data based on the search term
+    // Fetch user watchlist and initial films
     useEffect(() => {
-        if (searchTerm && searchTerm.length > 0) {
-            setFilteredResults(filmData);
-        } else {
-            setFilteredResults(upcomingFilms);
+        if (Object.keys(watchlistObject).length > 0) getAndSetUserWatchlist()
+    }, [watchlistObject]);
+
+    // Fetch user watchlist from TMDB API
+    const getAndSetUserWatchlist = async () => {
+        try {
+            // Fetch watchlist for each user, and store only the non-null values
+            const watchlistPromises = Object.keys(watchlistObject).map(async filmID => {
+                try {
+                    const film = await fetchFilmDetails(filmID);
+                    return film;
+                } catch (error) {
+                    console.error("Error fetching watchlisted film id:", filmID, error);
+                    return null;
+                }
+            });
+
+            // Wait for all promises to resolve, and filter out the null values
+            let userWatchlists = await Promise.all(watchlistPromises);
+            userWatchlists = userWatchlists.filter(film => film.id !== undefined);
+
+            // Sort the watchlisted films by the number of watchlists, and set the state
+            userWatchlists = sortFilmsByWatchlist(userWatchlists);
+            setSortedWatchlist(userWatchlists);
+        } catch (error) {
+            console.error("Error fetching watchlisted films:", error);
+            throw error; // Propagate the error to the caller
         }
-    }, [filmData]);
+
+        // Fetch upcoming films after fetching watchlist
+        getAndSetUpcomingFilms();
+    };
+
+    // Fetch upcoming films
+    const getAndSetUpcomingFilms = async () => {
+        try {
+            const upcoming = await fetchUpcoming(); // fetch upcoming films as part of the initial data
+            if (upcoming && upcoming.results) setUpcomingFilms(filterWatchlistedFilms(upcoming.results));
+            setLoading(false);
+        } catch (error) {
+            console.error("Error fetching initial films:", error);
+            setLoading(false);
+            throw error; // Propagate the error to the caller
+        }
+    };
+
+    // When both watchlist and upcoming films are stored, set the film data
+    useEffect(() => {
+        console.log("sortedWatchlist", sortedWatchlist);
+        console.log("upcomingFilms", upcomingFilms);
+        if (sortedWatchlist.length > 0 && upcomingFilms.length > 0) {
+            setFilmData([...sortedWatchlist, ...upcomingFilms]);
+        }
+    }, [sortedWatchlist, upcomingFilms]);
+
+    /************************************************************************
+     * SEARCH
+     * 
+     * "filmData" would be affected by "searchTerm"
+     *    - if "searchTerm" is empty: "filmData" is "sortedWatchlist" + "upcomingFilms"
+     *    - if "searchTerm" is not empty: "filmData" is the search results from TMDB API
+     * 
+     ************************************************************************/
 
     // handle search should be debounced to avoid multiple API calls
     const handleSearchChange = (e) => {
@@ -100,31 +213,23 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         setLoading(false);
     }, 500);
 
-    /**
+    /************************************************************************
      * FILTERS & SORTING
-     */
+     * 
+     *  "filters" and "sortBy" are the variables that affect "filteredResults" from "filmData":
+     * 
+     ************************************************************************/
 
     // keep track of whether any filter or sort has been applied
     useEffect(() => {
-
-        // Apply the filters and close the modal
-        let filteredResults = filterResults(filmData);
-        filteredResults = sortResults(filteredResults);
-        setFilteredResults(filteredResults);
-
-    }, [sortBy, filters]);
-
+        setFilteredResults(sortResults(filterResults(filmData)));
+    }, [filmData, sortBy, filters]);
 
     // Filter the film data based on the search term & filters
     const filterResults = (filmData) => {
-
-        console.log("film", filmData);
-        console.log("filters", filters);
-
         /**
          *  FOR SPECIFIC WATCHLISTS
          */
-
         // Filtering: Filter users based on selected users
         const specificUserIDs = filters.specificWatchlistFilter.map(filter => filter.id);
         const specificUsers = users.filter(user => specificUserIDs.includes(user._id));
@@ -158,7 +263,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             // Check if the film is in the watchlist of all the selected users
             if (filters.isSpecificAnd) {
                 if (watchlistedFilms_AND.some(watchlistedFilm => watchlistedFilm._id === film.id.toString())) return true;
-            // Check if the film is in the watchlist of any of the selected users
+                // Check if the film is in the watchlist of any of the selected users
             } else {
                 if (watchlistedFilms_OR.some(watchlistedFilm => watchlistedFilm._id === film.id.toString())) return true;
             }
@@ -189,28 +294,37 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
     };
 
+    // Only keep the films that are not in user watchlists
+    const filterWatchlistedFilms = (films) => {
+        return films.filter(film => !watchlistObject[film.id]);
+    };
+
     // Sort the film data based on the selected sort option
     const sortResults = (results) => {
         let sortedItems = results;
         // console.log("sortedItems", sortedItems);
         switch (sortBy) {
-            // case "Watchlists: Most to Least":
-            //     sortedItems = sortedItems.sort((a, b) => b.watchlists.length - a.watchlists.length);
-            //     break;
+            case "Rating: High to Low":
+                sortedItems = sortedItems.sort((a, b) => b.vote_average - a.vote_average); // if b > a, b comes first
+                break;
+            case "Rating: Low to High":
+                sortedItems = sortedItems.sort((a, b) => a.vote_average - b.vote_average); // if a > b, b comes first
+                break;
+            case "Year: Newest to Oldest":
+                sortedItems = sortedItems.sort((a, b) => b.release_date.split("-")[0] - a.release_date.split("-")[0]);
+                break;
+            case "Year: Oldest to Newest":
+                sortedItems = sortedItems.sort((a, b) => a.release_date.split("-")[0] - b.release_date.split("-")[0]);
+                break;
+            case "Watchlists: Most to Least" || "Watchlists: Least to Most":
+
+                // Preprocessing: store the list of films in user's watchlist
+                // const sortedWatchliste= users.flatMap(user => user.films.watchlist);
+
+                // sortedItems = sortedItems.sort((a, b) => b.watchlists.length - a.watchlists.length);
+                break;
             // case "Watchlists: Least to Most":
             //     sortedItems = sortedItems.sort((a, b) => a.watchlists.length - b.watchlists.length);
-            //     break;
-            // case "Rating: High to Low":
-            //     sortedItems = sortedItems.sort((a, b) => b.rating - a.rating);
-            //     break;
-            // case "Rating: Low to High":
-            //     sortedItems = sortedItems.sort((a, b) => a.rating - b.rating);
-            //     break;
-            // case "Year: Newest to Oldest":
-            //     sortedItems = sortedItems.sort((a, b) => b.year - a.year);
-            //     break;
-            // case "Year: Oldest to Newest":
-            //     sortedItems = sortedItems.sort((a, b) => a.year - b.year);
             //     break;
             default:
                 break;
@@ -218,13 +332,25 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         return sortedItems;
     }
 
+    // Sort the watchlisted films by the number of watchlists
+    const sortFilmsByWatchlist = (films) => {
+        return films.sort((a, b) => {
+            return watchlistObject[b.id].length - watchlistObject[a.id].length;
+        });
+    };
 
-    // Update selected films
+    /************************************************************************
+     *  Update selected films
+     ************************************************************************/
+
     const updateSelection = (newSelectedFilms) => {
         setFormData(formData => ({ ...formData, selectedFilms: newSelectedFilms }));
     };
 
-    // Handle next step
+    /************************************************************************
+     *  Handle next step
+     ************************************************************************/
+
     const handleNextStep = () => {
         if (formData.selectedFilms.length === 0) {
             setShowNoSelectionError(true); // Show error message if no film is selected
@@ -233,23 +359,27 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
         nextStep(formData);
     };
 
+    /************************************************************************
+     *  RENDER
+     ************************************************************************/
+
     return (
         <div className="w-full">
-            <h2 className="text-m-2xl mb-3">Pick A Film</h2>
+            <h2 className="mb-3 text-m-2xl">Pick A Film</h2>
 
-            {!modalOpen ? (
+            {!filterModalOpen ? (
                 <div className="flex flex-col">
                     <div className="text-m-l">
                         <p className="text-m-m"> or many films and decide later on.</p>
                     </div>
 
                     {/* Search & Filters */}
-                    <div className="flex gap-x-4 pt-6">
+                    <div className="flex pt-6 gap-x-4">
                         <SearchBar
                             searchTerm={searchTerm}
                             handleSearchChange={handleSearchChange}
                         />
-                        {/* Filters Modal defined at the bottmo */}
+                        {/* Filters Modal defined at the bottom */}
                         <button onClick={() => setModalOpen(true)}
                             className={cn("flex items-center text-[30px] mr-2 mt-2 text-primary-foreground/60",
                                 { "text-accent/70": isFilterApplied })}>
@@ -280,7 +410,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
                     {/* Display error message if no film is selected */}
                     {showNoSelectionError && (
-                        <div className="text-destructive-foreground text-m-m pt-10">
+                        <div className="pt-10 text-destructive-foreground text-m-m">
                             Please select at least one film.
                         </div>
                     )}

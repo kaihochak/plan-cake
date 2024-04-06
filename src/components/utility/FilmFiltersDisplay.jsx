@@ -4,8 +4,6 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 
 const FilmFiltersDisplay = ({openFilterModal, isFilterApplied, setIsFilterApplied, sortBy, setSortBy, filters, setFilters}) => {
 
-    console.log("filters", filters);
-
     let separator = filters.isSpecificAnd ? " & " : ", ";
 
     return (

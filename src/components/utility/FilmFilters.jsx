@@ -11,10 +11,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenu
 import { defaultFilters, defaultSortBy } from "@/constants";
 import { fetchMovieGenres } from '../../lib/tmdb/api';
 import { Ampersand } from "lucide-react"
-import { z } from 'zod';
+import { set } from 'date-fns';
 
-const FilmFilters = ({ filmData, users: parentUsers, setIsFilterApplied, setModalOpen, sortBy: parentSortBy, setSortBy: parentSetSortBy,
-    filters: parentFilters, setFilters: parentSetFilters, setFilteredResults: parentSetFilteredResults }) => {
+const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
+    sortBy: parentSortBy, setSortBy: parentSetSortBy,
+    filters: parentFilters, setFilters: parentSetFilters }) => {
 
     const isDesktop = useMediaQuery('only screen and (min-width: 768px)');
     const [sortBy, setSortBy] = useState(parentSortBy);
@@ -46,11 +47,6 @@ const FilmFilters = ({ filmData, users: parentUsers, setIsFilterApplied, setModa
         setUsers(newUsers);
     };
 
-    // useEffect(() => {
-    //     console.log('sorting by', sortBy);
-    //     console.log("filters", filters);
-    // }, [sortBy, filters]);
-
     /**
      *  SORTS
      */
@@ -66,7 +62,6 @@ const FilmFilters = ({ filmData, users: parentUsers, setIsFilterApplied, setModa
                     <DropdownMenuContent className="w-56">
                         <DropdownMenuRadioGroup value={sortBy} onValueChange={setSortBy}>
                             <DropdownMenuRadioItem value="Watchlists: Most to Least">Watchlists: Most to Least</DropdownMenuRadioItem>
-                            <DropdownMenuRadioItem value="Watchlists: Least to Most">Watchlists: Least to Most</DropdownMenuRadioItem>
                             <DropdownMenuRadioItem value="Year: Old to New">Year: Old to New</DropdownMenuRadioItem>
                             <DropdownMenuRadioItem value="Year: New to Old">Year: New to Old</DropdownMenuRadioItem>
                             <DropdownMenuRadioItem value="Rating: High to Low">Rating: High to Low</DropdownMenuRadioItem>
@@ -103,7 +98,7 @@ const FilmFilters = ({ filmData, users: parentUsers, setIsFilterApplied, setModa
     const handleSpecificWatchlistChange = (newSpecificWatchlist) => {
 
         // if AND is selected, number of watchlist should be at least the number of selected users
-        if ( filters.isSpecificAnd && newSpecificWatchlist.length > filters.watchlistFilter) {
+        if (filters.isSpecificAnd && newSpecificWatchlist.length > filters.watchlistFilter) {
             setFilters((currentFilters) => ({
                 ...currentFilters,
                 watchlistFilter: newSpecificWatchlist.length
@@ -111,7 +106,7 @@ const FilmFilters = ({ filmData, users: parentUsers, setIsFilterApplied, setModa
         }
 
         // if OR is selected, number of watchlist should be at least 1
-        if ( !filters.isSpecificAnd && newSpecificWatchlist.length > 0 && filters.watchlistFilter === 0) {
+        if (!filters.isSpecificAnd && newSpecificWatchlist.length > 0 && filters.watchlistFilter === 0) {
             setFilters((currentFilters) => ({
                 ...currentFilters,
                 watchlistFilter: 1
@@ -144,7 +139,7 @@ const FilmFilters = ({ filmData, users: parentUsers, setIsFilterApplied, setModa
 
     useEffect(() => {
         // if OR is selected and specific watchlist is not empty, set watchlist filter to 1
-        if ( !filters.isSpecificAnd && filters.specificWatchlistFilter.length > 0) {
+        if (!filters.isSpecificAnd && filters.specificWatchlistFilter.length > 0) {
             setFilters((currentFilters) => ({
                 ...currentFilters,
                 watchlistFilter: 1
@@ -152,7 +147,7 @@ const FilmFilters = ({ filmData, users: parentUsers, setIsFilterApplied, setModa
         }
 
         // if AND is selected, number of watchlist should be at least the number of selected users
-        if ( filters.isSpecificAnd && filters.specificWatchlistFilter.length > filters.watchlistFilter) {
+        if (filters.isSpecificAnd && filters.specificWatchlistFilter.length > filters.watchlistFilter) {
             setFilters((currentFilters) => ({
                 ...currentFilters,
                 watchlistFilter: filters.specificWatchlistFilter.length
@@ -279,20 +274,6 @@ const FilmFilters = ({ filmData, users: parentUsers, setIsFilterApplied, setModa
         }));
     }
 
-    // const handleRatingChange = (event, newValue) => {
-    //     // For slider component, the newValue is directly provided as the second argument
-    //     if (newValue !== undefined) {
-    //         setfilters.ratingFilter(newValue);
-    //     } else {
-    //         // For standard input, extract the value from event.target.value
-    //         const inputVal = event.target.value === '' ? 0 : Number(event.target.value);
-    //         if (inputVal > 10 || inputVal < 0) {
-    //             return;
-    //         }
-    //         setfilters.ratingFilter(inputVal);
-    //     }
-    // };
-
     /**
      *  RESET & APPLY BUTTONS
     */
@@ -314,39 +295,54 @@ const FilmFilters = ({ filmData, users: parentUsers, setIsFilterApplied, setModa
     const applyFilters = () => {
 
         // Update the parent state with the new filters and sorting
-        checkIsFilterApplied(filters);
-        parentSetSortBy(sortBy);
-        parentSetFilters(filters);
-
+        const hasFilter = checkIsFilterApplied(filters);
+        if (hasFilter) {
+            setIsFilterApplied(true);
+            parentSetSortBy(sortBy);
+            parentSetFilters({
+                watchlistFilter: filters.watchlistFilter,
+                specificWatchlistFilter: filters.specificWatchlistFilter,
+                isSpecificAnd: filters.isSpecificAnd,
+                genreFilter: filters.genreFilter,
+                yearFilter: filters.yearFilter,
+                ratingFilter: filters.ratingFilter,
+            });
+        } else {
+            setIsFilterApplied(false);
+            parentSetSortBy(defaultSortBy);
+            parentSetFilters({
+                watchlistFilter: defaultFilters.watchlistFilter,
+                specificWatchlistFilter: defaultFilters.specificWatchlistFilter,
+                isSpecificAnd: defaultFilters.isSpecificAnd,
+                genreFilter: defaultFilters.genreFilter,
+                yearFilter: defaultFilters.yearFilter,
+                ratingFilter: defaultFilters.ratingFilter,
+            });
+        }
         // Close the modal
         setModalOpen(false);
-    };
+    }
 
     // check if any filters are applied
     const checkIsFilterApplied = (filters) => {
-
         /**
          * if isSpecificAnd is the ONLY filter applied, no need to indicate that the filter is applied
          */
-
         // count the number of filters that are different from the parent state
         let count = 0;
         for (const key in filters) {
             if (filters[key] !== defaultFilters[key]) count++
         }
+        if (sortBy !== defaultSortBy) count++;
 
-        if (filters.isSpecificAnd === parentFilters.isSpecificAnd) {
-            console.log(count);
-            if (count < 2) setIsFilterApplied(false); // if only isSpecificAnd is different from the parent state
-            else setIsFilterApplied(true);
+        // if only isSpecificAnd is different from the parent state, no need to indicate that the filter is applied
+        if (filters.isSpecificAnd !== defaultFilters.isSpecificAnd) {
+            if (count == 2) return false;
+            else return true;
+        } else {
+            if (count > 0) return true;
+            else return false;
         }
-        // Update the parent state if there is any filters or sorting applied
-        // if (Object.keys(filters).some(key => filters[key] !== defaultFilters[key]) || sortBy !== defaultSortBy) {
-        //     setIsFilterApplied(true);
-        // } else {
-        //     setIsFilterApplied(false);
-        // }
-        // if isSpecificAnd is different from the parent state
     }
 
     return (
@@ -499,6 +495,6 @@ const FilmFilters = ({ filmData, users: parentUsers, setIsFilterApplied, setModa
             </div>
         </div>
     )
-}
+};
 
 export default FilmFilters;

@@ -15,7 +15,7 @@ const CreateEvent = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useUserContext();
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(2);
   const [formData, setFormData] = useState({
     type: "",
     title: "",
@@ -100,9 +100,9 @@ const CreateEvent = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("formData", formData);
-  }, [formData]);
+  // useEffect(() => {
+  //   console.log("formData", formData);
+  // }, [formData]);
 
   return (
     <section className="common-container">
@@ -115,7 +115,6 @@ const CreateEvent = () => {
             </button>)
             : <Alert />
           }
-
         </header>
 
         {/* Current Step Content */}
