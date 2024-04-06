@@ -205,6 +205,9 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             })
             if (data && data.results) setFilmData(data.results);
         } else {
+            console.log("search term is empty");
+            console.log("sortedWatchlist", sortedWatchlist);
+            console.log("upcomingFilms", upcomingFilms);
             if (sortedWatchlist.length > 0 && upcomingFilms.length > 0) setFilmData([...sortedWatchlist, ...upcomingFilms]);
             else setFilmData(upcomingFilms);
         }
