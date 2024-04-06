@@ -3,7 +3,21 @@
 @tailwind utilities;
 
 @layer base {
+  * {
+    @apply border-border scroll-smooth;
+  }
+
+  main {
+    @apply bg-background text-foreground min-h-screen;
+  }
+
+  body {
+    @apply bg-background text-foreground min-h-screen;
+  }
+
   :root {
+    @apply bg-background text-foreground min-h-screen;
+  
     --background: 0 0% 12%;
     --foreground: 0 0% 85%;
 
@@ -85,6 +99,7 @@
 
   body {
     @apply bg-background text-foreground min-h-screen;
+    background-color: hsl(var(--background));
   }
 }
 
@@ -555,3 +570,6 @@
     @apply flex gap-4 items-center justify-start hover:bg-transparent hover:text-white !important;
   }
 }
+
+
+/* Frame Motion */

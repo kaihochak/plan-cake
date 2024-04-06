@@ -14,8 +14,17 @@ import { MantineProvider } from '@mantine/core';
 
 function App() {
   return (
-    <MantineProvider>
-      <main className="flex bg-primary font-Urbanist text-default h-screen">
+    <MantineProvider
+      styles={{
+        '@global': {
+          ':root': {
+            '--mantine-color-body': '#496078', // Your desired background color
+            '--mantine-color-text': '#496078', // Your desired text color
+          }
+        }
+      }}
+    >
+      <main className="flex h-screen bg-primary font-Urbanist text-default">
 
         {/* To solve a  vite issue:navigate to new page with same path */}
         {/* <ScrollToTop /> */}

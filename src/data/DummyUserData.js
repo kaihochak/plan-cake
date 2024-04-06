@@ -19,12 +19,18 @@ const DummyUserData = [
                     poster: "/assets/posters/matrix.jpg"
                 },
                 {
+                    _id: "300",
+                    name: "The Science of Sleep",
+                    poster: "/assets/posters/killbill.jpg"
+
+                },
+                {
                     _id: "24",
                     name: "The Kill Bill",
                     poster: "/assets/posters/killbill.jpg"
                 },
                 {
-                    _id: "604755",
+                    _id: "634492",
                     name: "Kill My Brother",
                     poster: "/assets/posters/matrix.jpg"
                 }
@@ -119,6 +125,12 @@ const DummyUserData = [
                     poster: "/assets/posters/matrix.jpg"
                 },
                 {
+                    _id: "300",
+                    name: "The Science of Sleep",
+                    poster: "/assets/posters/killbill.jpg"
+
+                },
+                {
                     _id: "24",
                     name: "The Kill Bill",
                     poster: "/assets/posters/killbill.jpg"
@@ -172,7 +184,7 @@ const DummyUserData = [
                     poster: "/assets/posters/matrix.jpg"
                 },
                 {
-                    _id: "24",
+                    _id: "508947",
                     name: "The Kill Bill",
                     poster: "/assets/posters/killbill.jpg"
                 },
@@ -225,7 +237,7 @@ const DummyUserData = [
                     poster: "/assets/posters/matrix.jpg"
                 },
                 {
-                    _id: "24",
+                    _id: "618588",
                     name: "The Kill Bill",
                     poster: "/assets/posters/killbill.jpg"
                 },

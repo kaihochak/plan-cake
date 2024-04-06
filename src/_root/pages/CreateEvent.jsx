@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import CreateEventType from "@/components/createEventForm/CreateEventType";
-import FilmSearch from "@/components/createEventForm/FilmSearch";
-import EventDetails from "@/components/createEventForm/EventDetails";
-import PreviewEvent from "@/components/createEventForm/PreviewEvent";
-import ConfirmedEvent from "@/components/createEventForm/ConfirmedEvent";
+import CreateEventType from "@/components/event/createEventForm/CreateEventType";
+import FilmSearch from "@/components/film/FilmSearch";
+import EventDetails from "@/components/event/createEventForm/EventDetails";
+import PreviewEvent from "@/components/event/createEventForm/PreviewEvent";
+import ConfirmedEvent from "@/components/event/createEventForm/ConfirmedEvent";
 import { BsArrowLeft } from "react-icons/bs";
 import { useCreateEvent } from "../../lib/react-query/queries";
 import { useToast } from "@/components/ui/use-toast";
@@ -15,7 +15,7 @@ const CreateEvent = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useUserContext();
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(2);
   const [formData, setFormData] = useState({
     type: "",
     title: "",
@@ -100,9 +100,9 @@ const CreateEvent = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("formData", formData);
-  }, [formData]);
+  // useEffect(() => {
+  //   console.log("formData", formData);
+  // }, [formData]);
 
   return (
     <section className="common-container">
@@ -115,7 +115,6 @@ const CreateEvent = () => {
             </button>)
             : <Alert />
           }
-
         </header>
 
         {/* Current Step Content */}
