@@ -2,7 +2,7 @@ import React from "react";
 import "@/styles/utility.css"
 import { image500 } from "@/lib/tmdb/config";
 
-const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, max }) => {
+const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watchlistObject, guests, max }) => {
 
     if (max == null) max = 100;
 
@@ -14,6 +14,9 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, max }
     };
 
     const filmCard = (item) => {
+
+        const watchlisters = watchlistObject[item.id];
+
         return (
             <div key={item.id} className="relative flex flex-col gap-y-2" onClick={() => handleSelect(item.id)}>
                 {/* Checkbox */}
@@ -40,53 +43,42 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, max }
 
                 {/* Info */}
                 <div className="flex flex-col justify-start pr-4 gap-y-1">
-                    {/* Date & Time */}
-                    <div className="flex text-m-s gap-x-2">
-                        <p>{item.date}</p>
-                        <p>{item.time}</p>
+
+                    <div className="line-clamp-2">
+                        {/* Title */}
+                        <h3 className="inline-block mr-2 font-semibold align-baseline text-m-xl">{item.title}</h3>
+                        {/* Year in a bracket*/}
+                        <p className="inline-block align-baseline text-m-l">{item.release_date.slice(0, 4)}</p>
                     </div>
 
-                    <h3 className="h-12 mb-2 text-m-l">
-                        {item.title.length > 30
-                            ? item.title.substring(0, 30) + "..."
-                            : item.title}
-                    </h3>
-
                     <div className="flex justify-between">
+                        {/* Rating */}
+                        <div className="flex items-center">
+                            <div className="ml-1 mr-2 text-m-l">★</div>
+                            <div className="text-m-m">{item.vote_average ? item.vote_average.toFixed(1) : "N/A"}</div>
+                        </div>
 
                         {/* watchlist */}
                         <div className="flex">
-                            {/* {item.watchlists
-                            .slice(0, item.watchlists.length > 4 ? 3 : 4)
-                            .map((participantName, index) => {
-                            // Find the user in usersData that matches the participant's id
-                            const user = usersData.find(user => user.value === participantName);
-                            return (    
-                                <div
-                                    className={`w-6 h-6 rounded-full overflow-hidden flex items-center justify-center 
-                                                ${index > 0 ? "-ml-1" : ""} 
-                                                `}
-                                    key={index}
-                                >
-                                    <img
-                                        className="object-cover min-w-full min-h-full"
-                                        src={user ? user.avatar : 'defaultAvatarUrl'} // Use the found user's avatar or a default avatar URL
-                                        alt={user ? user.name : 'Default Name'}
-                                    />
-                                </div>
-                            )
-                        })} */}
+                            {watchlisters && watchlisters.slice(0, 4).map((watchlister, index) => {
+                                    const user = guests.find(user => user._id === watchlister);
+                                    return (
+                                        <div key={index} className={`w-6 h-6 rounded-full overflow-hidden flex items-center  justify-center ${index > 0 ? "-ml-1" : ""} `}
+                                        >
+                                            <img
+                                                className="object-cover min-w-full min-h-full"
+                                                src={user ? user.profile.avatar : 'defaultAvatarUrl'} // Use the found user's avatar or a default avatar URL
+                                                alt={user ? user.username : 'Default Name'}
+                                            />
+                                        </div>
+                                    )
+                                })} 
                             {/* plus sign + how many more people */}
-                            {/* {item.watchlists.length > 4 && (
-                            <div>+{item.watchlists.length - 3}</div>
-                        )} */}
+                            {watchlisters && watchlisters.length > 4 && ( 
+                            <div>+{item.watchlists.length - 3}</div> )}
                         </div>
 
-                        {/* Rating */}
-                        <div className="flex items-center">
-                            <div className="text-m-m">{item.vote_average.toFixed(1)}</div>
-                            <div className="ml-1 text-m-s">⭐</div>
-                        </div>
+
                     </div>
                 </div>
             </div>
