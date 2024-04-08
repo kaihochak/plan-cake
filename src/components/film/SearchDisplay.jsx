@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import "@/styles/utility.css"
 import { image500 } from "@/lib/tmdb/config";
 import { useMediaQuery } from '@react-hook/media-query'
+import { IoIosAddCircleOutline } from "react-icons/io";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 import FilmPageModal from "@/components/film/FilmPageModal";
 
 const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watchlistObject, guests, max }) => {
@@ -28,32 +30,37 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watch
         const watchlisters = watchlistObject[item.id];
 
         return (
-            <div key={item.id} className="relative flex flex-col gap-y-2" onClick={() => handleSelect(item.id)}>
+            <div className="relative flex flex-col gap-y-2">
                 {/* Checkbox */}
-                <div className="absolute z-10 mr-4 top-3 right-3">
+                {/* <div className="absolute z-10 mr-4 top-3 right-3">
                     <input
                         type="checkbox"
                         className="w-8 h-8 border-2 focus:ring-0"
                         checked={selectedFilms.includes(item.id)}
                         readOnly
                     />
-                </div>
+                </div> */}
 
                 {/* Poster */}
-                <div className={`w-full cursor-pointer hover:selected-overlay ${selectedFilms.includes(item.id) ? "selected-overlay" : ""}`}>
+                {/* <div className={`w-full cursor-pointer hover:selected-overlay ${selectedFilms.includes(item.id) ? "selected-overlay" : ""}`}> */}
+                <div className="w-full cursor-pointer hover:selected-overlay">
                     <div className="aspect-w-1 aspect-h-[1.5]">
                         {/* Image */}
                         <img
                             src={image500(item.poster_path)}
                             alt={item.title}
-                            className="object-cover object-center rounded-sm"
+                            className={`object-cover object-center rounded-sm ${selectedFilms.includes(item.id) ? 'border-4 border-accent' : ''}`}
                         />
 
                         {/* Overlay */}
                         <div class="overlay-buttons [&_*]:hidden [&_*]:hover:flex ">
-                            <button class="overlay-button" onClick={() => handleSelect(item.id)}>Select</button>
-                            <button class="overlay-button" onClick={() => handleViewFilm(item.id)}>View</button>
-                        </div>
+                            <div key={item.id} className="overlay-button">
+                                <button onClick={() => handleSelect(item.id)} ><IoIosAddCircleOutline /></button>
+                            </div>
+                                                        <div key={item.id} className="overlay-button">
+                            <button onClick={() => handleViewFilm(item.id)}><AiOutlineInfoCircle /></button>
+                                                        </div>
+                        </div> 
                     </div>
                 </div>
 
