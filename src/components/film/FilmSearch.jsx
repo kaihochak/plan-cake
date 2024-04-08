@@ -205,9 +205,6 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             })
             if (data && data.results) setFilmData(data.results);
         } else {
-            console.log("search term is empty");
-            console.log("sortedWatchlist", sortedWatchlist);
-            console.log("upcomingFilms", upcomingFilms);
             if (sortedWatchlist.length > 0 && upcomingFilms.length > 0) setFilmData([...sortedWatchlist, ...upcomingFilms]);
             else setFilmData(upcomingFilms);
         }
@@ -223,6 +220,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
     // keep track of whether any filter or sort has been applied
     useEffect(() => {
+        console.log("filmData", filmData);
         setFilteredResults(sortResults(filterResults(filmData)));
     }, [filmData, sortBy, filters]);
 
@@ -311,11 +309,11 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
             case "Rating: Low to High":
                 sortedItems = sortedItems.sort((a, b) => a.vote_average - b.vote_average); // if a > b, b comes first
                 break;
-            case "Year: Newest to Oldest":
-                sortedItems = sortedItems.sort((a, b) => b.release_date.split("-")[0] - a.release_date.split("-")[0]);
+            case "Year: New to Old":
+                sortedItems = sortedItems.sort((a, b) => parseInt(b.release_date.split("-")[0]) - parseInt(a.release_date.split("-")[0]));
                 break;
-            case "Year: Oldest to Newest":
-                sortedItems = sortedItems.sort((a, b) => a.release_date.split("-")[0] - b.release_date.split("-")[0]);
+            case "Year: Old to New":
+                sortedItems = sortedItems.sort((a, b) => parseInt(a.release_date.split("-")[0]) - parseInt(b.release_date.split("-")[0]));
                 break;
             case "Watchlists: Most to Least" || "Watchlists: Least to Most":
 
@@ -406,6 +404,8 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                             filteredResults={filteredResults}
                             selectedFilms={formData.selectedFilms}
                             setSelectedFilms={updateSelection}
+                            watchlistObject={watchlistObject}
+                            guests={users}
                         />
                     }
 

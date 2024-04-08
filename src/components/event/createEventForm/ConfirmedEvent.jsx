@@ -29,7 +29,7 @@ const ConfirmedEvent = ({formData, goToEventPage}) => {
             <img
               src={item.image}
               alt={item.title}
-              className="object-cover object-center rounded-xl"
+              className="object-cover object-center rounded-sm"
             />
           </div>
         </div>

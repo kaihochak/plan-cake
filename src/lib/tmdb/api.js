@@ -27,6 +27,9 @@ export const fetchFilmDetails = (FilmId) => {
 export const fetchCast = (FilmId) => {
     return apiCall(movieCreditsEndpoint(FilmId));
 }
+export const fetchCrew = (FilmId) => {
+    return apiCall(movieCreditsEndpoint(FilmId));
+}
 export const fetchSimilarMovies = (FilmId) => {
     return apiCall(similarMoviesEndpoint(FilmId));
 }

@@ -78,12 +78,12 @@ const EventPage = () => {
         {/* Event Info */}
         {!event ?
           <div className='flex flex-col gap-2'>
-            <Skeleton className="w-[250px] h-[400px] rounded-xl" />
-            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
-            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
-            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
-            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
-            <Skeleton className="w-[250px] h-[20px] rounded-xl" />
+            <Skeleton className="w-[250px] h-[400px] rounded-sm" />
+            <Skeleton className="w-[250px] h-[20px] rounded-sm" />
+            <Skeleton className="w-[250px] h-[20px] rounded-sm" />
+            <Skeleton className="w-[250px] h-[20px] rounded-sm" />
+            <Skeleton className="w-[250px] h-[20px] rounded-sm" />
+            <Skeleton className="w-[250px] h-[20px] rounded-sm" />
           </div> : <EventInfo />
         }
 

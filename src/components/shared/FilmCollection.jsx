@@ -23,7 +23,7 @@ const FilmCollection = ({
 
 	// Filter items based on filter state
 	const filteredItems = items.filter((item) =>
-		item?.original_title?.toLowerCase().includes(filter.toLowerCase())
+		item?.title?.toLowerCase().includes(filter.toLowerCase())
 	);
 
 	// Category Filter
@@ -50,7 +50,7 @@ const FilmCollection = ({
 				<CategoryFilter />
 
 				{/* FilmCollection of items */}
-				<div className="gap-4 xl:gap-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
+				<div className="grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4">
 					{/* each item */}
 					{filteredItems.slice(0, max).map((item, index) => (
 						<Link to={`/film/${item?.id}`} key={index} >
@@ -61,15 +61,15 @@ const FilmCollection = ({
 								<div className="aspect-w-1 aspect-h-[1.47]">
 									<img
 										src={item?.poster_path ? image342(item.poster_path) : fallbackMoviePoster}
-										alt={item?.original_title}
-										className="object-cover object-center rounded-xl"
+										alt={item?.titile}
+										className="object-cover object-center rounded-sm"
 									/>
 								</div>
 								{/* Info */}
 								<div className="flex justify-between pt-4 gap-y-1 xl:gap-y-3">
 									{/* Title */}
-									<h3 className="text-md xl:text-xl h-20">
-										{item.original_title.length > 30 ? item.title.substring(0, 30) + '...' : item.original_title}
+									<h3 className="h-20 text-md xl:text-xl">
+										{item.title.length > 30 ? item.title.substring(0, 30) + '...' : item.titile}
 									</h3>
 									{/* Rating */}
 									<div className="flex items-center gap-x-1">

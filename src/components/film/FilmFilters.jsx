@@ -47,9 +47,9 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
         setUsers(newUsers);
     };
 
-    /**
+    /******************************************************************************
      *  SORTS
-     */
+     ******************************************************************************/
 
     const SortOptions = () => {
         return (
@@ -73,9 +73,10 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
         )
     }
 
-    /**
+    /*******************************************************************************
      *  WATCHLISTS
-     */
+     ******************************************************************************/
+     
     let maxNumWatchlist = users.length;
     const handleWatchlistChange = (event, newValue) => {
         // For slider component, the newValue is directly provided as the second argument
@@ -155,9 +156,9 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
         }
     }, [filters.isSpecificAnd]);
 
-    /**
+    /*******************************************************************************
      *  GENRES
-     */
+     ******************************************************************************/
     const handleGenreChange = (newGenre) => {
         setFilters((currentFilters) => ({
             ...currentFilters,
@@ -165,9 +166,10 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
         }));
     };
 
-    /**
+    /*******************************************************************************
      *  YEARS
-    */
+     ******************************************************************************/
+    
     let minYear = 1900;
     let maxYear = new Date().getFullYear();
 
@@ -212,9 +214,10 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
         }));
     };
 
-    /**
+    /*******************************************************************************
      *  RATING
-    */
+     ******************************************************************************/
+    
     let ratingSteps = 10;
     const RatingBtnGroup = () => {
         const buttons = [];
@@ -274,9 +277,9 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
         }));
     }
 
-    /**
+    /*******************************************************************************
      *  RESET & APPLY BUTTONS
-    */
+     ******************************************************************************/
 
     // reset filters
     const resetFilters = () => {
@@ -344,6 +347,10 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
             else return false;
         }
     }
+
+    /*******************************************************************************
+     * RENDER
+     * ******************************************************************************/
 
     return (
         <div className="z-50 flex flex-col w-full h-full px-8 pt-10 pb-32 gap-y-4 bg-primary text-primary-foreground lg:mx-auto ">
