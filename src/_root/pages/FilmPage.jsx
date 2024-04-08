@@ -7,7 +7,16 @@ import { fetchFilmDetails, fetchCast, fetchSimilarMovies, fetchCrew } from '@/li
 import { fallbackPersonImage, fallbackMoviePoster, image342, image500, imagePath } from '@/lib/tmdb/config'
 // import ScrollToTop from '@/components/utility/ScrollToTop'
 
-const FilmPage = () => {
+/******************************************************************************
+ * 
+ * This component is used by both the FilmPageModal and the FilmPage
+ * 
+ * - when the FilmPageModal calls this component, it passes the filmId as a prop
+ * - when the FilmPage calls this component, it gets the filmId from the URL
+ * 
+ ******************************************************************************/
+
+const FilmPage = ({modalFilmId}) => {
   const [loading, setLoading] = useState(true);
   const [film, setFilm] = useState(null);
   const [cast, setCast] = useState(null);
@@ -15,29 +24,31 @@ const FilmPage = () => {
   const [similarFilms, setSimilarFilms] = useState(null);
   const bp_768 = useMediaQuery('(min-width:768px)');
   const { id } = useParams();   // Get the film id from the URL
+  const filmId = modalFilmId || id; // Get the film id from the URL or from the prop
 
-  // const { data: film, isPending: isLoading } = useGetFilmById(id);
-  // console.log('film', film);
+  useEffect(() => {
+    console.log("FilmPage useEffect id: ", filmId);
+  }, [filmId]);
 
   const getFilmData = async () => {
-    const data = await fetchFilmDetails(id);
+    const data = await fetchFilmDetails(filmId);
     data && setFilm(data);
     setLoading(false);
   }
 
   const getCastData = async () => {
-    const data = await fetchCast(id);
+    const data = await fetchCast(filmId);
     data && data?.cast && setCast(data.cast);
   }
 
   const getCrewData = async () => {
-    const data = await fetchCrew(id);
+    const data = await fetchCrew(filmId);
     data && data?.crew && setCrew(data.crew);
   }
 
   // fetch data for similar films
   const getSimilarFilms = async () => {
-    const data = await fetchSimilarMovies(id);
+    const data = await fetchSimilarMovies(filmId);
     data && data.results && setSimilarFilms(data.results);
   };
 
@@ -45,7 +56,7 @@ const FilmPage = () => {
   useEffect(() => {
     getFilmData();
     // ScrollToTop();
-  }, [id]);
+  }, [filmId]);
 
   useEffect(() => {
     film && getCastData();
@@ -75,21 +86,21 @@ const FilmPage = () => {
           <div className="flex mx-auto">
             <div className='flex flex-col justify-center gap-y-1 md:gap-y-2 '>
               {/* title */}
-              <h1 className="text-m-l md:text-[30px] md:my-4 my-2 font-bold ">{film?.title === film.original_title ? film.title : film.original_title + " (" + film.title+ ")" }</h1>
+              <h1 className="text-m-l md:text-[30px] md:my-4 my-2 font-bold ">{film?.title === film.original_title ? film.title : film.original_title + " (" + film.title + ")"}</h1>
               {/* <p className='text-m-m md:text-[15px]'>
                 Directed by <a href="">{crew?.filter(member => member.job === "Director").map(director => director.name).join(", ")}</a>
               </p> */}
               <p className='text-m-m md:text-[15px]'>
                 Directed by {
-                    crew?.filter(member => member.job === "Director")
-                        .map((director, index, array) => (
-                          <span key={director.id}>
-                            <a href={`/directors/${director.id}`} className="underline underline-offset-4 cursor-pointer">
-                              {director.name}
-                            </a>
-                            {index < array.length - 1 ? ', ' : ''}
-                          </span>
-                  ))
+                  crew?.filter(member => member.job === "Director")
+                    .map((director, index, array) => (
+                      <span key={director.id}>
+                        <a href={`/directors/${director.id}`} className="underline cursor-pointer underline-offset-4">
+                          {director.name}
+                        </a>
+                        {index < array.length - 1 ? ', ' : ''}
+                      </span>
+                    ))
                 }
               </p>
 
@@ -115,22 +126,22 @@ const FilmPage = () => {
 
     return (
       <div className='flex flex-col flex-shrink-0 w-full md:mb-10'>
-        <h2 className='text-m-l mb-2 font-bold'>Cast</h2>
+        <h2 className='mb-2 font-bold text-m-l'>Cast</h2>
         <div className="overflow-x-auto scrollbar-hide">
-          <div className='flex gap-x-3 py-2'>
+          <div className='flex py-2 gap-x-3'>
             {cast?.map((person, index) => (
-              <div key={index} className="mr-2 px-1 items-center">
+              <div key={index} className="items-center px-1 mr-2">
                 {/* profile pic */}
-                {/* <div className="overflow-hidden items-center h-32 w-32 rounded-full shadow-md object-cover"> */}
+                {/* <div className="items-center object-cover w-32 h-32 overflow-hidden rounded-full shadow-md"> */}
                 <div className="min-w-[90px]">
                   <img src={person?.profile_path ? image342(person.profile_path) : fallbackPersonImage} className="w-[90px] h-[90px] md:w-[120px] rounded-full object-cover" />
                 </div>
                 {/* character */}
-                <p className="text-s mt-1 pt-1" >
+                <p className="pt-1 mt-1 text-s" >
                   {person?.character.length > 10 ? person?.character.slice(0, 10) + '...' : person?.character}
                 </p>
                 {/* name */}
-                <p className="text-xs mt-1" >
+                <p className="mt-1 text-xs" >
                   {person?.original_name.length > 12 ? person?.original_name.slice(0, 12) + '...' : person?.original_name}
                 </p>
               </div>
@@ -142,7 +153,7 @@ const FilmPage = () => {
   }
 
   return (
-    <div className='film-container justify-between pb-20'>
+    <div className='justify-between pb-20 film-container'>
       <div className='film-page-inner'>
         {/* Film Info */}
         {loading ?
@@ -162,7 +173,7 @@ const FilmPage = () => {
               <Skeleton className="w-[120px] h-[200px] rounded-sm  md:w-[180px] md:h-[240px]" />
               <Skeleton className="w-[120px] h-[200px] rounded-sm  md:w-[180px] md:h-[240px]" />
             </div>
-            
+
           </div> :
           <FilmInfo />}
 
@@ -171,7 +182,7 @@ const FilmPage = () => {
 
         {/* Similar Films */}
         <div>
-          <h2 className='text-m-l mb-2 font-bold md:mb-10'>Similar Films</h2>
+          <h2 className='mb-2 font-bold text-m-l md:mb-10'>Similar Films</h2>
           {similarFilms && <FilmCollection
             items={similarFilms}
             isFilterVisible={false}
@@ -182,7 +193,7 @@ const FilmPage = () => {
 
         {/* In Current Events */}
         <div>
-          <h2 className='text-m-l mb-2 font-bold'>You might also be interested in...</h2>
+          <h2 className='mb-2 font-bold text-m-l'>You might also be interested in...</h2>
         </div>
 
       </div>

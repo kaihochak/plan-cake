@@ -2,9 +2,12 @@ import React from "react";
 import "@/styles/utility.css"
 import { image500 } from "@/lib/tmdb/config";
 import { useMediaQuery } from '@react-hook/media-query'
+import FilmPageModal from "@/components/film/FilmPageModal";
 
 const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watchlistObject, guests, max }) => {
     const bp_768 = useMediaQuery('(min-width:768px)');
+    const [isModalOpen, setIsModalOpen] = React.useState(false)
+    const [viewFilmId, setViewFilmId] = React.useState(null)
 
     if (max == null) max = 100;
 
@@ -14,6 +17,11 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watch
             : [...selectedFilms, itemId]; // select
         setSelectedFilms(newSelectedFilms);
     };
+
+    const handleViewFilm = (itemId) => {
+        setViewFilmId(itemId);
+        setIsModalOpen(true);
+    }
 
     const filmCard = (item) => {
 
@@ -31,7 +39,6 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watch
                     />
                 </div>
 
-
                 {/* Poster */}
                 <div className={`w-full cursor-pointer hover:selected-overlay ${selectedFilms.includes(item.id) ? "selected-overlay" : ""}`}>
                     <div className="aspect-w-1 aspect-h-[1.5]">
@@ -45,8 +52,8 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watch
                         {/* Overlay */}
                         <div class="overlay-buttons [&_*]:hidden [&_*]:hover:flex ">
                             <button class="overlay-button" onClick={() => handleSelect(item.id)}>Select</button>
-                            <button class="overlay-button">Other Button</button>
-                        </div> 
+                            <button class="overlay-button" onClick={() => handleViewFilm(item.id)}>View</button>
+                        </div>
                     </div>
                 </div>
 
@@ -100,6 +107,9 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watch
             ) : (
                 <div className="mt-4 text-center text-m-l">No results found...</div>
             )}
+
+            {/* Film Page Modal */}
+            <FilmPageModal filmId={viewFilmId} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
         </div>
     );
 };
