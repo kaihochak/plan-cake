@@ -1,8 +1,10 @@
 import React from "react";
 import "@/styles/utility.css"
 import { image500 } from "@/lib/tmdb/config";
+import { useMediaQuery } from '@react-hook/media-query'
 
 const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watchlistObject, guests, max }) => {
+    const bp_768 = useMediaQuery('(min-width:768px)');
 
     if (max == null) max = 100;
 
@@ -29,19 +31,28 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watch
                     />
                 </div>
 
-                {/* image */}
-                <div className={`w-[90%] cursor-pointer hover:selected-overlay ${selectedFilms.includes(item.id) ? "selected-overlay" : ""}`}>
+
+                {/* Poster */}
+                <div className={`w-full cursor-pointer hover:selected-overlay ${selectedFilms.includes(item.id) ? "selected-overlay" : ""}`}>
                     <div className="aspect-w-1 aspect-h-[1.5]">
+                        {/* Image */}
                         <img
                             src={image500(item.poster_path)}
                             alt={item.title}
                             className="object-cover object-center rounded-sm"
                         />
+
+                        {/* Overlay */}
+                        <div class="overlay-buttons [&_*]:hidden [&_*]:hover:flex ">
+                            <button class="overlay-button" onClick={() => handleSelect(item.id)}>Select</button>
+                            <button class="overlay-button">Other Button</button>
+                        </div> 
                     </div>
                 </div>
 
+
                 {/* Info */}
-                <div className="flex flex-col justify-start pr-4 gap-y-1">
+                <div className="flex flex-col justify-start gap-y-1">
 
                     {/* Title */}
                     <h3 className="font-semibold align-baseline line-clamp-1 text-m-xl">{item.title}</h3>
@@ -83,7 +94,7 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watch
     return (
         <div>
             {filteredResults?.length > 0 ? (
-                <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-4 md:gap-8 lg:gap-10 sm:grid-cols-3 lg:grid-cols-4">
                     {filteredResults.slice(0, max).map((item) => <div key={item.id}>{filmCard(item)}</div>)}
                 </div>
             ) : (
