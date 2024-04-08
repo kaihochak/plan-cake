@@ -4,9 +4,12 @@ import { image500 } from "@/lib/tmdb/config";
 import { useMediaQuery } from '@react-hook/media-query'
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { AiOutlineInfoCircle } from "react-icons/ai";
+import FilmPageModal from "@/components/film/FilmPageModal";
 
 const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watchlistObject, guests, max }) => {
     const bp_768 = useMediaQuery('(min-width:768px)');
+    const [isModalOpen, setIsModalOpen] = React.useState(false)
+    const [viewFilmId, setViewFilmId] = React.useState(null)
 
     if (max == null) max = 100;
 
@@ -16,6 +19,11 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watch
             : [...selectedFilms, itemId]; // select
         setSelectedFilms(newSelectedFilms);
     };
+
+    const handleViewFilm = (itemId) => {
+        setViewFilmId(itemId);
+        setIsModalOpen(true);
+    }
 
     const filmCard = (item) => {
 
@@ -33,7 +41,6 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watch
                     />
                 </div> */}
 
-
                 {/* Poster */}
                 {/* <div className={`w-full cursor-pointer hover:selected-overlay ${selectedFilms.includes(item.id) ? "selected-overlay" : ""}`}> */}
                 <div className="w-full cursor-pointer hover:selected-overlay">
@@ -50,7 +57,9 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watch
                             <div key={item.id} className="overlay-button">
                                 <button onClick={() => handleSelect(item.id)} ><IoIosAddCircleOutline /></button>
                             </div>
-                            <button className="overlay-button"><AiOutlineInfoCircle /></button>
+                                                        <div key={item.id} className="overlay-button">
+                            <button onClick={() => handleViewFilm(item.id)}><AiOutlineInfoCircle /></button>
+                                                        </div>
                         </div> 
                     </div>
                 </div>
@@ -105,6 +114,9 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watch
             ) : (
                 <div className="mt-4 text-center text-m-l">No results found...</div>
             )}
+
+            {/* Film Page Modal */}
+            <FilmPageModal filmId={viewFilmId} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
         </div>
     );
 };
