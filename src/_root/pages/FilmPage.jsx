@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { Skeleton } from "@/components/ui/skeleton"
 import FilmCollection from '@/components/shared/FilmCollection'
 import { useMediaQuery } from '@react-hook/media-query'
-import { fetchFilmDetails, fetchCast, fetchSimilarMovies } from '@/lib/tmdb/api'
+import { fetchFilmDetails, fetchCast, fetchSimilarMovies, fetchCrew } from '@/lib/tmdb/api'
 import { fallbackPersonImage, fallbackMoviePoster, image342, image500, imagePath } from '@/lib/tmdb/config'
 // import ScrollToTop from '@/components/utility/ScrollToTop'
 
@@ -11,6 +11,7 @@ const FilmPage = () => {
   const [loading, setLoading] = useState(true);
   const [film, setFilm] = useState(null);
   const [cast, setCast] = useState(null);
+  const [crew, setCrew] = useState(null);
   const [similarFilms, setSimilarFilms] = useState(null);
   const bp_768 = useMediaQuery('(min-width:768px)');
   const { id } = useParams();   // Get the film id from the URL
@@ -29,6 +30,11 @@ const FilmPage = () => {
     data && data?.cast && setCast(data.cast);
   }
 
+  const getCrewData = async () => {
+    const data = await fetchCrew(id);
+    data && data?.crew && setCrew(data.crew);
+  }
+
   // fetch data for similar films
   const getSimilarFilms = async () => {
     const data = await fetchSimilarMovies(id);
@@ -43,6 +49,7 @@ const FilmPage = () => {
 
   useEffect(() => {
     film && getCastData();
+    film && getCrewData();
     film && getSimilarFilms();
   }, [film]);
 
@@ -68,7 +75,24 @@ const FilmPage = () => {
           <div className="flex mx-auto">
             <div className='flex flex-col justify-center gap-y-1 md:gap-y-2 '>
               {/* title */}
-              <h1 className="text-m-l md:text-[30px] md:my-4 my-2 font-bold ">{film?.titile}</h1>
+              <h1 className="text-m-l md:text-[30px] md:my-4 my-2 font-bold ">{film?.title === film.original_title ? film.title : film.original_title + " (" + film.title+ ")" }</h1>
+              {/* <p className='text-m-m md:text-[15px]'>
+                Directed by <a href="">{crew?.filter(member => member.job === "Director").map(director => director.name).join(", ")}</a>
+              </p> */}
+              <p className='text-m-m md:text-[15px]'>
+                Directed by {
+                    crew?.filter(member => member.job === "Director")
+                        .map((director, index, array) => (
+                          <span key={director.id}>
+                            <a href={`/directors/${director.id}`} className="underline underline-offset-4 cursor-pointer">
+                              {director.name}
+                            </a>
+                            {index < array.length - 1 ? ', ' : ''}
+                          </span>
+                  ))
+                }
+              </p>
+
               {/* relase date, runtime, genres */}
               <p className='text-m-m md:text-[15px]'>
                 {film?.release_date?.split("-")[0] || "N/A"}{" | "}{film?.runtime} min |
