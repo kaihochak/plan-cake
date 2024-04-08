@@ -21,7 +21,7 @@ const Carousel = ({ items }) => {
     let slidesPerView = bp_768 ? 2 : 2;
     let stretch = bp_768 ? 0 : 0;
     let depth = bp_768 ? 50 : 120;
-
+    
     return (
         <div className="flex-center">
             <Swiper
@@ -52,7 +52,7 @@ const Carousel = ({ items }) => {
                         <Link
                             to={`/film/${item.id}`}>
                             <img 
-                                className="object-cover object-center rounded-lg w-full h-full" 
+                                className="object-cover object-center w-full h-full rounded-lg" 
                                 src={item?.poster_path ? image500(item.poster_path) : fallbackMoviePoster} alt={item.title} 
                             />
                         </Link>
@@ -74,7 +74,7 @@ export default Carousel;
 // id: 359410
 // media_type: "movie"
 // original_language: "en"
-// original_title: "Road House"
+// titile: "Road House"
 // overview: "Ex-UFC fighter Dalton takes a job as a bouncer at a Florida Keys roadhouse, only to discover that this paradise is not all it seems."
 // popularity: 340.262
 // poster_path: "/bXi6IQiQDHD00JFio5ZSZOeRSBh.jpg"
