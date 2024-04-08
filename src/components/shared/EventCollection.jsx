@@ -68,7 +68,7 @@ const EventCollection = ({
                     <img
                       src={event.imageURL}
                       alt={event.title}
-                      className="object-cover object-center rounded-xl"
+                      className="object-cover object-center rounded-sm"
                     />
                   </div>
                   {/* Info */}
@@ -172,7 +172,7 @@ const EventCollection = ({
                       <img
                         src={event.imageURL}
                         alt={event.title}
-                        className="object-cover object-center rounded-xl"
+                        className="object-cover object-center rounded-sm"
                       />
                     </div>
                   </div>

@@ -20,7 +20,7 @@ const FilmCard = (item) => {
                     <img
                         src={image500(item.poster_path)}
                         alt={item.title}
-                        className="object-cover object-center rounded-xl"
+                        className="object-cover object-center rounded-sm"
                     />
                 </div>
             </div>
