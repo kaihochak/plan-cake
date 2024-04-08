@@ -238,13 +238,14 @@
   }
 
   .overlay-buttons {
-    @apply absolute inset-0 z-20 flex flex-col items-center justify-evenly;
+    @apply absolute bottom-0 right-0 z-20 flex flex-row items-center justify-center;
   }
 
   .overlay-button {
-    @apply w-full h-full border-0 bg-black/50 text-[30px] flex-center hover:bg-accent hover:text-primary;
+    @apply w-full h-full border-0 bg-black/50 text-[30px] flex-center ;
   }
 
+  
 
   /**
    * Containers
