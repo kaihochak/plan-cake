@@ -23,7 +23,7 @@ const FilmCollection = ({
 
 	// Filter items based on filter state
 	const filteredItems = items.filter((item) =>
-		item?.titile?.toLowerCase().includes(filter.toLowerCase())
+		item?.title?.toLowerCase().includes(filter.toLowerCase())
 	);
 
 	// Category Filter
@@ -50,7 +50,7 @@ const FilmCollection = ({
 				<CategoryFilter />
 
 				{/* FilmCollection of items */}
-				<div className="gap-4 xl:gap-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
+				<div className="grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4">
 					{/* each item */}
 					{filteredItems.slice(0, max).map((item, index) => (
 						<Link to={`/film/${item?.id}`} key={index} >
@@ -68,8 +68,8 @@ const FilmCollection = ({
 								{/* Info */}
 								<div className="flex justify-between pt-4 gap-y-1 xl:gap-y-3">
 									{/* Title */}
-									<h3 className="text-md xl:text-xl h-20">
-										{item.titile.length > 30 ? item.title.substring(0, 30) + '...' : item.titile}
+									<h3 className="h-20 text-md xl:text-xl">
+										{item.title.length > 30 ? item.title.substring(0, 30) + '...' : item.titile}
 									</h3>
 									{/* Rating */}
 									<div className="flex items-center gap-x-1">

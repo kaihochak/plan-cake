@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import "@/styles/utility.css"
 import { image500 } from "@/lib/tmdb/config";
 import { useMediaQuery } from '@react-hook/media-query'
-import { IoIosAddCircleOutline } from "react-icons/io";
+import { IoIosAddCircleOutline, IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { AiOutlineInfoCircle } from "react-icons/ai";
-import FilmPageModal from "@/components/film/FilmPageModal";
-import { motion } from "framer-motion";
-import { iconButtonClasses } from "@mui/material";
+import FilmPreview from "@/components/film/FilmPreview";
 
 const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watchlistObject, guests, max }) => {
     const bp_768 = useMediaQuery('(min-width:768px)');
@@ -34,23 +32,29 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watch
         return (
             <div className="relative flex flex-col gap-y-2">
                 {/* Poster */}
-                {/* <div className={`w-full cursor-pointer hover:selected-overlay ${selectedFilms.includes(item.id) ? "selected-overlay" : ""}`}> */}
-                <div className="w-full hover:selected-overlay">
+                <div className="w-full ">
                     <div className="aspect-w-1 aspect-h-[1.5]">
                         {/* Image */}
                         <img
                             src={image500(item.poster_path)}
                             alt={item.title}
-                            className={`object-cover object-center rounded-sm ${selectedFilms.includes(item.id) ? 'border-4 border-accent' : ''}`}
+                            className={`object-cover object-center rounded-sm
+                                        ${selectedFilms.includes(item.id) ? 'border-4 border-accent' : ''}`}
                         />
 
                         {/* Overlay */}
-                        <div className="overlay-buttons [&_*]:hidden [&_*]:hover:flex ">
+                        <div className={`overlay-buttons [&_*]:hidden [&_*]:hover:flex transition-all duration-500 ease-in-out 
+                                        ${selectedFilms.includes(item.id) ? 'bg-black/50' : ''}`}>
+                            {/* Select Button */}
                             <div className="overlay-button">
-                                <button onClick={() => handleSelect(item.id)} ><IoIosAddCircleOutline /></button>
+                                <button onClick={() => handleSelect(item.id)} >
+                                    <IoIosAddCircleOutline className={`m-3 rotate-0 transition-all ${ selectedFilms.includes(item.id)? "-rotate-90 scale-0 hidden md:block" : "scale-100"}`}/>
+                                    <IoIosCheckmarkCircleOutline className={`m-3 text-accent absolute transition-all ${ selectedFilms.includes(item.id) ? "rotate-0 scale-100" : "hidden scale-0 rotate-90"}`}/>
+                                </button>
                             </div>
+                            {/* Preview Button */}
                             <div className="overlay-button">
-                                <button onClick={() => handleViewFilm(item.id)}><AiOutlineInfoCircle /></button>
+                                <button onClick={() => handleViewFilm(item.id)}><AiOutlineInfoCircle className="m-3"/></button>
                             </div>
                         </div>
                     </div>
@@ -108,7 +112,7 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watch
             )}
 
             {/* Film Page Modal */}
-            <FilmPageModal filmId={viewFilmId} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+            <FilmPreview filmId={viewFilmId} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
         </div>
     );
 };

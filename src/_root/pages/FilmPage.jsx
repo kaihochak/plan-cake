@@ -7,16 +7,7 @@ import { fetchFilmDetails, fetchCast, fetchSimilarMovies, fetchCrew } from '@/li
 import { fallbackPersonImage, fallbackMoviePoster, image342, image500, imagePath } from '@/lib/tmdb/config'
 // import ScrollToTop from '@/components/utility/ScrollToTop'
 
-/******************************************************************************
- * 
- * This component is used by both the FilmPageModal and the FilmPage
- * 
- * - when the FilmPageModal calls this component, it passes the filmId as a prop
- * - when the FilmPage calls this component, it gets the filmId from the URL
- * 
- ******************************************************************************/
-
-const FilmPage = ({modalFilmId}) => {
+const FilmPage = () => {
   const [loading, setLoading] = useState(true);
   const [film, setFilm] = useState(null);
   const [cast, setCast] = useState(null);
@@ -24,31 +15,30 @@ const FilmPage = ({modalFilmId}) => {
   const [similarFilms, setSimilarFilms] = useState(null);
   const bp_768 = useMediaQuery('(min-width:768px)');
   const { id } = useParams();   // Get the film id from the URL
-  const filmId = modalFilmId || id; // Get the film id from the URL or from the prop
 
   useEffect(() => {
-    console.log("FilmPage useEffect id: ", filmId);
-  }, [filmId]);
+    console.log("FilmPage useEffect id: ", id);
+  }, [id]);
 
   const getFilmData = async () => {
-    const data = await fetchFilmDetails(filmId);
+    const data = await fetchFilmDetails(id);
     data && setFilm(data);
     setLoading(false);
   }
 
   const getCastData = async () => {
-    const data = await fetchCast(filmId);
+    const data = await fetchCast(id);
     data && data?.cast && setCast(data.cast);
   }
 
   const getCrewData = async () => {
-    const data = await fetchCrew(filmId);
+    const data = await fetchCrew(id);
     data && data?.crew && setCrew(data.crew);
   }
 
   // fetch data for similar films
   const getSimilarFilms = async () => {
-    const data = await fetchSimilarMovies(filmId);
+    const data = await fetchSimilarMovies(id);
     data && data.results && setSimilarFilms(data.results);
   };
 
@@ -56,7 +46,7 @@ const FilmPage = ({modalFilmId}) => {
   useEffect(() => {
     getFilmData();
     // ScrollToTop();
-  }, [filmId]);
+  }, [id]);
 
   useEffect(() => {
     film && getCastData();
