@@ -1,10 +1,12 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "@/styles/utility.css"
 import { image500 } from "@/lib/tmdb/config";
 import { useMediaQuery } from '@react-hook/media-query'
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import FilmPageModal from "@/components/film/FilmPageModal";
+import { motion } from "framer-motion";
+import { iconButtonClasses } from "@mui/material";
 
 const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watchlistObject, guests, max }) => {
     const bp_768 = useMediaQuery('(min-width:768px)');
@@ -31,19 +33,9 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watch
 
         return (
             <div className="relative flex flex-col gap-y-2">
-                {/* Checkbox */}
-                {/* <div className="absolute z-10 mr-4 top-3 right-3">
-                    <input
-                        type="checkbox"
-                        className="w-8 h-8 border-2 focus:ring-0"
-                        checked={selectedFilms.includes(item.id)}
-                        readOnly
-                    />
-                </div> */}
-
                 {/* Poster */}
                 {/* <div className={`w-full cursor-pointer hover:selected-overlay ${selectedFilms.includes(item.id) ? "selected-overlay" : ""}`}> */}
-                <div className="w-full cursor-pointer hover:selected-overlay">
+                <div className="w-full hover:selected-overlay">
                     <div className="aspect-w-1 aspect-h-[1.5]">
                         {/* Image */}
                         <img
@@ -53,14 +45,14 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watch
                         />
 
                         {/* Overlay */}
-                        <div class="overlay-buttons [&_*]:hidden [&_*]:hover:flex ">
-                            <div key={item.id} className="overlay-button">
+                        <div className="overlay-buttons [&_*]:hidden [&_*]:hover:flex ">
+                            <div className="overlay-button">
                                 <button onClick={() => handleSelect(item.id)} ><IoIosAddCircleOutline /></button>
                             </div>
-                                                        <div key={item.id} className="overlay-button">
-                            <button onClick={() => handleViewFilm(item.id)}><AiOutlineInfoCircle /></button>
-                                                        </div>
-                        </div> 
+                            <div className="overlay-button">
+                                <button onClick={() => handleViewFilm(item.id)}><AiOutlineInfoCircle /></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
