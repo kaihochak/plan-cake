@@ -43,51 +43,45 @@ const FilmPreview = ({ filmId, isModalOpen, setIsModalOpen }) => {
 
     const FilmInfo = () => {
         return (
-            <div className='flex'>
+            <div className='flex '>
                 {/* Info */}
-                <div className='flex gap-4 md:gap-6 lg:gap-10'>
+                <div className='flex flex-col md:flex-row gap-4 lg:gap-10 justify-center'>
                     {/* image */}
-                    {bp_768 &&
-                        <div className='flex justify-start'>
-                            <img src={film?.poster_path ? image500(film.poster_path) : fallbackMoviePoster} alt={film?.title} className='min-w-[200px] md:min-w-[250px]' />
-                        </div>
-                    }
+                    <div className='justify-start p-6 '>
+                        <img src={film?.poster_path ? image500(film.poster_path) : fallbackMoviePoster} alt={film?.title} className='min-w-[150px] md:min-w-[200px] lg:min-w-[250px]' />
+                    </div>
                     {/* Info */}
-                    <div className="flex flex-col gap-4 md:gap-6 lg:gap-10">
+                    <div className="flex flex-col gap-2 lg:gap-4">
                         {/* title */}
-                        <h1 className="text-m-l md:text-[30px] md:my-4 my-2 font-bold ">{film?.original_title}</h1>
+                        <h1 className="text-m-xl md:text-[30px] lg:text-[38px] md:mt-4 mt-2 font-bold ">{film?.original_title}</h1>
                         {/* relase date, runtime, genres */}
-                        <p className='text-m-m md:text-[15px]'>
+                        <p className='text-m-s md:text-[15px]'>
                             {film?.release_date?.split("-")[0] || "N/A"}{" | "}{film?.runtime} min |
                             {film?.genres?.map((genre, index) => (
                                 <span key={index}> {genre.name}{index < film.genres.length - 1 && ' '}</span>
                             ))}
                         </p>
-                        <p className='text-m-m md:text-[15px]'>{film?.overview}</p>
-                        <div className='flex flex-col flex-shrink-0 w-full md:mb-10'>
-                            <h2 className='mb-2 font-bold text-m-l'>Cast</h2>
+                        <p className='text-m-s md:text-[15px] mb-2'>{film?.overview}</p>
+                        <div className='flex flex-col flex-shrink-0 w-full'>
+                            <h2 className='mb-1 font-bold text-m-l'>Cast</h2>
                             <div className="overflow-x-auto scrollbar-hide">
                                 <div className='flex py-2 gap-x-3'>
-                                    {cast?.map((person, index) => (
-                                        <div key={index} className="items-center px-1 mr-2">
-                                            {/* profile pic */}
-                                            {/* <div className="items-center object-cover w-32 h-32 overflow-hidden rounded-full shadow-md"> */}
-                                            <div className="min-w-[90px]">
-                                                <img src={person?.profile_path ? image342(person.profile_path) : fallbackPersonImage} className="w-[90px] h-[90px] md:w-[120px] rounded-full object-cover" />
-                                            </div>
-                                            {/* character */}
-                                            <p className="pt-1 mt-1 text-s" >
-                                                {person?.character.length > 10 ? person?.character.slice(0, 10) + '...' : person?.character}
-                                            </p>
-                                            {/* name */}
-                                            <p className="mt-1 text-xs" >
-                                                {person?.original_name.length > 12 ? person?.original_name.slice(0, 12) + '...' : person?.original_name}
-                                            </p>
-                                        </div>
-                                    ))}
+                                <p className='text-m-s md:text-[15px]'>{
+                                    cast?.slice(0,10).map((person, id, array) => (
+                                        <span key={id}>
+                                            <a href="" className="underline cursor-pointer underline-offset-4">
+                                            {person?.original_name}
+                                            </a>
+                                            {id < array.length - 1 ? ', ' : ''}
+                                        </span>
+                                        ))
+                                    } 
+                                 <br />...
+                                </p>
                                 </div>
                             </div>
                         </div>
+                        <div><a className="text-m-s md:text-[15px] text-center underline cursor-pointer underline-offset-4" href={`/film/${film.id}`}>View details</a></div>
                     </div>
                 </div>
 
@@ -104,7 +98,7 @@ const FilmPreview = ({ filmId, isModalOpen, setIsModalOpen }) => {
     return (
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             {/* Content */}
-            <DialogContent className="bg-primary text-secondary">
+            <DialogContent className="bg-primary text-secondary max-w-[80%] lg:w-[50%] h-[80%] md:h-auto overflow-scroll">
                 <div>
                     {/* Film Info */}
                     {loading ?

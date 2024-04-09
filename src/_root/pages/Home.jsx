@@ -31,11 +31,11 @@ const Home = () => {
         >
           <div className='flex flex-col gap-y-4 p-4'>
             <div className='flex-center'>
-              <div className='h3-bold'>Hi! I'm</div>
+              <div className='h3-bold'>Hi! We're </div>
               <HoverCard>
                 <HoverCardTrigger asChild>
                   <Button variant="link" className='hover:border-0 hover:underline w-auto p-2'>
-                    <div className='h3-bold text-black'>@jacobchak.</div>
+                    <div className='h3-bold text-black'>@jacobchak</div>
                   </Button>
                 </HoverCardTrigger>
                 <HoverCardContent className="w-80">
@@ -49,6 +49,40 @@ const Home = () => {
                       <p className="p8-regular">
                         A business analyst / developer, currently looking for professional mentorship.
                       </p>
+                    <Button asChild variant="link" className='hover:border-0 hover:underline w-auto p-0 mx-auto '>
+                      <Link to='https://jacobchak.com'>
+                        <div className='p7-semibold'>Learn more about me</div>
+                        <TbExternalLink className='w-4 h-4 md:w-6 md:h-6'/>
+                      </Link>
+                    </Button>
+                    </div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
+              <div className='h3-bold text-black'>&</div>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <Button variant="link" className='hover:border-0 hover:underline w-auto p-2'>
+                    <div className='h3-bold text-black'>@joannachow</div>
+                  </Button>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-80">
+                  <div className="flex justify-between space-x-4">
+                    <Avatar>
+                      <AvatarImage src="/assets/avatars/profile_jchow.jpg" alt="Joanna Chow" className='object-cover' />
+                      <AvatarFallback>JC</AvatarFallback>
+                    </Avatar>
+                    <div className="space-y-1">
+                      <h4 className="p7-semibold">@joannachow</h4>
+                      <p className="p8-regular">
+                      Enthusiastic and fast-learning IT Applications Analyst with hands-on experience in programming, IT project management, development of documentation and managing business applications.
+                      </p>
+                    <Button asChild variant="link" className='hover:border-0 hover:underline w-auto p-0 mx-auto '>
+                      <Link to='https://www.joanna-chow.com/'>
+                        <div className='p7-semibold'>Learn more about me</div>
+                        <TbExternalLink className='w-4 h-4 md:w-6 md:h-6'/>
+                      </Link>
+                    </Button>
                     </div>
                   </div>
                 </HoverCardContent>
@@ -57,14 +91,9 @@ const Home = () => {
             </div>
             <div className='p2-regular text-center leading-relaxed'>
               Thank you so much for visiting! <br></br>
-              I am currently in the process of building this site but feel free to browse around and let me know if you have any feedback or suggestions! 🚀
+              We are currently in the process of building this site but feel free to browse around and let us know if you have any feedback or suggestions! 🚀
             </div>
-            <Button asChild variant="link" className='hover:border-0 hover:underline w-auto p-2 mx-auto'>
-              <Link to='https://jacobchak.com'>
-                <div className='h3-bold'>Learn more about me</div>
-                <TbExternalLink className='m-2 w-4 h-4 md:w-6 md:h-6'/>
-              </Link>
-            </Button>
+
             <Button onClick={close} variant="accent" className='mx-auto w-[150px] p-2 hover:accent/50'>
               <div className='h4-bold'>Browse around</div>
             </Button>
