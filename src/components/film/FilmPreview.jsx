@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/filmPageDialog"
-import { fetchFilmDetails, fetchCast, fetchSimilarMovies } from '@/lib/tmdb/api'
+import { fetchFilmDetails, fetchCast, fetchSimilarMovies, fetchCrew } from '@/lib/tmdb/api'
 import { Skeleton } from "@/components/ui/skeleton"
 import { fallbackPersonImage, fallbackMoviePoster, image342, image500 } from '@/lib/tmdb/config'
 import { useMediaQuery } from '@react-hook/media-query'
@@ -9,6 +9,7 @@ const FilmPreview = ({ filmId, isModalOpen, setIsModalOpen }) => {
     const [loading, setLoading] = useState(true);
     const [film, setFilm] = useState(null);
     const [cast, setCast] = useState(null);
+    const [crew, setCrew] = useState(null);
     const bp_768 = useMediaQuery('(min-width:768px)');
 
     let id = filmId ? filmId.toString() : null;
@@ -21,6 +22,7 @@ const FilmPreview = ({ filmId, isModalOpen, setIsModalOpen }) => {
 
     useEffect(() => {
         film && getCastData();
+        film && getCrewData();
     }, [film]);
 
     /******************************************************************
@@ -35,6 +37,11 @@ const FilmPreview = ({ filmId, isModalOpen, setIsModalOpen }) => {
     const getCastData = async () => {
         const data = await fetchCast(id);
         data && data?.cast && setCast(data.cast);
+    }
+
+    const getCrewData = async () => {
+        const data = await fetchCrew(id);
+        data && data?.crew && setCrew(data.crew);
     }
 
     /******************************************************************
@@ -61,7 +68,23 @@ const FilmPreview = ({ filmId, isModalOpen, setIsModalOpen }) => {
                                 <span key={index}> {genre.name}{index < film.genres.length - 1 && ' '}</span>
                             ))}
                         </p>
+                        <p className='text-m-m md:text-[15px]'>
+                            Directed by {
+                            crew?.filter(member => member.job === "Director")
+                                .map((director, index, array) => (
+                                <span key={director.id}>
+                                    <a href={`/directors/${director.id}`} className="underline cursor-pointer underline-offset-4">
+                                    {director.name}
+                                    </a>
+                                    {index < array.length - 1 ? ', ' : ''}
+                                </span>
+                                ))
+                            }
+                        </p>
+
                         <p className='text-m-s md:text-[15px] mb-2'>{film?.overview}</p>
+
+
                         <div className='flex flex-col flex-shrink-0 w-full'>
                             <h2 className='mb-1 font-bold text-m-l'>Cast</h2>
                             <div className="overflow-x-auto scrollbar-hide">
@@ -98,7 +121,7 @@ const FilmPreview = ({ filmId, isModalOpen, setIsModalOpen }) => {
     return (
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             {/* Content */}
-            <DialogContent className="bg-primary text-secondary max-w-[80%] lg:w-[50%] h-[80%] md:h-auto overflow-scroll">
+            <DialogContent className="bg-primary text-secondary max-w-[80%] lg:w-[50%] h-[80%] md:h-auto overflow-scroll md:overflow-hidden">
                 <div>
                     {/* Film Info */}
                     {loading ?
