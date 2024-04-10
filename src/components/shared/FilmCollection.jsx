@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Link } from "react-router-dom";
 import { fallbackMoviePoster, image342 } from "@/lib/tmdb/config";
+import FilmCard from "@/components/film/FilmCard";
 
 const FilmCollection = ({
 	items,
@@ -43,6 +44,8 @@ const FilmCollection = ({
 		}
 	}
 
+	console.log("FilmCollection items: ", items);
+
 	return (
 		<div className="py-2">
 			<div >
@@ -53,33 +56,9 @@ const FilmCollection = ({
 				<div className="grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4">
 					{/* each item */}
 					{filteredItems.slice(0, max).map((item, index) => (
-						<Link to={`/film/${item?.id}`} key={index} >
-							<div
-								className="flex flex-col justify-start"
-							>
-								{/* image */}
-								<div className="aspect-w-1 aspect-h-[1.47]">
-									<img
-										src={item?.poster_path ? image342(item.poster_path) : fallbackMoviePoster}
-										alt={item?.titile}
-										className="object-cover object-center rounded-sm"
-									/>
-								</div>
-								{/* Info */}
-								<div className="flex justify-between pt-4 gap-y-1 xl:gap-y-3">
-									{/* Title */}
-									<h3 className="h-20 text-md xl:text-xl">
-										{item.title.length > 30 ? item.title.substring(0, 30) + '...' : item.titile}
-									</h3>
-									{/* Rating */}
-									<div className="flex items-center gap-x-1">
-										<p>⭐️</p>
-										<p>{item?.vote_average}</p> 
-										{/* use imdb rating for now */}
-									</div>
-								</div>
-							</div>
-						</Link>
+						<div key={index}>
+							<FilmCard item={item}/>
+						</div>
 					))}
 				</div>
 			</div>
