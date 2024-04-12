@@ -127,7 +127,7 @@ const Explore = () => {
               onClick={() => {
                 handleCategoryChange(category);
               }}
-              className={`text-xl flex items-center justify-center px-4 bg-primary-dark
+              className={`text-xl flex items-center justify-center px-4 bg-primary
                           ${category === selectedCategory ? "text-primary-foreground underline" : "text-primary-foreground/50"}`}
             >
               {category}

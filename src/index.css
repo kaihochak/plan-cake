@@ -245,7 +245,7 @@
 
   /* Search Container */
   .explore-search_container {
-    @apply bg-primary-dark px-5 md:pt-4 mx-auto max-w-[1024px] w-full sticky top-0 z-50;
+    @apply bg-primary px-5 md:pt-4 mx-auto max-w-[1024px] w-full sticky top-0 z-50;
     @apply md:px-8 lg:p-14 lg:py-0 lg:px-14 xl:pt-10 gap-x-10 gap-y-10;
   }
 
@@ -583,6 +583,12 @@
 
   .shad-button_ghost {
     @apply flex gap-4 items-center justify-start hover:bg-transparent hover:text-white !important;
+  }
+
+  .highlight-text {
+
+    background: linear-gradient(to bottom,  hsl(var(--accent)/0%),  hsl(var(--accent)/0%),  hsl(var(--accent)/100%),  hsl(var(--accent)/0%));
+
   }
 }
 

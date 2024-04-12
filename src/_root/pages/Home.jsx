@@ -29,13 +29,13 @@ const Home = () => {
           size="lg"
           transitionProps={{ transition: 'fade', duration: 200 }}
         >
-          <div className='flex flex-col gap-y-4 p-4'>
-            <div className='flex-center'>
-              <div className='h3-bold'>Hi! We're </div>
+          <div className='flex flex-col p-2'>
+            <div className='flex-center flex-wrap '>
+              <div className='text-m-m font-bold '>Hi! We're </div>
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <Button variant="link" className='hover:border-0 hover:underline w-auto p-2'>
-                    <div className='h3-bold text-black'>@jacobchak</div>
+                  <Button variant="link" className='hover:border-0 hover:underline w-auto px-1'>
+                    <div className=' text-m-m font-bold text-black highlight-text'>@Jacob </div> <span>🕵🏻</span>
                   </Button>
                 </HoverCardTrigger>
                 <HoverCardContent className="w-80">
@@ -58,12 +58,13 @@ const Home = () => {
                     </div>
                   </div>
                 </HoverCardContent>
+
               </HoverCard>
-              <div className='h3-bold text-black'>&</div>
+              <div className='text-m-m font-bold text-black'>&</div>
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <Button variant="link" className='hover:border-0 hover:underline w-auto p-2'>
-                    <div className='h3-bold text-black'>@joannachow</div>
+                  <Button variant="link" className='hover:border-0 hover:underline w-auto px-2'>
+                    <div className='text-m-m font-bold text-black highlight-text'>@Joanna</div> <span>🧑🏻‍🎨</span>
                   </Button>
                 </HoverCardTrigger>
                 <HoverCardContent className="w-80">
@@ -87,9 +88,9 @@ const Home = () => {
                   </div>
                 </HoverCardContent>
               </HoverCard>
-              <div className='h3-bold'>🕵🏻</div>
+  
             </div>
-            <div className='p2-regular text-center leading-relaxed'>
+            <div className='p2-regular text-center leading-relaxed mb-4'>
               Thank you so much for visiting! <br></br>
               We are currently in the process of building this site but feel free to browse around and let us know if you have any feedback or suggestions! 🚀
             </div>

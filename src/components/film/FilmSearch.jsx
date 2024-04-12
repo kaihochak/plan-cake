@@ -43,7 +43,7 @@ import { defaultFilters, defaultSortBy } from "@/constants";
  *
  */
 
-const FilmSearch = ({ formData: parentFormData, nextStep }) => {
+const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle }) => {
     const [loading, setLoading] = useState(false);
 
     // Form 
@@ -364,13 +364,16 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
 
     return (
         <div className="w-full">
-            <h2 className="mb-3 text-m-2xl">Pick A Film</h2>
+            {hasTitle && <h2 className="mb-3 text-m-2xl" >Pick A Film</h2>}
 
             {!filterModalOpen ? (
                 <div className="flex flex-col">
-                    <div className="text-m-l">
-                        <p className="text-m-m"> or many films and decide later on.</p>
-                    </div>
+                    {hasTitle && 
+                       <div className="text-m-l">
+                           <p className="text-m-m"> or many films and decide later on.</p>
+                        </div>
+                    }
+                 
 
                     {/* Search & Filters */}
                     <div className="flex pt-6 gap-x-4">
@@ -417,9 +420,18 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
                     )}
 
                     {/* Next Step */}
-                    <Button onClick={handleNextStep} type="submit" className="mt-10">
-                        Next
-                    </Button>
+                    <div className="sticky bottom-0 flex justify-center items-center w-full z-50">
+                        {hasTitle ? (                            
+                            <Button onClick={handleNextStep} type="submit" className="mt-10">
+                                Next
+                            </Button>
+                        ) : 
+                            <Button onClick={handleNextStep} type="submit" className="w-[95%] border-none bg-accent  text-primary shadow-xl">
+                                Next
+                            </Button>
+                        }
+                    </div>
+
                 </div>
 
             ) : (
