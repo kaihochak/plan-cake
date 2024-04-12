@@ -1,21 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { image500 } from "@/lib/tmdb/config";
 
-import filmData from "@/data/filmData";
-
-
 const PreviewEvent = ({ formData, nextStep, isLoadingCreate }) => {
-    // debug
-    useEffect(() => {
-        console.log(formData);
-    }, [formData]);
 
     const handleNextStep = () => {
-
         nextStep(formData);
-
     }
 
     const formattedDate = formData.date instanceof Date ? formData.date.toDateString() : '';
@@ -34,15 +25,13 @@ const PreviewEvent = ({ formData, nextStep, isLoadingCreate }) => {
             {/* Selected Items Image Carousel */}
             <Carousel className="w-[70%] mx-auto lg:w-[40%]">
                 <CarouselContent className="mx-auto mt-10">
-                    {formData.selectedFilms.map((filmID, id) => {
-
-                        const item = filmData.find(item => item.id === filmID);
+                    {formData.selectedFilms.map((film, id) => {
                         return (
                             <CarouselItem key={id} className="flex justify-center mb-4">
                                 <img
-                                    src={image500(item.poster_path)}
-                                    alt={item.title || 'Carousel image'} // Fallback text if title is not available
- className="object-cover object-center transition duration-300 ease-in-out transform rounded-sm hover:scale-105" // Added hover effect
+                                    src={image500(film.poster_path)}
+                                    alt={film.title || 'Carousel image'} // Fallback text if title is not available
+                                    className="object-cover object-center transition duration-300 ease-in-out transform rounded-sm hover:scale-105" // Added hover effect
                                 />
                             </CarouselItem>
                         )
@@ -61,13 +50,7 @@ const PreviewEvent = ({ formData, nextStep, isLoadingCreate }) => {
             {/* Selected Items Title */}
             <div>
                 <p className="mt-8 text-m-m text-border">Selected Movies</p>
-                <div>{formData.selectedFilms.map((filmID, id) => {
-
-                    const item = filmData.find(item => item.id === filmID);
-                    return (
-                        <div key={id}>{item.title}</div>
-                    )
-                })}</div>
+                <div>{formData.selectedFilms.map((film, id) => <div key={id}>{film.title}</div>)}</div>
             </div>
 
             {/* Date & Time */}

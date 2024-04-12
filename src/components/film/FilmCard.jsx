@@ -14,12 +14,12 @@ const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, gues
 
     // Select or de-select a film, then update the selectedFilms state back in the parent component
     const handleSelect = (itemId) => {
-        const newSelectedFilms = selectedFilms.includes(itemId)
-            ? selectedFilms.filter(id => id !== itemId) // de-select
-            : [...selectedFilms, itemId]; // select
 
-            console.log(newSelectedFilms);
-            console.log(item);
+        // check if selectedFilms includes an object that has its id equal to the itemId
+        const newSelectedFilms = selectedFilms.find(film => film.id === itemId) ? 
+            selectedFilms.filter(film => film.id !== itemId) : // de-select
+            [...selectedFilms, item]; // select
+        
         setSelectedFilms(newSelectedFilms);
     };
 
@@ -35,32 +35,32 @@ const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, gues
             <div className="w-full ">
                 <div className="aspect-w-1 aspect-h-[1.5]">
                     {/* Image */}
-                    { selectedFilms ? (
+                    {selectedFilms ? (
                         <img
                             src={image500(item.poster_path)}
                             alt={item.title}
                             className={`object-cover object-center rounded-sm
-                                        ${selectedFilms?.includes(item.id) ? 'border-4 border-accent' : ''}`}
+                                        ${selectedFilms?.find((film) => film.id == item.id) ? 'border-4 border-accent' : ''}`}
                         />
                     ) : (
                         <Link to={`/film/${item.id}`}>
-                        <img
-                            src={image500(item.poster_path)}
-                            alt={item.title}
-                            className="object-cover object-center rounded-sm"
-                        />
+                            <img
+                                src={image500(item.poster_path)}
+                                alt={item.title}
+                                className="object-cover object-center rounded-sm"
+                            />
                         </Link>
                     )}
 
                     {/* Overlay: Select & Preview Buttons */}
                     {selectedFilms &&
                         <div className={`overlay-buttons [&_*]:hidden [&_*]:hover:flex transition-all duration-500 ease-in-out 
-                                ${selectedFilms.includes(item.id) ? 'bg-black/50' : ''}`}>
+                                ${selectedFilms?.find((film) => film.id == item.id) ? 'bg-black/50' : ''}`}>
                             {/* Select Button */}
                             <div className="overlay-button">
                                 <button onClick={() => handleSelect(item.id)} >
-                                    <IoIosAddCircleOutline className={`m-3 rotate-0 transition-all ${selectedFilms.includes(item.id) ? "-rotate-90 scale-0 hidden md:block" : "scale-100"}`} />
-                                    <IoIosCheckmarkCircleOutline className={`m-3 text-accent absolute transition-all ${selectedFilms.includes(item.id) ? "rotate-0 scale-100" : "hidden scale-0 rotate-90"}`} />
+                                    <IoIosAddCircleOutline className={`m-3 rotate-0 transition-all ${selectedFilms.find((film) => film.id == item.id) ? "-rotate-90 scale-0 hidden md:block" : "scale-100"}`} />
+                                    <IoIosCheckmarkCircleOutline className={`m-3 text-accent absolute transition-all ${selectedFilms.find((film) => film.id == item.id) ? "rotate-0 scale-100" : "hidden scale-0 rotate-90"}`} />
                                 </button>
                             </div>
                             {/* Preview Button */}

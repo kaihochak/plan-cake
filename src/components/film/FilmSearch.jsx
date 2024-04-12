@@ -345,6 +345,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle }) => {
      ************************************************************************/
 
     const updateSelection = (newSelectedFilms) => {
+        console.log("newSelectedFilms", newSelectedFilms);
         setFormData(formData => ({ ...formData, selectedFilms: newSelectedFilms }));
     };
 
