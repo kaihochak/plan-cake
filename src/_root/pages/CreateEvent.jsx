@@ -61,6 +61,10 @@ const CreateEvent = () => {
 
   // Go to the next step
   const nextStep = (formData) => {
+
+
+    console.log("formData", formData);
+
     if (formData) { setFormData({ ...formData, ...formData }); }
 
     // submit form data to create event
@@ -100,9 +104,9 @@ const CreateEvent = () => {
     }
   };
 
-  // useEffect(() => {
-  //   console.log("formData", formData);
-  // }, [formData]);
+  useEffect(() => {
+    console.log("formData", formData);
+  }, [formData]);
 
   return (
     <section className="common-container">
