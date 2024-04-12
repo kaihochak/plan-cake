@@ -54,7 +54,27 @@ const Home = () => {
                         <div className='p7-semibold'>Learn more about me</div>
                         <TbExternalLink className='w-4 h-4 md:w-6 md:h-6'/>
                       </Link>
+
                     </Button>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-80">
+                    <div className="flex justify-between space-x-4">
+                      <Avatar>
+                        <AvatarImage src="/assets/avatars/profile.jpg" alt="Jacob Chak" className='object-cover' />
+                        <AvatarFallback>JC</AvatarFallback>
+                      </Avatar>
+                      <div className="space-y-1">
+                        <h4 className="p7-semibold">@jacobchak</h4>
+                        <p className="p8-regular">
+                          A business analyst / developer, currently looking for professional mentorship.
+                        </p>
+                        <Button asChild variant="link" className='w-auto p-0 mx-auto hover:border-0 hover:underline '>
+                          <Link to='https://jacobchak.com'>
+                            <div className='p7-semibold'>Learn more about me</div>
+                            <TbExternalLink className='w-4 h-4 md:w-6 md:h-6' />
+                          </Link>
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </HoverCardContent>
@@ -84,6 +104,25 @@ const Home = () => {
                         <TbExternalLink className='w-4 h-4 md:w-6 md:h-6'/>
                       </Link>
                     </Button>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-80">
+                    <div className="flex justify-between space-x-4">
+                      <Avatar>
+                        <AvatarImage src="/assets/avatars/profile_jchow.jpg" alt="Joanna Chow" className='object-cover' />
+                        <AvatarFallback>JC</AvatarFallback>
+                      </Avatar>
+                      <div className="space-y-1">
+                        <h4 className="p7-semibold">@joannachow</h4>
+                        <p className="p8-regular">
+                          Enthusiastic and fast-learning IT Applications Analyst with hands-on experience in programming, IT project management, development of documentation and managing business applications.
+                        </p>
+                        <Button asChild variant="link" className='w-auto p-0 mx-auto hover:border-0 hover:underline '>
+                          <Link to='https://www.joanna-chow.com/'>
+                            <div className='p7-semibold'>Learn more about me</div>
+                            <TbExternalLink className='w-4 h-4 md:w-6 md:h-6' />
+                          </Link>
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </HoverCardContent>
@@ -102,7 +141,7 @@ const Home = () => {
           </div>
         </Modal>
 
-        <div className='home-posts'>
+        <div className='mt-4 home-posts'>
           {/* Most Watchlisted Section */}
           <MostWatchlisted />
 

@@ -37,7 +37,7 @@ const CreateEvent = () => {
     return (
       <AlertDialog>
         <AlertDialogTrigger>
-          <button className="text-m-2xl ml-1 mt-10 mb-6" onClick={prevStep}>
+          <button className="mt-10 mb-6 ml-1 text-m-2xl" onClick={prevStep}>
             <BsArrowLeft />
           </button>
         </AlertDialogTrigger>
@@ -110,7 +110,7 @@ const CreateEvent = () => {
         <header className="w-full">
           {/* Back Button */}
           {currentStep !== 0 ? (
-            <button className="text-m-2xl ml-1 mt-10 mb-6" onClick={prevStep}>
+            <button className="mt-5 mb-6 ml-1 text-m-2xl lg:mt-10" onClick={prevStep}>
               <BsArrowLeft />
             </button>)
             : <Alert />
