@@ -66,7 +66,7 @@ const FilmPage = () => {
         </div>
 
         {/* Info */}
-        <div className='relative flex gap-x-8 -top-30 md:-top-52 md:mb-[-150px]'>
+        <div className='relative flex -mb-24 gap-x-8 -top-20 sm:-top-36 sm:-mb-36 md:-top-72 md:-mb-60'>
           {/* image */}
           {bp_768 &&
             <div className='flex justify-start'>
