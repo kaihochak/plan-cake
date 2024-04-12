@@ -16,7 +16,7 @@ const FilmPool = () => {
   const FilmSearchModal = () => {
     return (
       <Dialog open={showFilmSearch} onOpenChange={setshowFilmSearch}>
-        <DialogContent className="bg-primary text-secondary">
+        <DialogContent className="bg-primary text-secondary h-[100%] w-[100%] overflow-y-auto">
           <FilmSearch 
             filteredResults={filteredResults}
             setFilteredResults={setFilteredResults}
@@ -26,6 +26,7 @@ const FilmPool = () => {
             setWatchlistObject={setWatchlistObject}
             users={users}
             setUsers={setUsers}
+            hasTitle={false}
           />
         </DialogContent>
       </Dialog>
@@ -55,7 +56,9 @@ const FilmPool = () => {
       </div>
 
       {/* FilmSearch */}
-      <FilmSearchModal />
+      <div className=''>
+        <FilmSearchModal />
+      </div>
 
       {/* Film poll */}
       <div className='p-4 my-2 rounded-sm bg-border'>

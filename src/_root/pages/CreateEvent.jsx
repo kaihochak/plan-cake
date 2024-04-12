@@ -121,7 +121,7 @@ const CreateEvent = () => {
         <div className="w-full">
           {currentStep === 0 && <CreateEventType formData={formData} nextStep={nextStep} />}
           {currentStep === 1 && <EventDetails formData={formData} nextStep={nextStep} />}
-          {currentStep === 2 && <FilmSearch formData={formData} nextStep={nextStep} />}
+          {currentStep === 2 && <FilmSearch formData={formData} nextStep={nextStep} hasTitle={true}/>}
           {currentStep === 3 && <PreviewEvent formData={formData} nextStep={nextStep} isLoadingCreate={isLoadingCreate} />}
           {currentStep === 4 && <ConfirmedEvent formData={formData} goToEventPage={nextStep} />}
         </div>
