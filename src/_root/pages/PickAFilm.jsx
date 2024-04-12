@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
-import { motion } from "framer-motion";
+import React, { useEffect, useState, useParams } from 'react'
 import FilmPoll from '@/components/event/FilmPoll'
+import DummyEventData from '@/data/DummyEventData'
 import GuestList from '@/components/event/GuestList'
-import CommentSection from '@/components/event/CommentSection'
-import FilmSearch from '@/components/film/FilmSearch';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
 
 const PickAFilm = () => {
-  /************************************************************************
+    const [event, setEvent] = useState(null);
+    const { id } = 1; // To be updated
+
+/************************************************************************
  * Can get rid of this after filmSearch is refractored
  ************************************************************************/
 
@@ -23,103 +23,31 @@ const PickAFilm = () => {
     imageId: "",
   });
 
-  const nextStep = (formData) => {
-    if (formData) { setFormData({ ...formData, ...formData }); }
-
-    // submit form data to create event
-    if (currentStep === 3) {
-      // wait until loading is done
-      if (!isLoadingCreate) {
-        handleSubmit(formData);
-      } else {
-        return;
-      }
+  // Get the event from the database
+  useEffect(() => {
+    // event data
+    const event = DummyEventData.find(event => event._id.toString() === id);
+    console.log('Event ID:', id);
+    if (!event)
+      return console.log('Event not found');
+    else {
+      console.log('Event found:', event);
+      setEvent(event);
     }
-
-    // If we're on the last step, navigate to the event page
-    if (currentStep === 4) { navigate(`/event/${newPost.id}`); }
-
-    setCurrentStep(currentStep + 1);
-  };
-
-  /************************************************************************
- * Different Components, can be refractored into separate files later
- ************************************************************************/
-
+  }, []);
 
   return (
-    <div className='w-full p-10 mx-auto'>
-      <ResizablePanelGroup
-        direction="horizontal"
-        className="border rounded-lg"
-      >
+    <div className='w-full p-5 mx-auto'>
+        <h2 className="mb-3 title">Pick A Film</h2>
 
-        <ResizablePanel defaultSize={50}>
-          <ResizablePanelGroup direction="vertical">
+        {/* Guests */}
+        <GuestList />
 
-            <ResizablePanel defaultSize={75}>
-              <div className='p-10'>
-                {/* Guests */}
-                <GuestList />
-
-                {/* Film Poll */}
-                <FilmPoll />
-              </div>
-
-            </ResizablePanel>
-
-            <ResizableHandle/>
-
-            {/* CommentSection */}
-            <ResizablePanel defaultSize={25}>
-              <div className='p-10'>
-                <CommentSection />
-              </div>
-            </ResizablePanel>
-
-          </ResizablePanelGroup>
-        </ResizablePanel>
-
-        <ResizableHandle/>
-
-        {/* Film Search */}
-        <ResizablePanel defaultSize={50}>
-          <motion.div className="p-10 " variants={item}>
-            <FilmSearch formData={formData} nextStep={nextStep} />
-          </motion.div>
-        </ResizablePanel>
-
-
-
-      </ResizablePanelGroup>
-
+        {/* Film Poll */}
+        <FilmPoll/>
 
     </div>
   )
-}
-
-/************************************************************************
- *  FRAME MOTION VARIANTS
- ************************************************************************/
-
-const container = {
-  hidden: { opacity: 1, scale: 0 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      delayChildren: 0.3,
-      staggerChildren: 0.2
-    }
-  }
-}
-
-const item = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1
-  }
 }
 
 export default PickAFilm

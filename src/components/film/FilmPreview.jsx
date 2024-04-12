@@ -16,6 +16,7 @@ const FilmPreview = ({ filmId, isModalOpen, setIsModalOpen }) => {
 
     // Get the film from the database
     useEffect(() => {
+        if (!id) return;
         getFilmData();
         // ScrollToTop();
     }, [id]);
@@ -52,7 +53,7 @@ const FilmPreview = ({ filmId, isModalOpen, setIsModalOpen }) => {
         return (
             <div className='flex '>
                 {/* Info */}
-                <div className='flex flex-col md:flex-row gap-4 lg:gap-10 justify-center'>
+                <div className='flex flex-col justify-center gap-4 md:flex-row lg:gap-10'>
                     {/* image */}
                     <div className='justify-start p-6 '>
                         <img src={film?.poster_path ? image500(film.poster_path) : fallbackMoviePoster} alt={film?.title} className='min-w-[150px] md:min-w-[200px] lg:min-w-[250px]' />

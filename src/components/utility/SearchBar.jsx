@@ -9,7 +9,7 @@ const SearchBar = ({ searchTerm, handleSearchChange,
         <div className='w-full'>
             {/* search */}
             <div className={`relative inline-block w-full mb-2`}>
-                <div className="absolute top-1/2 left-2.5 transform -translate-y-1/2 text-secondary mx-2 text-m-l">
+                <div className="absolute top-1/2 left-2.5 transform -translate-y-1/2 text-primary-foreground/50 mx-2 text-m-l">
                     <IoIosSearch />
                 </div>
                 <input

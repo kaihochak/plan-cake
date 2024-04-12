@@ -12,6 +12,8 @@ import FilmFiltersDisplay from "@/components/film/FilmFiltersDisplay";
 import { CiFilter } from 'react-icons/ci'
 import { cn } from "@/lib/utils"
 import { defaultFilters, defaultSortBy } from "@/constants";
+import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog"
+
 
 /**
  * The Film Search component consists of three main parts:
@@ -43,13 +45,13 @@ import { defaultFilters, defaultSortBy } from "@/constants";
  *
  */
 
-const FilmSearch = ({ formData: parentFormData, nextStep }) => {
+const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle }) => {
     const [loading, setLoading] = useState(false);
 
     // Form 
-    const [formData, setFormData] = useState(parentFormData);
+    const [formData, setFormData] = useState(parentFormData);  // 
+    const [users, setUsers] = useState(DummyUserData);  // 
     const [showNoSelectionError, setShowNoSelectionError] = useState(false);
-    const [users, setUsers] = useState(DummyUserData);
 
     // Film Data
     const [filmData, setFilmData] = useState([]);
@@ -343,6 +345,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
      ************************************************************************/
 
     const updateSelection = (newSelectedFilms) => {
+        console.log("newSelectedFilms", newSelectedFilms);
         setFormData(formData => ({ ...formData, selectedFilms: newSelectedFilms }));
     };
 
@@ -362,79 +365,100 @@ const FilmSearch = ({ formData: parentFormData, nextStep }) => {
      *  RENDER
      ************************************************************************/
 
+    const FilmFiltersDialog = () => {
+        return (
+            <Dialog open={filterModalOpen} onOpenChange={setModalOpen}>
+                <DialogContent hasClose={false} className="w-full h-full lg:w-[70%] lg:h-[80%] overflow-y-auto bg-primary text-secondary">
+                    <FilmFilters
+                        filmData={filmData}
+                        users={users}
+                        setIsFilterApplied={setIsFilterApplied}
+                        setModalOpen={setModalOpen}
+                        sortBy={sortBy}
+                        setSortBy={setSortBy}
+                        filters={filters}
+                        setFilters={setFilters}
+                        setFilteredResults={setFilteredResults}
+                    />
+                </DialogContent>
+            </Dialog>
+        );
+    }
+
     return (
         <div className="w-full">
-            <h2 className="mb-3 text-m-2xl">Pick A Film</h2>
+            {hasTitle && <h2 className="mb-3 text-m-2xl" >Pick A Film</h2>}
 
-            {!filterModalOpen ? (
-                <div className="flex flex-col">
+            <div className="flex flex-col">
+                {hasTitle &&
                     <div className="text-m-l">
                         <p className="text-m-m"> or many films and decide later on.</p>
                     </div>
+                }
 
-                    {/* Search & Filters */}
-                    <div className="flex pt-6 gap-x-4">
-                        <SearchBar
-                            searchTerm={searchTerm}
-                            handleSearchChange={handleSearchChange}
-                        />
-                        {/* Filters Modal defined at the bottom */}
-                        <button onClick={() => setModalOpen(true)}
-                            className={cn("flex items-center text-[30px] mr-2 mt-2 text-primary-foreground/60",
-                                { "text-accent/70": isFilterApplied })}>
-                            <CiFilter />
-                        </button>
-                    </div>
-                    <FilmFiltersDisplay
-                        openFilterModal={setModalOpen}
-                        isFilterApplied={isFilterApplied}
-                        setIsFilterApplied={setIsFilterApplied}
-                        filters={filters}
-                        setFilters={setFilters}
-                        sortBy={sortBy}
-                        setSortBy={setSortBy}
+
+                {/* Search & Filters */}
+                <div className="flex pt-6 gap-x-4">
+                    <SearchBar
+                        searchTerm={searchTerm}
+                        handleSearchChange={handleSearchChange}
                     />
-
-                    {/* Result */}
-                    {loading ?
-                        <div className="flex-center h-[400px] md:h-[800px]">
-                            <Loader height="h-[60px]" weight="h-[60px]" />
-                        </div> :
-                        <SearchDisplay
-                            filteredResults={filteredResults}
-                            selectedFilms={formData.selectedFilms}
-                            setSelectedFilms={updateSelection}
-                            watchlistObject={watchlistObject}
-                            guests={users}
-                        />
-                    }
-
-                    {/* Display error message if no film is selected */}
-                    {showNoSelectionError && (
-                        <div className="pt-10 text-destructive-foreground text-m-m">
-                            Please select at least one film.
-                        </div>
-                    )}
-
-                    {/* Next Step */}
-                    <Button onClick={handleNextStep} type="submit" className="mt-10">
-                        Next
-                    </Button>
+                    {/* Filters Modal defined at the bottom */}
+                    <button onClick={() => setModalOpen(true)}
+                        className={cn("flex items-center text-[30px] mr-2 mt-2 text-primary-foreground/60",
+                            { "text-accent/70": isFilterApplied })}>
+                        <CiFilter />
+                    </button>
                 </div>
-
-            ) : (
-                <FilmFilters
-                    filmData={filmData}
-                    users={users}
+                <FilmFiltersDisplay
+                    openFilterModal={setModalOpen}
+                    isFilterApplied={isFilterApplied}
                     setIsFilterApplied={setIsFilterApplied}
-                    setModalOpen={setModalOpen}
-                    sortBy={sortBy}
-                    setSortBy={setSortBy}
                     filters={filters}
                     setFilters={setFilters}
-                    setFilteredResults={setFilteredResults}
+                    sortBy={sortBy}
+                    setSortBy={setSortBy}
                 />
-            )}
+
+                {/* Result */}
+                {loading ?
+                    <div className="flex-center h-[400px] md:h-[800px]">
+                        <Loader height="h-[60px]" weight="h-[60px]" />
+                    </div> :
+                    <SearchDisplay
+                        filteredResults={filteredResults}
+                        selectedFilms={formData.selectedFilms}
+                        setSelectedFilms={updateSelection}
+                        watchlistObject={watchlistObject}
+                        guests={users}
+                    />
+                }
+
+                {/* Display error message if no film is selected */}
+                {showNoSelectionError && (
+                    <div className="pt-10 text-destructive-foreground text-m-m">
+                        Please select at least one film.
+                    </div>
+                )}
+
+                {/* Next Step */}
+                <div className="sticky bottom-0 z-50 flex items-center justify-center w-full">
+                    {hasTitle ? (
+                        <Button onClick={handleNextStep} type="submit" className="w-[95%] border-none bg-accent  text-primary shadow-xl">
+                            Next
+                        </Button>
+                    ) :
+                        <Button onClick={handleNextStep} type="submit" className="w-[95%] border-none bg-accent  text-primary shadow-xl">
+                            Apply
+                        </Button>
+                    }
+                </div>
+
+            </div>
+
+            {/* Filters Modal */}
+            <FilmFiltersDialog />
+
         </div>
     );
 };

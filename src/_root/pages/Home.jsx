@@ -20,7 +20,7 @@ const Home = () => {
     <div className='flex flex-1'>
       <section className='home-container'>
 
-        {/* Kai's introduction */}
+        {/* Our introduction */}
         <Modal
           opened={opened}
           onClose={close}
@@ -29,13 +29,13 @@ const Home = () => {
           size="lg"
           transitionProps={{ transition: 'fade', duration: 200 }}
         >
-          <div className='flex flex-col gap-y-4 p-4'>
-            <div className='flex-center'>
-              <div className='h3-bold'>Hi! We're </div>
+          <div className='flex flex-col p-2'>
+            <div className='flex-wrap flex-center '>
+              <div className='font-bold text-m-m '>Hi! We're </div>
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <Button variant="link" className='hover:border-0 hover:underline w-auto p-2'>
-                    <div className='h3-bold text-black'>@jacobchak</div>
+                  <Button variant="link" className='w-auto px-1 hover:border-0 hover:underline'>
+                    <div className='font-bold text-black text-m-m highlight-text'>@Jacob </div> <span>🕵🏻</span>
                   </Button>
                 </HoverCardTrigger>
                 <HoverCardContent className="w-80">
@@ -49,7 +49,7 @@ const Home = () => {
                       <p className="p8-regular">
                         A business analyst / developer, currently looking for professional mentorship.
                       </p>
-                    <Button asChild variant="link" className='hover:border-0 hover:underline w-auto p-0 mx-auto '>
+                    <Button asChild variant="link" className='w-auto p-0 mx-auto hover:border-0 hover:underline '>
                       <Link to='https://jacobchak.com'>
                         <div className='p7-semibold'>Learn more about me</div>
                         <TbExternalLink className='w-4 h-4 md:w-6 md:h-6'/>
@@ -58,12 +58,13 @@ const Home = () => {
                     </div>
                   </div>
                 </HoverCardContent>
+
               </HoverCard>
-              <div className='h3-bold text-black'>&</div>
+              <div className='font-bold text-black text-m-m'>&</div>
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <Button variant="link" className='hover:border-0 hover:underline w-auto p-2'>
-                    <div className='h3-bold text-black'>@joannachow</div>
+                  <Button variant="link" className='w-auto px-2 hover:border-0 hover:underline'>
+                    <div className='font-bold text-black text-m-m highlight-text'>@Joanna</div> <span>🧑🏻‍🎨</span>
                   </Button>
                 </HoverCardTrigger>
                 <HoverCardContent className="w-80">
@@ -77,7 +78,7 @@ const Home = () => {
                       <p className="p8-regular">
                       Enthusiastic and fast-learning IT Applications Analyst with hands-on experience in programming, IT project management, development of documentation and managing business applications.
                       </p>
-                    <Button asChild variant="link" className='hover:border-0 hover:underline w-auto p-0 mx-auto '>
+                    <Button asChild variant="link" className='w-auto p-0 mx-auto hover:border-0 hover:underline '>
                       <Link to='https://www.joanna-chow.com/'>
                         <div className='p7-semibold'>Learn more about me</div>
                         <TbExternalLink className='w-4 h-4 md:w-6 md:h-6'/>
@@ -87,9 +88,9 @@ const Home = () => {
                   </div>
                 </HoverCardContent>
               </HoverCard>
-              <div className='h3-bold'>🕵🏻</div>
+  
             </div>
-            <div className='p2-regular text-center leading-relaxed'>
+            <div className='mb-4 leading-relaxed text-center p2-regular'>
               Thank you so much for visiting! <br></br>
               We are currently in the process of building this site but feel free to browse around and let us know if you have any feedback or suggestions! 🚀
             </div>

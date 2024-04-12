@@ -15,7 +15,7 @@ const CreateEvent = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useUserContext();
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     type: "",
     title: "",
@@ -37,7 +37,7 @@ const CreateEvent = () => {
     return (
       <AlertDialog>
         <AlertDialogTrigger>
-          <button className="text-m-2xl ml-1 mt-10 mb-6" onClick={prevStep}>
+          <button className="mt-10 mb-6 ml-1 text-m-2xl" onClick={prevStep}>
             <BsArrowLeft />
           </button>
         </AlertDialogTrigger>
@@ -61,6 +61,9 @@ const CreateEvent = () => {
 
   // Go to the next step
   const nextStep = (formData) => {
+
+    console.log("formData", formData);
+
     if (formData) { setFormData({ ...formData, ...formData }); }
 
     // submit form data to create event
@@ -100,17 +103,13 @@ const CreateEvent = () => {
     }
   };
 
-  // useEffect(() => {
-  //   console.log("formData", formData);
-  // }, [formData]);
-
   return (
     <section className="common-container">
       <div className="flex flex-col w-full max-w-[1024px] mx-auto">
         <header className="w-full">
           {/* Back Button */}
           {currentStep !== 0 ? (
-            <button className="text-m-2xl ml-1 mt-10 mb-6" onClick={prevStep}>
+            <button className="mt-5 mb-6 ml-1 text-m-2xl" onClick={prevStep}>
               <BsArrowLeft />
             </button>)
             : <Alert />
@@ -121,7 +120,7 @@ const CreateEvent = () => {
         <div className="w-full">
           {currentStep === 0 && <CreateEventType formData={formData} nextStep={nextStep} />}
           {currentStep === 1 && <EventDetails formData={formData} nextStep={nextStep} />}
-          {currentStep === 2 && <FilmSearch formData={formData} nextStep={nextStep} />}
+          {currentStep === 2 && <FilmSearch formData={formData} nextStep={nextStep} hasTitle={true}/>}
           {currentStep === 3 && <PreviewEvent formData={formData} nextStep={nextStep} isLoadingCreate={isLoadingCreate} />}
           {currentStep === 4 && <ConfirmedEvent formData={formData} goToEventPage={nextStep} />}
         </div>
