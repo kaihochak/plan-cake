@@ -2,19 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-urbanist);
+  overflow-y: hidden;
+}
+
 @layer base {
-  * {
-    @apply border-border scroll-smooth;
+  
+  #root {
+    @apply flex flex-col h-screen overflow-hidden;
   }
 
-  main {
-    @apply min-h-screen bg-background text-foreground;
-  }
-
-  body {
-    @apply min-h-screen bg-background text-foreground;
-  }
-
+  
   :root {
     @apply min-h-screen bg-background text-foreground;
 
@@ -92,20 +98,62 @@
   }
 }
 
-@layer base {
-  * {
-    @apply border-border scroll-smooth;
-  }
-
-  body {
-    @apply min-h-screen bg-background text-foreground;
-    background-color: hsl(var(--background));
-  }
-}
+@layer base {}
 
 @layer utilities {
 
   /* TYPOGRAPHY */
+  .title {
+    @apply font-[500] tracking-[-0.02em];
+    @apply text-[36px];
+  }
+
+  .h2 {
+    @apply font-semibold tracking-[-0.02em];
+    @apply text-[28px];
+  }
+
+  .h3 {
+    @apply font-semibold tracking-[-0.02em];
+    @apply text-[18px];
+  }
+
+  .subtitle {
+    @apply font-medium;
+    @apply text-[18px];
+  }
+
+  .body {
+    @apply font-medium;
+    @apply text-[12px];
+  }
+
+  .bold {
+    @apply font-bold;
+    @apply text-[12px];
+  }
+
+  .small {
+    @apply font-normal;
+    @apply text-[10px];
+  }
+
+  .pretitle {
+    @apply font-bold tracking-[0.03em];
+    @apply text-[10px];
+  }
+
+  .button-text {
+    @apply font-medium;
+    @apply text-[14px];
+  }
+
+  .link-text {
+    @apply font-semibold underline;
+    @apply text-[12px];
+  }
+
+  /* TO BE DELETED AFTER MIGRATING ALL TO THE NEW TYPOGRAPHY */
   .h1-bold {
     @apply text-[36px] font-bold leading-[140%] tracking-tighter;
   }
@@ -585,6 +633,3 @@
     @apply flex gap-4 items-center justify-start hover:bg-transparent hover:text-white !important;
   }
 }
-
-
-/* Frame Motion */

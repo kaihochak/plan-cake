@@ -38,7 +38,7 @@ const PickAFilm = () => {
 
   return (
     <div className='w-full p-5 mx-auto'>
-        <h2 className="mb-3 text-m-2xl">Pick A Film</h2>
+        <h2 className="mb-3 title">Pick A Film</h2>
 
         {/* Guests */}
         <GuestList />
