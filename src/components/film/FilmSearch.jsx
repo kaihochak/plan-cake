@@ -47,9 +47,9 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle }) => {
     const [loading, setLoading] = useState(false);
 
     // Form 
-    const [formData, setFormData] = useState(parentFormData);
+    const [formData, setFormData] = useState(parentFormData);  // 
+    const [users, setUsers] = useState(DummyUserData);  // 
     const [showNoSelectionError, setShowNoSelectionError] = useState(false);
-    const [users, setUsers] = useState(DummyUserData);
 
     // Film Data
     const [filmData, setFilmData] = useState([]);
@@ -420,14 +420,14 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle }) => {
                     )}
 
                     {/* Next Step */}
-                    <div className="sticky bottom-0 flex justify-center items-center w-full z-50">
+                    <div className="sticky bottom-0 z-50 flex items-center justify-center w-full">
                         {hasTitle ? (                            
-                            <Button onClick={handleNextStep} type="submit" className="mt-10">
+                            <Button onClick={handleNextStep} type="submit" className="w-[95%] border-none bg-accent  text-primary shadow-xl">
                                 Next
                             </Button>
                         ) : 
                             <Button onClick={handleNextStep} type="submit" className="w-[95%] border-none bg-accent  text-primary shadow-xl">
-                                Next
+                                Apply
                             </Button>
                         }
                     </div>

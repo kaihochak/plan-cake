@@ -15,7 +15,7 @@ const CreateEvent = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useUserContext();
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     type: "",
     title: "",
@@ -110,7 +110,7 @@ const CreateEvent = () => {
         <header className="w-full">
           {/* Back Button */}
           {currentStep !== 0 ? (
-            <button className="mt-5 mb-6 ml-1 text-m-2xl lg:mt-10" onClick={prevStep}>
+            <button className="mt-5 mb-6 ml-1 text-m-2xl" onClick={prevStep}>
               <BsArrowLeft />
             </button>)
             : <Alert />

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import FilmCard from "@/components/film/FilmCard";
 import FilmSearch from '@/components/film/FilmSearch';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/filmSearchDialog"
 
 const FilmPool = () => {
   const [showFilmSearch, setshowFilmSearch] = useState(false);
@@ -16,7 +16,7 @@ const FilmPool = () => {
   const FilmSearchModal = () => {
     return (
       <Dialog open={showFilmSearch} onOpenChange={setshowFilmSearch}>
-        <DialogContent className="bg-primary text-secondary h-[100%] w-[100%] overflow-y-auto">
+        <DialogContent className="w-full h-full lg:w-[70%] lg:h-[80%] overflow-y-auto bg-primary text-secondary">
           <FilmSearch 
             filteredResults={filteredResults}
             setFilteredResults={setFilteredResults}
