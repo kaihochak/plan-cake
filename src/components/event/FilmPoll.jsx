@@ -1,51 +1,46 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import FilmCard from "@/components/film/FilmCard";
 import FilmSearch from '@/components/film/FilmSearch';
 import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog"
 
-const FilmPool = () => {
+const FilmPoll = ({ formData, setFormData }) => {
   const [showFilmSearch, setshowFilmSearch] = useState(false);
-  const [filteredResults, setFilteredResults] = useState([]);
-  const [formData, setFormData] = useState({
-    selectedFilms: [],
-  });
-  const [watchlistObject, setWatchlistObject] = useState({});
-  const [users, setUsers] = useState([]);
+
+  const handleApply = (formData) => {
+    setFormData(formData);
+    setshowFilmSearch(false);
+  }
+
+  useEffect(() => {
+    console.log('formData:', formData);
+  }
+  , [formData]);
 
   const FilmSearchModal = () => {
     return (
       <Dialog open={showFilmSearch} onOpenChange={setshowFilmSearch}>
         <DialogContent hasClose={true} className="w-full h-full lg:w-[70%] lg:h-[80%] overflow-y-auto bg-primary text-secondary">
-          <FilmSearch 
-            filteredResults={filteredResults}
-            setFilteredResults={setFilteredResults}
+          <FilmSearch
             formData={formData}
-            setFormData={setFormData}
-            watchlistObject={watchlistObject}
-            setWatchlistObject={setWatchlistObject}
-            users={users}
-            setUsers={setUsers}
+            nextStep={handleApply}
             hasTitle={false}
           />
         </DialogContent>
       </Dialog>
     )
   }
+  
+  /**********************************************************************************
+   * Rendering
+   * ******************************************************************************/
+
   return (
     <div className='mt-2 text-m-m text-border md:text-[20px]'>
 
-
-      {/* Guess */}
-
-
-      {/* Poster */}
-      {/* if no film is selected, make it a button and ask users to add films */}
-
-      {/* Film Poll Section */}
+      {/* Title */}
       <div className='flex justify-between'>
-        Films
-
+        <div>Film</div>
         <Button
           size="md"
           className="w-[100px] h-[25px] border-none bg-accent"
@@ -70,11 +65,8 @@ const FilmPool = () => {
         <FilmCard 
         /> */}
       </div>
-
-
-
     </div>
   )
 }
 
-export default FilmPool
+export default FilmPoll
