@@ -262,13 +262,13 @@ body {
 
   /* Explore Container */
   .explore-container {
-    @apply flex flex-col items-center flex-1 w-full h-full pt-0 mx-auto mb-12 gap-y-0 md:gap-y-4;
+    @apply flex flex-col items-center flex-1 w-full h-full mx-auto gap-y-0;
   }
 
   /* Search Container */
   .explore-search_container {
-    @apply bg-primary px-5 md:pt-4 mx-auto max-w-[1024px] w-full sticky top-0 z-50;
-    @apply md:px-8 lg:p-14 lg:py-0 lg:px-14 xl:pt-10 gap-x-10 gap-y-10;
+    @apply mx-auto lg:max-w-[1280px] w-full sticky top-0 z-50;
+    @apply p-8 pb-4 border-b gap-x-10 gap-y-10 bg-primary border-primary-light;
   }
 
   /* Inner Container */
@@ -278,13 +278,14 @@ body {
 
   /* Innermost Container */
   .explore-innermost {
-    @apply flex flex-col flex-1 items-center px-5 pt-6 mx-auto max-w-[1024px] w-full;
-    @apply gap-x-10 gap-y-10 md:px-8 lg:p-14 lg:py-0;
+    @apply flex flex-col flex-1 items-center mx-auto max-w-[1024px] w-full;
+    @apply px-5 md:px-8 md:pt-6 gap-x-10 gap-y-10;
   }
 
   /* Home */
   .home-container {
-    @apply flex flex-col items-center flex-1 gap-10 px-5 overflow-scroll custom-scrollbar md:pb-10 md:px-8 lg:px-14 xl:pt-10;
+    @apply flex flex-col items-center flex-1 gap-10 overflow-scroll custom-scrollbar;
+    @apply px-5 pt-28 md:pb-10 md:px-8 lg:px-14 xl:pt-10;
   }
 
   .home-posts {
@@ -520,11 +521,6 @@ body {
     @apply w-full h-full border-0 bg-black/50 text-[30px] flex-center;
   }
 
-  /* Bottom bar */
-  .bottom-bar {
-    @apply sticky bottom-0 z-50 w-full px-2 py-1 flex-between bg-primary-dark xl:hidden;
-  }
-
   /* File uploader */
   .file_uploader-img {
     @apply h-80 w-full lg:h-[480px] lg:w-[480px] rounded-[24px] object-cover;
@@ -551,15 +547,6 @@ body {
     @apply absolute bottom-0 p-5 flex-between w-full bg-gradient-to-t from-dark-3 to-transparent rounded-b-[24px] gap-2;
   }
 
-  /* Left sidebar */
-  .leftsidebar {
-    @apply hidden xl:flex py-10 flex-col justify-between xl:min-w-[200px] bg-primary-dark;
-  }
-
-  .leftsidebar-link {
-    @apply flex gap-4 pr-14 rounded-lg base-medium items-center transition [&_h2]:hover:bg-accent [&_*]:hover:text-accent;
-  }
-
   /* Post Card */
   .post-card {
     @apply w-full max-w-screen-sm p-5 border bg-primary rounded-3xl border-dark-4 lg:p-7;
@@ -571,11 +558,33 @@ body {
 
   /* Topbar */
   .topbar {
-    @apply bg-primary-dark top-0 z-50 xl:hidden w-full h-[80px] sticky;
+    /* @apply bg-primary-dark top-0 z-50 xl:hidden w-full h-[80px] sticky; */
+    @apply absolute top-0 z-50 xl:hidden w-full h-[80px];
+    @apply border-b bg-primary/90 backdrop-blur border-primary-light;
   }
 
   .transTopbar {
     @apply top-0 z-50 xl:hidden w-full h-[80px] absolute bg-transparent bg-gradient-to-b from-black;
+    /* @apply top-0 z-50 xl:hidden w-full h-[80px] absolute bg-transparent bg-gradient-to-b from-black; */
+  }
+
+  /* Left sidebar */
+  .leftsidebar {
+    @apply hidden left-0 xl:flex flex-col justify-between xl:min-w-[200px] h-full;
+    @apply py-10 border-r border-primary-light bg-primary/90;
+    @apply transition-transform duration-700 ease-in-out transform;
+  }
+
+  .leftsidebar-link {
+    @apply flex gap-4 pr-14 rounded-lg base-medium items-center transition [&_h2]:hover:bg-accent [&_*]:hover:text-accent;
+  }
+  
+
+  /* Bottom bar */
+  .bottom-bar {
+    @apply sticky bottom-0 z-50 w-full px-2 py-1 border-t bg-primary/90 backdrop-blur-xl border-primary-light flex-between xl:hidden;
+    /* @apply sticky bottom-0 z-50 w-full px-2 py-1 flex-between bg-primary-dark xl:hidden; */
+
   }
 
   /* User card */

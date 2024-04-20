@@ -6,7 +6,7 @@ import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog"
 
 const FilmPoll = ({ formData, setFormData }) => {
   const [showFilmSearch, setshowFilmSearch] = useState(false);
-
+  
   const handleApply = (formData) => {
     setFormData(formData);
     setshowFilmSearch(false);
@@ -15,7 +15,7 @@ const FilmPoll = ({ formData, setFormData }) => {
   useEffect(() => {
     console.log('formData:', formData);
   }
-  , [formData]);
+    , [formData]);
 
   const FilmSearchModal = () => {
     return (
@@ -30,17 +30,17 @@ const FilmPoll = ({ formData, setFormData }) => {
       </Dialog>
     )
   }
-  
+
   /**********************************************************************************
    * Rendering
    * ******************************************************************************/
 
   return (
-    <div className='mt-2 text-m-m text-border md:text-[20px]'>
+    <div className='mt-2'>
 
       {/* Title */}
       <div className='flex justify-between'>
-        <div>Film</div>
+        <div className='subtitle'>Film</div>
         <Button
           size="md"
           className="w-[100px] h-[25px] border-none bg-accent"
@@ -51,9 +51,7 @@ const FilmPoll = ({ formData, setFormData }) => {
       </div>
 
       {/* FilmSearch */}
-      <div className=''>
-        <FilmSearchModal />
-      </div>
+      <FilmSearchModal />
 
       {/* Film poll */}
       <div className='p-4 my-2 rounded-sm bg-border'>

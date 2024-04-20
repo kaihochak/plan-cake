@@ -34,9 +34,9 @@ const Explore = () => {
             <MemberContent title={true} />
             <Gap />
           </>)}
-          {selectedCategory === "Events" && (<><EventContent /><Gap/></>)}
-          {selectedCategory === "Films" && (<><FilmContent /><Gap/></>)}
-          {selectedCategory === "Members" && (<><MemberContent /><Gap/></>)}
+          {selectedCategory === "Events" && (<><EventContent /><Gap /></>)}
+          {selectedCategory === "Films" && (<><FilmContent /><Gap /></>)}
+          {selectedCategory === "Members" && (<><MemberContent /><Gap /></>)}
         </div>
       </section>
     )
@@ -46,7 +46,7 @@ const Explore = () => {
     return (
       <div id="events" className='w-full'>
         {title &&
-          <div className='flex justify-between items-baseline border-b-2 pb-2 mb-2'>
+          <div className='flex items-baseline justify-between pb-2 mb-2 border-b-2'>
             <h2 className='text-m-2xl sm:text-m-3xl'>Events</h2>
           </div>}
 
@@ -67,7 +67,7 @@ const Explore = () => {
   const FilmContent = ({ title }) => {
     return (
       <div id="films">
-        {title && <div className='flex justify-between items-baseline border-b-2 pb-2 mb-2'>
+        {title && <div className='flex items-baseline justify-between pb-2 mb-2 border-b-2'>
           <h2 className='text-m-2xl sm:text-m-3xl'>Films</h2>
         </div>}
         <FilmCollection
@@ -84,7 +84,7 @@ const Explore = () => {
     return (
       <div id="members" className='w-full' >
         {title &&
-          <div className='flex justify-between items-baseline border-b-2 pb-2 mb-2'>
+          <div className='flex items-baseline justify-between pb-2 mb-2 border-b-2'>
             <h2 className='text-m-2xl sm:text-m-3xl'>Members</h2>
           </div>}
         <MemberCollection
@@ -108,26 +108,30 @@ const Explore = () => {
 
       {/* this part is sticky with max width */}
       <section className='explore-search_container'>
-        <div className="flex-between gap-x-4 ">
+        <div className="flex-between gap-x-4">
           {/* Search */}
           <SearchBar />
           {/* Filter */}
-          {selectedCategory !== "All" && <button
-            className={`flex items-center text-[30px] mr-2 mt-2 text-primary-foreground/60" 
+          {selectedCategory !== "All" &&
+            <button
+              className={`flex items-center text-[30px] mr-2 mt-2 text-primary-foreground/60" 
               ${isFilterApplied ? "text-accent/70" : ""}`}
-            onClick={() => setShowFilters(!showFilters)}
-          ><CiFilter /></button>}
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <CiFilter />
+            </button>
+          }
         </div>
 
         {/* Category */}
-        <div className='flex py-4 cursor-pointer'>
+        <div className='flex py-2 cursor-pointer lg:py-4 gap-x-4'>
           {categories.map((category, index) => (
             <div
               key={index}
               onClick={() => {
                 handleCategoryChange(category);
               }}
-              className={`text-xl flex items-center justify-center px-4 bg-primary
+              className={`text-xl flex items-center justify-cente bg-primary
                           ${category === selectedCategory ? "text-primary-foreground underline" : "text-primary-foreground/50"}`}
             >
               {category}
