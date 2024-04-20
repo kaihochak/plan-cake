@@ -17,10 +17,10 @@ const TopBar = ({isSticky}) => {
 
     return (
         <section className="topbar">
-            <nav className="flex-between px-5 py-6">
+            <nav className="px-5 py-6 flex-between">
                 {/* Logo as Home Button */}
                 <Link to="/" className="home-logo">
-                    <img src={Logo} alt="Home" className=" w-32 " />
+                    <img src={Logo} alt="Home" className="w-32 " />
                 </Link>
 
                 {/* Right side of TopBar */}
@@ -33,11 +33,11 @@ const TopBar = ({isSticky}) => {
                         <IoMdLogOut className='text-[30px] text-primary-foreground'/>
                     </button>
                     {/* Profile */}
-                    <Link to={`/profile/${user.id}`} className='flex-center gap-3'>
+                    <Link to={`/profile/${user.id}`} className='gap-3 flex-center'>
                         <img 
                             src={user.imageUrl || ProfilePlaceholder} 
                             alt="profile"
-                            className="h-8 w-8 rounded-full"
+                            className="w-8 h-8 rounded-full"
                         />
                     </Link>
                 </div>

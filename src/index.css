@@ -15,12 +15,10 @@ body {
 }
 
 @layer base {
-  
   #root {
     @apply flex flex-col h-screen overflow-hidden;
   }
 
-  
   :root {
     @apply min-h-screen bg-background text-foreground;
 
@@ -98,11 +96,7 @@ body {
   }
 }
 
-@layer base {}
-
 @layer utilities {
-
-  /* TYPOGRAPHY */
   .title {
     @apply font-[500] tracking-[-0.02em];
     @apply text-[36px];
@@ -210,11 +204,6 @@ body {
     @apply text-[10px] font-medium leading-[140%];
   }
 
-  /* UTILITIES */
-  .invert-white {
-    @apply transition invert brightness-0;
-  }
-
   .flex-center {
     @apply flex items-center justify-center;
   }
@@ -258,21 +247,6 @@ body {
     /* Firefox */
   }
 
-  /**
-   * Film
-   */
-  .overlay-buttons {
-    @apply absolute bottom-0 right-0 z-20 flex flex-row items-center justify-center hover:bg-black/50;
-  }
-
-  .overlay-button {
-    @apply w-full h-full border-0 bg-black/50 text-[30px] flex-center;
-  }
-
-  /**
-   * Containers
-   */
-
   .common-container {
     @apply flex flex-col items-center flex-1 px-5 overflow-scroll gap-x-10 gap-y-6 md:px-8 lg:p-14 custom-scrollbar;
   }
@@ -288,13 +262,13 @@ body {
 
   /* Explore Container */
   .explore-container {
-    @apply flex flex-col items-center flex-1 w-full h-full pt-0 mx-auto mb-12 gap-y-0 md:gap-y-4;
+    @apply flex flex-col items-center flex-1 w-full h-full mx-auto gap-y-0;
   }
 
   /* Search Container */
   .explore-search_container {
-    @apply bg-primary px-5 md:pt-4 mx-auto max-w-[1024px] w-full sticky top-0 z-50;
-    @apply md:px-8 lg:p-14 lg:py-0 lg:px-14 xl:pt-10 gap-x-10 gap-y-10;
+    @apply mx-auto lg:max-w-[1280px] w-full sticky top-0 z-50;
+    @apply p-8 pb-4 border-b gap-x-10 gap-y-10 bg-primary border-primary-light;
   }
 
   /* Inner Container */
@@ -304,13 +278,14 @@ body {
 
   /* Innermost Container */
   .explore-innermost {
-    @apply flex flex-col flex-1 items-center px-5 pt-6 mx-auto max-w-[1024px] w-full;
-    @apply gap-x-10 gap-y-10 md:px-8 lg:p-14 lg:py-0;
+    @apply flex flex-col flex-1 items-center mx-auto max-w-[1024px] w-full;
+    @apply px-5 md:px-8 md:pt-6 gap-x-10 gap-y-10;
   }
 
   /* Home */
   .home-container {
-    @apply flex flex-col items-center flex-1 gap-10 px-5 overflow-scroll custom-scrollbar md:pb-10 md:px-8 lg:px-14 xl:pt-10;
+    @apply flex flex-col items-center flex-1 gap-10 overflow-scroll custom-scrollbar;
+    @apply px-5 pt-28 md:pb-10 md:px-8 lg:px-14 xl:pt-10;
   }
 
   .home-posts {
@@ -383,66 +358,68 @@ body {
   .film-img-mask {
     @apply absolute;
     background-image:
-      /* left and right */
-      linear-gradient(90deg,
-        hsl(var(--primary)/100%) 0,
-        hsl(var(--primary)/98.6%) .97%,
-        hsl(var(--primary)/94.5%) 2%,
-        hsl(var(--primary)/88.3%) 3.3%,
-        hsl(var(--primary)/80.3%) 4.6%,
-        hsl(var(--primary)/71.1%) 6%,
-        hsl(var(--primary)/61%) 7.4%,
-        hsl(var(--primary)/50.4%) 8.8%,
-        hsl(var(--primary)/39.8%) 10.2%,
-        hsl(var(--primary)/29.6%) 11.5%,
-        hsl(var(--primary)/20.3%) 12.8%,
-        hsl(var(--primary)/12.2%) 14%,
-        hsl(var(--primary)/5.9%) 15%,
-        hsl(var(--primary)/1.6%) 15.9%,
-        hsl(var(--primary)/0%) 16.7%,
-        hsl(var(--primary)/0%) 83.3%,
-        hsl(var(--primary)/0) 83.3%,
-        hsl(var(--primary)/1.6%) 84.1%,
-        hsl(var(--primary)/5.9%) 84.9%,
-        hsl(var(--primary)/12.2%) 86%,
-        hsl(var(--primary)/20.3%) 87.2%,
-        hsl(var(--primary)/29.6%) 88.5%,
-        hsl(var(--primary)/39.8%) 89.8%,
-        hsl(var(--primary)/50.4%) 91.2%,
-        hsl(var(--primary)/61%) 92.6%,
-        hsl(var(--primary)/71.1%) 94%,
-        hsl(var(--primary)/80.3%) 95.4%,
-        hsl(var(--primary)/88.3%) 96.7%,
-        hsl(var(--primary)/94.5%) 97.9%,
-        hsl(var(--primary)/98.6%) 99%,
-        hsl(var(--primary)/100%)),
+      /* left and right */ linear-gradient(
+        90deg,
+        hsl(var(--primary) / 100%) 0,
+        hsl(var(--primary) / 98.6%) 0.97%,
+        hsl(var(--primary) / 94.5%) 2%,
+        hsl(var(--primary) / 88.3%) 3.3%,
+        hsl(var(--primary) / 80.3%) 4.6%,
+        hsl(var(--primary) / 71.1%) 6%,
+        hsl(var(--primary) / 61%) 7.4%,
+        hsl(var(--primary) / 50.4%) 8.8%,
+        hsl(var(--primary) / 39.8%) 10.2%,
+        hsl(var(--primary) / 29.6%) 11.5%,
+        hsl(var(--primary) / 20.3%) 12.8%,
+        hsl(var(--primary) / 12.2%) 14%,
+        hsl(var(--primary) / 5.9%) 15%,
+        hsl(var(--primary) / 1.6%) 15.9%,
+        hsl(var(--primary) / 0%) 16.7%,
+        hsl(var(--primary) / 0%) 83.3%,
+        hsl(var(--primary) / 0) 83.3%,
+        hsl(var(--primary) / 1.6%) 84.1%,
+        hsl(var(--primary) / 5.9%) 84.9%,
+        hsl(var(--primary) / 12.2%) 86%,
+        hsl(var(--primary) / 20.3%) 87.2%,
+        hsl(var(--primary) / 29.6%) 88.5%,
+        hsl(var(--primary) / 39.8%) 89.8%,
+        hsl(var(--primary) / 50.4%) 91.2%,
+        hsl(var(--primary) / 61%) 92.6%,
+        hsl(var(--primary) / 71.1%) 94%,
+        hsl(var(--primary) / 80.3%) 95.4%,
+        hsl(var(--primary) / 88.3%) 96.7%,
+        hsl(var(--primary) / 94.5%) 97.9%,
+        hsl(var(--primary) / 98.6%) 99%,
+        hsl(var(--primary) / 100%)
+      ),
       /* bottom to top */
-      linear-gradient(0deg,
-        hsl(var(--primary)/100%) 0,
-        hsl(var(--primary)/100%) 21.5%,
-        hsl(var(--primary)/98%) 23.6%,
-        hsl(var(--primary)/94.5%) 26.1%,
-        hsl(var(--primary)/88.3%) 28.8%,
-        hsl(var(--primary)/80.3%) 31.7%,
-        hsl(var(--primary)/71.1%) 34.7%,
-        hsl(var(--primary)/61%) 37.8%,
-        hsl(var(--primary)/50.4%) 41%,
-        hsl(var(--primary)/39.8%) 44.1%,
-        hsl(var(--primary)/29.6%) 47.1%,
-        hsl(var(--primary)/20.3%) 49.9%,
-        hsl(var(--primary)/12.2%) 52.5%,
-        hsl(var(--primary)/5.9%) 54.9%,
-        hsl(var(--primary)/1.6%) 56.9%,
-        hsl(var(--primary)/0) 58.5%);
+        linear-gradient(
+          0deg,
+          hsl(var(--primary) / 100%) 0,
+          hsl(var(--primary) / 100%) 21.5%,
+          hsl(var(--primary) / 98%) 23.6%,
+          hsl(var(--primary) / 94.5%) 26.1%,
+          hsl(var(--primary) / 88.3%) 28.8%,
+          hsl(var(--primary) / 80.3%) 31.7%,
+          hsl(var(--primary) / 71.1%) 34.7%,
+          hsl(var(--primary) / 61%) 37.8%,
+          hsl(var(--primary) / 50.4%) 41%,
+          hsl(var(--primary) / 39.8%) 44.1%,
+          hsl(var(--primary) / 29.6%) 47.1%,
+          hsl(var(--primary) / 20.3%) 49.9%,
+          hsl(var(--primary) / 12.2%) 52.5%,
+          hsl(var(--primary) / 5.9%) 54.9%,
+          hsl(var(--primary) / 1.6%) 56.9%,
+          hsl(var(--primary) / 0) 58.5%
+        );
   }
 
   .film-info-container {
-    @apply relative flex -top-52 md:-top-72
+    @apply relative flex -top-52 md:-top-72;
   }
 
-
   .film-small-poster {
-    @apply w-[200px] md:w-[250px] rounded-md border border-secondary/30
+    @apply w-[200px] md:w-[250px] rounded-md border border-secondary/30;
   }
 
   /* Event details */
@@ -468,72 +445,80 @@ body {
   .event-img-mask {
     @apply absolute;
     background-image:
-      /* left and right */
-      linear-gradient(90deg,
-        hsl(var(--primary)/100%) 0,
-        hsl(var(--primary)/98.6%) .97%,
-        hsl(var(--primary)/94.5%) 2%,
-        hsl(var(--primary)/88.3%) 3.3%,
-        hsl(var(--primary)/80.3%) 4.6%,
-        hsl(var(--primary)/71.1%) 6%,
-        hsl(var(--primary)/61%) 7.4%,
-        hsl(var(--primary)/50.4%) 8.8%,
-        hsl(var(--primary)/39.8%) 10.2%,
-        hsl(var(--primary)/29.6%) 11.5%,
-        hsl(var(--primary)/20.3%) 12.8%,
-        hsl(var(--primary)/12.2%) 14%,
-        hsl(var(--primary)/5.9%) 15%,
-        hsl(var(--primary)/1.6%) 15.9%,
-        hsl(var(--primary)/0%) 16.7%,
-        hsl(var(--primary)/0%) 83.3%,
-        hsl(var(--primary)/0) 83.3%,
-        hsl(var(--primary)/1.6%) 84.1%,
-        hsl(var(--primary)/5.9%) 84.9%,
-        hsl(var(--primary)/12.2%) 86%,
-        hsl(var(--primary)/20.3%) 87.2%,
-        hsl(var(--primary)/29.6%) 88.5%,
-        hsl(var(--primary)/39.8%) 89.8%,
-        hsl(var(--primary)/50.4%) 91.2%,
-        hsl(var(--primary)/61%) 92.6%,
-        hsl(var(--primary)/71.1%) 94%,
-        hsl(var(--primary)/80.3%) 95.4%,
-        hsl(var(--primary)/88.3%) 96.7%,
-        hsl(var(--primary)/94.5%) 97.9%,
-        hsl(var(--primary)/98.6%) 99%,
-        hsl(var(--primary)/100%)),
+      /* left and right */ linear-gradient(
+        90deg,
+        hsl(var(--primary) / 100%) 0,
+        hsl(var(--primary) / 98.6%) 0.97%,
+        hsl(var(--primary) / 94.5%) 2%,
+        hsl(var(--primary) / 88.3%) 3.3%,
+        hsl(var(--primary) / 80.3%) 4.6%,
+        hsl(var(--primary) / 71.1%) 6%,
+        hsl(var(--primary) / 61%) 7.4%,
+        hsl(var(--primary) / 50.4%) 8.8%,
+        hsl(var(--primary) / 39.8%) 10.2%,
+        hsl(var(--primary) / 29.6%) 11.5%,
+        hsl(var(--primary) / 20.3%) 12.8%,
+        hsl(var(--primary) / 12.2%) 14%,
+        hsl(var(--primary) / 5.9%) 15%,
+        hsl(var(--primary) / 1.6%) 15.9%,
+        hsl(var(--primary) / 0%) 16.7%,
+        hsl(var(--primary) / 0%) 83.3%,
+        hsl(var(--primary) / 0) 83.3%,
+        hsl(var(--primary) / 1.6%) 84.1%,
+        hsl(var(--primary) / 5.9%) 84.9%,
+        hsl(var(--primary) / 12.2%) 86%,
+        hsl(var(--primary) / 20.3%) 87.2%,
+        hsl(var(--primary) / 29.6%) 88.5%,
+        hsl(var(--primary) / 39.8%) 89.8%,
+        hsl(var(--primary) / 50.4%) 91.2%,
+        hsl(var(--primary) / 61%) 92.6%,
+        hsl(var(--primary) / 71.1%) 94%,
+        hsl(var(--primary) / 80.3%) 95.4%,
+        hsl(var(--primary) / 88.3%) 96.7%,
+        hsl(var(--primary) / 94.5%) 97.9%,
+        hsl(var(--primary) / 98.6%) 99%,
+        hsl(var(--primary) / 100%)
+      ),
       /* bottom to top */
-      linear-gradient(0deg,
-        hsl(var(--primary)/100%) 0,
-        hsl(var(--primary)/100%) 21.5%,
-        hsl(var(--primary)/98%) 23.6%,
-        hsl(var(--primary)/94.5%) 26.1%,
-        hsl(var(--primary)/88.3%) 28.8%,
-        hsl(var(--primary)/80.3%) 31.7%,
-        hsl(var(--primary)/71.1%) 34.7%,
-        hsl(var(--primary)/61%) 37.8%,
-        hsl(var(--primary)/50.4%) 41%,
-        hsl(var(--primary)/39.8%) 44.1%,
-        hsl(var(--primary)/29.6%) 47.1%,
-        hsl(var(--primary)/20.3%) 49.9%,
-        hsl(var(--primary)/12.2%) 52.5%,
-        hsl(var(--primary)/5.9%) 54.9%,
-        hsl(var(--primary)/1.6%) 56.9%,
-        hsl(var(--primary)/0) 58.5%);
+        linear-gradient(
+          0deg,
+          hsl(var(--primary) / 100%) 0,
+          hsl(var(--primary) / 100%) 21.5%,
+          hsl(var(--primary) / 98%) 23.6%,
+          hsl(var(--primary) / 94.5%) 26.1%,
+          hsl(var(--primary) / 88.3%) 28.8%,
+          hsl(var(--primary) / 80.3%) 31.7%,
+          hsl(var(--primary) / 71.1%) 34.7%,
+          hsl(var(--primary) / 61%) 37.8%,
+          hsl(var(--primary) / 50.4%) 41%,
+          hsl(var(--primary) / 39.8%) 44.1%,
+          hsl(var(--primary) / 29.6%) 47.1%,
+          hsl(var(--primary) / 20.3%) 49.9%,
+          hsl(var(--primary) / 12.2%) 52.5%,
+          hsl(var(--primary) / 5.9%) 54.9%,
+          hsl(var(--primary) / 1.6%) 56.9%,
+          hsl(var(--primary) / 0) 58.5%
+        );
   }
 
   .event-info-container {
-    @apply relative flex -top-52 md:-top-72
+    @apply relative flex -top-52 md:-top-72;
   }
-
 
   .event-small-poster {
-    @apply w-[200px] md:w-[250px] rounded-md border border-secondary/30
+    @apply w-[200px] md:w-[250px] rounded-md border border-secondary/30;
   }
 
+  .invert-white {
+    @apply transition invert brightness-0;
+  }
 
-  /* Bottom bar */
-  .bottom-bar {
-    @apply sticky bottom-0 z-50 w-full px-2 py-1 flex-between bg-primary-dark xl:hidden;
+  .overlay-buttons {
+    @apply absolute bottom-0 right-0 z-20 flex flex-row items-center justify-center hover:bg-black/50;
+  }
+
+  .overlay-button {
+    @apply w-full h-full border-0 bg-black/50 text-[30px] flex-center;
   }
 
   /* File uploader */
@@ -562,15 +547,6 @@ body {
     @apply absolute bottom-0 p-5 flex-between w-full bg-gradient-to-t from-dark-3 to-transparent rounded-b-[24px] gap-2;
   }
 
-  /* Left sidebar */
-  .leftsidebar {
-    @apply hidden xl:flex py-10 flex-col justify-between xl:min-w-[200px] bg-primary-dark;
-  }
-
-  .leftsidebar-link {
-    @apply flex gap-4 pr-14 rounded-lg base-medium items-center transition [&_h2]:hover:bg-accent [&_*]:hover:text-accent;
-  }
-
   /* Post Card */
   .post-card {
     @apply w-full max-w-screen-sm p-5 border bg-primary rounded-3xl border-dark-4 lg:p-7;
@@ -582,11 +558,33 @@ body {
 
   /* Topbar */
   .topbar {
-    @apply bg-primary-dark top-0 z-50 xl:hidden w-full h-[80px] sticky;
+    /* @apply bg-primary-dark top-0 z-50 xl:hidden w-full h-[80px] sticky; */
+    @apply absolute top-0 z-50 xl:hidden w-full h-[80px];
+    @apply border-b bg-primary/90 backdrop-blur border-primary-light;
   }
 
   .transTopbar {
     @apply top-0 z-50 xl:hidden w-full h-[80px] absolute bg-transparent bg-gradient-to-b from-black;
+    /* @apply top-0 z-50 xl:hidden w-full h-[80px] absolute bg-transparent bg-gradient-to-b from-black; */
+  }
+
+  /* Left sidebar */
+  .leftsidebar {
+    @apply hidden left-0 xl:flex flex-col justify-between xl:min-w-[200px] h-full;
+    @apply py-10 border-r border-primary-light bg-primary/90;
+    @apply transition-transform duration-700 ease-in-out transform;
+  }
+
+  .leftsidebar-link {
+    @apply flex gap-4 pr-14 rounded-lg base-medium items-center transition [&_h2]:hover:bg-accent [&_*]:hover:text-accent;
+  }
+  
+
+  /* Bottom bar */
+  .bottom-bar {
+    @apply sticky bottom-0 z-50 w-full px-2 py-1 border-t bg-primary/90 backdrop-blur-xl border-primary-light flex-between xl:hidden;
+    /* @apply sticky bottom-0 z-50 w-full px-2 py-1 flex-between bg-primary-dark xl:hidden; */
+
   }
 
   /* User card */
@@ -601,7 +599,6 @@ body {
 }
 
 @layer components {
-
   /* SHADCN COMPONENTS */
   /* Form */
   .shad-form_label {
@@ -633,8 +630,12 @@ body {
     @apply flex gap-4 items-center justify-start hover:bg-transparent hover:text-white !important;
   }
   .highlight-text {
-
-    background: linear-gradient(to bottom,  hsl(var(--accent)/0%),  hsl(var(--accent)/0%),  hsl(var(--accent)/100%),  hsl(var(--accent)/0%));
-
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--accent) / 0%),
+      hsl(var(--accent) / 0%),
+      hsl(var(--accent) / 100%),
+      hsl(var(--accent) / 0%)
+    );
   }
 }
