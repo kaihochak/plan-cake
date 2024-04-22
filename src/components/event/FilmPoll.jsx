@@ -4,6 +4,27 @@ import FilmCard from "@/components/film/FilmCard";
 import FilmSearch from '@/components/film/FilmSearch';
 import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog"
 
+const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) => {
+  const [showFilmSearch, setshowFilmSearch] = useState(false);
+  const [selectedFilms, setSelectedFilms] = useState([]);
+  
+  const handleSearchApply = (formData) => {
+    const newSelectedFilms = formData.selectedFilms;
+    console.log(newSelectedFilms);
+
+    setSelectedFilms(newSelectedFilms); //update local selected films
+
+    setshowFilmSearch(false);
+  }
+
+  // update parent selected films
+  useEffect(() => { 
+    setParentFormData(previous => ({ 
+      ...previous, 
+      selectedFilms
+    }))
+  }, [selectedFilms]);
+  
 const FilmPoll = ({ formData, setFormData }) => {
   const [showFilmSearch, setshowFilmSearch] = useState(false);
   
@@ -14,16 +35,15 @@ const FilmPoll = ({ formData, setFormData }) => {
 
   useEffect(() => {
     console.log('formData:', formData);
-  }
-    , [formData]);
+  }, [formData]);
 
   const FilmSearchModal = () => {
     return (
       <Dialog open={showFilmSearch} onOpenChange={setshowFilmSearch}>
         <DialogContent hasClose={true} className="w-full h-full lg:w-[70%] lg:h-[80%] overflow-y-auto bg-primary text-secondary">
           <FilmSearch
-            formData={formData}
-            nextStep={handleApply}
+            formData={parentFormData}
+            nextStep={handleSearchApply}
             hasTitle={false}
           />
         </DialogContent>
@@ -59,9 +79,17 @@ const FilmPoll = ({ formData, setFormData }) => {
           <button>View Result</button>
           <button>Sort by</button>
         </div>
-        {/* 
-        <FilmCard 
-        /> */}
+        <div className='grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4'>
+          {selectedFilms.map((item) => (
+            <div key={item.id}>
+              <FilmCard 
+                item={item}
+                selectedFilms={selectedFilms}
+                setSelectedFilms={setSelectedFilms}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
