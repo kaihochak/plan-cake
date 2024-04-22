@@ -1,31 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
-
-import filmData from "@/data/filmData";
-
+import { image500 } from "@/lib/tmdb/config";
 
 const PreviewEvent = ({ formData, nextStep, isLoadingCreate }) => {
-    // debug
-    // useEffect(() => {
-    //     console.log(formData);
-    // }, [formData]);
 
     const handleNextStep = () => {
-
         nextStep(formData);
-
     }
 
     const formattedDate = formData.date instanceof Date ? formData.date.toDateString() : '';
 
     return (
         <div className="flex flex-col ">
-            <h2 className="text-m-2xl mb-3">Preview Event</h2>
+            <h2 className="mb-3 text-m-2xl">Preview Event</h2>
 
             {/* event image */}
             {formData.imageUrl &&
-                <div className="flex flex-1 justify-center p-5 lg:p-10">
+                <div className="flex justify-center flex-1 p-5 lg:p-10">
                     <img src={formData.imageUrl} alt="image" className="file_uploader-img" />
                 </div>
             }
@@ -33,15 +25,13 @@ const PreviewEvent = ({ formData, nextStep, isLoadingCreate }) => {
             {/* Selected Items Image Carousel */}
             <Carousel className="w-[70%] mx-auto lg:w-[40%]">
                 <CarouselContent className="mx-auto mt-10">
-                    {formData.selectedFilms.map((filmID, id) => {
-
-                        const item = filmData.find(item => item.id === filmID);
+                    {formData.selectedFilms.map((film, id) => {
                         return (
                             <CarouselItem key={id} className="flex justify-center mb-4">
                                 <img
-                                    src={item.image}
-                                    alt={item.title || 'Carousel image'} // Fallback text if title is not available
- className="object-cover object-center rounded-sm transition duration-300 ease-in-out transform hover:scale-105" // Added hover effect
+                                    src={image500(film.poster_path)}
+                                    alt={film.title || 'Carousel image'} // Fallback text if title is not available
+                                    className="object-cover object-center transition duration-300 ease-in-out transform rounded-sm hover:scale-105" // Added hover effect
                                 />
                             </CarouselItem>
                         )
@@ -54,19 +44,13 @@ const PreviewEvent = ({ formData, nextStep, isLoadingCreate }) => {
 
             {/* Event Name */}
             <div>
-                <p className="text-m-xl mt-10">{formData.title}</p>
+                <p className="mt-10 text-m-xl">{formData.title}</p>
             </div>
 
             {/* Selected Items Title */}
             <div>
                 <p className="mt-8 text-m-m text-border">Selected Movies</p>
-                <div>{formData.selectedFilms.map((filmID, id) => {
-
-                    const item = filmData.find(item => item.id === filmID);
-                    return (
-                        <div key={id}>{item.title}</div>
-                    )
-                })}</div>
+                <div>{formData.selectedFilms.map((film, id) => <div key={id}>{film.title}</div>)}</div>
             </div>
 
             {/* Date & Time */}

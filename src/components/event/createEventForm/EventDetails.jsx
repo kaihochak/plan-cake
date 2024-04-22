@@ -40,7 +40,6 @@ const EventDetails = ({ formData: parentFormData, nextStep }) => {
         // Update the state with new validation messages
         setValidationMessages(newValidationMessages);
         if (isValid) {
-            console.log(formData);
             nextStep(formData);
         }
     }

@@ -353,7 +353,7 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
      * ******************************************************************************/
 
     return (
-        <div className="z-50 flex flex-col w-full h-full px-8 pt-10 pb-32 gap-y-4 bg-primary text-primary-foreground lg:mx-auto ">
+        <div className="z-50 flex flex-col w-full h-full px-8 pb-32 mt-4 gap-y-4 bg-primary text-primary-foreground lg:mx-auto ">
             <div className='flex justify-between mb-4 place-items-end'>
                 <h3 className='text-m-xl'>Filters & Sort</h3>
                 <div onClick={() => setModalOpen(false)}

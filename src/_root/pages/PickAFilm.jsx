@@ -2,49 +2,38 @@ import React, { useEffect, useState, useParams } from 'react'
 import FilmPoll from '@/components/event/FilmPoll'
 import DummyEventData from '@/data/DummyEventData'
 import GuestList from '@/components/event/GuestList'
+import { image500 } from '@/lib/tmdb/config'
+import SelectedFilm from '@/components/event/SelectedFilm'
 
 const PickAFilm = () => {
-    const [event, setEvent] = useState(null);
-    const { id } = 1; // To be updated
-
-  /************************************************************************
- * Can get rid of this after filmSearch is refractored
- ************************************************************************/
-
+  const [event, setEvent] = useState(null);
+  const { id } = 1; // To be updated
+  const [film, setFilm] = useState(null);
   const [formData, setFormData] = useState({
-    type: "",
-    title: "",
-    date: "",
-    location: "",
     guestList: [],
     selectedFilms: [],
     file: [],
-    imageUrl: "",
-    imageId: "",
   });
 
-  // Get the event from the database
-  useEffect(() => {
-    // event data
-    const event = DummyEventData.find(event => event._id.toString() === id);
-    console.log('Event ID:', id);
-    if (!event)
-      return console.log('Event not found');
-    else {
-      console.log('Event found:', event);
-      setEvent(event);
-    }
-  }, []);
+  /**********************************************************************************
+   * Rendering
+   **********************************************************************************/
 
   return (
-    <div className='w-full p-5 mx-auto'>
-        <h2 className="mb-3 text-m-2xl">Pick A Film</h2>
+    <div className='common-container'>
+      <div className='flex flex-col w-full max-w-[1024px] mx-auto gap-y-2 pt-6 pb-32'>
+        <h2 className="title">Pick A Film</h2>
 
         {/* Guests */}
         <GuestList />
 
+        {/* Poster */}
+        <SelectedFilm film={film}/>
+
         {/* Film Poll */}
-        <FilmPoll/>
+        <FilmPoll formData={formData} setFormData={setFormData} />
+
+      </div>
 
     </div>
   )
