@@ -4,6 +4,7 @@ import FilmCard from "@/components/film/FilmCard";
 import FilmSearch from '@/components/film/FilmSearch';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
+<<<<<<< Updated upstream
 const FilmPool = () => {
   const [showFilmSearch, setshowFilmSearch] = useState(false);
   const [filteredResults, setFilteredResults] = useState([]);
@@ -12,10 +13,33 @@ const FilmPool = () => {
   });
   const [watchlistObject, setWatchlistObject] = useState({});
   const [users, setUsers] = useState([]);
+=======
+const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) => {
+  const [showFilmSearch, setshowFilmSearch] = useState(false);
+  const [selectedFilms, setSelectedFilms] = useState([]);
+  
+  const handleSearchApply = (formData) => {
+    const newSelectedFilms = formData.selectedFilms;
+    console.log(newSelectedFilms);
+
+    setSelectedFilms(newSelectedFilms); //update local selected films
+
+    setshowFilmSearch(false);
+  }
+
+  // update parent selected films
+  useEffect(() => { 
+    setParentFormData(previous => ({ 
+      ...previous, 
+      selectedFilms
+    }))
+  }, [selectedFilms]);
+>>>>>>> Stashed changes
 
   const FilmSearchModal = () => {
     return (
       <Dialog open={showFilmSearch} onOpenChange={setshowFilmSearch}>
+<<<<<<< Updated upstream
         <DialogContent className="bg-primary text-secondary h-[100%] w-[100%] overflow-y-auto">
           <FilmSearch 
             filteredResults={filteredResults}
@@ -26,6 +50,12 @@ const FilmPool = () => {
             setWatchlistObject={setWatchlistObject}
             users={users}
             setUsers={setUsers}
+=======
+        <DialogContent hasClose={true} className="w-full h-full lg:w-[70%] lg:h-[80%] overflow-y-auto bg-primary text-secondary">
+          <FilmSearch
+            formData={parentFormData}
+            nextStep={handleSearchApply}
+>>>>>>> Stashed changes
             hasTitle={false}
           />
         </DialogContent>
@@ -66,9 +96,17 @@ const FilmPool = () => {
           <button>View Result</button>
           <button>Sort by</button>
         </div>
-        {/* 
-        <FilmCard 
-        /> */}
+        <div className='grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4'>
+          {selectedFilms.map((item) => (
+            <div key={item.id}>
+              <FilmCard 
+                item={item}
+                selectedFilms={selectedFilms}
+                setSelectedFilms={setSelectedFilms}
+              />
+            </div>
+          ))}
+        </div>
       </div>
 
 
