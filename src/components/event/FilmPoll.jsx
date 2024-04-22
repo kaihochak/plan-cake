@@ -3,39 +3,83 @@ import { Button } from '@/components/ui/button'
 import FilmCard from "@/components/film/FilmCard";
 import FilmSearch from '@/components/film/FilmSearch';
 import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog"
+import { Dialog as SmallDialog, DialogContent as SmallDialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/guestSelectDialog"
+
 
 const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) => {
   const [showFilmSearch, setshowFilmSearch] = useState(false);
+  const [showGuestSelection, setshowGuestSelection] = useState(false);
   const [selectedFilms, setSelectedFilms] = useState([]);
-  
+
+  // handle search apply, prompt to user selection
   const handleSearchApply = (formData) => {
+    setshowFilmSearch(false);
+
+    // check whether user is logged in
+    const user = null; // user logged in will be implemented in the future
+    if (!user) { 
+      console.log("GuestList: ", parentFormData.guestList);
+      setshowGuestSelection(true);
+    }
+
+
     const newSelectedFilms = formData.selectedFilms;
     console.log(newSelectedFilms);
 
     setSelectedFilms(newSelectedFilms); //update local selected films
 
-    setshowFilmSearch(false);
   }
 
   // update parent selected films
-  useEffect(() => { 
-    setParentFormData(previous => ({ 
-      ...previous, 
+  useEffect(() => {
+    setParentFormData(previous => ({
+      ...previous,
       selectedFilms
     }))
   }, [selectedFilms]);
-  
-const FilmPoll = ({ formData, setFormData }) => {
-  const [showFilmSearch, setshowFilmSearch] = useState(false);
-  
-  const handleApply = (formData) => {
-    setFormData(formData);
-    setshowFilmSearch(false);
+
+  // Guest Selection for voting films
+  const GuestSelection  = () => {
+
+    // handle guest selection
+    const handleGuestSelection = (id) => {
+      // console.log("Guest Selected: ", id);
+
+      // implment logic: set formData.guestList
+      // setParentFormData(previous => ({
+      //   ...previous,
+      //   guestList: [...previous.guestList, {
+      //   ...previous.guestList[id],
+      //   filmsVoted: selectedFilms.map((film) => film.id),
+      //   }],
+      // }))
+
+      setshowGuestSelection(false);
+    }
+
+    return (
+      <div>
+        {/* render each guest */}
+        Guest List
+      </div>
+    )
   }
 
-  useEffect(() => {
-    console.log('formData:', formData);
-  }, [formData]);
+
+  /**********************************************************************************
+   * Modals
+   * ******************************************************************************/
+
+  const GuestSelectionModal = () => {
+    return (
+      <SmallDialog open={showGuestSelection} onOpenChange={setshowGuestSelection}>
+        <SmallDialogContent hasClose={true} className="w-full h-full lg:w-[70%] lg:h-[80%] overflow-y-auto bg-primary text-secondary">
+          <div>Add films to poll as</div>
+          <GuestSelection/>
+        </SmallDialogContent>
+      </SmallDialog>
+    )
+  }
 
   const FilmSearchModal = () => {
     return (
@@ -73,6 +117,9 @@ const FilmPoll = ({ formData, setFormData }) => {
       {/* FilmSearch */}
       <FilmSearchModal />
 
+      {/* Guest Selection Modal */}
+      <GuestSelectionModal />
+
       {/* Film poll */}
       <div className='p-4 my-2 rounded-sm bg-border'>
         <div className='flex flex-row justify-end gap-2 text-m-m text-primary-foreground'>
@@ -82,7 +129,7 @@ const FilmPoll = ({ formData, setFormData }) => {
         <div className='grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4'>
           {selectedFilms.map((item) => (
             <div key={item.id}>
-              <FilmCard 
+              <FilmCard
                 item={item}
                 selectedFilms={selectedFilms}
                 setSelectedFilms={setSelectedFilms}
@@ -94,5 +141,4 @@ const FilmPoll = ({ formData, setFormData }) => {
     </div>
   )
 }
-
 export default FilmPoll

@@ -10,7 +10,26 @@ const PickAFilm = () => {
   const { id } = 1; // To be updated
   const [film, setFilm] = useState(null);
   const [formData, setFormData] = useState({
-    guestList: [],
+    guestList: [
+      {
+        id: "-1",
+        name: "Darcy",
+        avatar: "/assets/avatars/avatar1.jpg",
+        filmsVoted: ["604788", "823464", "300", "24"]
+      },
+      {
+        id: "-2",
+        name: "Susan",
+        avatar: "/assets/avatars/avatar2.jpg",
+        filmsVoted: ["634492", "300", "24"]
+      },
+      {
+        id: "-3",
+        name: "Joanna",
+        avatar: "/assets/avatars/avatar3.jpg",
+        filmsVoted: ["200", "38", "24"]
+      }
+    ],
     selectedFilms: [],
     file: [],
   });
@@ -21,7 +40,7 @@ const PickAFilm = () => {
 
   return (
     <div className='common-container'>
-      <div className='flex flex-col w-full max-w-[1024px] mx-auto gap-y-2 pt-6 pb-32'>
+      <div className='flex flex-col w-full max-w-[1024px] mx-auto gap-y-2 pt-24 pb-32'>
         <h2 className="title">Pick A Film</h2>
 
         {/* Guests */}
