@@ -54,30 +54,34 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
 
     // handle guest selection
     const handleGuestSelection = (id) => {
-      // Update the formData state
+
       setParentFormData(prevFormData => {
         // Map through the guestList to find the correct guest and update their filmsVoted
         const updatedGuestList = prevFormData.guestList.map(guest => {
           if (guest.id === id) {
-            const updateFilmVoted = selectedFilms.filter((filmId) => !guest.filmsVoted.includes(filmId));
+            const updateFilmVoted = selectedFilms.filter(film => {
+              if (!guest.filmsVoted.includes(film.id)) {
+                return film.id;
+              }
+            })
 
             if (updateFilmVoted.length > 0) {
               return {
                 ...guest,
-                filmsVoted: [...guest.filmsVoted, updateFilmVoted]
+                filmsVoted: [...guest.filmsVoted, ...updateFilmVoted]
               }
             }
           }
 
           return guest;
         })
-        
+
+        // update the guestList
         return {
-          
+          ...prevFormData,
+          guestList: updatedGuestList
         }
-
       })
-
       setshowGuestSelection(false);
     }
 
@@ -92,9 +96,32 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
           <SelectContent>
             <SelectGroup >
               {parentFormData.guestList.map((item) => (
-                <SelectItem value={`${item.id}`} >{item.name}</SelectItem>
+                <SelectItem key={item.id} value={`${item.id}`} >{item.name}</SelectItem>
               ))}
             </SelectGroup>
+
+
+            {/* Option 1: Perhaps we can use small dialog, see import at the top, which would cover this whole dialog */}
+            {/* Option 2: not using dialog, since guest selection is already a dialog, you would have to think about how to put the input for name */}
+
+            {/* when this part is done, we have to make the onChange function, which would be creating a new guest in formData using setFormData, etc. */}
+
+            {/*             
+            <AlertDialog>
+              <AlertDialogTrigger className="flex w-full py-3 pl-8 rounded-sm p-medium-14 text-primary-500 hover:bg-primary-50 focus:text-primary-500">Add new category</AlertDialogTrigger>
+              <AlertDialogContent className="bg-white">
+                <AlertDialogHeader>
+                  <AlertDialogTitle>New Category</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    <Input type="text" placeholder="Category name" className="mt-3 input-field" onChange={(e) => setNewCategory(e.target.value)} />
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => startTransition(handleAddCategory)}>Add</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog> */}
           </SelectContent>
         </Select>
 
