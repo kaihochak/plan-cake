@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import FilmCard from "@/components/film/FilmCard";
 import FilmSearch from '@/components/film/FilmSearch';
-import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog"
-import { Dialog as SmallDialog, DialogContent as SmallDialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/guestSelectDialog"
+import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog";
+import { Dialog as SmallDialog, DialogContent as SmallDialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/guestSelectDialog";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup, SelectLabel
+} from "@/components/ui/select";
 
 
 const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) => {
@@ -17,7 +20,7 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
 
     // check whether user is logged in
     const user = null; // user logged in will be implemented in the future
-    if (!user) { 
+    if (!user) {
       console.log("GuestList: ", parentFormData.guestList);
       setshowGuestSelection(true);
     }
@@ -38,29 +41,68 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
     }))
   }, [selectedFilms]);
 
+  useEffect(() => {
+    console.log(parentFormData);
+  }, [parentFormData]);
+
+  /**********************************************************************************
+ * Function for guest vote
+ * ******************************************************************************/
+
   // Guest Selection for voting films
-  const GuestSelection  = () => {
+  const GuestSelection = () => {
 
     // handle guest selection
     const handleGuestSelection = (id) => {
-      // console.log("Guest Selected: ", id);
+      // Update the formData state
+      setParentFormData(prevFormData => {
+        // Map through the guestList to find the correct guest and update their filmsVoted
+        const updatedGuestList = prevFormData.guestList.map(guest => {
+          if (guest.id === id) {
+            const updateFilmVoted = selectedFilms.filter((filmId) => !guest.filmsVoted.includes(filmId));
 
-      // implment logic: set formData.guestList
-      // setParentFormData(previous => ({
-      //   ...previous,
-      //   guestList: [...previous.guestList, {
-      //   ...previous.guestList[id],
-      //   filmsVoted: selectedFilms.map((film) => film.id),
-      //   }],
-      // }))
+            if (updateFilmVoted.length > 0) {
+              return {
+                ...guest,
+                filmsVoted: [...guest.filmsVoted, updateFilmVoted]
+              }
+            }
+          }
+
+          return guest;
+        })
+        
+        return {
+          
+        }
+
+      })
 
       setshowGuestSelection(false);
     }
 
+
     return (
-      <div>
+      <div className=''>
         {/* render each guest */}
-        Guest List
+        <Select onValueChange={handleGuestSelection}>
+          <SelectTrigger className="mb-6">
+            <SelectValue placeholder="Select your name" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup >
+              {parentFormData.guestList.map((item) => (
+                <SelectItem value={`${item.id}`} >{item.name}</SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
+        {/* Buttons */}
+        <div className='flex w-full space-x-2'>
+          <button className="flex-grow px-4 py-2 bg-transparent border rounded-md border-secondary-default text-secondary-default">New Guest</button>
+          <button className="flex-grow px-4 py-2 bg-transparent border rounded-md border-secondary-default text-secondary-default">Confirm</button>
+        </div>
       </div>
     )
   }
@@ -73,9 +115,9 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
   const GuestSelectionModal = () => {
     return (
       <SmallDialog open={showGuestSelection} onOpenChange={setshowGuestSelection}>
-        <SmallDialogContent hasClose={true} className="w-full h-full lg:w-[70%] lg:h-[80%] overflow-y-auto bg-primary text-secondary">
+        <SmallDialogContent hasClose={true} className="overflow-y-auto bg-primary text-secondary border-none w-[90%]">
           <div>Add films to poll as</div>
-          <GuestSelection/>
+          <GuestSelection />
         </SmallDialogContent>
       </SmallDialog>
     )
