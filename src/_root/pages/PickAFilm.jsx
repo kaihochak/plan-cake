@@ -40,7 +40,7 @@ const PickAFilm = () => {
 
   return (
     <div className='common-container'>
-      <div className='flex flex-col w-full max-w-[1024px] mx-auto gap-y-2 pt-24 pb-32'>
+      <div className='flex flex-col w-full max-w-[1024px] mx-auto gap-y-2 pt-12 xl:pt-0 pb-32'>
         <h2 className="title">Pick A Film</h2>
 
         {/* Guests */}
