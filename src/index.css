@@ -638,4 +638,8 @@ body {
       hsl(var(--accent) / 0%)
     );
   }
+
+  .custom-z-index {
+    z-index: 100;
+  }
 }

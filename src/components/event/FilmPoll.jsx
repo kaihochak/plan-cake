@@ -7,12 +7,29 @@ import { Dialog as SmallDialog, DialogContent as SmallDialogContent, DialogDescr
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup, SelectLabel
 } from "@/components/ui/select";
+import { Check, ChevronsUpDown } from "lucide-react"
+ 
+import { cn } from "@/lib/utils"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 
 const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) => {
   const [showFilmSearch, setshowFilmSearch] = useState(false);
   const [showGuestSelection, setshowGuestSelection] = useState(false);
   const [selectedFilms, setSelectedFilms] = useState([]);
+  const [openGuestList, setOpenGuestList] = useState(false);
+  const [selectedGuest, setSelectedGuest] = useState("");
 
   // handle search apply, prompt to user selection
   const handleSearchApply = (formData) => {
@@ -45,6 +62,8 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
     console.log(parentFormData);
   }, [parentFormData]);
 
+
+  
   /**********************************************************************************
  * Function for guest vote
  * ******************************************************************************/
@@ -89,7 +108,7 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
     return (
       <div className=''>
         {/* render each guest */}
-        <Select onValueChange={handleGuestSelection}>
+        {/* <Select onValueChange={handleGuestSelection}>
           <SelectTrigger className="mb-6">
             <SelectValue placeholder="Select your name" />
           </SelectTrigger>
@@ -98,7 +117,7 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
               {parentFormData.guestList.map((item) => (
                 <SelectItem key={item.id} value={`${item.id}`} >{item.name}</SelectItem>
               ))}
-            </SelectGroup>
+            </SelectGroup> */}
 
 
             {/* Option 1: Perhaps we can use small dialog, see import at the top, which would cover this whole dialog */}
@@ -122,14 +141,57 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog> */}
-          </SelectContent>
-        </Select>
+          {/* </SelectContent>
+        </Select> */}
 
         {/* Buttons */}
-        <div className='flex w-full space-x-2'>
-          <button className="flex-grow px-4 py-2 bg-transparent border rounded-md border-secondary-default text-secondary-default">New Guest</button>
-          <button className="flex-grow px-4 py-2 bg-transparent border rounded-md border-secondary-default text-secondary-default">Confirm</button>
-        </div>
+        {/* // <div className='flex w-full space-x-2'>
+        //   <button className="flex-grow px-4 py-2 bg-transparent border rounded-md border-secondary-default text-secondary-default">New Guest</button>
+        //   <button className="flex-grow px-4 py-2 bg-transparent border rounded-md border-secondary-default text-secondary-default">Confirm</button>
+        // </div> */}
+ 
+    <Popover open={openGuestList} onOpenChange={setOpenGuestList} className="">
+      <PopoverTrigger asChild className="custom-z-index">
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={openGuestList}
+          className="w-[200px] justify-between"
+        >
+          {selectedGuest
+            ? parentFormData.guestList?.find((guest) => guest.id === selectedGuest)?.name
+            : "Select your name"}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[200px] p-0">
+        <Command>
+          <CommandInput placeholder="Search framework..." />
+          <CommandEmpty>No framework found.</CommandEmpty>
+          <CommandGroup>
+            {parentFormData.guestList?.map((guest) => (
+              <CommandItem
+                key={guest.id}
+                value={guest.id}
+                onSelect={(currentId) => {
+                  setSelectedGuest(currentId === selectedGuest ? "" : currentId)
+                  setOpenGuestList(false)
+                }}
+              >
+                <Check
+                  className={cn(
+                    "mr-2 h-4 w-4",
+                    selectedGuest === guest.id ? "opacity-100" : "opacity-0"
+                  )}
+                />
+                {guest.name}
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </Command>
+      </PopoverContent>
+    </Popover>
+
       </div>
     )
   }
