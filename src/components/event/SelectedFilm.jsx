@@ -1,6 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-const SelectedFilm = ({film}) => {
+const SelectedFilm = ({selectedFilms}) => {
+
+    const [film, setFilm] = useState(null);
+
+    // implement logic to get the highest vote film from selectedFilms
+    useEffect(() => {
+        let highestVote = 0;
+        let highestVoteFilm = null;
+        selectedFilms.forEach(film => {
+            if (film.votes > highestVote) {
+                highestVote = film.votes;
+                highestVoteFilm = film;
+            }
+        });
+        setFilm(highestVoteFilm);
+    }, [selectedFilms]);
+
+
     return (
         <div>
             <div className='p-4'>
