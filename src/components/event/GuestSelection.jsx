@@ -1,0 +1,99 @@
+import React, { useEffect, useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Check, ChevronsUpDown } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+
+const GuestSelection = ({ parentFormData }) => {
+	const [openGuestList, setOpenGuestList] = useState(false);
+	const [selectedGuest, setSelectedGuest] = useState("");
+
+	useEffect(() => {
+		console.log('selectedGuest:', selectedGuest);
+	}, [selectedGuest])
+
+	// handle guest selection
+	// const handleGuestSelection = (id) => {
+
+	// 	setParentFormData(prevFormData => {
+	// 		// Map through the guestList to find the correct guest and update their filmsVoted
+	// 		const updatedGuestList = prevFormData.guestList.map(guest => {
+	// 			if (guest.id === id) {
+	// 				const updateFilmVoted = selectedFilms.filter(film => {
+	// 					if (!guest.filmsVoted.includes(film.id)) {
+	// 						return film.id;
+	// 					}
+	// 				})
+
+	// 				if (updateFilmVoted.length > 0) {
+	// 					return {
+	// 						...guest,
+	// 						filmsVoted: [...guest.filmsVoted, ...updateFilmVoted]
+	// 					}
+	// 				}
+	// 			}
+
+	// 			return guest;
+	// 		})
+
+	// 		// update the guestList
+	// 		return {
+	// 			...prevFormData,
+	// 			guestList: updatedGuestList
+	// 		}
+	// 	})
+	// 	setshowGuestSelection(false);
+	// }
+
+	return (
+		<div className='p-6 flex-center '>
+			<Popover open={openGuestList} onOpenChange={setOpenGuestList} className="">
+				<PopoverTrigger asChild>
+					<Button
+						variant="outline"
+						role="combobox"
+						aria-expanded={openGuestList}
+						className={`w-[200px] justify-between ${selectedGuest ? "bg-accent text-accent-foreground" : "bg-primary text-secondary"}`}
+					>
+						{selectedGuest
+							? parentFormData.guestList?.find((guest) => guest.id === selectedGuest)?.name
+							: "Select your name"}
+						<ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
+					</Button>
+				</PopoverTrigger>
+				<PopoverContent className="w-[200px] p-0">
+					<Command>
+						<CommandInput placeholder="Search framework..." />
+						<CommandEmpty>No framework found.</CommandEmpty>
+						<CommandGroup>
+							{parentFormData.guestList?.map((guest) => (
+								<CommandItem
+									key={guest.id}
+									value={guest.name}
+									onSelect={() => {
+										console.log('currentId:', guest.id);
+										setSelectedGuest(guest.id === selectedGuest ? "" : guest.id)
+										setOpenGuestList(false)
+									}}
+									className="cursor-pointer hover:bg-accent hover:text-accent-foreground"
+								>
+									<Check
+										className={cn(
+											"mr-2 h-4 w-4",
+											selectedGuest === guest.id ? "opacity-100" : "opacity-0"
+										)}
+									/>
+									{guest.name}
+								</CommandItem>
+							))}
+						</CommandGroup>
+					</Command>
+				</PopoverContent>
+			</Popover>
+
+		</div>
+	)
+}
+
+export default GuestSelection
