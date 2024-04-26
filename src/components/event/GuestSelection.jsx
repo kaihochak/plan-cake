@@ -7,7 +7,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
-const GuestSelection = ({ parentFormData }) => {
+const GuestSelection = ({ formData:parentFormData }) => {
 	const [openGuestList, setOpenGuestList] = useState(false);
 	const [selectedGuest, setSelectedGuest] = useState("");
 	const [searchGuestName, setSearchGuestName] = useState("");
@@ -17,36 +17,36 @@ const GuestSelection = ({ parentFormData }) => {
 	}, [selectedGuest])
 
 	// handle guest selection
-	const handleGuestSelection = (id) => {
+	// const handleGuestSelection = (id) => {
 
-		setParentFormData(prevFormData => {
-			// Map through the guestList to find the correct guest and update their filmsVoted
-			const updatedGuestList = prevFormData.guestList.map(guest => {
-				if (guest.id === id) {
-					const updateFilmVoted = selectedFilms.filter(film => {
-						if (!guest.filmsVoted.includes(film.id)) {
-							return film.id;
-						}
-					})
-					if (updateFilmVoted.length > 0) {
-						return {
-							...guest,
-							filmsVoted: [...guest.filmsVoted, ...updateFilmVoted]
-						}
-					}
-				}
+	// 	setParentFormData(prevFormData => {
+	// 		// Map through the guestList to find the correct guest and update their filmsVoted
+	// 		const updatedGuestList = prevFormData.guestList.map(guest => {
+	// 			if (guest.id === id) {
+	// 				const updateFilmVoted = selectedFilms.filter(film => {
+	// 					if (!guest.filmsVoted.includes(film.id)) {
+	// 						return film.id;
+	// 					}
+	// 				})
+	// 				if (updateFilmVoted.length > 0) {
+	// 					return {
+	// 						...guest,
+	// 						filmsVoted: [...guest.filmsVoted, ...updateFilmVoted]
+	// 					}
+	// 				}
+	// 			}
 
-				return guest;
-			})
+	// 			return guest;
+	// 		})
 
-			// update the guestList
-			return {
-				...prevFormData,
-				guestList: updatedGuestList
-			}
-		})
-		setshowGuestSelection(false);
-	}
+	// 		// update the guestList
+	// 		return {
+	// 			...prevFormData,
+	// 			guestList: updatedGuestList
+	// 		}
+	// 	})
+	// 	setshowGuestSelection(false);
+	// }
 
 	const handleAddGuest = () => {
 		if (searchGuestName) {
@@ -97,7 +97,7 @@ const GuestSelection = ({ parentFormData }) => {
 						</div>
 						<CommandEmpty>Welcome, <b>{searchGuestName}</b>! 🎉</CommandEmpty>
 						<CommandGroup>
-							{parentFormData.guestList?.map((guest) => (
+							{parentFormData?.guestList?.map((guest) => (
 								<CommandItem
 									key={guest.id}
 									value={guest.name}
