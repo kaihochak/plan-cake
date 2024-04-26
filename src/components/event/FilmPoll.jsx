@@ -10,10 +10,11 @@ import VoteResult from "@/components/event/VoteResult";
 
 const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) => {
   const [showFilmSearch, setShowFilmSearch] = useState(false);
-  const [showGuestSelection, setShowGuestSelection] = useState(true);
+  const [showGuestSelection, setShowGuestSelection] = useState(false);
   const [showVoteResult, setShowVoteResult] = useState(false);
   const [selectedFilms, setSelectedFilms] = useState([]);
   const [selectedGuest, setSelectedGuest] = useState("");
+  const [formData, setFormData] = useState(parentFormData);
 
   // handle search apply, prompt to user selection
   const handleSearchApply = (formData) => {
@@ -42,8 +43,8 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
   }, [selectedFilms]);
 
   useEffect(() => {
-    console.log(parentFormData);
-  }, [parentFormData]);
+    console.log(formData);
+  }, [formData]);
 
   /**********************************************************************************
    * Modals
@@ -57,7 +58,7 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
           <GuestSelection
             selectedGuest={selectedGuest}
             setSelectedGuest={setSelectedGuest}
-            parentFormData={parentFormData}
+            formData={formData}
           />
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -72,8 +73,7 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
     return (
       <SmallDialog open={showVoteResult} onOpenChange={setShowVoteResult}>
         <SmallDialogContent hasClose={true} className="overflow-y-auto bg-primary text-secondary border-none w-[90%]">
-          <div>View Result</div>
-          <VoteResult />
+          <VoteResult formData={formData}/>
         </SmallDialogContent>
       </SmallDialog>
     )
@@ -115,7 +115,11 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
       {/* Film poll */}
       <div className='p-4 my-2 rounded-sm bg-border'>
         <div className='flex flex-row justify-end gap-2 text-m-m text-primary-foreground'>
-          <button>View Result</button>
+          <button
+            onClick={() => setShowVoteResult(true)}
+          >
+            View Result
+          </button>
           <button>Sort by</button>
         </div>
         <div className='grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4'>

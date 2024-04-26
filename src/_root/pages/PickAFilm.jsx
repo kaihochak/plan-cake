@@ -29,14 +29,35 @@ const PickAFilm = () => {
         filmsVoted: ["200", "38", "24"]
       }
     ],
-    selectedFilms: [
-      { "24": 3 },
-      { "38": 1 },
-      { "200": 1 },
-      { "300": 2 },
-      { "604788": 1 },
-      { "823464": 1 },
-      { "634492": 1 }
+    selectedFilms: [ 
+      {
+        id: "24",
+        title: "Kill Bill: Vol. 1"
+      },
+      {
+        id: "38",
+        title: "Eternal Sunshine of the Spotless Mind"
+      },
+      {
+        id: "200",
+        title: "Star Trek: Insurrection"
+      },
+      {
+        id: "300",
+        title: "The Science of Sleep"
+      },
+      {
+        id: "604788",
+        title: "Tourists"
+      },
+      {
+        id: "823464",
+        title: "Godzilla vs. Kong"
+      },
+      {
+        id: "634492",
+        title: "Madame Web"
+      }
     ],
     file: [],
   });
@@ -52,7 +73,7 @@ const PickAFilm = () => {
         {/* Guests */}
         <GuestList/>
         {/* Poster */}
-        <SelectedFilm selectedFilms={formData.selectedFilms}/>
+        {/* <SelectedFilm selectedFilms={formData.selectedFilms}/> */}
         {/* Film Poll */}
         <FilmPoll formData={formData} setFormData={setFormData} />
       </div>
