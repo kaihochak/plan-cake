@@ -105,7 +105,7 @@ const CreateEvent = () => {
 
   return (
     <section className="common-container">
-      <div className="flex flex-col w-full max-w-[1024px] mx-auto">
+      <div className="flex flex-col w-full max-w-[1024px] mx-auto mt-24 lg:mt-0">
         <header className="w-full">
           {/* Back Button */}
           {currentStep !== 0 ? (
