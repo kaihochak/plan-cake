@@ -1,50 +1,67 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Check, ChevronsUpDown } from "lucide-react"
+import { IoMdAdd } from "react-icons/io";
 import { cn } from "@/lib/utils"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/guestCommand"
+
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
 const GuestSelection = ({ parentFormData }) => {
 	const [openGuestList, setOpenGuestList] = useState(false);
 	const [selectedGuest, setSelectedGuest] = useState("");
+	const [searchGuestName, setSearchGuestName] = useState("");
 
 	useEffect(() => {
 		console.log('selectedGuest:', selectedGuest);
 	}, [selectedGuest])
 
 	// handle guest selection
-	// const handleGuestSelection = (id) => {
+	const handleGuestSelection = (id) => {
 
-	// 	setParentFormData(prevFormData => {
-	// 		// Map through the guestList to find the correct guest and update their filmsVoted
-	// 		const updatedGuestList = prevFormData.guestList.map(guest => {
-	// 			if (guest.id === id) {
-	// 				const updateFilmVoted = selectedFilms.filter(film => {
-	// 					if (!guest.filmsVoted.includes(film.id)) {
-	// 						return film.id;
-	// 					}
-	// 				})
+		setParentFormData(prevFormData => {
+			// Map through the guestList to find the correct guest and update their filmsVoted
+			const updatedGuestList = prevFormData.guestList.map(guest => {
+				if (guest.id === id) {
+					const updateFilmVoted = selectedFilms.filter(film => {
+						if (!guest.filmsVoted.includes(film.id)) {
+							return film.id;
+						}
+					})
+					if (updateFilmVoted.length > 0) {
+						return {
+							...guest,
+							filmsVoted: [...guest.filmsVoted, ...updateFilmVoted]
+						}
+					}
+				}
 
-	// 				if (updateFilmVoted.length > 0) {
-	// 					return {
-	// 						...guest,
-	// 						filmsVoted: [...guest.filmsVoted, ...updateFilmVoted]
-	// 					}
-	// 				}
-	// 			}
+				return guest;
+			})
 
-	// 			return guest;
-	// 		})
+			// update the guestList
+			return {
+				...prevFormData,
+				guestList: updatedGuestList
+			}
+		})
+		setshowGuestSelection(false);
+	}
 
-	// 		// update the guestList
-	// 		return {
-	// 			...prevFormData,
-	// 			guestList: updatedGuestList
-	// 		}
-	// 	})
-	// 	setshowGuestSelection(false);
-	// }
+	const handleAddGuest = () => {
+		if (searchGuestName) {
+			const newGuest = {
+				id: `-${parentFormData.guestList.length + 1}`,
+				name: searchGuestName,
+				avatar: "/assets/avatars/avatar1.jpg",
+				filmsVoted: []
+			}
+
+			parentFormData.guestList.push(newGuest);
+			setSelectedGuest(newGuest.id);
+			setSearchGuestName("");
+		}
+	}	
 
 	return (
 		<div className='p-6 flex-center '>
@@ -64,8 +81,21 @@ const GuestSelection = ({ parentFormData }) => {
 				</PopoverTrigger>
 				<PopoverContent className="w-[200px] p-0">
 					<Command>
-						<CommandInput placeholder="Search framework..." />
-						<CommandEmpty>No framework found.</CommandEmpty>
+						<div className='relative'>
+							<CommandInput
+								placeholder="Enter your name"
+								value={searchGuestName}
+								onValueChange={(value) => setSearchGuestName(value)}
+							/>
+							<Button 
+								size="icon" 
+								className="absolute top-0.5 right-0 border-none hover:bg-accent" 
+								onClick={handleAddGuest}
+							>
+								<IoMdAdd className="w-6 h-6" />
+							</Button>
+						</div>
+						<CommandEmpty>Welcome, <b>{searchGuestName}</b>! 🎉</CommandEmpty>
 						<CommandGroup>
 							{parentFormData.guestList?.map((guest) => (
 								<CommandItem
@@ -76,15 +106,15 @@ const GuestSelection = ({ parentFormData }) => {
 										setSelectedGuest(guest.id === selectedGuest ? "" : guest.id)
 										setOpenGuestList(false)
 									}}
-									className="cursor-pointer hover:bg-accent hover:text-accent-foreground"
+									className="cursor-pointer hover:bg-accent hover:text-accent-foreground flex-between"
 								>
+									{guest.name}
 									<Check
 										className={cn(
-											"mr-2 h-4 w-4",
+											"mr-2 h-4 w-4 ",
 											selectedGuest === guest.id ? "opacity-100" : "opacity-0"
 										)}
 									/>
-									{guest.name}
 								</CommandItem>
 							))}
 						</CommandGroup>
