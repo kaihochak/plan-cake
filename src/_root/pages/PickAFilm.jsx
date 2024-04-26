@@ -52,7 +52,7 @@ const PickAFilm = () => {
         {/* Guests */}
         <GuestList/>
         {/* Poster */}
-        <SelectedFilm selectedFilms={formData.selectedFilms}/>
+        {/* <SelectedFilm selectedFilms={formData.selectedFilms}/> */}
         {/* Film Poll */}
         <FilmPoll formData={formData} setFormData={setFormData} />
       </div>

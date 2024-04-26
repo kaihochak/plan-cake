@@ -72,7 +72,21 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
     return (
       <SmallDialog open={showVoteResult} onOpenChange={setShowVoteResult}>
         <SmallDialogContent hasClose={true} className="overflow-y-auto bg-primary text-secondary border-none w-[90%]">
-          <div>View Result</div>
+          <div className='grid grid-cols-4 text-sm font-bold'>
+              <span></span>
+              <p>Films</p>
+              <p>Votes</p>
+              <p>Voters</p>
+              {selectedFilms.map((item) => (
+                <div className='col-span-1 row-span-4'>
+                  <span>o</span>  
+                  <p>{item.original_title}</p>
+                  <p>{item.vote_count}</p>
+                  <p>voters</p>
+                </div>
+              ))}
+
+          </div>
           <VoteResult />
         </SmallDialogContent>
       </SmallDialog>
@@ -115,7 +129,11 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
       {/* Film poll */}
       <div className='p-4 my-2 rounded-sm bg-border'>
         <div className='flex flex-row justify-end gap-2 text-m-m text-primary-foreground'>
-          <button>View Result</button>
+          <button
+            onClick={() => setShowVoteResult(true)}
+          >
+            View Result
+          </button>
           <button>Sort by</button>
         </div>
         <div className='grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4'>
