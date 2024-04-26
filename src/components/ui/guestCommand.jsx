@@ -1,7 +1,5 @@
 import * as React from "react"
 import { Command as CommandPrimitive } from "cmdk"
-import { IoMdAdd } from "react-icons/io";
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 
@@ -40,10 +38,8 @@ const CommandInput = React.forwardRef(({ className, ...props }, ref) => (
         "flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
-      {...props} />
-    <Button size="icon" className="border-none rounded-lg hover:bg-accent" onClick={() => console.log()}>
-      <IoMdAdd className="w-6 h-6 m-2"/>
-    </Button>
+      {...props} 
+    />
   </div>
 ))
 

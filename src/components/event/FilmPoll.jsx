@@ -119,6 +119,9 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
           <button>Sort by</button>
         </div>
         <div className='grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4'>
+          {selectedFilms.length === 0 && (
+            <div className='col-span-4 mx-auto p-36 text-primary-foreground h2'>No film selected</div>
+          )}
           {selectedFilms.map((item) => (
             <div key={item.id}>
               <FilmCard
