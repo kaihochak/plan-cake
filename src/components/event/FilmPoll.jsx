@@ -10,10 +10,11 @@ import VoteResult from "@/components/event/VoteResult";
 
 const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) => {
   const [showFilmSearch, setShowFilmSearch] = useState(false);
-  const [showGuestSelection, setShowGuestSelection] = useState(true);
+  const [showGuestSelection, setShowGuestSelection] = useState(false);
   const [showVoteResult, setShowVoteResult] = useState(false);
   const [selectedFilms, setSelectedFilms] = useState([]);
   const [selectedGuest, setSelectedGuest] = useState("");
+  const [formData, setFormData] = useState(parentFormData);
 
   // handle search apply, prompt to user selection
   const handleSearchApply = (formData) => {
@@ -42,8 +43,8 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
   }, [selectedFilms]);
 
   useEffect(() => {
-    console.log(parentFormData);
-  }, [parentFormData]);
+    console.log(formData);
+  }, [formData]);
 
   /**********************************************************************************
    * Modals
@@ -57,7 +58,7 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
           <GuestSelection
             selectedGuest={selectedGuest}
             setSelectedGuest={setSelectedGuest}
-            parentFormData={parentFormData}
+            formData={formData}
           />
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -72,22 +73,7 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
     return (
       <SmallDialog open={showVoteResult} onOpenChange={setShowVoteResult}>
         <SmallDialogContent hasClose={true} className="overflow-y-auto bg-primary text-secondary border-none w-[90%]">
-          <div className='grid grid-cols-4 text-sm font-bold'>
-              <span></span>
-              <p>Films</p>
-              <p>Votes</p>
-              <p>Voters</p>
-              {selectedFilms.map((item) => (
-                <div className='col-span-1 row-span-4'>
-                  <span>o</span>  
-                  <p>{item.original_title}</p>
-                  <p>{item.vote_count}</p>
-                  <p>voters</p>
-                </div>
-              ))}
-
-          </div>
-          <VoteResult />
+          <VoteResult formData={formData}/>
         </SmallDialogContent>
       </SmallDialog>
     )
