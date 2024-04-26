@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Check, ChevronsUpDown } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/guestCommand"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
 const GuestSelection = ({ parentFormData }) => {
@@ -64,8 +64,8 @@ const GuestSelection = ({ parentFormData }) => {
 				</PopoverTrigger>
 				<PopoverContent className="w-[200px] p-0">
 					<Command>
-						<CommandInput placeholder="Search framework..." />
-						<CommandEmpty>No framework found.</CommandEmpty>
+						<CommandInput placeholder="Enter your name" />
+						<CommandEmpty>🎉 Add new member 🎉</CommandEmpty>
 						<CommandGroup>
 							{parentFormData.guestList?.map((guest) => (
 								<CommandItem
@@ -76,15 +76,15 @@ const GuestSelection = ({ parentFormData }) => {
 										setSelectedGuest(guest.id === selectedGuest ? "" : guest.id)
 										setOpenGuestList(false)
 									}}
-									className="cursor-pointer hover:bg-accent hover:text-accent-foreground"
+									className="cursor-pointer hover:bg-accent hover:text-accent-foreground flex-between"
 								>
+									{guest.name}
 									<Check
 										className={cn(
-											"mr-2 h-4 w-4",
+											"mr-2 h-4 w-4 ",
 											selectedGuest === guest.id ? "opacity-100" : "opacity-0"
 										)}
 									/>
-									{guest.name}
 								</CommandItem>
 							))}
 						</CommandGroup>
