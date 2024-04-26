@@ -5,7 +5,7 @@ import FilmSearch from '@/components/film/FilmSearch';
 import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Dialog as SmallDialog, DialogContent as SmallDialogContent } from "@/components/ui/voteSelectDialog";
-import GuestSelection from "@/components/event/guestSelection";
+import GuestSelection from "@/components/event/GuestSelection";
 import VoteResult from "@/components/event/VoteResult";
 
 const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) => {
