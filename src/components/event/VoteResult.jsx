@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { IoClose } from "react-icons/io5";
 
 const VoteResult = ({ formData }) => {
   const [results, setResults] = useState([])
@@ -58,7 +57,7 @@ const VoteResult = ({ formData }) => {
 
   return (
     <div>
-      <Table className="">
+      <Table>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[50px]"></TableHead>

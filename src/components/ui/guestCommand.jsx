@@ -1,7 +1,5 @@
 import * as React from "react"
 import { Command as CommandPrimitive } from "cmdk"
-import { Search } from "lucide-react"
-
 import { cn } from "@/lib/utils"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 
@@ -33,15 +31,15 @@ const CommandDialog = ({
 }
 
 const CommandInput = React.forwardRef(({ className, ...props }, ref) => (
-  <div className="flex items-center px-3 border-b custom-z-index" cmdk-input-wrapper="">
-    <Search className="w-4 h-4 mr-2 opacity-50 shrink-0" />
+  <div className="flex items-center justify-between pl-3 border-b custom-z-index" cmdk-input-wrapper="">
     <CommandPrimitive.Input
       ref={ref}
       className={cn(
         "flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
-      {...props} />
+      {...props} 
+    />
   </div>
 ))
 
@@ -57,7 +55,7 @@ const CommandList = React.forwardRef(({ className, ...props }, ref) => (
 CommandList.displayName = CommandPrimitive.List.displayName
 
 const CommandEmpty = React.forwardRef((props, ref) => (
-  <CommandPrimitive.Empty ref={ref} className="py-6 text-sm text-center" {...props} />
+  <CommandPrimitive.Empty ref={ref} className="py-2 text-sm text-center" {...props} />
 ))
 
 CommandEmpty.displayName = CommandPrimitive.Empty.displayName
@@ -85,7 +83,7 @@ const CommandItem = React.forwardRef(({ className, isSelected, ...props }, ref) 
     className={cn(
       "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       {
-        'bg-accent text-accent-foreground': isSelected, 
+        'bg-accent text-accent-foreground': isSelected,
       },
       className
     )}
