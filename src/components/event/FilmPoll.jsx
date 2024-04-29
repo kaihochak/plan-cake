@@ -203,10 +203,35 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
 
   const GuestSelectionModal = () => {
     return (
+<<<<<<< Updated upstream
       <SmallDialog open={showGuestSelection} onOpenChange={setshowGuestSelection}>
         <SmallDialogContent hasClose={true} className="overflow-y-auto bg-primary text-secondary border-none w-[90%]">
           <div>Add films to poll as</div>
           <GuestSelection />
+=======
+      <AlertDialog open={showGuestSelection} onOpenChange={setShowGuestSelection}>
+        <AlertDialogContent hasClose={true} className="overflow-y-auto bg-primary text-secondary border-none w-[90%]">
+          <AlertDialogTitle>Add films to poll as</AlertDialogTitle>
+          <GuestSelection
+            selectedGuest={selectedGuest}
+            setSelectedGuest={setSelectedGuest}
+            formData={formData}
+          />
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    )
+  }
+
+  const VoteResultModal = () => {
+    return (
+      <SmallDialog open={showVoteResult} onOpenChange={setShowVoteResult}>
+        <SmallDialogContent hasClose={true} className="overflow-y-auto bg-primary text-secondary border-none w-auto">
+          <VoteResult formData={formData}/>
+>>>>>>> Stashed changes
         </SmallDialogContent>
       </SmallDialog>
     )
