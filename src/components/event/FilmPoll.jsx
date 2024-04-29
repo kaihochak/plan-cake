@@ -53,7 +53,7 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
   const GuestSelectionModal = () => {
     return (
       <AlertDialog open={showGuestSelection} onOpenChange={setShowGuestSelection}>
-        <AlertDialogContent hasClose={true} className="overflow-y-auto bg-primary text-secondary border-none w-[90%]">
+        <AlertDialogContent hasClose={true} >
           <AlertDialogTitle>Add films to poll as</AlertDialogTitle>
           <GuestSelection
             selectedGuest={selectedGuest}

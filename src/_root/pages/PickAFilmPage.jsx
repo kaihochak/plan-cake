@@ -2,7 +2,7 @@ import React, { useEffect, useState, useParams } from 'react'
 import FilmPoll from '@/components/event/FilmPoll'
 import GuestList from '@/components/event/GuestList'
 
-const PickAFilm = () => {
+const PickAFilmPage = () => {
   const [event, setEvent] = useState(null);
   const { id } = 1; // To be updated
   const [formData, setFormData] = useState({
@@ -79,4 +79,4 @@ const PickAFilm = () => {
   )
 }
 
-export default PickAFilm
+export default PickAFilmPage

@@ -12,39 +12,35 @@ import { Calendar } from "@/components/ui/calendar";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useNavigate } from 'react-router-dom'
 
 
 const formSchema = z.object({
     title: z.string().min(2).max(50),
-    date: z.string().min(2).max(50),
-    time: z.string().min(2).max(50),
 })
 
 const PickAFilmForm = ({ isOpen, onClose }) => {
-    const [date, setDate] = useState();
-
     // form validation
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
             title: "",
-            date: "",
-            time: "",
         },
     })
 
     const [formData, setFormData] = useState({
         title: "",
         date: "",
-        time: "",
     })
 
-
+    const navigate = useNavigate();
 
 
     // form submit
     function handleFormSubmit(values) {
-        console.log(values)
+        setFormData({ ...formData, title: values.title });
+        onClose(!isOpen);
+        navigate("/pickafilm/1")
     }
 
     /*****************************************************************************
@@ -53,7 +49,7 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
     return (
 
         <Dialog open={isOpen} onOpenChange={() => onClose(!isOpen)}>
-            <DialogContent>
+            <DialogContent className="">
                 <DialogHeader>
                     <DialogTitle>New PickAFilm</DialogTitle>
                     <DialogDescription>
@@ -76,10 +72,9 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
                                 </FormItem>
                             )}
                         />
-
                         {/* Date */}
                         <Popover>
-                            <PopoverTrigger asChild>
+                            <PopoverTrigger asChild className="hover:bg-white">
                                 <Button
                                     variant='input'
                                     className={cn(
@@ -99,31 +94,18 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
                                 align="start"
                                 className="flex flex-col w-auto p-2 space-y-2"
                             >
-                                <Select
-                                    onValueChange={(value) =>
-                                        setDate(addDays(new Date(), parseInt(value)))
-                                    }
-                                >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select" />
-                                    </SelectTrigger>
-                                    <SelectContent position="popper">
-                                        <SelectItem value="0">Today</SelectItem>
-                                        <SelectItem value="1">Tomorrow</SelectItem>
-                                        <SelectItem value="3">In 3 days</SelectItem>
-                                        <SelectItem value="7">In a week</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                <div className="border rounded-md">
-                                    <Calendar mode="single" selected={date} onSelect={(date) => setFormData({ ...formData, date: date })} />
+                                <div className="rounded-md">
+                                    <Calendar
+                                        mode="single"
+                                        selected={formData.date}
+                                        onSelect={(date) => setFormData({ ...formData, date: date })}
+                                    />
                                 </div>
                             </PopoverContent>
                         </Popover>
-
                         <Button type="submit" variant="select" className="">Create PickAFilm</Button>
                     </form>
                 </Form>
-
             </DialogContent>
         </Dialog>
 

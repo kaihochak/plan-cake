@@ -29,8 +29,8 @@ body {
     --card-foreground: 222.2 84% 4.9%;
 
     /* Off White */
-    --popover: 0 0% 85%;
-    --popover-foreground: 0 0% 12%;
+    --popover: var(--primary);
+    --popover-foreground: var(--primary-foreground);
 
     /* Off Black */
     --primary: 0 0% 8%;

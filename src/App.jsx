@@ -4,7 +4,7 @@ import SigninForm from './_auth/forms/SigninForm';
 import SignupForm from './_auth/forms/SignupForm';
 import AuthLayout from './_auth/AuthLayout';
 import RootLayout from './_root/RootLayout';
-import { Home, PickAFilm, CreateEvent, Explore, Profile, FilmPage, EventPage } from './_root/pages';
+import { Home, PickAFilm, CreateEvent, Explore, Profile, FilmPage, EventPage, PickAFilmPage } from './_root/pages';
 import { Toaster } from "@/components/ui/toaster"
 import './index.css';
 import ScrollToTop from '@/components/utility/ScrollToTop';
@@ -41,6 +41,7 @@ function App() {
           <Route element={<RootLayout />}>
             <Route index element={<Home />} />
             <Route path="/pickAFilm" element={<PickAFilm />} />
+            <Route path="/pickAFilm/:id" element={<PickAFilmPage />} />
             <Route path="/create-event" element={<CreateEvent />} />
             <Route path='/explore/*' element={<Explore />} />
             <Route path='/profile/:id/*' element={<Profile />} />
