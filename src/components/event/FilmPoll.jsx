@@ -15,6 +15,21 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
   const [selectedFilms, setSelectedFilms] = useState([]);
   const [selectedGuest, setSelectedGuest] = useState("");
   const [formData, setFormData] = useState(parentFormData);
+  const [votedFilms, setVotedFilms] = useState([]);         // the voted films of the selected user
+ 
+  // call api to get the voted films of the selected user
+  useEffect(() => {
+    // set the votedFilms by using parentFormData
+  }, [selectedGuest]);
+  
+  // when votedFilms is updated, update the parent formData
+  useEffect(() => {
+    setParentFormData(previous => ({
+      ...previous,
+      votedFilms
+    }))
+  }, [votedFilms]);
+
 
   // handle search apply, prompt to user selection
   const handleSearchApply = (formData) => {
