@@ -33,17 +33,17 @@ const PickAFilm = () => {
    * Rendering
    *****************************************************************************/
   return (
-    <div className='common-container '>
-      <div className='flex flex-col lg:flex-row w-full max-w-[1024px] mx-auto pt-6 xl:pt-0 md:pb-32 h-screen overflow-hidden'>
+    <div className='common-container'>
+      <div className='flex flex-col lg:flex-row max-w-[1024px] mx-auto pt-6 xl:pt-0 md:pb-32 h-screen overflow-hidden'>
 
         {/* text */}
         <div className='flex-col flex-between'>
-          <h2 className="title text-accent my-4">Pick a film!</h2>
-          <p className='h3 mb-6'>Let's pick a film with your friends and start watching the film that everyone likes!</p>
+          <h2 className="my-4 title text-accent">Pick a film!</h2>
+          <p className='mb-6 h3'>Let's pick a film with your friends and start watching the film that everyone likes!</p>
           <Button
             variant="accent"
             type="button"
-            className="w-52 mb-6"
+            className="mb-6 w-52"
             onClick={() => setIsFormOpen(true)}
           >
             Create Event
@@ -63,7 +63,8 @@ const PickAFilm = () => {
               <img
                 src={trending && trending[0]?.poster_path ? image500(trending[0].poster_path) : fallbackMoviePoster}
                 alt={trending && trending[0]?.title}
-                className='rounded-sm absolute w-[150px] rotate-[-15deg] top-1/2 translate-x-[-10%] translate-y-[20%] z-40'
+                className='rounded-sm absolute w-[150px] rotate-[-15deg] top-1/2 translate-x-[-10%] translate-y-[20%] z-40
+                lg:w-[200px] lg:rotate-[-10deg] lg:top-1/2 lg:translate-x-[-10%] lg:translate-y-[20%] lg:z-40'
               />
               <img
                 src={trending && trending[0]?.poster_path ? image500(trending[1].poster_path) : fallbackMoviePoster}
