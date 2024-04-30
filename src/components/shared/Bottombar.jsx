@@ -4,10 +4,13 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import { IoIosSearch } from "react-icons/io";
 import { IoMdLogOut } from "react-icons/io";
 import { GiDandelionFlower } from "react-icons/gi";
+import ProfilePlaceholder from '/assets/icons/profile-placeholder.svg';
+import { useUserContext } from "@/context/AuthContext";
 
 
 const Bottombar = () => {
   const { pathname } = useLocation();
+  const { user } = useUserContext();
 
   return (
     <section className="bottom-bar">
@@ -46,6 +49,19 @@ const Bottombar = () => {
                       ${pathname.startsWith("/explore") ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
         >
             <IoIosSearch className='text-[30px]'/>
+        </Link>
+
+        {/* Profile */}
+        <Link
+            to="/profile/${user.id}"
+            className={`p-2 transition rounded-[10px] 
+                      ${pathname.startsWith("/explore") ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
+        >
+            <img 
+                src={user.imageUrl || ProfilePlaceholder} 
+                alt="profile"
+                className="w-8 h-8 rounded-full"
+            />
         </Link>
     </section>
   );
