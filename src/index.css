@@ -560,7 +560,7 @@ body {
   .topbar {
     /* @apply bg-primary-dark top-0 z-50 xl:hidden w-full h-[80px] sticky; */
     @apply absolute top-0 z-50 xl:hidden w-full h-[80px];
-    @apply border-b bg-primary/90 backdrop-blur border-primary-light;
+    @apply  bg-primary/90 backdrop-blur;
   }
 
   .transTopbar {

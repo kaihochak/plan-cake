@@ -33,17 +33,17 @@ const PickAFilm = () => {
    * Rendering
    *****************************************************************************/
   return (
-    <div className='common-container'>
-      <div className='flex flex-col  lg:flex-row w-full max-w-[1024px] mx-auto gap-y-2 pt-12 xl:pt-0 md:pb-32'>
+    <div className='common-container '>
+      <div className='flex flex-col lg:flex-row w-full max-w-[1024px] mx-auto pt-6 xl:pt-0 md:pb-32 h-screen overflow-hidden'>
 
         {/* text */}
-        <div className='flex-col flex-between gap-y-4'>
-          <h2 className="title text-accent">Pick a film!</h2>
-          <p className='h3'>Let's pick a film with your friends and start watching the film that everyone likes!</p>
+        <div className='flex-col flex-between'>
+          <h2 className="title text-accent my-4">Pick a film!</h2>
+          <p className='h3 mb-6'>Let's pick a film with your friends and start watching the film that everyone likes!</p>
           <Button
             variant="accent"
             type="button"
-            className="w-52"
+            className="w-52 mb-6"
             onClick={() => setIsFormOpen(true)}
           >
             Create Event
@@ -63,7 +63,27 @@ const PickAFilm = () => {
               <img
                 src={trending && trending[0]?.poster_path ? image500(trending[0].poster_path) : fallbackMoviePoster}
                 alt={trending && trending[0]?.title}
-                className='rounded-sm absolute w-[100px] rotate-[-10deg] top-1/2 left-1/2 translate-x-[-50%] translate-y-[10%] z-40'
+                className='rounded-sm absolute w-[150px] rotate-[-15deg] top-1/2 translate-x-[-10%] translate-y-[20%] z-40'
+              />
+              <img
+                src={trending && trending[0]?.poster_path ? image500(trending[1].poster_path) : fallbackMoviePoster}
+                alt={trending && trending[0]?.title}
+                className='rounded-sm absolute w-[150px] rotate-[-10deg] top-1/2 left-1/2 translate-x-[-50%] translate-y-[5%] z-50'
+              />
+             <img
+                src={trending && trending[0]?.poster_path ? image500(trending[2].poster_path) : fallbackMoviePoster}
+                alt={trending && trending[0]?.title}
+                className='rounded-sm absolute w-[150px] rotate-[15deg] top-1/2 translate-x-[130%] translate-y-[20%] z-40'
+              />
+              <img
+                src={trending && trending[0]?.poster_path ? image500(trending[3].poster_path) : fallbackMoviePoster}
+                alt={trending && trending[0]?.title}
+                className='rounded-sm absolute w-[150px] rotate-[-15deg] top-1/2 translate-x-[20%] translate-y-[80%] z-20'
+              />
+              <img
+                src={trending && trending[0]?.poster_path ? image500(trending[4].poster_path) : fallbackMoviePoster}
+                alt={trending && trending[0]?.title}
+                className='rounded-sm absolute w-[150px] rotate-[15deg] top-1/2 translate-x-[90%] translate-y-[80%] z-30'
               />
             </div>
             {/* film 2 */}
