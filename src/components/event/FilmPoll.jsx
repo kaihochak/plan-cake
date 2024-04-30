@@ -15,9 +15,40 @@ const FilmPool = () => {
   const [users, setUsers] = useState([]);
 =======
 const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) => {
+<<<<<<< Updated upstream
   const [showFilmSearch, setshowFilmSearch] = useState(false);
   const [selectedFilms, setSelectedFilms] = useState([]);
   
+=======
+  const [showFilmSearch, setShowFilmSearch] = useState(false);
+  const [showGuestSelection, setShowGuestSelection] = useState(false);
+  const [showVoteResult, setShowVoteResult] = useState(false);
+  const [selectedFilms, setSelectedFilms] = useState(parentFormData.selectedFilms);
+  const [selectedGuest, setSelectedGuest] = useState("-1");
+  const [formData, setFormData] = useState(parentFormData);
+  const [votedFilms, setVotedFilms] = useState([]);         // the voted films of the selected user
+ 
+  // call api to get the voted films of the selected user
+  useEffect(() => {
+    // set the votedFilms by using parentFormData
+    setVotedFilms( parentFormData.guestList.filter(guest => (guest.id === selectedGuest)) )
+  }, [selectedGuest]);
+  
+  // when votedFilms is updated, update the parent formData
+  useEffect(() => {
+    setParentFormData(previous => ({
+      ...previous,
+      votedFilms
+    }))
+  }, [votedFilms]);
+
+  useEffect(() => {
+    console.log(selectedFilms);
+  }, [selectedFilms]);
+
+
+  // handle search apply, prompt to user selection
+>>>>>>> Stashed changes
   const handleSearchApply = (formData) => {
     const newSelectedFilms = formData.selectedFilms;
     console.log(newSelectedFilms);
@@ -101,8 +132,8 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
             <div key={item.id}>
               <FilmCard 
                 item={item}
-                selectedFilms={selectedFilms}
-                setSelectedFilms={setSelectedFilms}
+                selectedFilms={votedFilms}
+                setSelectedFilms={setVotedFilms}
               />
             </div>
           ))}

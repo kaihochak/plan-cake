@@ -1,11 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useNavigate } from "react-router-dom";
 import MyEvents from '@/components/shared/MyEvents'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { VscLocation } from "react-icons/vsc";
 import MyWatchlist from '../../components/shared/MyWatchlist';
+import { IoMdLogOut } from "react-icons/io";
+import { useSignOutAccount } from '@/lib/react-query/queries'
 
 
 const Profile = () => {
+  const { mutate: signOut, isSuccess } = useSignOutAccount();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isSuccess) navigate(0);
+  }, [isSuccess]);
+
   return (
     <section className='common-container'>
       <div className='flex flex-col w-full max-w-[1024px] mx-auto gap-y-10 pt-6 pb-12'>
@@ -38,6 +48,13 @@ const Profile = () => {
             </div>
           </div>
         </div>
+
+        <button 
+            variant="ghost"
+            onClick={() => signOut()}
+        >
+            <IoMdLogOut className='text-[30px] text-primary-foreground'/>
+        </button>
 
 
         <Tabs defaultValue="myEvents">
