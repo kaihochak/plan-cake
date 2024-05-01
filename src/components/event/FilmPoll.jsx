@@ -38,19 +38,8 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
   // handle search apply, prompt to user selection
   const handleSearchApply = (formData) => {
     setShowFilmSearch(false);
-
-    // check whether user is logged in
-    const user = null; // user logged in will be implemented in the future
-    if (!user) {
-      console.log("GuestList: ", parentFormData.guestList);
-      setShowGuestSelection(true);
-    }
-
     const newSelectedFilms = formData.selectedFilms;
-    console.log(newSelectedFilms);
-
     setSelectedFilms(newSelectedFilms); //update local selected films
-
   }
 
   // update parent selected films
@@ -106,6 +95,7 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
             formData={parentFormData}
             nextStep={handleSearchApply}
             hasTitle={false}
+            protectedFilms={selectedFilms}
           />
         </DialogContent>
       </Dialog>

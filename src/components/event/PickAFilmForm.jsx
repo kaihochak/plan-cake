@@ -102,7 +102,7 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
                                 </div>
                             </PopoverContent>
                         </Popover>
-                        <Button type="submit" variant="select" className="">Create PickAFilm</Button>
+                        <Button type="submit" variant="select" className="">Create Event</Button>
                     </form>
                 </Form>
             </DialogContent>

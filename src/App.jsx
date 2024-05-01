@@ -14,16 +14,16 @@ import { MantineProvider } from '@mantine/core';
 
 function App() {
   return (
-    <MantineProvider
-      styles={{
-        '@global': {
-          ':root': {
-            '--mantine-color-body': '#496078', // Your desired background color
-            '--mantine-color-text': '#496078', // Your desired text color
-          }
-        }
-      }}
-    >
+    // <MantineProvider
+    //   styles={{
+    //     '@global': {
+    //       ':root': {
+    //         '--mantine-color-body': '#496078', // Your desired background color
+    //         '--mantine-color-text': '#496078', // Your desired text color
+    //       }
+    //     }
+    //   }}
+    // >
       <main className="flex h-screen bg-primary font-Urbanist text-default">
 
         {/* To solve a  vite issue:navigate to new page with same path */}
@@ -53,7 +53,7 @@ function App() {
         {/* Toaster from Shadcn */}
         <Toaster />
       </main>
-    </MantineProvider>
+    // </MantineProvider>
   );
 }
 

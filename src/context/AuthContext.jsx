@@ -58,15 +58,13 @@ const AuthProvider = ({ children }) => {
     // check if we have a logged in user, whenever the page is refreshed
     useEffect(() => {
         const cookieFallback = localStorage.getItem("cookieFallback");
-        if (
-            cookieFallback === "[]" ||
-            cookieFallback === null ||
-            cookieFallback === undefined
-        ) {
+        // if (
+        //     cookieFallback === "[]" ||
+        //     cookieFallback === null ||
+        //     cookieFallback === undefined
+        // ) {
         //   navigate("/sign-in");
-        // temporary open for test purposes
-            navigate("/");
-        }
+        // }
         // check if we have a logged in user
         checkAuthUser();
     }, [])

@@ -7,13 +7,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 
-import { Modal } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+// import { Modal } from '@mantine/core';
+// import { useDisclosure } from '@mantine/hooks';
 import { Link } from 'react-router-dom';
 import { TbExternalLink } from "react-icons/tb";
 
 const Home = () => {
-  const [opened, { open, close }] = useDisclosure(true);
+  // const [opened, { open, close }] = useDisclosure(true);
 
 
   return (
@@ -21,7 +21,7 @@ const Home = () => {
       <section className='home-container'>
         <div className='pt-14 xl:pt-0'>
           {/* Our introduction */}
-          <Modal
+          {/* <Modal
             opened={opened}
             onClose={close}
             withCloseButton={false}
@@ -100,7 +100,7 @@ const Home = () => {
               </Button>
 
             </div>
-          </Modal>
+          </Modal> */}
 
           <div className='home-posts'>
             {/* Most Watchlisted Section */}
