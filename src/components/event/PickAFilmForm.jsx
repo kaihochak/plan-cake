@@ -35,12 +35,11 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 
     const navigate = useNavigate();
 
-
     // form submit
     function handleFormSubmit(values) {
         setFormData({ ...formData, title: values.title });
         onClose(!isOpen);
-        navigate("/pickafilm/1")
+        navigate("/pickAfilm/1")
     }
 
     /*****************************************************************************

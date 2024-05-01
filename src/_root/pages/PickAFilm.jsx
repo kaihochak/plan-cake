@@ -58,20 +58,22 @@ const PickAFilm = () => {
           </div> :
 
           <div className='relative'>
-            {/* film 1 */}
             <div className='flex justify-start'>
+              {/* film 1 */}
               <img
                 src={trending && trending[0]?.poster_path ? image500(trending[0].poster_path) : fallbackMoviePoster}
                 alt={trending && trending[0]?.title}
                 className='rounded-sm absolute w-[150px] rotate-[-15deg] top-1/2 translate-x-[-10%] translate-y-[20%] z-40
                 lg:w-[200px] lg:rotate-[-10deg] lg:top-1/2 lg:translate-x-[-10%] lg:translate-y-[20%] lg:z-40'
               />
+              {/* film 2 */}
+
               <img
                 src={trending && trending[0]?.poster_path ? image500(trending[1].poster_path) : fallbackMoviePoster}
                 alt={trending && trending[0]?.title}
                 className='rounded-sm absolute w-[150px] rotate-[-10deg] top-1/2 left-1/2 translate-x-[-50%] translate-y-[5%] z-50'
               />
-             <img
+              <img
                 src={trending && trending[0]?.poster_path ? image500(trending[2].poster_path) : fallbackMoviePoster}
                 alt={trending && trending[0]?.title}
                 className='rounded-sm absolute w-[150px] rotate-[15deg] top-1/2 translate-x-[130%] translate-y-[20%] z-40'
@@ -87,10 +89,6 @@ const PickAFilm = () => {
                 className='rounded-sm absolute w-[150px] rotate-[15deg] top-1/2 translate-x-[90%] translate-y-[80%] z-30'
               />
             </div>
-            {/* film 2 */}
-            {/* film 3 */}
-            {/* film 4 */}
-            {/* film 5 */}
           </div>
         }
 

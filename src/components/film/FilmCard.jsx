@@ -16,8 +16,8 @@ const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, gues
     const handleSelect = (itemId) => {
 
         // check if selectedFilms includes an object that has its id equal to the itemId
-        const newSelectedFilms = selectedFilms.find(film => film.id === itemId) ? 
-            selectedFilms.filter(film => film.id !== itemId) : // de-select
+        const newSelectedFilms = selectedFilms.find(film => parseInt(film.id) === itemId) ? 
+            selectedFilms.filter(film => parseInt(film.id) !== itemId) : // de-select
             [...selectedFilms, item]; // select
         
         setSelectedFilms(newSelectedFilms);
@@ -40,7 +40,7 @@ const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, gues
                             src={image500(item.poster_path)}
                             alt={item.title}
                             className={`object-cover object-center rounded-sm
-                                        ${selectedFilms?.find((film) => film.id == item.id) ? 'border-4 border-accent' : ''}`}
+                                        ${selectedFilms?.find((film) => parseInt(film.id) == item.id) ? 'border-4 border-accent' : ''}`}
                         />
                     ) : (
                         <Link to={`/film/${item.id}`}>
@@ -55,12 +55,12 @@ const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, gues
                     {/* Overlay: Select & Preview Buttons */}
                     {selectedFilms &&
                         <div className={`overlay-buttons [&_*]:hidden [&_*]:hover:flex transition-all duration-500 ease-in-out 
-                                ${selectedFilms?.find((film) => film.id == item.id) ? 'bg-black/50' : ''}`}>
+                                ${selectedFilms?.find((film) => parseInt(film.id) == item.id) ? 'bg-black/30' : ''}`}>
                             {/* Select Button */}
                             <div className="overlay-button">
                                 <button onClick={() => handleSelect(item.id)} >
-                                    <IoIosAddCircleOutline className={`m-3 rotate-0 transition-all ${selectedFilms.find((film) => film.id == item.id) ? "-rotate-90 scale-0 hidden md:block" : "scale-100"}`} />
-                                    <IoIosCheckmarkCircleOutline className={`m-3 text-accent absolute transition-all ${selectedFilms.find((film) => film.id == item.id) ? "rotate-0 scale-100" : "hidden scale-0 rotate-90"}`} />
+                                    <IoIosAddCircleOutline className={`m-3 rotate-0 transition-all ${selectedFilms.find((film) => parseInt(film.id) == item.id) ? "-rotate-90 scale-0 hidden md:block" : "scale-100"}`} />
+                                    <IoIosCheckmarkCircleOutline className={`m-3 text-accent absolute transition-all ${selectedFilms.find((film) => parseInt(film.id) == item.id) ? "rotate-0 scale-100" : "hidden scale-0 rotate-90"}`} />
                                 </button>
                             </div>
                             {/* Preview Button */}
