@@ -12,26 +12,34 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
   const [showFilmSearch, setShowFilmSearch] = useState(false);
   const [showGuestSelection, setShowGuestSelection] = useState(false);
   const [showVoteResult, setShowVoteResult] = useState(false);
-  const [selectedFilms, setSelectedFilms] = useState([]);
-  const [selectedGuest, setSelectedGuest] = useState("");
+  const [selectedFilms, setSelectedFilms] = useState(parentFormData.selectedFilms);
   const [formData, setFormData] = useState(parentFormData);
+  const [selectedGuest, setSelectedGuest] = useState("-1");
+  const [votedFilms, setVotedFilms] = useState([]);        
+
+  // call api to get the voted films of the selected user
+  useEffect(() => {
+    // set the votedFilms by using parentFormData
+    setVotedFilms(parentFormData.guestList.find(guest => guest.id === selectedGuest)?.filmsVoted);
+
+  }, [selectedGuest]);
+
+  // when votedFilms is updated, update the parent formData
+  useEffect(() => {
+    console.log("votedFilms: ", votedFilms);
+
+    setParentFormData(previous => ({
+      ...previous,
+      guestList: previous.guestList.map(guest => 
+        guest.id === selectedGuest ? { ...guest, filmsVoted: votedFilms } : guest)
+    }))
+  }, [votedFilms]);
 
   // handle search apply, prompt to user selection
   const handleSearchApply = (formData) => {
     setShowFilmSearch(false);
-
-    // check whether user is logged in
-    const user = null; // user logged in will be implemented in the future
-    if (!user) {
-      console.log("GuestList: ", parentFormData.guestList);
-      setShowGuestSelection(true);
-    }
-
     const newSelectedFilms = formData.selectedFilms;
-    console.log(newSelectedFilms);
-
     setSelectedFilms(newSelectedFilms); //update local selected films
-
   }
 
   // update parent selected films
@@ -53,7 +61,7 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
   const GuestSelectionModal = () => {
     return (
       <AlertDialog open={showGuestSelection} onOpenChange={setShowGuestSelection}>
-        <AlertDialogContent hasClose={true} className="overflow-y-auto bg-primary text-secondary border-none w-[90%]">
+        <AlertDialogContent hasClose={true} >
           <AlertDialogTitle>Add films to poll as</AlertDialogTitle>
           <GuestSelection
             selectedGuest={selectedGuest}
@@ -73,7 +81,7 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
     return (
       <SmallDialog open={showVoteResult} onOpenChange={setShowVoteResult}>
         <SmallDialogContent hasClose={true} className="overflow-y-auto bg-primary text-secondary border-none w-[90%]">
-          <VoteResult formData={formData}/>
+          <VoteResult formData={formData} />
         </SmallDialogContent>
       </SmallDialog>
     )
@@ -87,6 +95,7 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
             formData={parentFormData}
             nextStep={handleSearchApply}
             hasTitle={false}
+            protectedFilms={selectedFilms}
           />
         </DialogContent>
       </Dialog>
@@ -130,8 +139,8 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
             <div key={item.id}>
               <FilmCard
                 item={item}
-                selectedFilms={selectedFilms}
-                setSelectedFilms={setSelectedFilms}
+                selectedFilms={votedFilms}
+                setSelectedFilms={setVotedFilms}
               />
             </div>
           ))}

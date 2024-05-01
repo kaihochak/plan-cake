@@ -45,7 +45,7 @@ import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog"
  *
  */
 
-const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle }) => {
+const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFilms }) => {
     const [loading, setLoading] = useState(false);
 
     // Form 
@@ -145,6 +145,8 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle }) => {
 
             // Sort the watchlisted films by the number of watchlists, and set the state
             userWatchlists = sortFilmsByWatchlist(userWatchlists);
+
+            console.log('setSortedWatchlist is called', userWatchlists);
             setSortedWatchlist(userWatchlists);
         } catch (error) {
             console.error("Error fetching watchlisted films:", error);
@@ -174,6 +176,8 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle }) => {
         console.log("upcomingFilms", upcomingFilms);
         if (sortedWatchlist.length > 0 && upcomingFilms.length > 0) {
             setFilmData([...sortedWatchlist, ...upcomingFilms]);
+        } else {
+            console.log('Waiting for sortedWatchlist and upcomingFilms to populate');
         }
     }, [sortedWatchlist, upcomingFilms]);
 
@@ -191,27 +195,33 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle }) => {
         setSearchTerm(e.target.value);
         debouncedSearch(e.target.value);
     };
+    // debounce the search function
     const debouncedSearch = useCallback(
-        (searchTerm) => requestSearch(searchTerm), []
+        debounce(async (searchTerm) => {
+            console.log("searching for", searchTerm);
+            // if search term is not empty, fetch search results
+            if (searchTerm && searchTerm.length > 0) {
+                setLoading(true);
+                const data = await searchFilms({
+                    query: searchTerm,
+                    include_adult: false,
+                    language: 'en-US',
+                    page: 1
+                })
+                if (data && data.results) setFilmData(data.results);
+            } else {
+                if (sortedWatchlist.length > 0 && upcomingFilms.length > 0) {
+                    console.log("setting film data");
+                    setFilmData([...sortedWatchlist, ...upcomingFilms]);
+                }
+                else setFilmData(upcomingFilms);
+            }
+            setLoading(false);
+        }, 500),
+        [sortedWatchlist, upcomingFilms] 
+        // make sure when search term is empty, sortedWatchlist and upcomingFilms are not going to be remounted, leading to empty filmData
     );
-    const requestSearch = debounce(async (searchTerm) => {
-        console.log("searching for", searchTerm);
-        // if search term is not empty, fetch search results
-        if (searchTerm && searchTerm.length > 0) {
-            setLoading(true);
-            const data = await searchFilms({
-                query: searchTerm,
-                include_adult: false,
-                language: 'en-US',
-                page: 1
-            })
-            if (data && data.results) setFilmData(data.results);
-        } else {
-            if (sortedWatchlist.length > 0 && upcomingFilms.length > 0) setFilmData([...sortedWatchlist, ...upcomingFilms]);
-            else setFilmData(upcomingFilms);
-        }
-        setLoading(false);
-    }, 500);
+
 
     /************************************************************************
      * FILTERS & SORTING
@@ -222,7 +232,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle }) => {
 
     // keep track of whether any filter or sort has been applied
     useEffect(() => {
-        console.log("filmData", filmData);
+        console.log("[filmData, sortBy, filters]: ", filmData);
         setFilteredResults(sortResults(filterResults(filmData)));
     }, [filmData, sortBy, filters]);
 
@@ -430,6 +440,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle }) => {
                         setSelectedFilms={updateSelection}
                         watchlistObject={watchlistObject}
                         guests={users}
+                        protectedFilms={protectedFilms}
                     />
                 }
 

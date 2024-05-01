@@ -17,30 +17,11 @@ const TopBar = ({isSticky}) => {
 
     return (
         <section className="topbar">
-            <nav className="px-5 py-6 flex-between">
+            <nav className="p-6 flex justify-center">
                 {/* Logo as Home Button */}
                 <Link to="/" className="home-logo">
-                    <img src={Logo} alt="Home" className="w-32 " />
+                    <img src={Logo} alt="Home" className="w-28 " />
                 </Link>
-
-                {/* Right side of TopBar */}
-                <div className='flex gap-4'>
-                    {/* Logout */}
-                    <button 
-                        variant="ghost"
-                        onClick={() => signOut()}
-                    >
-                        <IoMdLogOut className='text-[30px] text-primary-foreground'/>
-                    </button>
-                    {/* Profile */}
-                    <Link to={`/profile/${user.id}`} className='gap-3 flex-center'>
-                        <img 
-                            src={user.imageUrl || ProfilePlaceholder} 
-                            alt="profile"
-                            className="w-8 h-8 rounded-full"
-                        />
-                    </Link>
-                </div>
             </nav>
         </section>
     )

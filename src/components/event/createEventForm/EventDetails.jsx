@@ -6,10 +6,8 @@ import { CalendarIcon } from "@radix-ui/react-icons";
 import { addDays, format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger,
-} from "@/components/ui/popover";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import FileUploader from "@/components/shared/FileUploader";
 import { convertFileToUrl } from "@/lib/utils";

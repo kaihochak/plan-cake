@@ -15,9 +15,10 @@
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^3.3.4",
-    "@mantine/core": "^7.7.0",
-    "@mantine/hooks": "^7.7.0",
-    "@mantine/modals": "^7.7.0",
+    "@mantine/core": "^7.8.1",
+    "@mantine/dates": "^7.8.1",
+    "@mantine/hooks": "^7.8.1",
+    "@mantine/modals": "^7.8.1",
     "@mui/material": "^5.15.6",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",
@@ -52,7 +53,7 @@
     "react-day-picker": "^8.9.1",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
-    "react-hook-form": "^7.50.1",
+    "react-hook-form": "^7.51.3",
     "react-icons": "^4.11.0",
     "react-modal": "^3.16.1",
     "react-resizable-panels": "^2.0.16",
@@ -62,7 +63,7 @@
     "tailwind-merge": "^2.1.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.8.9",
-    "zod": "^3.22.4"
+    "zod": "^3.23.4"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
