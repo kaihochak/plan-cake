@@ -48,7 +48,7 @@ body {
     --accent-foreground: 0 0% 12%;
 
     /* Purple */
-    --accent2: 220 100% 80%;
+    --accent2: 200 90% 70%;
     --accent2-foreground: 0 0% 85%;
 
     /* Red */
@@ -514,11 +514,15 @@ body {
   }
 
   .overlay-buttons {
-    @apply absolute bottom-0 right-0 z-20 flex flex-row items-center justify-center hover:bg-black/50;
+    @apply absolute bottom-0 right-0 z-20 flex items-center justify-center hover:bg-black/50;
   }
 
   .overlay-button {
     @apply w-full h-full border-0 bg-black/50 text-[30px] flex-center;
+  }
+
+  .overlay-message {
+    @apply w-full h-20 border-0 bg-black/50 flex-center;
   }
 
   /* File uploader */
