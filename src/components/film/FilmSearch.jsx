@@ -45,7 +45,7 @@ import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog"
  *
  */
 
-const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle }) => {
+const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFilms }) => {
     const [loading, setLoading] = useState(false);
 
     // Form 
@@ -440,6 +440,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle }) => {
                         setSelectedFilms={updateSelection}
                         watchlistObject={watchlistObject}
                         guests={users}
+                        protectedFilms={protectedFilms}
                     />
                 }
 

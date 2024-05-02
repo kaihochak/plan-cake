@@ -6,7 +6,7 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import FilmPreview from "@/components/film/FilmPreview";
 import { Link } from 'react-router-dom';
 
-const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, guests }) => {
+const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, guests, isProtected }) => {
     const bp_768 = useMediaQuery('(min-width:768px)');
     const [isModalOpen, setIsModalOpen] = React.useState(false)
     const [viewFilmId, setViewFilmId] = React.useState(false)
@@ -14,7 +14,6 @@ const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, gues
 
     // Select or de-select a film, then update the selectedFilms state back in the parent component
     const handleSelect = (itemId) => {
-
         // check if selectedFilms includes an object that has its id equal to the itemId
         const newSelectedFilms = selectedFilms.find(film => parseInt(film.id) === itemId) ? 
             selectedFilms.filter(film => parseInt(film.id) !== itemId) : // de-select

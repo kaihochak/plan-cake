@@ -43,12 +43,8 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
   // handle search apply, prompt to user selection
   const handleSearchApply = (formData) => {
     setShowFilmSearch(false);
-
     const newSelectedFilms = formData.selectedFilms;
-    console.log(newSelectedFilms);
-
     setSelectedFilms(newSelectedFilms); //update local selected films
-
   }
 
   // update parent selected films
@@ -106,6 +102,7 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
             nextStep={handleSearchApply}
             hasTitle={false}
             selectedGuest={selectedGuest}
+            protectedFilms={selectedFilms}
           />
         </DialogContent>
       </Dialog>

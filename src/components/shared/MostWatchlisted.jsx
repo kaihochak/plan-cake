@@ -26,11 +26,11 @@ const MostWatchlisted = ({ isFilterVisible, hasButton, max }) => {
     <section className='w-full'>
       {/* Title */}
       <div>
-        <div className='flex justify-between items-baseline border-b-2 pb-2 mb-2'>
-          <h2 className='text-m-2xl sm:text-m-3xl'>Most Watchlisted</h2>
+        <div className='flex items-baseline justify-between pb-2 mb-2 border-b-2'>
+          <h2 className='h2'>Most Watchlisted</h2>
           <div className='flex items-center'>
             <NavLink to='/explore/most-watchlisted'>
-              <p className='mr-2 sm:text-m-l'>VIEW MORE</p>
+              <p className='bold'>VIEW MORE</p>
             </NavLink>
             <BsArrowRight />
           </div>

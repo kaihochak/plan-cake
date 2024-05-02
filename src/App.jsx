@@ -53,7 +53,7 @@ function App() {
         {/* Toaster from Shadcn */}
         <Toaster />
       </main>
-    </MantineProvider>
+     </MantineProvider>
   );
 }
 
