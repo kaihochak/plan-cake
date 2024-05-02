@@ -78,7 +78,7 @@ const GuestSelection = ({ formData:parentFormData, selectedGuest, setSelectedGue
 						<ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
 					</Button>
 				</PopoverTrigger>
-				<PopoverContent className="w-[200px] p-0">
+				<PopoverContent className="w-[200px] p-0 ">
 					<Command>
 						<div className='relative'>
 							<CommandInput

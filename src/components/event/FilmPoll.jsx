@@ -8,33 +8,42 @@ import { Dialog as SmallDialog, DialogContent as SmallDialogContent } from "@/co
 import VoteResult from "@/components/event/VoteResult";
 import GuestSelection from "@/components/event/GuestSelection";
 
-const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) => {
+const FilmPoll = ({ formData, setFormData }) => {
   const [showFilmSearch, setShowFilmSearch] = useState(false);
   const [showGuestSelection, setShowGuestSelection] = useState(false);
   const [selectedGuest, setSelectedGuest] = useState(null);
   const [showVoteResult, setShowVoteResult] = useState(false);
-  const [selectedFilms, setSelectedFilms] = useState(parentFormData.selectedFilms);
-  const [formData, setFormData] = useState(parentFormData);
+  const [selectedFilms, setSelectedFilms] = useState(formData.selectedFilms);
   const [votedFilms, setVotedFilms] = useState([]);         // the voted films of the selected user
+
+  const host = localStorage.getItem('host');
+
+  useEffect(() => {
+    if(host && !selectedGuest) {     
+      setSelectedGuest("0")
+    }
+  }), [];
  
   // call api to get the voted films of the selected user
   useEffect(() => {
-    // set the votedFilms by using parentFormData
-    setVotedFilms( parentFormData.guestList.filter(guest => (guest.id === selectedGuest)) )
+    // set the votedFilms by usingFormData
+    setVotedFilms( formData.guestList.filter(guest => (guest.id === selectedGuest)) )
 
     console.log(selectedGuest);
 
     // check whether user is logged in
     // const selectedGuest = null; // user logged in will be implemented in the future
-    if (!selectedGuest) {
-      console.log("GuestList: ", parentFormData.guestList);
+
+    
+    if (!selectedGuest && !host) {
+      console.log("GuestList: ", formData.guestList);
       setShowGuestSelection(true);
     }
   }, [selectedGuest]);
   
-  // when votedFilms is updated, update the parent formData
+  // when votedFilms is updated, update the formData
   useEffect(() => {
-    setParentFormData(previous => ({
+    setFormData(previous => ({
       ...previous,
       votedFilms
     }))
@@ -47,9 +56,9 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
     setSelectedFilms(newSelectedFilms); //update local selected films
   }
 
-  // update parent selected films
+  // update selected films
   useEffect(() => {
-    setParentFormData(previous => ({
+    setFormData(previous => ({
       ...previous,
       selectedFilms
     }))
@@ -98,7 +107,7 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
       <Dialog open={showFilmSearch} onOpenChange={setShowFilmSearch}>
         <DialogContent hasClose={true} className="w-full h-full lg:w-[70%] lg:h-[80%] overflow-y-auto bg-primary text-secondary">
           <FilmSearch
-            formData={parentFormData}
+            formData={formData}
             nextStep={handleSearchApply}
             hasTitle={false}
             selectedGuest={selectedGuest}
