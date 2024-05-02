@@ -7,9 +7,8 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
-const GuestSelection = ({ formData:parentFormData }) => {
+const GuestSelection = ({ formData:parentFormData, selectedGuest, setSelectedGuest }) => {
 	const [openGuestList, setOpenGuestList] = useState(false);
-	const [selectedGuest, setSelectedGuest] = useState("");
 	const [searchGuestName, setSearchGuestName] = useState("");
 
 	useEffect(() => {

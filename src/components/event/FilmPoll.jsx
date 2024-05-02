@@ -5,33 +5,38 @@ import FilmSearch from '@/components/film/FilmSearch';
 import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Dialog as SmallDialog, DialogContent as SmallDialogContent } from "@/components/ui/voteSelectDialog";
-import GuestSelection from "@/components/event/GuestSelection";
 import VoteResult from "@/components/event/VoteResult";
+import GuestSelection from "@/components/event/GuestSelection";
 
 const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) => {
   const [showFilmSearch, setShowFilmSearch] = useState(false);
   const [showGuestSelection, setShowGuestSelection] = useState(false);
+  const [selectedGuest, setSelectedGuest] = useState(null);
   const [showVoteResult, setShowVoteResult] = useState(false);
   const [selectedFilms, setSelectedFilms] = useState(parentFormData.selectedFilms);
   const [formData, setFormData] = useState(parentFormData);
-  const [selectedGuest, setSelectedGuest] = useState("-1");
-  const [votedFilms, setVotedFilms] = useState([]);        
-
+  const [votedFilms, setVotedFilms] = useState([]);         // the voted films of the selected user
+ 
   // call api to get the voted films of the selected user
   useEffect(() => {
     // set the votedFilms by using parentFormData
-    setVotedFilms(parentFormData.guestList.find(guest => guest.id === selectedGuest)?.filmsVoted);
+    setVotedFilms( parentFormData.guestList.filter(guest => (guest.id === selectedGuest)) )
 
+    console.log(selectedGuest);
+
+    // check whether user is logged in
+    // const selectedGuest = null; // user logged in will be implemented in the future
+    if (!selectedGuest) {
+      console.log("GuestList: ", parentFormData.guestList);
+      setShowGuestSelection(true);
+    }
   }, [selectedGuest]);
-
+  
   // when votedFilms is updated, update the parent formData
   useEffect(() => {
-    console.log("votedFilms: ", votedFilms);
-
     setParentFormData(previous => ({
       ...previous,
-      guestList: previous.guestList.map(guest => 
-        guest.id === selectedGuest ? { ...guest, filmsVoted: votedFilms } : guest)
+      votedFilms
     }))
   }, [votedFilms]);
 
@@ -58,6 +63,7 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
    * Modals
    * ******************************************************************************/
 
+
   const GuestSelectionModal = () => {
     return (
       <AlertDialog open={showGuestSelection} onOpenChange={setShowGuestSelection}>
@@ -81,7 +87,7 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
     return (
       <SmallDialog open={showVoteResult} onOpenChange={setShowVoteResult}>
         <SmallDialogContent hasClose={true} className="overflow-y-auto bg-primary text-secondary border-none w-[90%]">
-          <VoteResult formData={formData} />
+          <VoteResult formData={formData}/>
         </SmallDialogContent>
       </SmallDialog>
     )
@@ -95,6 +101,7 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
             formData={parentFormData}
             nextStep={handleSearchApply}
             hasTitle={false}
+            selectedGuest={selectedGuest}
             protectedFilms={selectedFilms}
           />
         </DialogContent>
@@ -115,7 +122,14 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
         <Button
           size="md"
           className="w-[100px] h-[25px] border-none bg-accent"
-          onClick={() => setShowFilmSearch(true)}
+          // onClick={() => setShowFilmSearch(true)}
+          onClick={() => {
+            if (selectedGuest) {
+              setShowFilmSearch(true);
+            } else {
+              setShowGuestSelection(true);
+            }
+          }}
         >
           <p className='text-m-s text-accent-foreground'>Add Film</p>
         </Button>
@@ -150,8 +164,10 @@ const FilmPoll = ({ formData: parentFormData, setFormData: setParentFormData }) 
       {/* FilmSearch */}
       <FilmSearchModal />
 
+
       {/* Guest Selection Modal */}
       <GuestSelectionModal />
+
 
       {/* Vote Result Modal */}
       <VoteResultModal />
