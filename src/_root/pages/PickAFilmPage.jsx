@@ -797,6 +797,23 @@ const PickAFilmPage = () => {
     file: [],
   });
 
+  const host = localStorage.getItem('host');
+
+  useEffect(() => {
+      setFormData(previous => ({
+        ...previous,
+        guestList: previous.guestList.some(guest => guest.id === "0") ?
+        [...previous.guestList]
+        :
+         [...previous.guestList, {
+          id: "0",
+          name: host,
+          avatar: "/assets/avatars/avatar4.jpg",
+          filmsVoted: []
+        }] 
+      }))
+  }, [host]);
+
   /**********************************************************************************
    * Rendering
    **********************************************************************************/

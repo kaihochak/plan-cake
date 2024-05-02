@@ -41,6 +41,7 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
     // form submit
     function handleFormSubmit(values) {
         setFormData({ ...formData, title: values.title, host: values.host });
+        localStorage.setItem('host', values.host);
         onClose(!isOpen);
         navigate("/pickAfilm/1")
     }
