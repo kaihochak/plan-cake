@@ -14,11 +14,15 @@ const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, gues
 
     // Select or de-select a film, then update the selectedFilms state back in the parent component
     const handleSelect = (itemId) => {
-        // check if selectedFilms includes an object that has its id equal to the itemId
-        const newSelectedFilms = selectedFilms.find(film => parseInt(film.id) === itemId) ? 
-            selectedFilms.filter(film => parseInt(film.id) !== itemId) : // de-select
-            [...selectedFilms, item]; // select
-        
+
+        // check if the item is already in the selectedFilms array, 
+        //      if yes, de-select it, if not, select it
+        //      for protected film, disable the selection/de-selection
+        const newSelectedFilms = isProtected ? [...selectedFilms, item] :
+            selectedFilms.find(film => parseInt(film.id) === itemId) ?
+                selectedFilms.filter(film => parseInt(film.id) !== itemId) :
+                [...selectedFilms, item];
+
         setSelectedFilms(newSelectedFilms);
     };
 
