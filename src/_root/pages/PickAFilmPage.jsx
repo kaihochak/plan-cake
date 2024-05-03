@@ -12,10 +12,10 @@ const PickAFilmPage = () => {
         name: "Darcy",
         avatar: "/assets/avatars/avatar1.jpg",
         filmsVoted: [
-          {id: "604788"}, 
-          {id: "823464"}, 
-          {id: "300"}, 
-          {id: "24"}
+          { id: "604788" },
+          { id: "823464" },
+          { id: "300" },
+          { id: "24" }
         ]
       },
       {
@@ -23,9 +23,9 @@ const PickAFilmPage = () => {
         name: "Susan",
         avatar: "/assets/avatars/avatar2.jpg",
         filmsVoted: [
-          {id: "634492"},
-          {id: "300"},
-          {id: "24"}
+          { id: "634492" },
+          { id: "300" },
+          { id: "24" }
         ]
       },
       {
@@ -33,8 +33,8 @@ const PickAFilmPage = () => {
         name: "Joanna",
         avatar: "/assets/avatars/avatar3.jpg",
         filmsVoted: [
-          {id: "300"},
-          {id: "24"}
+          { id: "300" },
+          { id: "24" }
         ]
       }
     ],
@@ -800,18 +800,19 @@ const PickAFilmPage = () => {
   const host = localStorage.getItem('host');
 
   useEffect(() => {
-      setFormData(previous => ({
-        ...previous,
-        guestList: previous.guestList.some(guest => guest.id === "0") ?
+    if (!host) return;
+    setFormData(previous => ({
+      ...previous,
+      guestList: previous.guestList.some(guest => guest.id === "0") ?
         [...previous.guestList]
         :
-         [...previous.guestList, {
+        [...previous.guestList, {
           id: "0",
           name: host,
           avatar: "/assets/avatars/avatar4.jpg",
           filmsVoted: []
-        }] 
-      }))
+        }]
+    }))
   }, [host]);
 
   /**********************************************************************************

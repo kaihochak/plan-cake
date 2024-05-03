@@ -7,13 +7,10 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
-const GuestSelection = ({ formData:parentFormData, selectedGuest, setSelectedGuest }) => {
+const GuestSelection = ({ formData: parentFormData }) => {
 	const [openGuestList, setOpenGuestList] = useState(false);
 	const [searchGuestName, setSearchGuestName] = useState("");
-
-	useEffect(() => {
-		console.log('selectedGuest:', selectedGuest);
-	}, [selectedGuest])
+	const [selectedGuest, setSelectedGuest] = useState("");
 
 	// handle guest selection
 	// const handleGuestSelection = (id) => {
@@ -47,6 +44,14 @@ const GuestSelection = ({ formData:parentFormData, selectedGuest, setSelectedGue
 	// 	setshowGuestSelection(false);
 	// }
 
+
+	parentFormData?.guestList?.map((guest) => (
+		console.log('guest:', guest)
+	))
+
+
+
+
 	const handleAddGuest = () => {
 		if (searchGuestName) {
 			const newGuest = {
@@ -60,7 +65,7 @@ const GuestSelection = ({ formData:parentFormData, selectedGuest, setSelectedGue
 			setSelectedGuest(newGuest.id);
 			setSearchGuestName("");
 		}
-	}	
+	}
 
 	return (
 		<div className='p-6 flex-center '>
@@ -86,9 +91,9 @@ const GuestSelection = ({ formData:parentFormData, selectedGuest, setSelectedGue
 								value={searchGuestName}
 								onValueChange={(value) => setSearchGuestName(value)}
 							/>
-							<Button 
-								size="icon" 
-								className="absolute top-0.5 right-0 border-none hover:bg-accent" 
+							<Button
+								size="icon"
+								className="absolute top-0.5 right-0 border-none hover:bg-accent"
 								onClick={handleAddGuest}
 							>
 								<IoMdAdd className="w-6 h-6" />
@@ -96,10 +101,10 @@ const GuestSelection = ({ formData:parentFormData, selectedGuest, setSelectedGue
 						</div>
 						<CommandEmpty>Welcome, <b>{searchGuestName}</b>! 🎉</CommandEmpty>
 						<CommandGroup>
-							{parentFormData?.guestList?.map((guest) => (
+							{parentFormData?.guestList?.map((guest, index) => (
 								<CommandItem
 									key={guest.id}
-									value={guest.name}
+									value={guest.name || ""}
 									onSelect={() => {
 										console.log('currentId:', guest.id);
 										setSelectedGuest(guest.id === selectedGuest ? "" : guest.id)
@@ -116,6 +121,8 @@ const GuestSelection = ({ formData:parentFormData, selectedGuest, setSelectedGue
 									/>
 								</CommandItem>
 							))}
+
+
 						</CommandGroup>
 					</Command>
 				</PopoverContent>

@@ -28,13 +28,9 @@ const FilmPoll = ({ formData, setFormData }) => {
   useEffect(() => {
     // set the votedFilms by usingFormData
     setVotedFilms( formData.guestList.filter(guest => (guest.id === selectedGuest)) )
-
-    console.log(selectedGuest);
-
     // check whether user is logged in
     // const selectedGuest = null; // user logged in will be implemented in the future
 
-    
     if (!selectedGuest && !host) {
       console.log("GuestList: ", formData.guestList);
       setShowGuestSelection(true);
