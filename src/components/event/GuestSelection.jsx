@@ -7,10 +7,9 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
-const GuestSelection = ({ formData: parentFormData }) => {
+const GuestSelection = ({ formData: parentFormData, selectedGuest, setSelectedGuest }) => {
 	const [openGuestList, setOpenGuestList] = useState(false);
 	const [searchGuestName, setSearchGuestName] = useState("");
-	const [selectedGuest, setSelectedGuest] = useState("");
 
 	// handle guest selection
 	// const handleGuestSelection = (id) => {
@@ -69,13 +68,13 @@ const GuestSelection = ({ formData: parentFormData }) => {
 
 	return (
 		<div className='p-6 flex-center '>
-			<Popover open={openGuestList} onOpenChange={setOpenGuestList} className="">
+			<Popover open={openGuestList} onOpenChange={setOpenGuestList} >
 				<PopoverTrigger asChild>
 					<Button
 						variant="outline"
 						role="combobox"
 						aria-expanded={openGuestList}
-						className={`w-[200px] justify-between ${selectedGuest ? "bg-accent text-accent-foreground" : "bg-primary text-secondary"}`}
+						className={`w-[200px] justify-between ${selectedGuest ? "bg-accent text-accent-foreground" : "bg-background text-secondary"}`}
 					>
 						{selectedGuest
 							? parentFormData.guestList?.find((guest) => guest.id === selectedGuest)?.name
@@ -93,7 +92,7 @@ const GuestSelection = ({ formData: parentFormData }) => {
 							/>
 							<Button
 								size="icon"
-								className="absolute top-0.5 right-0 border-none hover:bg-accent"
+								className="absolute top-0.5 right-0 border-none bg-background hover:bg-accent"
 								onClick={handleAddGuest}
 							>
 								<IoMdAdd className="w-6 h-6" />

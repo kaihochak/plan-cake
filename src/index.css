@@ -29,11 +29,12 @@ body {
     --card-foreground: 222.2 84% 4.9%;
 
     /* Off White */
-    --popover: var(--primary);
-    --popover-foreground: var(--primary-foreground);
+    --popover: var(--background);
+    --popover-foreground: var(--foreground);
 
     /* Off Black */
     --primary: 0 0% 8%;
+    --primary-light: 0 0% 35%;
     --primary-foreground: 0 0% 85%;
 
     /* Off White */

@@ -54,7 +54,7 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
         <Dialog open={isOpen} onOpenChange={() => onClose(!isOpen)}>
             <DialogContent className="">
                 <DialogHeader>
-                    <DialogTitle>New PickAFilm</DialogTitle>
+                    <DialogTitle>New Event</DialogTitle>
                     <DialogDescription>
                     </DialogDescription>
                 </DialogHeader>
@@ -99,11 +99,10 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
                                     )}
                                 >
                                     <CalendarIcon className="w-4 h-4 mr-2" />
-                                    {formData.date ? (
-                                        format(formData.date, "PPP")
-                                    ) : (
-                                        <span className="text-m-m">Pick A Date</span>
-                                    )}
+                                    {formData.date ?
+                                        (format(formData.date, "PPP")) : 
+                                        (<span className="text-m-m">Pick A Date</span>)
+                                    }
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent

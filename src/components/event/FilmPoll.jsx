@@ -73,7 +73,7 @@ const FilmPoll = ({ formData, setFormData }) => {
     return (
       <AlertDialog open={showGuestSelection} onOpenChange={setShowGuestSelection}>
         <AlertDialogContent hasClose={true} >
-          <AlertDialogTitle>Add films to poll as</AlertDialogTitle>
+          <AlertDialogTitle>Who are you?</AlertDialogTitle>
           <GuestSelection
             selectedGuest={selectedGuest}
             setSelectedGuest={setSelectedGuest}
@@ -101,7 +101,7 @@ const FilmPoll = ({ formData, setFormData }) => {
   const FilmSearchModal = () => {
     return (
       <Dialog open={showFilmSearch} onOpenChange={setShowFilmSearch}>
-        <DialogContent hasClose={true} className="w-full h-full lg:w-[70%] lg:h-[80%] overflow-y-auto bg-primary text-secondary">
+        <DialogContent hasClose={true} className="w-full h-full lg:w-[85%] lg:h-[85%] overflow-y-auto custom-scrollbar bg-primary text-secondary">
           <FilmSearch
             formData={formData}
             nextStep={handleSearchApply}
@@ -141,13 +141,9 @@ const FilmPoll = ({ formData, setFormData }) => {
       </div>
 
       {/* Film poll */}
-      <div className='p-4 my-2 rounded-sm bg-border'>
+      <div className='p-4 my-2 rounded-sm bg-primary-light'>
         <div className='flex flex-row justify-end gap-2 text-m-m text-primary-foreground'>
-          <button
-            onClick={() => setShowVoteResult(true)}
-          >
-            View Result
-          </button>
+          <button onClick={() => setShowVoteResult(true)}>View Result</button>
           <button>Sort by</button>
         </div>
         <div className='grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4 '>
