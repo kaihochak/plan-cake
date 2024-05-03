@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useParams } from 'react'
 import FilmPoll from '@/components/event/FilmPoll'
 import GuestList from '@/components/event/GuestList'
+import GuestSelection from "@/components/event/GuestSelection";
 
 const PickAFilmPage = () => {
   const [event, setEvent] = useState(null);
   const { id } = 1; // To be updated
+  const [selectedGuest, setSelectedGuest] = useState(null);
   const [formData, setFormData] = useState({
     guestList: [
       {
@@ -823,8 +825,17 @@ const PickAFilmPage = () => {
     <div className='common-container'>
       <div className='flex flex-col w-full max-w-[1024px] mx-auto gap-y-2 pt-12 xl:pt-0 md:pb-32'>
         <h2 className="title">Pick A Film</h2>
+        <div className='flex-between'>
         {/* Guests */}
         <GuestList />
+
+        <GuestSelection
+            selectedGuest={selectedGuest}
+            setSelectedGuest={setSelectedGuest}
+            formData={formData}
+        />
+        </div>
+
         {/* Poster */}
         {/* <SelectedFilm selectedFilms={formData.selectedFilms}/> */}
         {/* Film Poll */}

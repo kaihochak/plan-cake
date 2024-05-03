@@ -8,10 +8,9 @@ import { Dialog as SmallDialog, DialogContent as SmallDialogContent } from "@/co
 import VoteResult from "@/components/event/VoteResult";
 import GuestSelection from "@/components/event/GuestSelection";
 
-const FilmPoll = ({ formData, setFormData }) => {
+const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) => {
   const [showFilmSearch, setShowFilmSearch] = useState(false);
   const [showGuestSelection, setShowGuestSelection] = useState(false);
-  const [selectedGuest, setSelectedGuest] = useState(null);
   const [showVoteResult, setShowVoteResult] = useState(false);
   const [selectedFilms, setSelectedFilms] = useState(formData.selectedFilms);
   const [votedFilms, setVotedFilms] = useState([]);         // the voted films of the selected user
