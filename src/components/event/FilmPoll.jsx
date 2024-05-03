@@ -5,34 +5,48 @@ import FilmSearch from '@/components/film/FilmSearch';
 import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Dialog as SmallDialog, DialogContent as SmallDialogContent } from "@/components/ui/voteSelectDialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/sortSelect";
 import VoteResult from "@/components/event/VoteResult";
 import GuestSelection from "@/components/event/GuestSelection";
+import { PiFilmStripBold } from "react-icons/pi";
 
 const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) => {
   const [showFilmSearch, setShowFilmSearch] = useState(false);
   const [showGuestSelection, setShowGuestSelection] = useState(false);
   const [showVoteResult, setShowVoteResult] = useState(false);
   const [selectedFilms, setSelectedFilms] = useState(formData.selectedFilms);
-  const [votedFilms, setVotedFilms] = useState([]);         // the voted films of the selected user
-
+  const [votedFilms, setVotedFilms] = useState([]);
+  const [sortOrder, setSortOrder] = useState('');
   const host = localStorage.getItem('host');
 
+  // if it's the host, set the host to be the current user
   useEffect(() => {
-    if(host && !selectedGuest) setSelectedGuest("0")
+    if (host && !selectedGuest) setSelectedGuest("0")
   }), [];
- 
+
   // call api to get the voted films of the selected user
   useEffect(() => {
-    console.log(selectedGuest);
     setVotedFilms(formData.guestList.find(guest => (guest.id === selectedGuest))?.filmsVoted);
   }, [selectedGuest]);
-  
+
+  // sort the films
+  const sortFilms = (order) => {
+    const films = [...selectedFilms]; // Create a copy to avoid directly mutating state
+    if (order === 'asc') {
+      films.sort((a, b) => a.title.localeCompare(b.title)); // Sort ascending
+    } else if (order === 'desc') {
+      films.sort((a, b) => b.title.localeCompare(a.title)); // Sort descending
+    }
+    setSelectedFilms(films);
+  };
+
   // when votedFilms is updated, update the formData
   useEffect(() => {
-    console.log(votedFilms);
     setFormData(previous => ({
       ...previous,
-      votedFilms
+      guestList: previous.guestList.map(guest => (
+        guest.id === selectedGuest ? { ...guest, filmsVoted: votedFilms } : guest
+      ))
     }))
   }, [votedFilms]);
 
@@ -80,7 +94,7 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     return (
       <SmallDialog open={showVoteResult} onOpenChange={setShowVoteResult}>
         <SmallDialogContent hasClose={true} className="overflow-y-auto custom-scrollbar bg-primary text-secondary border-border w-[90%]">
-          <VoteResult formData={formData}/>
+          <VoteResult formData={formData} />
         </SmallDialogContent>
       </SmallDialog>
     )
@@ -102,34 +116,28 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     )
   }
 
-  /**********************************************************************************
-   * Rendering
-   * ******************************************************************************/
-
-  return (
-    <div className='mt-2 '>
-
-      {/* Title */}
-      <div className='flex justify-between'>
-        <div className='subtitle'>Film</div>
-        <Button
-          size="md"
-          className="w-[100px] h-[25px] border-none bg-accent"
-          // onClick={() => setShowFilmSearch(true)}
-          onClick={() => {
-            if (selectedGuest) setShowFilmSearch(true);
-            else setShowGuestSelection(true);
-          }}
-        >
-          <p className='text-m-s text-accent-foreground'>Add Film</p>
-        </Button>
-      </div>
-
-      {/* Film poll */}
+  const FilmDisplay = () => {
+    return (
       <div className='p-4 my-2 rounded-sm bg-primary-light'>
-        <div className='flex flex-row justify-end gap-2 text-m-m text-primary-foreground'>
-          <button onClick={() => setShowVoteResult(true)}>View Result</button>
-          <button>Sort by</button>
+        <div className='flex-row gap-4 pb-2 flex-between '>
+          <button
+            className="button-text text-primary-foreground flex-between gap-x-2"
+            onClick={() => setShowVoteResult(true)}>
+            <p>View Result</p>
+            <PiFilmStripBold className="w-5 h-5 mb-1" />
+          </button>
+          <Select>
+            <SelectTrigger className="w-[110px] lg:w-[180px]">
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Default">Default</SelectItem>
+              <SelectItem value="Votes: High to Low">Votes: High to Low</SelectItem>
+              <SelectItem value="Year: Old to New">Year: Old to New</SelectItem>
+              <SelectItem value="Year: New to Old">Year: New to Old</SelectItem>
+              <SelectItem value="Rating: High to Low">Rating: High to Low</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         <div className='grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4 '>
           {selectedFilms.length === 0 && (
@@ -141,20 +149,45 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
                 item={item}
                 selectedFilms={votedFilms}
                 setSelectedFilms={setVotedFilms}
-                disabled={!selectedGuest}
+                voteDisabled={!selectedGuest}
+                setShowGuestSelection={!selectedGuest && setShowGuestSelection}
               />
             </div>
           ))}
         </div>
       </div>
+    )
+  }
+
+  /**********************************************************************************
+   * Rendering
+   * ******************************************************************************/
+
+  return (
+    <div className='mt-2'>
+      {/* Title */}
+      <div className='flex justify-between'>
+        <div className='subtitle'>Film</div>
+        <Button
+          variant="accent"
+          className="w-[100px] h-[25px] md:w-[120px] md:h-[35px] "
+          onClick={() => {
+            if (selectedGuest) setShowFilmSearch(true);
+            else setShowGuestSelection(true);
+          }}
+        >
+          <p className='body'>Add Film</p>
+        </Button>
+      </div>
+
+      {/* Film poll */}
+      <FilmDisplay />
 
       {/* FilmSearch */}
       <FilmSearchModal />
 
-
       {/* Guest Selection Modal */}
       <GuestSelectionModal />
-
 
       {/* Vote Result Modal */}
       <VoteResultModal />

@@ -6,7 +6,7 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import FilmPreview from "@/components/film/FilmPreview";
 import { Link } from 'react-router-dom';
 
-const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, guests, isProtected, disabled }) => {
+const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, guests, isProtected, voteDisabled, setShowGuestSelection }) => {
     const bp_768 = useMediaQuery('(min-width:768px)');
     const [isModalOpen, setIsModalOpen] = React.useState(false)
     const [viewFilmId, setViewFilmId] = React.useState(false)
@@ -79,14 +79,16 @@ const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, gues
                         </div>
                     }
 
-                    {/* Overlay for disabled card */}
-                    {disabled && (
-                        <div className="cursor-pointer overlay-buttons [&_*]:hidden [&_*]:hover:flex transition-all duration-500 ease-in-out bg-black/30 flex-col">
+                    {/* Overlay for voteDisabled card */}
+                    {voteDisabled && (
+                        <div className="cursor-pointer overlay-buttons [&_*]:hidden [&_*]:hover:flex transition-all duration-500 ease-in-out bg-black/30">
+                            <div className="overlay-button">
+                                <button onClick={() => setShowGuestSelection(true)}>
+                                    <IoIosAddCircleOutline className="m-3"/>
+                                </button>
+                            </div>
                             <div className="overlay-button">
                                 <button onClick={() => handleViewFilm(item.id)}><AiOutlineInfoCircle className="m-3" /></button>
-                            </div>
-                            <div className="overlay-message">
-                                <p className='small'>Select your name to vote!</p>
                             </div>
                         </div>
                     )}

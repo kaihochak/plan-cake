@@ -58,7 +58,7 @@ body {
 
     --border: 0 0% 50%;
     --input: 0 0% 50%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 0 0% 50%;
 
     --radius: 0.5rem;
 
@@ -139,8 +139,8 @@ body {
   }
 
   .button-text {
-    @apply font-medium;
-    @apply text-[14px] md:text-[16px] lg:text-[18px];
+    @apply font-medium tracking-wide hover:text-accent;
+    @apply text-[12px] md:text-[14px] lg:text-[16px];
   }
 
   .link-text {
