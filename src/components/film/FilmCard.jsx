@@ -6,7 +6,7 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import FilmPreview from "@/components/film/FilmPreview";
 import { Link } from 'react-router-dom';
 
-const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, guests, isProtected }) => {
+const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, guests, isProtected, disabled }) => {
     const bp_768 = useMediaQuery('(min-width:768px)');
     const [isModalOpen, setIsModalOpen] = React.useState(false)
     const [viewFilmId, setViewFilmId] = React.useState(false)
@@ -39,8 +39,8 @@ const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, gues
                         <img
                             src={image500(item.poster_path)}
                             alt={item.title}
-                            className={`object-cover object-center rounded-sm ${isProtected? 'border-4 border-accent2' : 
-                                        selectedFilms?.find((film) => parseInt(film.id) == item.id) ? 'border-4 border-accent' : ''}`}
+                            className={`object-cover object-center rounded-sm ${isProtected ? 'border-4 border-accent2' :
+                                selectedFilms?.find((film) => parseInt(film.id) == item.id) ? 'border-4 border-accent' : ''}`}
                         />
                     ) : (
                         <Link to={`/film/${item.id}`}>
@@ -71,13 +71,25 @@ const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, gues
                                 <button onClick={() => handleViewFilm(item.id)}><AiOutlineInfoCircle className="m-3" /></button>
                             </div>
                             {/* Protected Message */}
-                            { isProtected &&
+                            {isProtected &&
                                 <div className="overlay-message">
                                     <p className='small'>voted by guest(s)</p>
                                 </div>
                             }
                         </div>
                     }
+
+                    {/* Overlay for disabled card */}
+                    {disabled && (
+                        <div className="cursor-pointer overlay-buttons [&_*]:hidden [&_*]:hover:flex transition-all duration-500 ease-in-out bg-black/30 flex-col">
+                            <div className="overlay-button">
+                                <button onClick={() => handleViewFilm(item.id)}><AiOutlineInfoCircle className="m-3" /></button>
+                            </div>
+                            <div className="overlay-message">
+                                <p className='small'>Select your name to vote!</p>
+                            </div>
+                        </div>
+                    )}
 
                 </div>
             </div>

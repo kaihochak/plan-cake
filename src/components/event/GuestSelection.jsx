@@ -7,67 +7,37 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
-const GuestSelection = ({ formData: parentFormData, selectedGuest, setSelectedGuest }) => {
+const GuestSelection = ({ formData, setFormData, selectedGuest, setSelectedGuest }) => {
 	const [openGuestList, setOpenGuestList] = useState(false);
 	const [searchGuestName, setSearchGuestName] = useState("");
 
-	// handle guest selection
-	// const handleGuestSelection = (id) => {
-
-	// 	setParentFormData(prevFormData => {
-	// 		// Map through the guestList to find the correct guest and update their filmsVoted
-	// 		const updatedGuestList = prevFormData.guestList.map(guest => {
-	// 			if (guest.id === id) {
-	// 				const updateFilmVoted = selectedFilms.filter(film => {
-	// 					if (!guest.filmsVoted.includes(film.id)) {
-	// 						return film.id;
-	// 					}
-	// 				})
-	// 				if (updateFilmVoted.length > 0) {
-	// 					return {
-	// 						...guest,
-	// 						filmsVoted: [...guest.filmsVoted, ...updateFilmVoted]
-	// 					}
-	// 				}
-	// 			}
-
-	// 			return guest;
-	// 		})
-
-	// 		// update the guestList
-	// 		return {
-	// 			...prevFormData,
-	// 			guestList: updatedGuestList
-	// 		}
-	// 	})
-	// 	setshowGuestSelection(false);
-	// }
-
-
-	parentFormData?.guestList?.map((guest) => (
-		console.log('guest:', guest)
-	))
-
-
-
-
 	const handleAddGuest = () => {
+
+		// make sure the name is valid
+		const existingGuest = formData.guestList.find((guest) => guest.name === searchGuestName);
+		if (!searchGuestName || existingGuest) return;
+
+		// add the new guest
 		if (searchGuestName) {
 			const newGuest = {
-				id: `-${parentFormData.guestList.length + 1}`,
+				id: `-${formData.guestList.length + 1}`,
 				name: searchGuestName,
 				avatar: "/assets/avatars/avatar1.jpg",
 				filmsVoted: []
-			}
-
-			parentFormData.guestList.push(newGuest);
+			};
+			
+			setFormData((previous) => ({
+				...previous,
+				guestList: [...previous.guestList, newGuest]
+			}));
+	
 			setSelectedGuest(newGuest.id);
 			setSearchGuestName("");
 		}
 	}
 
 	return (
-		<div className='p-6 flex-center '>
+		<div className='flex-center'>
 			<Popover open={openGuestList} onOpenChange={setOpenGuestList} >
 				<PopoverTrigger asChild>
 					<Button
@@ -77,12 +47,12 @@ const GuestSelection = ({ formData: parentFormData, selectedGuest, setSelectedGu
 						className={`w-[200px] justify-between ${selectedGuest ? "bg-accent text-accent-foreground" : "bg-background text-secondary"}`}
 					>
 						{selectedGuest
-							? parentFormData.guestList?.find((guest) => guest.id === selectedGuest)?.name
+							? formData.guestList?.find((guest) => guest.id === selectedGuest)?.name
 							: "Select your name"}
 						<ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
 					</Button>
 				</PopoverTrigger>
-				<PopoverContent className="w-[200px] p-0 ">
+				<PopoverContent className="w-[200px] p-0">
 					<Command>
 						<div className='relative'>
 							<CommandInput
@@ -100,12 +70,11 @@ const GuestSelection = ({ formData: parentFormData, selectedGuest, setSelectedGu
 						</div>
 						<CommandEmpty>Welcome, <b>{searchGuestName}</b>! 🎉</CommandEmpty>
 						<CommandGroup>
-							{parentFormData?.guestList?.map((guest, index) => (
+							{formData?.guestList?.map((guest, index) => (
 								<CommandItem
 									key={guest.id}
 									value={guest.name || ""}
 									onSelect={() => {
-										console.log('currentId:', guest.id);
 										setSelectedGuest(guest.id === selectedGuest ? "" : guest.id)
 										setOpenGuestList(false)
 									}}

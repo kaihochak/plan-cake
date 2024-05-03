@@ -18,26 +18,18 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
   const host = localStorage.getItem('host');
 
   useEffect(() => {
-    if(host && !selectedGuest) {     
-      setSelectedGuest("0")
-    }
+    if(host && !selectedGuest) setSelectedGuest("0")
   }), [];
  
   // call api to get the voted films of the selected user
   useEffect(() => {
-    // set the votedFilms by usingFormData
-    setVotedFilms( formData.guestList.filter(guest => (guest.id === selectedGuest)) )
-    // check whether user is logged in
-    // const selectedGuest = null; // user logged in will be implemented in the future
-
-    if (!selectedGuest && !host) {
-      console.log("GuestList: ", formData.guestList);
-      setShowGuestSelection(true);
-    }
+    console.log(selectedGuest);
+    setVotedFilms(formData.guestList.find(guest => (guest.id === selectedGuest))?.filmsVoted);
   }, [selectedGuest]);
   
   // when votedFilms is updated, update the formData
   useEffect(() => {
+    console.log(votedFilms);
     setFormData(previous => ({
       ...previous,
       votedFilms
@@ -59,25 +51,22 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     }))
   }, [selectedFilms]);
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
-
   /**********************************************************************************
    * Modals
    * ******************************************************************************/
-
-
   const GuestSelectionModal = () => {
     return (
       <AlertDialog open={showGuestSelection} onOpenChange={setShowGuestSelection}>
-        <AlertDialogContent hasClose={true} >
-          <AlertDialogTitle>Who are you?</AlertDialogTitle>
-          <GuestSelection
-            selectedGuest={selectedGuest}
-            setSelectedGuest={setSelectedGuest}
-            formData={formData}
-          />
+        <AlertDialogContent>
+          <AlertDialogTitle>Who are you voting as?</AlertDialogTitle>
+          <div className='p-6'>
+            <GuestSelection
+              selectedGuest={selectedGuest}
+              setFormData={setFormData}
+              setSelectedGuest={setSelectedGuest}
+              formData={formData}
+            />
+          </div>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction>Continue</AlertDialogAction>
@@ -90,7 +79,7 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
   const VoteResultModal = () => {
     return (
       <SmallDialog open={showVoteResult} onOpenChange={setShowVoteResult}>
-        <SmallDialogContent hasClose={true} className="overflow-y-auto bg-primary text-secondary border-none w-[90%]">
+        <SmallDialogContent hasClose={true} className="overflow-y-auto custom-scrollbar bg-primary text-secondary border-border w-[90%]">
           <VoteResult formData={formData}/>
         </SmallDialogContent>
       </SmallDialog>
@@ -128,11 +117,8 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
           className="w-[100px] h-[25px] border-none bg-accent"
           // onClick={() => setShowFilmSearch(true)}
           onClick={() => {
-            if (selectedGuest) {
-              setShowFilmSearch(true);
-            } else {
-              setShowGuestSelection(true);
-            }
+            if (selectedGuest) setShowFilmSearch(true);
+            else setShowGuestSelection(true);
           }}
         >
           <p className='text-m-s text-accent-foreground'>Add Film</p>
@@ -155,6 +141,7 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
                 item={item}
                 selectedFilms={votedFilms}
                 setSelectedFilms={setVotedFilms}
+                disabled={!selectedGuest}
               />
             </div>
           ))}

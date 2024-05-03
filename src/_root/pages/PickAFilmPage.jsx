@@ -25,9 +25,13 @@ const PickAFilmPage = () => {
         name: "Susan",
         avatar: "/assets/avatars/avatar2.jpg",
         filmsVoted: [
-          { id: "634492" },
           { id: "300" },
-          { id: "24" }
+          { id: "24" },
+          { id: "2" },
+          { id: "104" },
+          { id: "333" },
+          { id: "508947" },
+          { id: "618588" }
         ]
       },
       {
@@ -35,8 +39,11 @@ const PickAFilmPage = () => {
         name: "Joanna",
         avatar: "/assets/avatars/avatar3.jpg",
         filmsVoted: [
-          { id: "300" },
-          { id: "24" }
+          { id: "2" },
+          { id: "104" },
+          { id: "333" },
+          { id: "508947" },
+          { id: "618588" }
         ]
       }
     ],
@@ -806,8 +813,7 @@ const PickAFilmPage = () => {
     setFormData(previous => ({
       ...previous,
       guestList: previous.guestList.some(guest => guest.id === "0") ?
-        [...previous.guestList]
-        :
+        [...previous.guestList] :
         [...previous.guestList, {
           id: "0",
           name: host,
@@ -823,23 +829,28 @@ const PickAFilmPage = () => {
 
   return (
     <div className='common-container'>
-      <div className='flex flex-col w-full max-w-[1024px] mx-auto gap-y-2 pt-12 xl:pt-0 md:pb-32'>
+      <div className='flex flex-col w-full max-w-[1024px] mx-auto gap-y-2 pt-3 lg:pt-12 xl:pt-0 md:pb-32'>
         <h2 className="title">Pick A Film</h2>
         <div className='flex-between'>
-        {/* Guests */}
-        <GuestList />
+          {/* Guests */}
+          <GuestList />
 
-        <GuestSelection
+          <GuestSelection
             selectedGuest={selectedGuest}
             setSelectedGuest={setSelectedGuest}
             formData={formData}
-        />
+            setFormData={setFormData}
+          />
         </div>
 
         {/* Poster */}
         {/* <SelectedFilm selectedFilms={formData.selectedFilms}/> */}
         {/* Film Poll */}
-        <FilmPoll formData={formData} setFormData={setFormData} />
+        <FilmPoll
+          formData={formData}
+          setFormData={setFormData}
+          selectedGuest={selectedGuest}
+          setSelectedGuest={setSelectedGuest} />
       </div>
 
     </div>
