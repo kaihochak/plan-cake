@@ -61,7 +61,7 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
     // Mobile
     return (
         <div className="relative">
-            <Drawer open={open} onOpenChange={setOpen} className="py-2 absolute">
+            <Drawer open={open} onOpenChange={setOpen} className="absolute py-2">
                 <DrawerTrigger asChild>
                     <Button variant="outline" className={cn("w-full justify-start",
                         { 'bg-accent/80 text-accent-foreground border-none': selectedOptions.length !== 0 },
@@ -93,7 +93,7 @@ const MultiSelect = ({ options, label, selected: parentSelected, setSelected: pa
             </Drawer>
 
             {/* Cross Symbol */}
-            <div className="absolute z-40 top-0 right-0">
+            <div className="absolute top-0 right-0 z-40">
                 {selectedOptions.length !== 0 &&
                     <ClearSelection
                         setSelectedOptions={setSelectedOptions}
@@ -150,18 +150,18 @@ function OptionList({ options, selectedOptions, label, setOpen, setSelectedOptio
                     ))}
                 </CommandGroup>
             </CommandList>
-            <div className='flex justify-between space-x-2 px-4 pb-4'>
+            <div className='flex justify-between px-4 pb-4 space-x-2'>
                 {/* reset */}
                 <button
                     onClick={resetOptions}
-                    className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent/10 py-2 px-4"
+                    className="flex-grow px-4 py-2 border rounded-md border-border text-secondary-default bg-transparent/10"
                 >
                     Reset
                 </button>
                 {/* apply */}
                 <button
                     onClick={applyOptions}
-                    className="rounded-md flex-grow border border-secondary-default text-secondary-default bg-transparent/10 py-2 px-4"
+                    className="flex-grow px-4 py-2 border rounded-md border-border text-secondary-default bg-transparent/10"
                 >
                     Apply
                 </button>

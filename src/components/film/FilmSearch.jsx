@@ -172,13 +172,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFil
 
     // When both watchlist and upcoming films are stored, set the film data
     useEffect(() => {
-        console.log("sortedWatchlist", sortedWatchlist);
-        console.log("upcomingFilms", upcomingFilms);
-        if (sortedWatchlist.length > 0 && upcomingFilms.length > 0) {
-            setFilmData([...sortedWatchlist, ...upcomingFilms]);
-        } else {
-            console.log('Waiting for sortedWatchlist and upcomingFilms to populate');
-        }
+        if (sortedWatchlist.length > 0 && upcomingFilms.length > 0) setFilmData([...sortedWatchlist, ...upcomingFilms]);
     }, [sortedWatchlist, upcomingFilms]);
 
     /************************************************************************
@@ -218,7 +212,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFil
             }
             setLoading(false);
         }, 500),
-        [sortedWatchlist, upcomingFilms] 
+        [sortedWatchlist, upcomingFilms]
         // make sure when search term is empty, sortedWatchlist and upcomingFilms are not going to be remounted, leading to empty filmData
     );
 
@@ -232,7 +226,6 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFil
 
     // keep track of whether any filter or sort has been applied
     useEffect(() => {
-        console.log("[filmData, sortBy, filters]: ", filmData);
         setFilteredResults(sortResults(filterResults(filmData)));
     }, [filmData, sortBy, filters]);
 
@@ -370,14 +363,12 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFil
         nextStep(formData);
     };
 
-    /************************************************************************
-     *  RENDER
-     ************************************************************************/
+
 
     const FilmFiltersDialog = () => {
         return (
             <Dialog open={filterModalOpen} onOpenChange={setModalOpen}>
-                <DialogContent hasClose={false} className="w-full h-full lg:w-[70%] lg:h-[80%] overflow-y-auto bg-primary text-secondary">
+                <DialogContent hasClose={false} className="w-full h-full lg:w-[85%] lg:h-[85%] overflow-y-auto bg-primary custom-scrollbar text-secondary">
                     <FilmFilters
                         filmData={filmData}
                         users={users}
@@ -393,6 +384,10 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFil
             </Dialog>
         );
     }
+
+    /************************************************************************
+     *  RENDER
+     ************************************************************************/
 
     return (
         <div className="w-full">

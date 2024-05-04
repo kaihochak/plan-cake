@@ -56,7 +56,7 @@ const VoteResult = ({ formData }) => {
    ************************************************************************/
 
   return (
-    <div>
+    <div className='p-6'>
       <Table>
         <TableHeader>
           <TableRow>

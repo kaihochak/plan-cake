@@ -11,7 +11,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenu
 import { defaultFilters, defaultSortBy } from "@/constants";
 import { fetchMovieGenres } from '../../lib/tmdb/api';
 import { Ampersand } from "lucide-react"
-import { set } from 'date-fns';
 
 const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
     sortBy: parentSortBy, setSortBy: parentSetSortBy,
@@ -54,10 +53,10 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
     const SortOptions = () => {
         return (
             <div className='flex flex-col py-3'>
-                <div className='pb-4 text-m-l'>Sort by </div>
+                <div className='pb-4 subtitle'>Sort by </div>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className=" bg-accent text-accent-foreground">{sortBy}</Button>
+                        <Button variant="outline" className="bg-accent text-accent-foreground">{sortBy}</Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56">
                         <DropdownMenuRadioGroup value={sortBy} onValueChange={setSortBy}>
@@ -354,8 +353,8 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
 
     return (
         <div className="z-50 flex flex-col w-full h-full px-8 pb-32 mt-4 gap-y-4 bg-primary text-primary-foreground lg:mx-auto ">
-            <div className='flex justify-between mb-4 place-items-end'>
-                <h3 className='text-m-xl'>Filters & Sort</h3>
+            <div className='mb-4 flex-between'>
+                <h3 className='h3'>Filters & Sort</h3>
                 <div onClick={() => setModalOpen(false)}
                     className='cursor-pointer text-m-xl'>
                     <IoClose />
@@ -369,7 +368,7 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
 
             {/* WATCHLISTS */}
             <div className='flex flex-col py-3'>
-                <div className='pb-2 text-m-l'>Watchlists
+                <div className='pb-2 subtitle'>Watchlists
                     <p className='pt-2 text-m-s text-primary-foreground/70'>The minimum number of watchlists they're on.</p>
                 </div>
 
@@ -428,7 +427,7 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
 
             {/* GENRES */}
             <div className='flex flex-col py-3'>
-                <div className='pb-4 text-m-l'>Genres</div>
+                <div className='pb-4 subtitle'>Genres</div>
                 <div className='w-[100%] mx-auto z-50'>
                     <MultiSelect
                         options={genres}
@@ -442,7 +441,7 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
 
             {/* YEARS */}
             <div className='flex flex-col py-3 '>
-                <div className='pb-4 text-m-l'>Years</div>
+                <div className='pb-4 subtitle'>Years</div>
                 <div className='w-[100%] mx-auto flex items-center'>
                     {/* https://mui.com/material-ui/react-slider/ */}
                     {/* Start Year Input */}
@@ -487,7 +486,7 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
 
             {/* RATING */}
             <div className='flex flex-col py-3 '>
-                <div className='pb-4 text-m-l'>Rating </div>
+                <div className='pb-4 subtitle'>Rating </div>
                 <div className='w-[100%] mx-auto3.79'>
                     <RatingBtnGroup />
                 </div>
@@ -497,8 +496,8 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
 
             {/* Buttons */}
             <div className='flex w-full space-x-2'>
-                <button onClick={resetFilters} className="flex-grow px-4 py-2 bg-transparent border rounded-md border-secondary-default text-secondary-default">Reset</button>
-                <button onClick={applyFilters} className="flex-grow px-4 py-2 bg-transparent border rounded-md border-secondary-default text-secondary-default">Apply</button>
+                <button onClick={resetFilters} className="flex-grow px-4 py-2 bg-transparent border rounded-md border-border text-secondary">Reset</button>
+                <button onClick={applyFilters} className="flex-grow px-4 py-2 bg-transparent border rounded-md border-border text-secondary">Apply</button>
             </div>
         </div>
     )

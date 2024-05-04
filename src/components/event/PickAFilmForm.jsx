@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom'
 
 const formSchema = z.object({
     title: z.string().min(2).max(50),
+    host: z.string().min(2).max(50)
 })
 
 const PickAFilmForm = ({ isOpen, onClose }) => {
@@ -25,11 +26,13 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
         resolver: zodResolver(formSchema),
         defaultValues: {
             title: "",
+            host: ""
         },
     })
 
     const [formData, setFormData] = useState({
         title: "",
+        host: "",
         date: "",
     })
 
@@ -37,7 +40,8 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 
     // form submit
     function handleFormSubmit(values) {
-        setFormData({ ...formData, title: values.title });
+        setFormData({ ...formData, title: values.title, host: values.host });
+        localStorage.setItem('host', values.host);
         onClose(!isOpen);
         navigate("/pickAfilm/1")
     }
@@ -50,7 +54,7 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
         <Dialog open={isOpen} onOpenChange={() => onClose(!isOpen)}>
             <DialogContent className="">
                 <DialogHeader>
-                    <DialogTitle>New PickAFilm</DialogTitle>
+                    <DialogTitle>New Event</DialogTitle>
                     <DialogDescription>
                     </DialogDescription>
                 </DialogHeader>
@@ -71,6 +75,19 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
                                 </FormItem>
                             )}
                         />
+                        {/* host */}
+                        <FormField
+                            control={form.control}
+                            name="host"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input placeholder="Your Name*" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                         {/* Date */}
                         <Popover>
                             <PopoverTrigger asChild className="hover:bg-white">
@@ -82,11 +99,10 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
                                     )}
                                 >
                                     <CalendarIcon className="w-4 h-4 mr-2" />
-                                    {formData.date ? (
-                                        format(formData.date, "PPP")
-                                    ) : (
-                                        <span className="text-m-m">Pick A Date</span>
-                                    )}
+                                    {formData.date ?
+                                        (format(formData.date, "PPP")) : 
+                                        (<span className="text-m-m">Pick A Date</span>)
+                                    }
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent

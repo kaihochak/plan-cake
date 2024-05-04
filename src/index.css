@@ -22,18 +22,19 @@ body {
   :root {
     @apply min-h-screen bg-background text-foreground;
 
-    --background: 0 0% 12%;
+    --background: 0 0% 10%;
     --foreground: 0 0% 85%;
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
 
     /* Off White */
-    --popover: var(--primary);
-    --popover-foreground: var(--primary-foreground);
+    --popover: var(--background);
+    --popover-foreground: var(--foreground);
 
     /* Off Black */
-    --primary: 0 0% 8%;
+    --primary: 0 0% 10%;
+    --primary-light: 0 0% 32%;
     --primary-foreground: 0 0% 85%;
 
     /* Off White */
@@ -48,7 +49,7 @@ body {
     --accent-foreground: 0 0% 12%;
 
     /* Purple */
-    --accent2: 220 100% 80%;
+    --accent2: 200 90% 70%;
     --accent2-foreground: 0 0% 85%;
 
     /* Red */
@@ -57,7 +58,7 @@ body {
 
     --border: 0 0% 50%;
     --input: 0 0% 50%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 0 0% 50%;
 
     --radius: 0.5rem;
 
@@ -98,53 +99,53 @@ body {
 
 @layer utilities {
   .title {
-    @apply font-[500] tracking-[-0.02em];
-    @apply text-[36px];
+    @apply font-medium tracking-[-0.02em];
+    @apply text-[36px] md:text-[48px] lg:text-[64px];
   }
 
   .h2 {
-    @apply font-semibold tracking-[-0.02em];
-    @apply text-[28px];
+    @apply font-medium tracking-[-0.02em];
+    @apply text-[28px] md:text-[36px] lg:text-[48px];
   }
 
   .h3 {
-    @apply font-semibold tracking-[-0.02em];
-    @apply text-[18px];
+    @apply font-medium tracking-[-0.02em];
+    @apply text-[22px] md:text-[28px] lg:text-[36px];
   }
 
   .subtitle {
-    @apply font-medium;
-    @apply text-[18px];
+    @apply font-semibold;
+    @apply text-[16px] md:text-[20px] lg:text-[24px];
   }
 
   .body {
     @apply font-medium;
-    @apply text-[12px];
+    @apply text-[12px] md:text-[14px] lg:text-[16px];
   }
 
   .bold {
-    @apply font-bold;
-    @apply text-[12px];
+    @apply font-semibold;
+    @apply text-[12px] md:text-[14px] lg:text-[16px];
   }
 
   .small {
     @apply font-normal;
-    @apply text-[10px];
+    @apply text-[10px] md:text-[12px] lg:text-[14px];
   }
 
   .pretitle {
-    @apply font-bold tracking-[0.03em];
-    @apply text-[10px];
+    @apply font-semibold tracking-[0.03em];
+    @apply text-[10px] md:text-[12px] lg:text-[14px];
   }
 
   .button-text {
-    @apply font-medium;
-    @apply text-[14px];
+    @apply font-medium tracking-wide hover:text-accent;
+    @apply text-[12px] md:text-[14px] lg:text-[16px];
   }
 
   .link-text {
     @apply font-semibold underline;
-    @apply text-[12px];
+    @apply text-[12px] md:text-[14px] lg:text-[16px];
   }
 
   /* TO BE DELETED AFTER MIGRATING ALL TO THE NEW TYPOGRAPHY */
@@ -285,7 +286,7 @@ body {
   /* Home */
   .home-container {
     @apply flex flex-col items-center flex-1 gap-10 overflow-scroll custom-scrollbar;
-    @apply p-10;
+    @apply p-6 lg:p-10;
   }
 
   .home-posts {
@@ -514,11 +515,15 @@ body {
   }
 
   .overlay-buttons {
-    @apply absolute bottom-0 right-0 z-20 flex flex-row items-center justify-center hover:bg-black/50;
+    @apply absolute bottom-0 right-0 z-20 flex items-center justify-center hover:bg-black/50;
   }
 
   .overlay-button {
     @apply w-full h-full border-0 bg-black/50 text-[30px] flex-center;
+  }
+
+  .overlay-message {
+    @apply w-full h-20 border-0 bg-black/50 flex-center;
   }
 
   /* File uploader */
@@ -558,8 +563,7 @@ body {
 
   /* Topbar */
   .topbar {
-    /* @apply bg-primary-dark top-0 z-50 xl:hidden w-full h-[80px] sticky; */
-    @apply absolute top-0 z-50 xl:hidden w-full h-[80px];
+    @apply absolute top-0 z-50 w-full h-auto xl:hidden;
     @apply  bg-primary/90 backdrop-blur;
   }
 

@@ -4,77 +4,49 @@ import { Check, ChevronsUpDown } from "lucide-react"
 import { IoMdAdd } from "react-icons/io";
 import { cn } from "@/lib/utils"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/guestCommand"
-
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
-const GuestSelection = ({ formData:parentFormData }) => {
+const GuestSelection = ({ formData, setFormData, selectedGuest, setSelectedGuest }) => {
 	const [openGuestList, setOpenGuestList] = useState(false);
-	const [selectedGuest, setSelectedGuest] = useState("");
 	const [searchGuestName, setSearchGuestName] = useState("");
 
-	useEffect(() => {
-		console.log('selectedGuest:', selectedGuest);
-	}, [selectedGuest])
-
-	// handle guest selection
-	// const handleGuestSelection = (id) => {
-
-	// 	setParentFormData(prevFormData => {
-	// 		// Map through the guestList to find the correct guest and update their filmsVoted
-	// 		const updatedGuestList = prevFormData.guestList.map(guest => {
-	// 			if (guest.id === id) {
-	// 				const updateFilmVoted = selectedFilms.filter(film => {
-	// 					if (!guest.filmsVoted.includes(film.id)) {
-	// 						return film.id;
-	// 					}
-	// 				})
-	// 				if (updateFilmVoted.length > 0) {
-	// 					return {
-	// 						...guest,
-	// 						filmsVoted: [...guest.filmsVoted, ...updateFilmVoted]
-	// 					}
-	// 				}
-	// 			}
-
-	// 			return guest;
-	// 		})
-
-	// 		// update the guestList
-	// 		return {
-	// 			...prevFormData,
-	// 			guestList: updatedGuestList
-	// 		}
-	// 	})
-	// 	setshowGuestSelection(false);
-	// }
-
 	const handleAddGuest = () => {
+
+		// make sure the name is valid
+		const existingGuest = formData.guestList.find((guest) => guest.name === searchGuestName);
+		if (!searchGuestName || existingGuest) return;
+
+		// add the new guest
 		if (searchGuestName) {
 			const newGuest = {
-				id: `-${parentFormData.guestList.length + 1}`,
+				id: `-${formData.guestList.length + 1}`,
 				name: searchGuestName,
 				avatar: "/assets/avatars/avatar1.jpg",
 				filmsVoted: []
-			}
-
-			parentFormData.guestList.push(newGuest);
+			};
+			
+			setFormData((previous) => ({
+				...previous,
+				guestList: [...previous.guestList, newGuest]
+			}));
+	
 			setSelectedGuest(newGuest.id);
 			setSearchGuestName("");
 		}
-	}	
+	}
 
 	return (
-		<div className='p-6 flex-center '>
-			<Popover open={openGuestList} onOpenChange={setOpenGuestList} className="">
+		<div className='flex-center'>
+			<Popover open={openGuestList} onOpenChange={setOpenGuestList} >
 				<PopoverTrigger asChild>
 					<Button
 						variant="outline"
 						role="combobox"
 						aria-expanded={openGuestList}
-						className={`w-[200px] justify-between ${selectedGuest ? "bg-accent text-accent-foreground" : "bg-primary text-secondary"}`}
+						className={`w-[200px] justify-between ${selectedGuest ? "bg-accent text-accent-foreground" : "bg-background text-secondary"}`}
 					>
 						{selectedGuest
-							? parentFormData.guestList?.find((guest) => guest.id === selectedGuest)?.name
+							? formData.guestList?.find((guest) => guest.id === selectedGuest)?.name
 							: "Select your name"}
 						<ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
 					</Button>
@@ -87,9 +59,9 @@ const GuestSelection = ({ formData:parentFormData }) => {
 								value={searchGuestName}
 								onValueChange={(value) => setSearchGuestName(value)}
 							/>
-							<Button 
-								size="icon" 
-								className="absolute top-0.5 right-0 border-none hover:bg-accent" 
+							<Button
+								size="icon"
+								className="absolute top-0.5 right-0 border-none bg-background hover:bg-accent"
 								onClick={handleAddGuest}
 							>
 								<IoMdAdd className="w-6 h-6" />
@@ -97,12 +69,11 @@ const GuestSelection = ({ formData:parentFormData }) => {
 						</div>
 						<CommandEmpty>Welcome, <b>{searchGuestName}</b>! 🎉</CommandEmpty>
 						<CommandGroup>
-							{parentFormData?.guestList?.map((guest) => (
+							{formData?.guestList?.map((guest, index) => (
 								<CommandItem
 									key={guest.id}
-									value={guest.name}
+									value={guest.name || ""}
 									onSelect={() => {
-										console.log('currentId:', guest.id);
 										setSelectedGuest(guest.id === selectedGuest ? "" : guest.id)
 										setOpenGuestList(false)
 									}}
@@ -117,6 +88,8 @@ const GuestSelection = ({ formData:parentFormData }) => {
 									/>
 								</CommandItem>
 							))}
+
+
 						</CommandGroup>
 					</Command>
 				</PopoverContent>
