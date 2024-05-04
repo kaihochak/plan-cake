@@ -114,8 +114,8 @@ body {
   }
 
   .subtitle {
-    @apply font-medium;
-    @apply text-[18px] md:text-[24px] lg:text-[28px];
+    @apply font-semibold;
+    @apply text-[16px] md:text-[20px] lg:text-[24px];
   }
 
   .body {
