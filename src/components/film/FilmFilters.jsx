@@ -11,7 +11,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenu
 import { defaultFilters, defaultSortBy } from "@/constants";
 import { fetchMovieGenres } from '../../lib/tmdb/api';
 import { Ampersand } from "lucide-react"
-import { set } from 'date-fns';
 
 const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
     sortBy: parentSortBy, setSortBy: parentSetSortBy,

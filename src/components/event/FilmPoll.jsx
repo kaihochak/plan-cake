@@ -24,36 +24,15 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     if (host && !selectedGuest) setSelectedGuest("0")
   }), [];
 
-  // call api to get the voted films of the selected user
-  useEffect(() => {
-    setVotedFilms(formData.guestList.find(guest => (guest.id === selectedGuest))?.filmsVoted);
-  }, [selectedGuest]);
-
-  // sort the films
-  const sortFilms = (order) => {
-    const films = [...selectedFilms]; // Create a copy to avoid directly mutating state
-    if (order === 'asc') {
-      films.sort((a, b) => a.title.localeCompare(b.title)); // Sort ascending
-    } else if (order === 'desc') {
-      films.sort((a, b) => b.title.localeCompare(a.title)); // Sort descending
-    }
-    setSelectedFilms(films);
-  };
-
-  // when votedFilms is updated, update the formData
-  useEffect(() => {
-    setFormData(previous => ({
-      ...previous,
-      guestList: previous.guestList.map(guest => (
-        guest.id === selectedGuest ? { ...guest, filmsVoted: votedFilms } : guest
-      ))
-    }))
-  }, [votedFilms]);
-
   // handle search apply, prompt to user selection
-  const handleSearchApply = (formData) => {
+  const handleSearchApply = (newData) => {
     setShowFilmSearch(false);
-    const newSelectedFilms = formData.selectedFilms;
+    const newSelectedFilms = newData.selectedFilms;
+    // setFormData(previous => ({
+    //   ...previous,
+    //   newSelectedFilms
+    // }))
+
     setSelectedFilms(newSelectedFilms); //update local selected films
   }
 
@@ -66,8 +45,14 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
   }, [selectedFilms]);
 
   /**********************************************************************************
-   * Modals
+   * Guest Selection
    * ******************************************************************************/
+
+  useEffect(() => {
+    // call api to get the voted films of the selected user
+    setVotedFilms(formData.guestList.find(guest => (guest.id === selectedGuest))?.filmsVoted);
+  }, [selectedGuest]);
+
   const GuestSelectionModal = () => {
     return (
       <AlertDialog open={showGuestSelection} onOpenChange={setShowGuestSelection}>
@@ -90,6 +75,20 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     )
   }
 
+  /**********************************************************************************
+   * Votes
+   * ******************************************************************************/
+
+  useEffect(() => {
+    // when votedFilms is updated, update the formData
+    setFormData(previous => ({
+      ...previous,
+      guestList: previous.guestList.map(guest => (
+        guest.id === selectedGuest ? { ...guest, filmsVoted: votedFilms } : guest
+      ))
+    }))
+  }, [votedFilms]);
+
   const VoteResultModal = () => {
     return (
       <SmallDialog open={showVoteResult} onOpenChange={setShowVoteResult}>
@@ -99,6 +98,10 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
       </SmallDialog>
     )
   }
+
+  /**********************************************************************************
+  * Film Search
+  * ******************************************************************************/
 
   const FilmSearchModal = () => {
     return (
@@ -116,17 +119,80 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     )
   }
 
+
+  /**********************************************************************************
+   * Sorting
+   *******************************************************************************/
+
+  const sortByVotedFilmsByCurrentUser = (sortedItems) => {
+    const currentUserVotes = formData.guestList.find(guest => guest.id === selectedGuest)?.filmsVoted;
+    if (currentUserVotes) {
+      sortedItems = sortedItems.sort((a, b) => {
+        const aVoted = currentUserVotes.some(vote => vote.id === a.id.toString());
+        const bVoted = currentUserVotes.some(vote => vote.id === b.id.toString());
+        console.log(currentUserVotes);
+        console.log("aVoted", aVoted);
+        console.log("bVoted", bVoted);
+
+        if (aVoted && bVoted) return 0; // Both items are voted
+        if (aVoted) return -1; // Only 'a' is voted
+        if (bVoted) return 1; // Only 'b' is voted
+
+        return 0; // Neither 'a' nor 'b' is voted
+      });
+    }
+    return sortedItems;
+  }
+
+  const handleSortChange = (value) => {
+    let sortedItems = [...selectedFilms];
+
+    switch (value) {
+      case 'Default':
+        value = '';
+        sortedItems = sortByVotedFilmsByCurrentUser(sortedItems); // Sort from voted to not voted
+        break;
+      case 'Votes: High to Low':
+        break;
+      case "Rating: High to Low":
+        sortedItems = sortedItems.sort((a, b) => b.vote_average - a.vote_average); // if b > a, b comes first
+        break;
+      case "Rating: Low to High":
+        sortedItems = sortedItems.sort((a, b) => a.vote_average - b.vote_average); // if a > b, b comes first
+        break;
+      case "Year: New to Old":
+        sortedItems = sortedItems.sort((a, b) => parseInt(b.release_date.split("-")[0]) - parseInt(a.release_date.split("-")[0]));
+        break;
+      case "Year: Old to New":
+        sortedItems = sortedItems.sort((a, b) => parseInt(a.release_date.split("-")[0]) - parseInt(b.release_date.split("-")[0]));
+        break;
+      default:
+        break;
+    }
+
+    setSelectedFilms(sortedItems);
+    setSortOrder(value);
+  }
+
+  /**********************************************************************************
+   * Film Display
+   *******************************************************************************/
+
   const FilmDisplay = () => {
     return (
       <div className='p-4 my-2 rounded-sm bg-primary-light'>
-        <div className='flex-row gap-4 pb-2 flex-between '>
+        {/* Buttons */}
+        <div className='flex-row gap-4 pb-4 flex-between '>
           <button
             className="button-text text-primary-foreground flex-between gap-x-2"
             onClick={() => setShowVoteResult(true)}>
             <p>View Result</p>
-            <PiFilmStripBold className="w-5 h-5 mb-1" />
+            <PiFilmStripBold className="w-5 h-5 mb-[0.5]" />
           </button>
-          <Select>
+          <Select
+            value={sortOrder}
+            onValueChange={handleSortChange}
+          >
             <SelectTrigger className="w-[110px] lg:w-[180px]">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
@@ -139,10 +205,9 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
             </SelectContent>
           </Select>
         </div>
+        {/* Film Cards */}
         <div className='grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4 '>
-          {selectedFilms.length === 0 && (
-            <div className='col-span-4 py-32 mx-auto md:py-36 text-primary-foreground h3'>No film selected</div>
-          )}
+          {selectedFilms.length === 0 && (<div className='col-span-4 py-32 mx-auto md:py-36 text-primary-foreground h3'>No film selected</div>)}
           {selectedFilms.map((item) => (
             <div key={item.id}>
               <FilmCard

@@ -172,13 +172,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFil
 
     // When both watchlist and upcoming films are stored, set the film data
     useEffect(() => {
-        console.log("sortedWatchlist", sortedWatchlist);
-        console.log("upcomingFilms", upcomingFilms);
-        if (sortedWatchlist.length > 0 && upcomingFilms.length > 0) {
-            setFilmData([...sortedWatchlist, ...upcomingFilms]);
-        } else {
-            console.log('Waiting for sortedWatchlist and upcomingFilms to populate');
-        }
+        if (sortedWatchlist.length > 0 && upcomingFilms.length > 0) setFilmData([...sortedWatchlist, ...upcomingFilms]);
     }, [sortedWatchlist, upcomingFilms]);
 
     /************************************************************************
@@ -232,7 +226,6 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFil
 
     // keep track of whether any filter or sort has been applied
     useEffect(() => {
-        console.log("[filmData, sortBy, filters]: ", filmData);
         setFilteredResults(sortResults(filterResults(filmData)));
     }, [filmData, sortBy, filters]);
 

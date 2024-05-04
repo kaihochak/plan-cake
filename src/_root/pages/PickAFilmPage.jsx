@@ -25,13 +25,12 @@ const PickAFilmPage = () => {
         name: "Susan",
         avatar: "/assets/avatars/avatar2.jpg",
         filmsVoted: [
-          { id: "300" },
-          { id: "24" },
           { id: "2" },
           { id: "104" },
           { id: "333" },
           { id: "508947" },
-          { id: "618588" }
+          { id: "618588" },
+          { id: "18" }
         ]
       },
       {
@@ -41,7 +40,6 @@ const PickAFilmPage = () => {
         filmsVoted: [
           { id: "2" },
           { id: "104" },
-          { id: "333" },
           { id: "508947" },
           { id: "618588" }
         ]
