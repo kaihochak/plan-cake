@@ -4,7 +4,6 @@ import { Check, ChevronsUpDown } from "lucide-react"
 import { IoMdAdd } from "react-icons/io";
 import { cn } from "@/lib/utils"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/guestCommand"
-
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
 const GuestSelection = ({ formData, setFormData, selectedGuest, setSelectedGuest }) => {
