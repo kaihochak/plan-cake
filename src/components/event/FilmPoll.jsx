@@ -14,9 +14,10 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
   const [showFilmSearch, setShowFilmSearch] = useState(false);
   const [showGuestSelection, setShowGuestSelection] = useState(false);
   const [showVoteResult, setShowVoteResult] = useState(false);
-  const [sortedFilms, setSortedFilms] = useState(formData.selectedFilms);
-  const [votedFilms, setVotedFilms] = useState([]);
   const [sortOrder, setSortOrder] = useState('');
+  const [sortedFilms, setSortedFilms] = useState(formData.selectedFilms);
+  const [newAddedFilm, setNewAddedFilm] = useState('') // temporary fix to update film poll re-rendering before new film is added
+  const [votedFilms, setVotedFilms] = useState([]);
   const host = localStorage.getItem('host');
 
   // if it's the host, set the host to be the current user
@@ -32,8 +33,8 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
         guest.id === selectedGuest ? { ...guest, filmsVoted: votedFilms } : guest
       ))
     }))
-    setSortedFilms(sortByVotedFilmsByCurrentUser(sortedFilms));
-  }, [votedFilms]);
+    setSortedFilms(sortByVotedFilmsByCurrentUser(formData.selectedFilms));
+  }, [votedFilms, newAddedFilm]);
 
   // set the voted films, when the selected guest changes
   useEffect(() => {
@@ -115,6 +116,9 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
       ...previous,
       selectedFilms: newSelectedFilms
     }))
+
+    // temporary fix to update film poll re-rendering before new film is added
+    setNewAddedFilm(newSelectedFilms[newSelectedFilms.length - 1].id.toString()); 
   }
 
   /**********************************************************************************
@@ -148,8 +152,6 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
       return aVotes > bVotes ? -1 : 1;
     });
   }
-
-
 
   const handleSortChange = (value) => {
     let sortedItems = [...sortedFilms];
