@@ -43,6 +43,10 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     setSortedFilms(sortByVotedFilmsByCurrentUser(formData.selectedFilms));
   }, [selectedGuest]);
 
+  useEffect(() => {
+    console.log('votedfilm:', votedFilms);
+  }, [votedFilms])
+
   /**********************************************************************************
    * Guest Selection
    * ******************************************************************************/
@@ -77,7 +81,9 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     return (
       <SmallDialog open={showVoteResult} onOpenChange={setShowVoteResult}>
         <SmallDialogContent hasClose={true} className="overflow-y-auto custom-scrollbar bg-primary text-secondary border-border w-[90%]">
-          <VoteResult formData={formData} />
+          <VoteResult 
+            formData={formData} 
+          />
         </SmallDialogContent>
       </SmallDialog>
     )

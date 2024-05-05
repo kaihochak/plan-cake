@@ -64,7 +64,7 @@ const PickAFilm = () => {
                 src={trending && trending[0]?.poster_path ? image500(trending[0].poster_path) : fallbackMoviePoster}
                 alt={trending && trending[0]?.title}
                 className='rounded-sm absolute w-[150px] rotate-[-15deg] top-1/2 translate-x-[-8%] translate-y-[25%] z-40 lg:z-20
-                lg:w-[190px] lg:rotate-[-10deg] lg:translate-x-[50%] lg:translate-y-[-50%] lg:z-40'
+                lg:w-[190px] lg:rotate-[-10deg] lg:translate-x-[50%] lg:translate-y-[-50%] '
               />
               {/* film 2 */}
 
