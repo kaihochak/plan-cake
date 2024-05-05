@@ -84,7 +84,7 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
   }
 
   const getVotes = (film) => {
-    let count = formData.guestList.filter(guest => guest.filmsVoted.some(vote => vote.id.toString() === film.id.toString())).length
+    let count = formData.guestList.filter(guest => guest.filmsVoted?.some(vote => vote.id.toString() === film.id.toString())).length
     return count;
   }
 
@@ -137,6 +137,7 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     });
 
     // Sort unvoted films by highest to lowest votes of all users
+    voted = sortByVotes(voted);
     unvoted = sortByVotes(unvoted);
   
     // Return voted films first, then unvoted films
@@ -146,8 +147,8 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
 
   const sortByVotes = (sortedItems) => {
     return sortedItems.sort((a, b) => {
-      const aVotes = formData.guestList.filter(guest => guest.filmsVoted.some(vote => vote.id === a.id.toString())).length;
-      const bVotes = formData.guestList.filter(guest => guest.filmsVoted.some(vote => vote.id === b.id.toString())).length;
+      const aVotes = formData.guestList.filter(guest => guest.filmsVoted?.some(vote => vote.id === a.id.toString())).length;
+      const bVotes = formData.guestList.filter(guest => guest.filmsVoted?.some(vote => vote.id === b.id.toString())).length;
       if (aVotes === bVotes) return 0;
       return aVotes > bVotes ? -1 : 1;
     });

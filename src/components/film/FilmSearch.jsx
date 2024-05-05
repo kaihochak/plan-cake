@@ -284,7 +284,9 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFil
         }
 
         function filterByGenre(film) {
-            return filters.genreFilter.some(selectedGenre => film.genre_ids.some(genre => genre === selectedGenre.id));
+            // different API calls have different structure
+            if (film.genres) return filters.genreFilter?.some(selectedGenre => film.genres.some(genre => genre.id === selectedGenre.id));
+            if (film.genre_ids) return filters.genreFilter?.some(selectedGenre => film.genre_ids.some(genre => genre === selectedGenre.id));
         }
 
         function filterByYears(film) {
@@ -409,7 +411,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFil
                     />
                     {/* Filters Modal defined at the bottom */}
                     <button onClick={() => setModalOpen(true)}
-                        className={cn("flex items-center text-[30px] mr-2 mt-2 text-primary-foreground/60",
+                        className={cn("flex items-center text-[30px] mr-2 mb-2 text-primary-foreground/60",
                             { "text-accent/70": isFilterApplied })}>
                         <CiFilter />
                     </button>

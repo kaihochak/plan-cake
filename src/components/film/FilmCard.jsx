@@ -127,10 +127,12 @@ const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, gues
                     </div>
 
                     {/* votes */}
-                    <div className="flex items-center">
-                        <div className="body">{votes}</div>
-                        <MdPoll className="w-4 h-4 ml-1 md:w-5 md:h-5" />
-                    </div>
+                    {votes &&
+                        <div className="flex items-center">
+                            <div className="body">{votes}</div>
+                            <MdPoll className="w-4 h-4 ml-1 md:w-5 md:h-5" />
+                        </div>
+                    }
 
                 </div>
             </div>
