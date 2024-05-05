@@ -41,6 +41,7 @@ const VoteResult = ({ formData }) => {
   const populateResults = () => {
     const newResults = formData.selectedFilms.map(film => {
       const voters = getVoters(film);
+      console.log("Voters for film", film, ":", voters);
       return { 
         id: film.id, 
         title: film.title, 
@@ -87,7 +88,9 @@ const VoteResult = ({ formData }) => {
               <TableCell className=""> <Checkbox /></TableCell>
               <TableCell>{film.title}</TableCell>
               <TableCell>{film.votes}</TableCell>
-              <TableCell className="text-right">{film.voters.join(", ")}</TableCell>
+              <TableCell className="text-right">{film.voters.map((voter, index) => (
+                <span key={index}>{voter.name}{index < film.voters.length - 1 ? ', ' : ''}</span>
+              ))}</TableCell>
             </TableRow>
           ))}
         </TableBody>
