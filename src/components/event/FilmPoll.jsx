@@ -14,9 +14,10 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
   const [showFilmSearch, setShowFilmSearch] = useState(false);
   const [showGuestSelection, setShowGuestSelection] = useState(false);
   const [showVoteResult, setShowVoteResult] = useState(false);
+  const [sortOrder, setSortOrder] = useState('');
+  const [selectedFilms, setSelectedFilms] = useState(formData.selectedFilms);
   const [sortedFilms, setSortedFilms] = useState(formData.selectedFilms);
   const [votedFilms, setVotedFilms] = useState([]);
-  const [sortOrder, setSortOrder] = useState('');
   const host = localStorage.getItem('host');
 
   // if it's the host, set the host to be the current user
@@ -24,7 +25,7 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     if (host && !selectedGuest) setSelectedGuest("0")
   }), [];
 
-  // update formData and resort the films, when votedFilms is updated
+  // update formData, when votedFilms is updated
   useEffect(() => {
     setFormData(previous => ({
       ...previous,
@@ -32,14 +33,19 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
         guest.id === selectedGuest ? { ...guest, filmsVoted: votedFilms } : guest
       ))
     }))
-    setSortedFilms(sortByVotedFilmsByCurrentUser(sortedFilms));
+    handleSortChange(sortOrder);
   }, [votedFilms]);
+
+  // sort the films, when selectedFilms is updated
+  useEffect(() => {
+    handleSortChange(sortOrder);
+  }, [selectedFilms]);
 
   // set the voted films, when the selected guest changes
   useEffect(() => {
     // call api to get the voted films of the selected user
     setVotedFilms(formData.guestList.find(guest => (guest.id === selectedGuest))?.filmsVoted);
-    setSortedFilms(sortByVotedFilmsByCurrentUser(formData.selectedFilms));
+    handleSortChange(sortOrder);
   }, [selectedGuest]);
 
   /**********************************************************************************
@@ -76,16 +82,19 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     return (
       <SmallDialog open={showVoteResult} onOpenChange={setShowVoteResult}>
         <SmallDialogContent hasClose={true} className="overflow-y-auto custom-scrollbar bg-primary text-secondary border-border w-[90%]">
-          <VoteResult formData={formData} />
+          <VoteResult
+            formData={formData}
+          />
         </SmallDialogContent>
       </SmallDialog>
     )
   }
 
   const getVotes = (film) => {
-    let count = formData.guestList.filter(guest => guest.filmsVoted.some(vote => vote.id.toString() === film.id.toString())).length
+    let count = formData.guestList.filter(guest => guest.filmsVoted?.some(vote => vote.id.toString() === film.id.toString())).length
     return count;
   }
+
 
   /**********************************************************************************
   * Film Search
@@ -111,16 +120,20 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
   const handleSearchApply = (newData) => {
     setShowFilmSearch(false);
     const newSelectedFilms = newData.selectedFilms;
+    // set parent state
     setFormData(previous => ({
       ...previous,
       selectedFilms: newSelectedFilms
     }))
+
+    // set local state
+    setSelectedFilms(newSelectedFilms);
   }
 
   /**********************************************************************************
    * Sorting
    *******************************************************************************/
-  
+
   const sortByVotedFilmsByCurrentUser = (sortedItems) => {
     if (!sortedItems || !votedFilms) return sortByVotes(sortedItems);
 
@@ -133,30 +146,25 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     });
 
     // Sort unvoted films by highest to lowest votes of all users
+    voted = sortByVotes(voted);
     unvoted = sortByVotes(unvoted);
-  
+
     // Return voted films first, then unvoted films
     return [...voted, ...unvoted];
   };
 
-
   const sortByVotes = (sortedItems) => {
     return sortedItems.sort((a, b) => {
-      const aVotes = formData.guestList.filter(guest => guest.filmsVoted.some(vote => vote.id === a.id.toString())).length;
-      const bVotes = formData.guestList.filter(guest => guest.filmsVoted.some(vote => vote.id === b.id.toString())).length;
+      const aVotes = getVotes(a);
+      const bVotes = getVotes(b);
       if (aVotes === bVotes) return 0;
       return aVotes > bVotes ? -1 : 1;
     });
   }
 
-
-
-  const handleSortChange = (value) => {
-    let sortedItems = [...sortedFilms];
-
-    switch (value) {
+  const sortFilms = (sortBy, sortedItems) => {
+    switch (sortBy) {
       case 'Default':
-        value = '';
         sortedItems = sortByVotedFilmsByCurrentUser(sortedItems); // Sort from voted to not voted
         break;
       case 'Votes: High to Low':
@@ -175,8 +183,19 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
         sortedItems = sortedItems.sort((a, b) => parseInt(a.release_date.split("-")[0]) - parseInt(b.release_date.split("-")[0]));
         break;
       default:
+        sortedItems = sortByVotedFilmsByCurrentUser(sortedItems); // Sort from voted to not voted
         break;
     }
+    return sortedItems;
+  }
+
+
+  const handleSortChange = (value) => {
+    
+    if (!selectedFilms) return;
+    
+    let sortedItems = sortFilms(value, selectedFilms);
+    if (value === 'Default') value = '';
 
     setSortedFilms(sortedItems);
     setSortOrder(value);
