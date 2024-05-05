@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 
 const VoteResult = ({ formData }) => {
   const [results, setResults] = useState([])
@@ -8,18 +9,30 @@ const VoteResult = ({ formData }) => {
   /************************************************************************
    *  getVotes
    ************************************************************************/
-  const getVotes = (filmId) => {
-    let votes = 0;
-    let voters = [];
+  // const getVotes = (filmId) => {
+  //   let votes = 0;
+  //   let voters = [];
 
-    // loop through the guestList
-    formData.guestList.map((guest) => {
-      if (guest.filmsVoted.includes(filmId)) {
-        votes++;
-        voters.push(guest.name);
-      }
-    })
-    return { votes, voters };
+  //   // loop through the guestList
+  //   formData.guestList.map((guest) => {
+  //     if (guest.filmsVoted.includes(filmId)) {
+  //       votes++;
+  //       voters.push(guest.name);
+  //     }
+  //   })
+  //   return { votes, voters };
+  // }
+
+  const getVoters = (film) => {
+    if(film) {
+      let voters = formData.guestList.filter(guest => 
+        {
+          console.log(guest,film);
+          return guest.filmsVoted.some(vote => vote.id.toString() === film.id.toString())
+        })
+      return voters;
+    } 
+    return [];
   }
 
   /************************************************************************
@@ -27,15 +40,16 @@ const VoteResult = ({ formData }) => {
    ************************************************************************/
   const populateResults = () => {
     const newResults = formData.selectedFilms.map(film => {
-      const { votes, voters } = getVotes(film.id);
+      const voters = getVoters(film);
       return { 
         id: film.id, 
         title: film.title, 
-        votes, 
+        votes: voters.length, 
         voters 
       };
     });
     console.log("New results calculated:", newResults); // Check what's being computed
+
     setResults(newResults);
   };
   
@@ -70,7 +84,7 @@ const VoteResult = ({ formData }) => {
           {/* map over the formData.selectedFilms */}
           {results.map((film, index) => (
             <TableRow key={index}>
-              <TableCell className="font-medium">checkbox</TableCell>
+              <TableCell className=""> <Checkbox /></TableCell>
               <TableCell>{film.title}</TableCell>
               <TableCell>{film.votes}</TableCell>
               <TableCell className="text-right">{film.voters.join(", ")}</TableCell>
