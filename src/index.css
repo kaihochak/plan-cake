@@ -22,7 +22,7 @@ body {
   :root {
     @apply min-h-screen bg-background text-foreground;
 
-    --background: 0 0% 10%;
+    --background: 0 0% 8%;
     --foreground: 0 0% 85%;
 
     --card: 0 0% 100%;
@@ -33,7 +33,7 @@ body {
     --popover-foreground: var(--foreground);
 
     /* Off Black */
-    --primary: 0 0% 10%;
+    --primary: 0 0% 8%;
     --primary-light: 0 0% 32%;
     --primary-foreground: 0 0% 85%;
 
