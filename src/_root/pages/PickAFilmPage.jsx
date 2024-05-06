@@ -3,6 +3,7 @@ import FilmPoll from '@/components/event/FilmPoll'
 import GuestList from '@/components/event/GuestList'
 import GuestSelection from "@/components/event/GuestSelection";
 import DummyPickAFilmData from '../../data/DummyPickAFilmData';
+import ConfirmedFilm from '@/components/event/ConfirmedFilm';
 
 const PickAFilmPage = () => {
   const [event, setEvent] = useState(null);
@@ -27,6 +28,11 @@ const PickAFilmPage = () => {
     }))
   }, [host]);
 
+  useEffect(() => {
+    console.log(formData.confirmedFilm);
+    
+  }), [formData.confirmedFilm];
+
   /**********************************************************************************
    * Rendering
    **********************************************************************************/
@@ -48,7 +54,11 @@ const PickAFilmPage = () => {
         </div>
 
         {/* Poster */}
-        {/* <SelectedFilm selectedFilms={formData.selectedFilms}/> */}
+        <ConfirmedFilm 
+          confirmedFilm={formData.confirmedFilm}
+          formData={formData}
+        />
+
         {/* Film Poll */}
         <FilmPoll
           formData={formData}

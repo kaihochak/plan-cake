@@ -21,7 +21,7 @@ const FormSchema = z.object({
 })
 
 // VoteResult component
-const VoteResult = ({ formData }) => {
+const VoteResult = ({ formData, setFormData, setShowVoteResult }) => {
   const [results, setResults] = useState([])
 
   const form = useForm({
@@ -32,15 +32,23 @@ const VoteResult = ({ formData }) => {
   })
 
   function onSubmit(data) {
+    let confirmedFilm = formData.selectedFilms.filter((film) => film.id.toString() === data.film.toString())[0];
+
+    setFormData((previous) => ({
+      ...previous,
+      confirmedFilm
+    }))
+    setShowVoteResult(false)
     // Display the submitted values
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
+    // toast({
+    //   title: "You selected the following film:",
+    //   description: (
+    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+    //       <p>{data.film.toString()}</p>
+    //     </pre>
+    //   ),
+    // })
+    
   }
 
   /************************************************************************
