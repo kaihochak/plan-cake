@@ -3,6 +3,7 @@ import FilmPoll from '@/components/event/FilmPoll'
 import GuestList from '@/components/event/GuestList'
 import GuestSelection from "@/components/event/GuestSelection";
 import DummyPickAFilmData from '../../data/DummyPickAFilmData';
+import ConfirmedFilm from '@/components/event/ConfirmedFilm';
 
 const PickAFilmPage = () => {
   const [event, setEvent] = useState(null);
@@ -11,7 +12,6 @@ const PickAFilmPage = () => {
   const [formData, setFormData] = useState(DummyPickAFilmData);
 
   const host = localStorage.getItem('host');
-
   useEffect(() => {
     if (!host) return;
     setFormData(previous => ({
@@ -48,7 +48,11 @@ const PickAFilmPage = () => {
         </div>
 
         {/* Poster */}
-        {/* <SelectedFilm selectedFilms={formData.selectedFilms}/> */}
+        <ConfirmedFilm 
+          confirmedFilm={formData.confirmedFilm}
+          formData={formData}
+        />
+
         {/* Film Poll */}
         <FilmPoll
           formData={formData}

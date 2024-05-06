@@ -84,6 +84,8 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
         <SmallDialogContent hasClose={true} className="overflow-y-auto custom-scrollbar bg-primary text-secondary border-border w-[90%]">
           <VoteResult
             formData={formData}
+            setFormData={setFormData}
+            setShowVoteResult={setShowVoteResult}
           />
         </SmallDialogContent>
       </SmallDialog>
