@@ -12,7 +12,6 @@ const PickAFilmPage = () => {
   const [formData, setFormData] = useState(DummyPickAFilmData);
 
   const host = localStorage.getItem('host');
-
   useEffect(() => {
     if (!host) return;
     setFormData(previous => ({
@@ -27,11 +26,6 @@ const PickAFilmPage = () => {
         }]
     }))
   }, [host]);
-
-  useEffect(() => {
-    console.log(formData.confirmedFilm);
-    
-  }), [formData.confirmedFilm];
 
   /**********************************************************************************
    * Rendering

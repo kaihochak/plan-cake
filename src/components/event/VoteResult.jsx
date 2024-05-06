@@ -39,16 +39,18 @@ const VoteResult = ({ formData, setFormData, setShowVoteResult }) => {
       confirmedFilm
     }))
     setShowVoteResult(false)
-    // Display the submitted values
-    // toast({
-    //   title: "You selected the following film:",
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <p>{data.film.toString()}</p>
-    //     </pre>
-    //   ),
-    // })
-    
+
+    toast({
+      variant: "success",
+      title: (
+        <p className='bold'>🎬 Let's get ready to watch 🍿</p>
+      ),
+      description: (
+        <p className='subtitle leading-[1.5]'>
+          {confirmedFilm.title} ({confirmedFilm.release_date.split("-")[0]})</p>
+      ),
+    })
+
   }
 
   /************************************************************************
