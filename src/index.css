@@ -569,7 +569,6 @@ body {
 
   .transTopbar {
     @apply top-0 z-50 xl:hidden w-full h-[80px] absolute bg-transparent bg-gradient-to-b from-black;
-    /* @apply top-0 z-50 xl:hidden w-full h-[80px] absolute bg-transparent bg-gradient-to-b from-black; */
   }
 
   /* Left sidebar */
@@ -581,7 +580,7 @@ body {
 
   .leftsidebar-link {
     @apply relative flex items-center h-[140px] gap-4 transition rounded-lg pr-14 base-medium;
-    @apply [&_h2]:hover:bg-accent [&_*]:hover:text-accent;
+    @apply [&_*]:hover:text-accent;
   }
 
   .leftsidebar-text {
@@ -590,6 +589,10 @@ body {
 
   .leftsidebar-logo {
     @apply flex-shrink-0 text-accent/80 text-[40px];
+  }
+
+  .leftsidebar-line {
+    @apply flex-shrink-0 w-1 h-full rounded-xl ;
   }
 
   /* Bottom bar */

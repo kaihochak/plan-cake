@@ -9,9 +9,11 @@ import { GiDandelionFlower } from "react-icons/gi";
 import Loader from '@/components/utility/Loader'
 import { useSignOutAccount } from "@/lib/react-query/queries";
 import { useUserContext, INITIAL_USER } from "@/context/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
 
 const LeftSidebar = () => {
     const navigate = useNavigate();
+    const [hoveredId, setHoveredId] = React.useState(null);
     const { pathname } = useLocation();
     const { user, setUser, setIsAuthenticated, isLoading } = useUserContext();
 
@@ -25,10 +27,41 @@ const LeftSidebar = () => {
         navigate("/sign-in");
     };
 
+    function handleMouseEnter(index) {
+        setTimeout(() => {
+            setHoveredId(index);
+        }, 200);
+    }
+
+    function getHoveredId() {
+        console.log(pathname);
+        switch (pathname) {
+            case '/^\/profile\/.*$/i':
+                return 0;
+            case '/':
+                return 1;
+            case '/pickAFilm':
+                return 2;
+            case '/create-event':
+                return 3;
+            case '/explore':
+                return 4;
+            case '/sign-in':
+            default:
+                return null;
+        }
+    }
+
+    function handleMouseLeave() {
+        setTimeout(() => {
+            setHoveredId(getHoveredId());
+        }, 200);
+    }
+
     return (
         <section>
             <nav className="leftsidebar group">
-                <div className='flex flex-col gap-y-4'> 
+                <div className='flex flex-col gap-y-4'>
                     {/* Logo */}
                     <Link to="/" className="pl-4 flex-center">
                         <img
@@ -48,13 +81,16 @@ const LeftSidebar = () => {
                     ) : (
                         <NavLink
                             to={`/profile/${user.id}`}
-                            className={`leftsidebar-link ${pathname.startsWith("/profile") ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
+                            className="leftsidebar-link"
+                            onMouseEnter={() => handleMouseEnter(0)}
+                            onMouseLeave={handleMouseLeave}
                         >
-                            <h2 className='pl-1 h-full w-[0.1px] rounded-xl mr-8'></h2>
+                            {hoveredId === 0 && <motion.h2 layoutId='line' className='bg-accent leftsidebar-line'></motion.h2>}
+                            {hoveredId !== 0 && <h2 className='leftsidebar-line'></h2>}
                             <img
                                 src={user.imageUrl || "/assets/icons/profile-placeholder.svg"}
                                 alt="profile"
-                                className="w-12 h-12 rounded-full leftsidebar-text"
+                                className="w-12 h-12 ml-8 rounded-full leftsidebar-text"
                             />
                             <div className="flex flex-col">
                                 <p className="leftsidebar-text body-bold">{user.name}</p>
@@ -69,45 +105,63 @@ const LeftSidebar = () => {
                 <ul className="flex flex-col mb-20">
                     {/* Home */}
                     <NavLink to="/"
-                        className={`leftsidebar-link ${pathname === "/" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
+                        className="leftsidebar-link"
+                        onMouseEnter={() => handleMouseEnter(1)}
+                        onMouseLeave={handleMouseLeave}
                     >
-                        <h2 className='pl-1 h-full w-[0.1px] rounded-xl mr-8'></h2>
-                        <GoHome className='leftsidebar-logo' />
+                        {hoveredId === 1 && <motion.h2 layoutId='line' className='bg-accent leftsidebar-line'></motion.h2>}
+                        {hoveredId !== 1 && <h2 className='leftsidebar-line'></h2>}
+                        <GoHome className='ml-8 leftsidebar-logo' />
                         <p className='pl-4 leftsidebar-text subtitle'>Home</p>
                     </NavLink>
 
                     {/* PickAFilm */}
                     <NavLink to="/pickAFilm"
-                        className={`leftsidebar-link ${pathname === "/pickAFilm" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
+                        className="leftsidebar-link"
+                        onMouseEnter={() => handleMouseEnter(2)}
+                        onMouseLeave={handleMouseLeave}
                     >
-                        <h2 className='pl-1 h-full w-[0.1px] rounded-xl mr-8'></h2>
-                        <GiDandelionFlower className='leftsidebar-logo' />
+                        {hoveredId === 2 && <motion.h2 layoutId='line' className='bg-accent leftsidebar-line'></motion.h2>}
+                        {hoveredId !== 2 && <h2 className='leftsidebar-line'></h2>}
+                        <GiDandelionFlower className='ml-8 leftsidebar-logo' />
                         <p className='pl-4 leftsidebar-text subtitle'>PickAFilm</p>
                     </NavLink>
 
                     {/* Create */}
                     <NavLink to="/create-event"
-                        className={`leftsidebar-link ${pathname === "/create-event" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
+                        className="leftsidebar-link"
+                        onMouseEnter={() => handleMouseEnter(3)}
+                        onMouseLeave={handleMouseLeave}
                     >
-                        <h2 className='pl-1 h-full w-[0.1px] rounded-xl mr-8'></h2>
-                        <IoMdAddCircleOutline className='leftsidebar-logo' />
+                        {hoveredId === 3 && <motion.h2 layoutId='line' className='bg-accent leftsidebar-line'></motion.h2>}
+                        {hoveredId !== 3 && <h2 className='leftsidebar-line'></h2>}
+                        <IoMdAddCircleOutline className='ml-8 leftsidebar-logo' />
                         <p className='pl-4 leftsidebar-text subtitle'>Create</p>
                     </NavLink>
 
                     {/* Explore */}
                     <NavLink to="/explore"
-                        className={`leftsidebar-link ${pathname === "/explore" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
+                        className="leftsidebar-link"
+                        onMouseEnter={() => handleMouseEnter(4)}
+                        onMouseLeave={handleMouseLeave}
                     >
-                        <h2 className='pl-1 h-full w-[0.1px] rounded-xl mr-8'></h2>
-                        <IoIosSearch className='leftsidebar-logo' />
+                        {hoveredId === 4 && <motion.h2 layoutId='line' className='bg-accent leftsidebar-line'></motion.h2>}
+                        {hoveredId !== 4 && <h2 className='leftsidebar-line'></h2>}
+                        <IoIosSearch className='ml-8 leftsidebar-logo' />
                         <p className='pl-4 leftsidebar-text subtitle'>Explore</p>
                     </NavLink>
                 </ul>
 
                 {/* Logout */}
-                <button className="leftsidebar-link" onClick={(e) => handleSignOut(e)}>
-                    <h2 className='pl-1 h-full w-[0.1px] rounded-xl mr-8'></h2>
-                    <IoMdLogOut className="leftsidebar-text leftsidebar-logo" />
+                <button
+                    className="leftsidebar-link"
+                    onClick={(e) => handleSignOut(e)}
+                    onMouseEnter={() => handleMouseEnter(5)}
+                    onMouseLeave={handleMouseLeave}
+                >
+                    {hoveredId === 5 && <motion.h2 layoutId='line' className='bg-accent leftsidebar-line'></motion.h2>}
+                    {hoveredId !== 5 && <h2 className='leftsidebar-line'></h2>}
+                    <IoMdLogOut className="ml-8 leftsidebar-text leftsidebar-logo" />
                     <p className='leftsidebar-text'>Logout</p>
                 </button>
             </nav>
