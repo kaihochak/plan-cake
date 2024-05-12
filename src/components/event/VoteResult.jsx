@@ -23,11 +23,12 @@ const FormSchema = z.object({
 // VoteResult component
 const VoteResult = ({ formData, setFormData, setShowVoteResult }) => {
   const [results, setResults] = useState([])
+  const confirmedId = formData.confirmedFilm?.id?.toString();
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      film: "",
+      film: confirmedId,
     },
   })
 
@@ -101,17 +102,6 @@ const VoteResult = ({ formData, setFormData, setShowVoteResult }) => {
     <div className='p-6'>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="items"
-            render={() => (
-              <FormItem>
-                <div className="mb-4">
-                  <FormLabel className="text-base">Sidebar</FormLabel>
-                  <FormDescription>
-                    Select the items you want to display in the sidebar.
-                  </FormDescription>
-                </div>
                 {/* Table for the results */}
                 <Table>
                   <TableHeader>
@@ -160,10 +150,6 @@ const VoteResult = ({ formData, setFormData, setShowVoteResult }) => {
                     ))}
                   </TableBody>
                 </Table>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <Button type="submit">Confirm film</Button>
         </form>
       </Form>
