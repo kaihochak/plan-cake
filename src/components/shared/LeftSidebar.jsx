@@ -32,21 +32,27 @@ const LeftSidebar = () => {
             setHoveredId(index);
         }, 200);
     }
-
     function getHoveredId() {
-        console.log(pathname);
-        switch (pathname) {
-            case '/^\/profile\/.*$/i':
+    
+        // Convert the pathname to lower case for case insensitivity
+        var normalizedPathname = pathname.toLowerCase();
+    
+        // Remove any subpathnames (everything after the first '/')
+        var basePath = normalizedPathname.split('/')[1];
+        
+        // Use a switch statement on the basePath
+        switch (basePath) {
+            case 'profile':
                 return 0;
-            case '/':
+            case '':  // This is the base case, equivalent to '/'
                 return 1;
-            case '/pickAFilm':
+            case 'pickafilm':
                 return 2;
-            case '/create-event':
+            case 'create-event':
                 return 3;
-            case '/explore':
+            case 'explore':
                 return 4;
-            case '/sign-in':
+            case 'sign-in':
             default:
                 return null;
         }
