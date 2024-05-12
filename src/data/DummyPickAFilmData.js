@@ -1,5 +1,5 @@
 const DummyPickAFilmData = {
-  confirmedFilm: {},
+  confirmedFilm: null,
   guestList: [
     {
       id: "-1",

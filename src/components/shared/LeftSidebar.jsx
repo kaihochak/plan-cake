@@ -13,7 +13,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const LeftSidebar = () => {
     const navigate = useNavigate();
-    const [hoveredId, setHoveredId] = React.useState(getHoveredId());
+    const [hoveredId, setHoveredId] = React.useState();
     const { pathname } = useLocation();
     const { user, setUser, setIsAuthenticated, isLoading } = useUserContext();
 
@@ -32,6 +32,7 @@ const LeftSidebar = () => {
             setHoveredId(index);
         }, 200);
     }
+    
     function getHoveredId() {
     
         // Convert the pathname to lower case for case insensitivity
@@ -82,7 +83,7 @@ const LeftSidebar = () => {
                     {/* Profile */}
                     {isLoading || !user.email ? (
                         <div className="h-14">
-                            <Loader />
+                            <Loader className="leftsidebar-text"/>
                         </div>
                     ) : (
                         <NavLink
