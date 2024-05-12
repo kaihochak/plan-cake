@@ -13,7 +13,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const LeftSidebar = () => {
     const navigate = useNavigate();
-    const [hoveredId, setHoveredId] = React.useState(null);
+    const [hoveredId, setHoveredId] = React.useState(getHoveredId());
     const { pathname } = useLocation();
     const { user, setUser, setIsAuthenticated, isLoading } = useUserContext();
 
