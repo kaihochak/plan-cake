@@ -33,13 +33,13 @@ const PickAFilm = () => {
    * Rendering
    *****************************************************************************/
   return (
-    <div className='flex flex-col items-center flex-1 py-10 overflow-scroll gap-x-10 gap-y-6 custom-scrollbar lg:items-start'>
+    <div className='flex flex-col items-center flex-1 py-10 mx-auto overflow-scroll max-w-screen-2xl gap-x-10 gap-y-6 custom-scrollbar lg:items-start'>
       <div className='h-screen pt-6 overflow-hidden lg:ml-20 lg:grid lg:grid-cols-5'>
 
         {/* text */}
         <div className='flex-col px-5 text-center flex-between lg:text-start lg:items-start lg:justify-center lg:col-span-2 '>
           <h2 className="my-4 h2 text-accent ">Pick a film!</h2>
-          <p className='mb-6 subtitle z-50 lg:mr-36'>Let's pick a film with your friends and start watching the film that everyone likes!</p>
+          <p className='z-50 mb-6 subtitle lg:mr-36'>Let's pick a film with your friends and start watching the film that everyone likes!</p>
           <Button
             variant="accent"
             type="button"
