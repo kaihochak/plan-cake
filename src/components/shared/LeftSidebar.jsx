@@ -27,15 +27,16 @@ const LeftSidebar = () => {
 
     return (
         <section>
-            <nav className="leftsidebar">
-                <div className="flex flex-col gap-11 ">
+            <nav className="leftsidebar group">
+                <div className='flex flex-col gap-y-4'> 
                     {/* Logo */}
-                    <Link to="/" className="px-10 flex-center">
+                    <Link to="/" className="pl-4 flex-center">
                         <img
                             src={Logo}
                             alt="logo"
                             width={170}
                             height={36}
+                            className='leftsidebar-text'
                         />
                     </Link>
 
@@ -45,70 +46,69 @@ const LeftSidebar = () => {
                             <Loader />
                         </div>
                     ) : (
-                        <NavLink 
-                            to={`/profile/${user.id}`} 
+                        <NavLink
+                            to={`/profile/${user.id}`}
                             className={`leftsidebar-link ${pathname.startsWith("/profile") ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
                         >
-                            <h2 className='pl-1 h-20 w-[0.5px] rounded-xl mr-8'></h2>
+                            <h2 className='pl-1 h-full w-[0.1px] rounded-xl mr-8'></h2>
                             <img
                                 src={user.imageUrl || "/assets/icons/profile-placeholder.svg"}
                                 alt="profile"
-                                className="w-12 h-12 rounded-full"
+                                className="w-12 h-12 rounded-full leftsidebar-text"
                             />
                             <div className="flex flex-col">
-                                <p className="body-bold">{user.name}</p>
-                                <p className="small-regular text-light-3">@{user.username}</p>
+                                <p className="leftsidebar-text body-bold">{user.name}</p>
+                                <p className="leftsidebar-text small-regular text-light-3">@{user.username}</p>
                             </div>
                         </NavLink>
                     )}
-
-
-                    {/* Links */}
-                    <ul className="flex flex-col gap-6">
-                        {/* Home */}
-                        <NavLink to="/"
-                            className={`leftsidebar-link ${pathname === "/" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
-                        >
-                            <h2 className='pl-1 h-20 w-[0.5px] rounded-xl mr-8'></h2>
-                            <GoHome className='text-accent/80 text-[30px]' />
-                            <p className='leftsidebar-text'>Home</p>
-                        </NavLink>
-                        
-                        {/* PickAFilm */}
-                        <NavLink to="/pickAFilm"
-                            className={`leftsidebar-link ${pathname === "/pickAFilm" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
-                        >
-                            <h2 className='pl-1 h-20 w-[0.5px] rounded-xl mr-8'></h2>
-                            <GiDandelionFlower className='text-accent/80 text-[30px]' />
-                            <p>PickAFilm</p>
-                        </NavLink>
-
-                        {/* Create */}
-                        <NavLink to="/create-event"
-                            className={`leftsidebar-link ${pathname === "/create-event" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
-                        >
-                            <h2 className='pl-1 h-20 w-[0.5px] rounded-xl mr-8'></h2>
-                            <IoMdAddCircleOutline className='text-accent/80 text-[30px]' />
-                            <p>Create</p>
-                        </NavLink>
-
-                        {/* Explore */}
-                        <NavLink to="/explore"
-                            className={`leftsidebar-link ${pathname === "/explore" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
-                        >
-                            <h2 className='pl-1 h-20 w-[0.5px] rounded-xl mr-8'></h2>
-                            <IoIosSearch className='text-accent/80 text-[30px]' />
-                            <p>Explore</p>
-                        </NavLink>
-                    </ul>
-
                 </div>
+
+
+                {/* Links */}
+                <ul className="flex flex-col mb-20">
+                    {/* Home */}
+                    <NavLink to="/"
+                        className={`leftsidebar-link ${pathname === "/" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
+                    >
+                        <h2 className='pl-1 h-full w-[0.1px] rounded-xl mr-8'></h2>
+                        <GoHome className='leftsidebar-logo' />
+                        <p className='pl-4 leftsidebar-text subtitle'>Home</p>
+                    </NavLink>
+
+                    {/* PickAFilm */}
+                    <NavLink to="/pickAFilm"
+                        className={`leftsidebar-link ${pathname === "/pickAFilm" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
+                    >
+                        <h2 className='pl-1 h-full w-[0.1px] rounded-xl mr-8'></h2>
+                        <GiDandelionFlower className='leftsidebar-logo' />
+                        <p className='pl-4 leftsidebar-text subtitle'>PickAFilm</p>
+                    </NavLink>
+
+                    {/* Create */}
+                    <NavLink to="/create-event"
+                        className={`leftsidebar-link ${pathname === "/create-event" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
+                    >
+                        <h2 className='pl-1 h-full w-[0.1px] rounded-xl mr-8'></h2>
+                        <IoMdAddCircleOutline className='leftsidebar-logo' />
+                        <p className='pl-4 leftsidebar-text subtitle'>Create</p>
+                    </NavLink>
+
+                    {/* Explore */}
+                    <NavLink to="/explore"
+                        className={`leftsidebar-link ${pathname === "/explore" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
+                    >
+                        <h2 className='pl-1 h-full w-[0.1px] rounded-xl mr-8'></h2>
+                        <IoIosSearch className='leftsidebar-logo' />
+                        <p className='pl-4 leftsidebar-text subtitle'>Explore</p>
+                    </NavLink>
+                </ul>
 
                 {/* Logout */}
                 <button className="leftsidebar-link" onClick={(e) => handleSignOut(e)}>
-                    <h2 className='pl-1 h-20 w-[0.5px] rounded-xl mr-8'></h2>
-                    <IoMdLogOut className="text-accent/80 text-[30px]" />
-                    <p>Logout</p>
+                    <h2 className='pl-1 h-full w-[0.1px] rounded-xl mr-8'></h2>
+                    <IoMdLogOut className="leftsidebar-text leftsidebar-logo" />
+                    <p className='leftsidebar-text'>Logout</p>
                 </button>
             </nav>
         </section>

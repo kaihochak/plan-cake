@@ -564,7 +564,7 @@ body {
   /* Topbar */
   .topbar {
     @apply absolute top-0 z-50 w-full h-auto xl:hidden;
-    @apply  bg-primary/90 backdrop-blur;
+    @apply bg-primary/90 backdrop-blur;
   }
 
   .transTopbar {
@@ -574,27 +574,28 @@ body {
 
   /* Left sidebar */
   .leftsidebar {
-    @apply left-0 flex-col justify-between hidden h-full xl:min-w-[200px] xl:flex overflow-x-hidden;
-    @apply py-10 border-r border-primary-light bg-primary/90 backdrop-blur-xl;
-    @apply transition-transform duration-700 ease-in-out transform translate-x-[-70%] hover:translate-x-0
-  }
+    @apply top-0 left-0 flex-col justify-between hidden h-full overflow-x-hidden xl:flex;
+    @apply py-10 bg-primary/90 backdrop-blur-xl;
+    @apply transition-all duration-700 ease-in-out hover:w-[300px] xl:w-[130px] 
+}
 
   .leftsidebar-link {
-    @apply flex items-center gap-4 overflow-hidden transition rounded-lg pr-14 base-medium;
+    @apply relative flex items-center h-[140px] gap-4 transition rounded-lg pr-14 base-medium;
     @apply [&_h2]:hover:bg-accent [&_*]:hover:text-accent;
   }
 
   .leftsidebar-text {
-    @apply transition-all duration-300 transform opacity-0;
-    @apply hover:opacity-100 hover:translate-x-0;
+    @apply transition-all duration-300 ease-in-out transform opacity-0 group-hover:opacity-100;
   }
-  
+
+  .leftsidebar-logo {
+    @apply flex-shrink-0 text-accent/80 text-[40px];
+  }
 
   /* Bottom bar */
   .bottom-bar {
     @apply sticky bottom-0 z-50 w-full px-2 py-1 border-t bg-primary/90 backdrop-blur-xl border-primary-light flex-between xl:hidden;
     /* @apply sticky bottom-0 z-50 w-full px-2 py-1 flex-between bg-primary-dark xl:hidden; */
-
   }
 
   /* User card */
