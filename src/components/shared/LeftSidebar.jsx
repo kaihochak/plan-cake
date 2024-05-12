@@ -27,7 +27,6 @@ const LeftSidebar = () => {
 
     return (
         <section>
-            {/* when open*/}
             <nav className="leftsidebar">
                 <div className="flex flex-col gap-11 ">
                     {/* Logo */}
@@ -72,7 +71,7 @@ const LeftSidebar = () => {
                         >
                             <h2 className='pl-1 h-20 w-[0.5px] rounded-xl mr-8'></h2>
                             <GoHome className='text-accent/80 text-[30px]' />
-                            <p>Home</p>
+                            <p className='leftsidebar-text'>Home</p>
                         </NavLink>
                         
                         {/* PickAFilm */}
