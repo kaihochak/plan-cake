@@ -13,7 +13,7 @@ const container = {
   visible: { opacity: 1, scale: 1,
     transition: {
       delayChildren: 0.7,
-      staggerChildren: 0.04
+      staggerChildren: 0.08
     }
   }
 };
@@ -46,10 +46,6 @@ const PickAFilm = () => {
     setLoading(false);
   }
 
-  useEffect(() => {
-    console.log("trending: ", trending);
-  }, [trending])
-
   /*****************************************************************************
    * Rendering
    *****************************************************************************/
@@ -76,7 +72,7 @@ const PickAFilm = () => {
           <div className='flex-center mx-auto py-3 xl:py-4 h-[180px] xl:h-[400px] xl:max-w-[850px]'>
             <Loader height="h-[40px]" weight="h-[40px]" />
           </div> :
-          <div className='relative flex-col px-10 flex-center xl:col-span-3 xl:h-full'>
+          <div className='relative flex-col flex-center xl:col-span-3 xl:h-full'>
             <motion.div
               variants={container}
               initial="hidden"
