@@ -48,7 +48,7 @@ const ConfirmedFilm = ({confirmedFilm, formData}) => {
             <div className='p-4'>
                 {/* Confirmed Film */}
                 {confirmedFilm && (
-                    <div className='flex-col flex-center'>
+                    <div className='flex-col md:hidden flex-center'>
                         <h2 className="self-end m3">Confirmed Film ({getVotes(confirmedFilm)})</h2>
                         <img
                             src={image500(confirmedFilm?.poster_path)}
