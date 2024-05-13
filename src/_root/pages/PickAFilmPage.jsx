@@ -48,10 +48,12 @@ const PickAFilmPage = () => {
         </div>
 
         {/* Poster */}
-        <ConfirmedFilm 
-          confirmedFilm={formData.confirmedFilm}
-          formData={formData}
-        />
+        {formData.confirmedFilm &&
+          <ConfirmedFilm
+            confirmedFilm={formData.confirmedFilm}
+            formData={formData}
+          />
+        }
 
         {/* Film Poll */}
         <FilmPoll

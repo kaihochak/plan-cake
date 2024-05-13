@@ -19,7 +19,7 @@ const Home = () => {
   return (
     <div className='flex flex-1'>
       <section className='home-container'>
-        <div className='pt-14 xl:pt-0'>
+        <div className='pt-14 xl:pt-10'>
           {/* Our introduction */}
           <Modal
             opened={opened}
