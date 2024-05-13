@@ -17,10 +17,10 @@ const TopBar = ({isSticky}) => {
 
     return (
         <section className="topbar">
-            <nav className="flex justify-center p-4 md:p-6">
+            <nav className="flex justify-center p-6">
                 {/* Logo as Home Button */}
                 <Link to="/" className="home-logo">
-                    <img src={Logo} alt="Home" className="w-28 " />
+                    <img src={Logo} alt="Home" className="w-28 md:w-36 lg:w-40" />
                 </Link>
             </nav>
         </section>
