@@ -26,7 +26,7 @@ const Carousel = ({ items }) => {
         <div className="flex-center">
             <Swiper
                 loop={true}
-                className="w-[320px] xs:w-[350px] sm:w-[500px] md:w-[680px] lg:w-[900px] xl:[1200px]"
+                className="w-[300px] xs:w-[350px] sm:w-[500px] md:w-[680px] lg:w-[900px] xl:[1200px]"
                 modules={[Navigation, Pagination, EffectCoverflow]}
                 spaceBetween={space} // Space between slides
                 pagination={false} // Enable and make pagination dots clickable

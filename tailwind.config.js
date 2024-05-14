@@ -24,7 +24,7 @@ module.exports = {
       },
       colors: {
         // Off White
-        default: '#D9D9D9',
+        default: 'hsl(var(--default))',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -39,7 +39,21 @@ module.exports = {
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
+          dark: "hsl(var(--secondary-dark))",
+          light: "hsl(var(--secondary-light))",
           foreground: "hsl(var(--secondary-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          dark: "hsl(var(--accent-dark))",
+          light: "hsl(var(--accent-light))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        accent2: {
+          DEFAULT: "hsl(var(--accent2))",
+          dark: "hsl(var(--accent2-dark))",
+          light: "hsl(var(--accent2-light))",
+          foreground: "hsl(var(--accent2-foreground))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -48,14 +62,6 @@ module.exports = {
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        accent2: {
-          DEFAULT: "hsl(var(--accent2))",
-          foreground: "hsl(var(--accent2-foreground))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -177,6 +183,10 @@ module.exports = {
           '100%': { transform: 'translateY(-20px)', opacity: '1' }, 
         },
       },
+      zIndex: {
+        '100': '100',
+        '200': '200',
+      }
     },
   },
   plugins: [

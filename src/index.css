@@ -22,8 +22,36 @@ body {
   :root {
     @apply min-h-screen bg-background text-foreground;
 
-    --background: 0 0% 8%;
-    --foreground: 0 0% 85%;
+    --default: var(--foreground);
+    /* Off Black */
+    --primary-dark: 0 0% 0%;
+    --primary: 0 0% 8%;
+    --primary-light: 0 0% 27%;
+    --primary-foreground: var(--foreground);
+
+    /* Off White */
+    --secondary-dark: 0 0% 85%;
+    --secondary: 0 0% 90%;
+    --secondary-light: 0 0% 95%;
+    --secondary-foreground: var(--primary);
+
+    /* Yellow */
+    --accent-dark: 43 99% 47%;
+    --accent: 43 99% 53%;
+    --accent-light: 43 99% 63%;
+    --accent-foreground: 0 0% 12%;
+
+    /* Blue */
+    --accent2-dark: 200 90% 55%;
+    --accent2: 200 90% 70%;
+    --accent2-light: 200 90% 84%;
+    --accent2-foreground: 0 0% 85%;
+
+    --background: var(--primary);
+    --foreground: var(--secondary);
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -31,26 +59,6 @@ body {
     /* Off White */
     --popover: var(--background);
     --popover-foreground: var(--foreground);
-
-    /* Off Black */
-    --primary: 0 0% 8%;
-    --primary-light: 0 0% 32%;
-    --primary-foreground: 0 0% 85%;
-
-    /* Off White */
-    --secondary: 0 0% 85%;
-    --secondary-foreground: 0 0% 12%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    /* Yellow - Off Black */
-    --accent: 43 99% 53%;
-    --accent-foreground: 0 0% 12%;
-
-    /* Purple */
-    --accent2: 200 90% 70%;
-    --accent2-foreground: 0 0% 85%;
 
     /* Red */
     --destructive: 0 100% 30%;
@@ -115,7 +123,7 @@ body {
 
   .subtitle {
     @apply font-semibold;
-    @apply text-[16px] sm:text-[20px]  md:text-[22px] lg:text-[24px];
+    @apply text-[16px] sm:text-[20px] md:text-[22px] lg:text-[24px];
   }
 
   .body {
@@ -286,7 +294,7 @@ body {
   /* Home */
   .home-container {
     @apply flex flex-col items-center flex-1 gap-10 overflow-scroll custom-scrollbar;
-    @apply p-6 lg:p-10 xl:pt-20;
+    @apply p-4 md:p-6 lg:p-10 xl:pt-20;
   }
 
   .home-posts {
@@ -577,7 +585,7 @@ body {
     @apply top-0 left-0 flex-col justify-between hidden h-full overflow-hidden xl:flex;
     @apply bg-primary/90 backdrop-blur-xl;
     @apply transition-all duration-700 ease-in-out hover:w-[300px] xl:w-[130px];
-}
+  }
 
   .leftsidebar-link {
     @apply relative flex items-center h-[115px] gap-4 transition rounded-lg pr-14 base-medium;
@@ -593,9 +601,8 @@ body {
   }
 
   .leftsidebar-line {
-    @apply flex-shrink-0 w-1 h-full rounded-xl ;
+    @apply flex-shrink-0 w-1 h-full rounded-xl;
   }
-
 
   .poster-collage {
     @apply rounded-sm absolute w-[160px] sm:w-[290px] md:w-[360px] lg:w-[280px] xl:w-[300px];
@@ -604,7 +611,8 @@ body {
 
   /* Bottom bar */
   .bottom-bar {
-    @apply sticky bottom-0 z-50 w-full px-2 py-1 border-t bg-primary/90 backdrop-blur-xl border-primary-light flex-between xl:hidden;
+    @apply sticky bottom-0 z-50 w-full px-2 py-1 border-t bg-primary/90 backdrop-blur-xl border-primary-light flex-between;
+    @apply md:px-8 md:py-4 xl:hidden;
   }
 
   /* User card */
