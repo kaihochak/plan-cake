@@ -177,6 +177,10 @@ module.exports = {
           '100%': { transform: 'translateY(-20px)', opacity: '1' }, 
         },
       },
+      zIndex: {
+        '100': '100',
+        '200': '200',
+      }
     },
   },
   plugins: [

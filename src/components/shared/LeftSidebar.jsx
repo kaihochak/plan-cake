@@ -1,11 +1,12 @@
 import React from 'react'
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import Logo from '/assets/icons/logo.png';
-import { GoHome } from "react-icons/go";
-import { IoMdAddCircleOutline } from "react-icons/io";
-import { IoIosSearch } from "react-icons/io";
-import { IoMdLogOut } from "react-icons/io";
-import { GiDandelionFlower } from "react-icons/gi";
+import { BiHomeAlt } from "react-icons/bi";
+import { BiFilm } from "react-icons/bi";
+import { BiPlusCircle } from "react-icons/bi";
+import { BiSearch } from "react-icons/bi";
+import { BiUserCircle } from "react-icons/bi";
+import { BiLogOutCircle } from "react-icons/bi";
+import ProfilePlaceholder from '/assets/icons/profile-placeholder.svg';
 import Loader from '@/components/utility/Loader'
 import { useSignOutAccount } from "@/lib/react-query/queries";
 import { useUserContext, INITIAL_USER } from "@/context/AuthContext";
@@ -80,30 +81,40 @@ const LeftSidebar = () => {
                     </Link> */}
 
                 {/* Profile */}
-                {isLoading || !user.email ? (
+                {/* {isLoading || !user.email ? (
                     <div className="hidden pt-12 h-14 group-hover:block">
                         <Loader className="leftsidebar-text" />
                     </div>
-                ) : (
-                    <NavLink
-                        to={`/profile/${user.id}`}
-                        className="leftsidebar-link"
-                        onMouseEnter={() => handleMouseEnter(0)}
-                        onMouseLeave={handleMouseLeave}
-                    >
-                        {hoveredId === 0 && <motion.h2 layoutId='line' className='group-hover:bg-accent leftsidebar-line'></motion.h2>}
-                        {hoveredId !== 0 && <h2 className='leftsidebar-line'></h2>}
-                        <img
-                            src={user.imageUrl || "/assets/icons/profile-placeholder.svg"}
-                            alt="profile"
-                            className="w-12 h-12 ml-8 rounded-full leftsidebar-text"
-                        />
-                        <div className="flex flex-col">
-                            <p className="leftsidebar-text body-bold">{user.name}</p>
-                            <p className="leftsidebar-text small-regular text-light-3">@{user.username}</p>
-                        </div>
-                    </NavLink>
-                )}
+                ) : ( */}
+                <NavLink
+                    to={`/profile/${user.id}`}
+                    className="leftsidebar-link"
+                    onMouseEnter={() => handleMouseEnter(0)}
+                    onMouseLeave={handleMouseLeave}
+                >
+                    {hoveredId === 0 && <motion.h2 layoutId='line' className='group-hover:bg-accent leftsidebar-line'></motion.h2>}
+                    {hoveredId !== 0 && <h2 className='leftsidebar-line'></h2>}
+                    {user ?
+                        <>
+                            <img
+                                src={user.imageUrl || ProfilePlaceholder}
+                                alt="profile"
+                                className="w-12 h-12 ml-8 rounded-full leftsidebar-text"
+                            />
+                            <div className="flex flex-col">
+                                <p className="leftsidebar-text body-bold">{user.name}</p>
+                                <p className="leftsidebar-text small-regular text-light-3">@{user.username}</p>
+                            </div>
+                        </>
+                        :
+                        <>
+                            <BiUserCircle className='ml-8 leftsidebar-logo leftsidebar-text' />
+                            <p className='pl-4 leftsidebar-text subtitle'>Login</p>
+                        </>
+                    }
+
+                </NavLink>
+                {/* )} */}
             </div>
 
 
@@ -117,7 +128,7 @@ const LeftSidebar = () => {
                 >
                     {hoveredId === 1 && <motion.h2 layoutId='line' className='bg-accent leftsidebar-line'></motion.h2>}
                     {hoveredId !== 1 && <h2 className='leftsidebar-line'></h2>}
-                    <GoHome className='ml-8 leftsidebar-logo' />
+                    <BiHomeAlt className='ml-8 leftsidebar-logo' />
                     <p className='pl-4 leftsidebar-text subtitle'>Home</p>
                 </NavLink>
 
@@ -129,7 +140,7 @@ const LeftSidebar = () => {
                 >
                     {hoveredId === 2 && <motion.h2 layoutId='line' className='bg-accent leftsidebar-line'></motion.h2>}
                     {hoveredId !== 2 && <h2 className='leftsidebar-line'></h2>}
-                    <GiDandelionFlower className='ml-8 leftsidebar-logo' />
+                    <BiFilm className='ml-8 leftsidebar-logo' />
                     <p className='pl-4 leftsidebar-text subtitle'>PickAFilm</p>
                 </NavLink>
 
@@ -141,7 +152,7 @@ const LeftSidebar = () => {
                 >
                     {hoveredId === 3 && <motion.h2 layoutId='line' className='bg-accent leftsidebar-line'></motion.h2>}
                     {hoveredId !== 3 && <h2 className='leftsidebar-line'></h2>}
-                    <IoMdAddCircleOutline className='ml-8 leftsidebar-logo' />
+                    <BiPlusCircle className='ml-8 leftsidebar-logo' />
                     <p className='pl-4 leftsidebar-text subtitle'>Create</p>
                 </NavLink>
 
@@ -153,7 +164,7 @@ const LeftSidebar = () => {
                 >
                     {hoveredId === 4 && <motion.h2 layoutId='line' className='bg-accent leftsidebar-line'></motion.h2>}
                     {hoveredId !== 4 && <h2 className='leftsidebar-line'></h2>}
-                    <IoIosSearch className='ml-8 leftsidebar-logo' />
+                    <BiSearch className='ml-8 leftsidebar-logo' />
                     <p className='pl-4 leftsidebar-text subtitle'>Explore</p>
                 </NavLink>
             </ul>
@@ -167,8 +178,8 @@ const LeftSidebar = () => {
             >
                 {hoveredId === 5 && <motion.h2 layoutId='line' className='bg-accent leftsidebar-line'></motion.h2>}
                 {hoveredId !== 5 && <h2 className='leftsidebar-line'></h2>}
-                <IoMdLogOut className="ml-8 leftsidebar-text leftsidebar-logo" />
-                <p className='leftsidebar-text'>Logout</p>
+                <BiLogOutCircle className="ml-8 leftsidebar-text leftsidebar-logo" />
+                <p className='pl-4 leftsidebar-text subtitle'>Logout</p>
             </button>
         </nav>
     );

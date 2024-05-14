@@ -1,70 +1,72 @@
 import { Link, useLocation } from "react-router-dom";
-import { GoHome } from "react-icons/go";
-import { IoMdAddCircleOutline } from "react-icons/io";
-import { IoIosSearch } from "react-icons/io";
-import { IoMdLogOut } from "react-icons/io";
-import { GiDandelionFlower } from "react-icons/gi";
+import { BiHomeAlt } from "react-icons/bi";
+import { BiFilm } from "react-icons/bi";
+import { BiPlusCircle } from "react-icons/bi";
+import { BiSearch } from "react-icons/bi";
+import { BiUserCircle } from "react-icons/bi";
 import ProfilePlaceholder from '/assets/icons/profile-placeholder.svg';
 import { useUserContext } from "@/context/AuthContext";
 
-
 const Bottombar = () => {
-  const { pathname } = useLocation();
-  const { user } = useUserContext();
+    const { pathname } = useLocation();
+    const { user } = useUserContext();
 
-  return (
-    <section className="bottom-bar">
-        {/* Home */}
-        <Link
-            to="/"
-            className={`p-2 transition rounded-[10px] 
+    return (
+        <section className="bottom-bar">
+            {/* Home */}
+            <Link
+                to="/"
+                className={`p-2 transition rounded-[10px] 
                       ${pathname === "/" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
-          >
-            <GoHome className='text-[30px]'/>
-        </Link>
+            >
+                <BiHomeAlt className='text-[30px] md:text-[48px]' />
+            </Link>
 
-        {/* PickAFilm */}
-        <Link
-            to="/pickAFilm"
-            className={`p-2 transition rounded-[10px]
+            {/* PickAFilm */}
+            <Link
+                to="/pickAFilm"
+                className={`p-2 transition rounded-[10px]
                       ${pathname === "/pickAFilm" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
-        >
-            <GiDandelionFlower className='text-[30px]' /> 
+            >
+                <BiFilm className='text-[30px] md:text-[48px]' />
 
-        </Link>
+            </Link>
 
-        {/* Create */}
-        <Link
-            to="/create-event"
-            className={`p-2 transition rounded-[10px] 
+            {/* Create */}
+            <Link
+                to="/create-event"
+                className={`p-2 transition rounded-[10px] 
                       ${pathname === "/create-event" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
-        >
-            <IoMdAddCircleOutline className='text-[30px]'/>
-        </Link>
+            >
+                <BiPlusCircle className='text-[30px] md:text-[48px]' />
+            </Link>
 
-        {/* Explore */}
-        <Link
-            to="/explore"
-            className={`p-2 transition rounded-[10px] 
+            {/* Explore */}
+            <Link
+                to="/explore"
+                className={`p-2 transition rounded-[10px] 
                       ${pathname.startsWith("/explore") ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
-        >
-            <IoIosSearch className='text-[30px]'/>
-        </Link>
+            >
+                <BiSearch className='text-[30px] md:text-[48px]' />
+            </Link>
 
-        {/* Profile */}
-        <Link
-            to="/profile/${user.id}"
-            className={`p-2 transition rounded-[10px] 
+            {/* Profile */}
+            <Link
+                to="/profile/${user.id}"
+                className={`p-2 transition rounded-[10px] 
                       ${pathname.startsWith("/explore") ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
-        >
-            <img 
-                src={user.imageUrl || ProfilePlaceholder} 
-                alt="profile"
-                className="w-8 h-8 rounded-full"
-            />
-        </Link>
-    </section>
-  );
+            >
+                {user ?
+                    <img
+                        src={user.imageUrl || ProfilePlaceholder}
+                        alt="profile"
+                        className="w-8 h-8 rounded-full md:w-12 md:h-12"
+                    /> :
+                    <BiUserCircle className='text-[30px] md:text-[48px]' />
+                }
+            </Link>
+        </section>
+    );
 };
 
 export default Bottombar;

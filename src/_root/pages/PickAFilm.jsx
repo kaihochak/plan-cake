@@ -6,13 +6,12 @@ import { fetchTrending } from '@/lib/tmdb/api';
 import Loader from '@/components/utility/Loader';
 import { motion } from "framer-motion";
 
-
 // framer motion variants
 const container = {
   hidden: { opacity: 1, scale: 0 },
   visible: { opacity: 1, scale: 1,
     transition: {
-      delayChildren: 0.7,
+      delayChildren: 0.4,
       staggerChildren: 0.08
     }
   }
