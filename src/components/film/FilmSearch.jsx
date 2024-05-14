@@ -9,7 +9,8 @@ import debounce from "lodash.debounce";
 import { fetchFilmDetails, fetchUpcoming, searchFilms } from "@/lib/tmdb/api";
 import FilmFilters from "@/components/film/FilmFilters";
 import FilmFiltersDisplay from "@/components/film/FilmFiltersDisplay";
-import { CiFilter } from 'react-icons/ci'
+import { BiFilterAlt } from "react-icons/bi";
+import { IoClose } from "react-icons/io5";
 import { cn } from "@/lib/utils"
 import { defaultFilters, defaultSortBy } from "@/constants";
 import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog"
@@ -45,7 +46,7 @@ import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog"
  *
  */
 
-const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFilms }) => {
+const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFilms, setModalOpen }) => {
     const [loading, setLoading] = useState(false);
 
     // Form 
@@ -63,7 +64,7 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFil
     // Filter and Search
     const [searchTerm, setSearchTerm] = useState("");
     const [isFilterApplied, setIsFilterApplied] = useState(false);
-    const [filterModalOpen, setModalOpen] = useState(false);
+    const [filterModalOpen, setFilterModalOpen] = useState(false);
     const [sortBy, setSortBy] = useState(defaultSortBy);
     const [filters, setFilters] = useState({
         watchlistFilter: defaultFilters.watchlistFilter,
@@ -365,17 +366,15 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFil
         nextStep(formData);
     };
 
-
-
     const FilmFiltersDialog = () => {
         return (
-            <Dialog open={filterModalOpen} onOpenChange={setModalOpen}>
-                <DialogContent hasClose={false} className="w-full h-full lg:w-[85%] lg:h-[85%] overflow-y-auto bg-primary custom-scrollbar text-secondary">
+            <Dialog open={filterModalOpen} onOpenChange={setFilterModalOpen}>
+                <DialogContent hasClose={false} className="max-w-[1024px] w-full h-full lg:w-[75%] lg:h-[80%] overflow-y-auto bg-primary custom-scrollbar text-secondary">
                     <FilmFilters
                         filmData={filmData}
                         users={users}
                         setIsFilterApplied={setIsFilterApplied}
-                        setModalOpen={setModalOpen}
+                        setModalOpen={setFilterModalOpen}
                         sortBy={sortBy}
                         setSortBy={setSortBy}
                         filters={filters}
@@ -392,28 +391,26 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFil
      ************************************************************************/
 
     return (
-        <div className="w-full">
-            {hasTitle && <h2 className="mb-3 text-m-2xl" >Pick A Film</h2>}
+        <div className="flex flex-col w-full h-full px-8 mb-10 gap-y-2 bg-primary text-primary-foreground lg:mx-auto ">
+            <div className='my-4 flex-between'>
+                <h3 className='h3'>Pick A Film!</h3>
+                <div onClick={() => setModalOpen(false)} className='cursor-pointer text-m-xl'>
+                    <IoClose />
+                </div>
+            </div>
 
             <div className="flex flex-col">
-                {hasTitle &&
-                    <div className="text-m-l">
-                        <p className="text-m-m"> or many films and decide later on.</p>
-                    </div>
-                }
-
-
                 {/* Search & Filters */}
-                <div className="flex pt-6 gap-x-4">
+                <div className="flex gap-x-4">
                     <SearchBar
                         searchTerm={searchTerm}
                         handleSearchChange={handleSearchChange}
                     />
                     {/* Filters Modal defined at the bottom */}
-                    <button onClick={() => setModalOpen(true)}
+                    <button onClick={() => setFilterModalOpen(true)}
                         className={cn("flex items-center text-[30px] mr-2 mb-2 text-primary-foreground/60",
                             { "text-accent/70": isFilterApplied })}>
-                        <CiFilter />
+                        <BiFilterAlt />
                     </button>
                 </div>
                 <FilmFiltersDisplay

@@ -60,7 +60,8 @@ const PickAFilmPage = () => {
           formData={formData}
           setFormData={setFormData}
           selectedGuest={selectedGuest}
-          setSelectedGuest={setSelectedGuest} />
+          setSelectedGuest={setSelectedGuest} 
+        />
       </div>
 
     </div>

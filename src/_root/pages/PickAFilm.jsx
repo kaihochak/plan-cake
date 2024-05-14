@@ -54,12 +54,12 @@ const PickAFilm = () => {
 
         {/* text */}
         <div className='flex-col h-[35%] xl:h-full px-10 text-center xl:px-0 flex-center xl:text-start xl:items-start xl:justify-center lg:col-span-2'>
-          <h2 className="my-4 h2 text-accent">Pick a film!</h2>
+          <h2 className="my-4 h2 text-accent-light">Pick a film!</h2>
           <p className='z-50 mx-10 mb-6 xl:mr-14 lg:ml-0 subtitle'>Let's pick a film with your friends and start watching the film that everyone likes!</p>
           <Button
             variant="accent"
             type="button"
-            className="w-40 md:w-52"
+            className="w-40 md:w-52 button-text"
             onClick={() => setIsFormOpen(true)}
           >
             Create Event

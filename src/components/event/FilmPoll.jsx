@@ -105,8 +105,12 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
   const FilmSearchModal = () => {
     return (
       <Dialog open={showFilmSearch} onOpenChange={setShowFilmSearch}>
-        <DialogContent hasClose={true} className="w-full h-full lg:w-[85%] lg:h-[85%] overflow-y-auto custom-scrollbar bg-primary text-secondary">
+        <DialogContent 
+          hasClose={false} 
+          className="max-w-[1024px] w-full h-full lg:w-[75%] lg:h-[80%] overflow-y-auto custom-scrollbar bg-primary text-secondary"
+        >
           <FilmSearch
+            setModalOpen={setShowFilmSearch}
             formData={formData}
             nextStep={handleSearchApply}
             hasTitle={false}
