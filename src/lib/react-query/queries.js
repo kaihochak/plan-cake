@@ -1,12 +1,8 @@
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  useInfiniteQuery,
-} from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query'
 import { QUERY_KEYS } from './queryKeys';
-import { createEvent, createUserAccount, getUserEvents, signInAccount, signOutAccount } from '../appwrite/api'
+import { createPickAFilm, createEvent, createUserAccount, getUserEvents, signInAccount, signOutAccount } from '../appwrite/api'
 
+// Auth
 export const useCreateUserAccount = () => {
   return useMutation({
     mutationFn: (user) => createUserAccount(user),
@@ -25,8 +21,17 @@ export const useSignOutAccount = () => {
   });
 };
 
+
+// PickAFilm
+export const useCreatePickAFilm = () => {
+  return useMutation({
+    mutationFn: (pickAFilm) => createPickAFilm(pickAFilm),
+  });
+};
+
+// Event
 export const useCreateEvent = () => {
-  const queryClient = useQueryClient(); //
+  const queryClient = useQueryClient(); 
   return useMutation({
     mutationFn: (event) => createEvent(event),
     onSuccess: () => {

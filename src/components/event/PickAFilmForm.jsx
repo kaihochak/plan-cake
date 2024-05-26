@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -12,8 +12,9 @@ import { Calendar } from "@/components/ui/calendar";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from 'react-router-dom'
-
+import { useCreatePickAFilm } from '@/lib/react-query/queries'
 
 const formSchema = z.object({
     title: z.string().min(2).max(50),
@@ -21,6 +22,19 @@ const formSchema = z.object({
 })
 
 const PickAFilmForm = ({ isOpen, onClose }) => {
+
+    const { toast } = useToast();
+    const navigate = useNavigate();
+    const [newPickAFilm, setNewPickAFilm] = useState(null);
+    const [formData, setFormData] = useState({
+        title: "",
+        host: "",
+        date: "",
+    })
+
+    // Query to create a new event
+    const { mutateAsync: createPickAFilmToDB, isPending: isLoadingCreate } = useCreatePickAFilm();
+
     // form validation
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -30,21 +44,50 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
         },
     })
 
-    const [formData, setFormData] = useState({
-        title: "",
-        host: "",
-        date: "",
-    })
-
-    const navigate = useNavigate();
+    // useEffect to handle navigation after newPickAFilm is set
+    useEffect(() => {
+        if (newPickAFilm && newPickAFilm.$id) {
+            navigate(`/pickAfilm/${newPickAFilm.$id}`);
+        }
+    }, [newPickAFilm, navigate]);
 
     // form submit
-    function handleFormSubmit(values) {
+    async function handleFormSubmit(values) {
         setFormData({ ...formData, title: values.title, host: values.host });
         localStorage.setItem('host', values.host);
         onClose(!isOpen);
-        navigate("/pickAfilm/1")
     }
+
+    // useEffect to handle form submission after formData is set
+    useEffect(() => {
+        if (formData.title && formData.host) {
+            submitToDB(formData);
+        }
+    }, [formData]);
+
+    // Submit form data to backend
+    async function submitToDB(formData) {
+        const newPickAFilm = await createPickAFilmToDB({
+            title: formData.title,
+            host: formData.host,
+            date: formData.date
+        });
+
+        console.log("newPickAFilm", newPickAFilm);
+
+        if (!newPickAFilm) {
+            toast({
+                variant: "error",
+                title: `Create event failed. Please try again.`,
+            });
+        } else {
+            toast({
+                variant: "success",
+                title: `Event created successfully.`,
+            });
+            setNewPickAFilm(newPickAFilm);
+        }
+    };
 
     /*****************************************************************************
      * Rendering
@@ -100,7 +143,7 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
                                 >
                                     <CalendarIcon className="w-4 h-4 mr-2" />
                                     {formData.date ?
-                                        (format(formData.date, "PPP")) : 
+                                        (format(formData.date, "PPP")) :
                                         (<span className="text-m-m">Pick A Date</span>)
                                     }
                                 </Button>

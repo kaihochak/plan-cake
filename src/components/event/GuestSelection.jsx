@@ -89,7 +89,6 @@ const GuestSelection = ({ formData, setFormData, selectedGuest, setSelectedGuest
 								</CommandItem>
 							))}
 
-
 						</CommandGroup>
 					</Command>
 				</PopoverContent>

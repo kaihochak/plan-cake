@@ -1,6 +1,9 @@
 import { ID, Query } from 'appwrite';
 import { account, appwriteConfig, avatars, databases, storage } from './config';
 
+/****************************************
+ * Account and User Management Functions
+ ***************************************/
 // Create a new user account with Appwrite
 export async function createUserAccount(user) {
     try {
@@ -106,6 +109,35 @@ export async function getCurrentUser() {
     }
 }
 
+
+
+/****************************************
+ * Event Management Functions
+ ***************************************/
+export async function createPickAFilm(pickAFilm) {
+    try {
+        // Prepare the pickAFilm document object
+        let pickAFilmDocument = {
+            host: pickAFilm.host,
+            title: pickAFilm.title,
+            date: pickAFilm.date,
+        };
+
+        // Create pickAFilm
+        const newPickAFilm = await databases.createDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.pickAFilmsCollectionId,
+            ID.unique(),
+            pickAFilmDocument
+        );
+
+        return newPickAFilm;
+    } catch (error) {
+        console.log(error);
+        throw error; // Rethrow the original error after attempting cleanup
+    }
+}
+
 export async function createEvent(event) {
     let uploadedFile;
     try {
@@ -171,7 +203,6 @@ export async function createEvent(event) {
         throw error; // Rethrow the original error after attempting cleanup
     }
 }
-
 
 export async function uploadFile(file) {
     try {

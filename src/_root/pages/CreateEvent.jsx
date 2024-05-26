@@ -6,7 +6,7 @@ import EventDetails from "@/components/event/createEventForm/EventDetails";
 import PreviewEvent from "@/components/event/createEventForm/PreviewEvent";
 import ConfirmedEvent from "@/components/event/createEventForm/ConfirmedEvent";
 import { BsArrowLeft } from "react-icons/bs";
-import { useCreateEvent } from "../../lib/react-query/queries";
+import { useCreateEvent } from "@/lib/react-query/queries";
 import { useToast } from "@/components/ui/use-toast";
 import { useUserContext } from "@/context/AuthContext";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
