@@ -25,8 +25,8 @@ function App() {
       }}
     >
       <main className="flex h-screen bg-primary font-Urbanist text-default">
-
-        {/* To solve a  vite issue:navigate to new page with same path */}
+        
+        {/* To solve a vite issue:navigate to new page with same path */}
         {/* <ScrollToTop /> */}
 
         {/* Routes */}

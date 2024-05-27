@@ -8,6 +8,7 @@ export const appwriteConfig = {
     usersCollectionId: import.meta.env.VITE_APPWRITE_USERS_COLLECTION_ID,
     eventsCollectionId: import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID,
     savesCollectionId: import.meta.env.VITE_APPWRITE_SAVES_COLLECTION_ID,
+    pickAFilmsCollectionId: import.meta.env.VITE_APPWRITE_PICKAFILMS_COLLECTION_ID,
 };
 
 const client = new Client();
