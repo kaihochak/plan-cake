@@ -14,6 +14,8 @@ export const QUERY_KEYS = {
   GET_EVENT_BY_ID: "getEventById",
   GET_USER_EVENTS: "getUserEvents",
   GET_FILE_PREVIEW: "getFilePreview",
+  CREATE_PICKAFILM: "createPickAFilm",
+  GET_PICKAFILM_BY_ID: "getPickAFilmById",
 
   //  SEARCH KEYS
   SEARCH_EVENTS: "getSearchEvents",

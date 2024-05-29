@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query'
 import { QUERY_KEYS } from './queryKeys';
-import { createPickAFilm, createEvent, createUserAccount, getUserEvents, signInAccount, signOutAccount } from '../appwrite/api'
+import { createPickAFilm, getPickAFilm, updatePickAFilm, updatePickAFilmGuestList, createEvent, createUserAccount, getUserEvents, signInAccount, signOutAccount } from '../appwrite/api'
 
 // Auth
 export const useCreateUserAccount = () => {
@@ -22,12 +22,54 @@ export const useSignOutAccount = () => {
 };
 
 
-// PickAFilm
+/***************************************************
+ * PickAFilm
+ ***************************************************/
+
 export const useCreatePickAFilm = () => {
   return useMutation({
     mutationFn: (pickAFilm) => createPickAFilm(pickAFilm),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.GET_PICKAFILMS,
+      });
+    },
   });
 };
+
+export const useGetPickAFilmById = (pickAFilmId) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_PICKAFILM_BY_ID, pickAFilmId],
+    queryFn: () => getPickAFilm(pickAFilmId),
+    enabled: !!pickAFilmId,
+  });
+};
+
+export const useUpdatePickAFilm = () => {
+
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (pickAFilm) => updatePickAFilm(pickAFilm),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_PICKAFILM_BY_ID, data?.$id], 
+      });
+    },
+  });
+}
+
+
+export const useUpdatePickAFilmGuestList = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (updateDocument) => updatePickAFilmGuestList(updateDocument),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_PICKAFILM_BY_ID, data?.$id],
+      });
+    },
+  });
+}
 
 // Event
 export const useCreateEvent = () => {

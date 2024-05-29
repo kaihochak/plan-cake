@@ -19,7 +19,7 @@ const Bottombar = () => {
                 className={`p-2 transition rounded-[10px] 
                       ${pathname === "/" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
             >
-                <BiHomeAlt className='text-[30px] md:text-[48px]' />
+                <BiHomeAlt className='text-[30px] md:text-[36px]' />
             </Link>
 
             {/* PickAFilm */}
@@ -28,7 +28,7 @@ const Bottombar = () => {
                 className={`p-2 transition rounded-[10px]
                       ${pathname === "/pickAFilm" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
             >
-                <BiFilm className='text-[30px] md:text-[48px]' />
+                <BiFilm className='text-[30px] md:text-[36px]' />
 
             </Link>
 
@@ -38,7 +38,7 @@ const Bottombar = () => {
                 className={`p-2 transition rounded-[10px] 
                       ${pathname === "/create-event" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
             >
-                <BiPlusCircle className='text-[30px] md:text-[48px]' />
+                <BiPlusCircle className='text-[30px] md:text-[36px]' />
             </Link>
 
             {/* Explore */}
@@ -47,7 +47,7 @@ const Bottombar = () => {
                 className={`p-2 transition rounded-[10px] 
                       ${pathname.startsWith("/explore") ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
             >
-                <BiSearch className='text-[30px] md:text-[48px]' />
+                <BiSearch className='text-[30px] md:text-[36px]' />
             </Link>
 
             {/* Profile */}
@@ -60,9 +60,9 @@ const Bottombar = () => {
                     <img
                         src={user.imageUrl || ProfilePlaceholder}
                         alt="profile"
-                        className="w-8 h-8 rounded-full md:w-12 md:h-12"
+                        className="w-6 h-6 rounded-full md:w-8 md:h-8"
                     /> :
-                    <BiUserCircle className='text-[30px] md:text-[48px]' />
+                    <BiUserCircle className='text-[30px] md:text-[36px]' />
                 }
             </Link>
         </section>

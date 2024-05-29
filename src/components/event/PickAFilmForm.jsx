@@ -28,8 +28,8 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
     const [newPickAFilm, setNewPickAFilm] = useState(null);
     const [formData, setFormData] = useState({
         title: "",
-        host: "",
         date: "",
+        host: ""
     })
 
     // Query to create a new event

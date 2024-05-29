@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import VoteResult from "@/components/event/VoteResult";
 import GuestSelection from "@/components/event/GuestSelection";
 import { PiFilmStripBold } from "react-icons/pi";
+import { useUpdatePickAFilmGuestList } from "@/lib/react-query/queries";
 
 const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) => {
   const [showFilmSearch, setShowFilmSearch] = useState(false);
@@ -20,19 +21,24 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
   const [votedFilms, setVotedFilms] = useState([]);
   const host = localStorage.getItem('host');
 
+  // Query
+  const { mutate: updateGuestList, isLoading } = useUpdatePickAFilmGuestList();
+
   // if it's the host, set the host to be the current user
   useEffect(() => {
     if (host && !selectedGuest) setSelectedGuest("0")
-  }), [];
+  }), [host];
 
   // update formData, when votedFilms is updated
   useEffect(() => {
+    if (votedFilms.length === 0) return;
     setFormData(previous => ({
       ...previous,
       guestList: previous.guestList.map(guest => (
         guest.id === selectedGuest ? { ...guest, filmsVoted: votedFilms } : guest
       ))
     }))
+
     handleSortChange(sortOrder);
   }, [votedFilms]);
 
@@ -103,6 +109,9 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
   * ******************************************************************************/
 
   const FilmSearchModal = () => {
+    if (!showFilmSearch) return null;
+    else console.log('showFilmSearch', showFilmSearch);
+
     return (
       <Dialog open={showFilmSearch} onOpenChange={setShowFilmSearch}>
         <DialogContent 
@@ -195,7 +204,6 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     return sortedItems;
   }
 
-
   const handleSortChange = (value) => {
     
     if (!selectedFilms) return;
@@ -271,6 +279,8 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
           variant="accent"
           className="w-[100px] h-[25px] md:w-[120px] md:h-[35px] "
           onClick={() => {
+            console.log("test");
+            console.log('selectedGuest', selectedGuest);
             if (selectedGuest) setShowFilmSearch(true);
             else setShowGuestSelection(true);
           }}
