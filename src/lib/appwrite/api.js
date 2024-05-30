@@ -166,23 +166,19 @@ export async function getPickAFilm(pickAFilmId) {
     }
 }
 
-export async function updatePickAFilm(updatePickAFilm) {
-
+export async function updatePickAFilm(updateDocument) {
     try {
-        const updatedPickAFilm = await databases.updateDocument(
+        const { id, ...fieldsToUpdate } = updateDocument; // Extract the id and the fields to update
+        const res = await databases.updateDocument(
             appwriteConfig.databaseId,
             appwriteConfig.pickAFilmsCollectionId,
-            updatePickAFilm.$id,
-            {
-                host: updatePickAFilm.host,
-                title: updatePickAFilm.title,
-                date: updatePickAFilm.date,
-            }
+            id,
+            fieldsToUpdate // Use the rest of the fields to update the document
         );
-
-        return updatedPickAFilm;
+        return res;
     } catch (error) {
-        console.log(error);
+        console.error('Error updating document:', error);
+        return null;
     }
 }
 

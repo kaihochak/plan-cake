@@ -58,7 +58,7 @@ const PickAFilmPage = () => {
    **********************************************************************************/
   const PageContent = () => {
     return (
-      <div className='h-screen flex flex-col justify-end w-full max-w-[1024px] mx-auto gap-y-2 pt-3 lg:pt-12 xl:pt-0 md:pb-32'>
+      <div className='flex flex-col justify-end w-full max-w-[1024px] mx-auto gap-y-2 pt-3 lg:pt-12 xl:pt-0 md:pb-32'>
         <h2 className="title">Pick A Film</h2>
         <div className='flex-between'>
           {/* Guests */}
@@ -110,7 +110,7 @@ const PickAFilmPage = () => {
   return (
     <div className='common-container'>
       {isLoading ?
-        <div className='h-screen flex-center'>
+        <div className='min-h-screen flex-center'>
           <Loader />
         </div> :
         // If there is data, render the page content, otherwise render a 404 message

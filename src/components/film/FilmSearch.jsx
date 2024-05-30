@@ -147,7 +147,6 @@ const FilmSearch = ({ formData: parentFormData, nextStep, title, protectedFilms,
             // Sort the watchlisted films by the number of watchlists, and set the state
             userWatchlists = sortFilmsByWatchlist(userWatchlists);
 
-            console.log('setSortedWatchlist is called', userWatchlists);
             setSortedWatchlist(userWatchlists);
         } catch (error) {
             console.error("Error fetching watchlisted films:", error);

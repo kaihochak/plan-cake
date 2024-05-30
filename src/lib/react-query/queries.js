@@ -48,24 +48,22 @@ export const useGetPickAFilmById = (pickAFilmId) => {
   });
 };
 
-export const useUpdatePickAFilm = () => {
-
+export const useUpdatePickAFilmGuestList = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (pickAFilm) => updatePickAFilm(pickAFilm),
+    mutationFn: (updateDocument) => updatePickAFilmGuestList(updateDocument),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_PICKAFILM_BY_ID, data?.$id], 
+        queryKey: [QUERY_KEYS.GET_PICKAFILM_BY_ID, data?.$id],
       });
     },
   });
 }
 
-
-export const useUpdatePickAFilmGuestList = () => {
+export const useUpdatePickAFilm = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (updateDocument) => updatePickAFilmGuestList(updateDocument),
+    mutationFn: (updateDocument) => updatePickAFilm(updateDocument),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_PICKAFILM_BY_ID, data?.$id],

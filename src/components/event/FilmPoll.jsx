@@ -9,44 +9,47 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import VoteResult from "@/components/event/VoteResult";
 import GuestSelection from "@/components/event/GuestSelection";
 import { PiFilmStripBold } from "react-icons/pi";
-import { useUpdatePickAFilmGuestList } from "@/lib/react-query/queries";
+import { useUpdatePickAFilmGuestList, useUpdatePickAFilm } from "@/lib/react-query/queries";
+import { Skeleton } from "@/components/ui/skeleton"
+
+
+const MemoizedFilmCard = React.memo(FilmCard); // Memoize the FilmCard component
 
 const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) => {
   const [showFilmSearch, setShowFilmSearch] = useState(false);
   const [showGuestSelection, setShowGuestSelection] = useState(false);
   const [showVoteResult, setShowVoteResult] = useState(false);
   const [sortOrder, setSortOrder] = useState('');
-  const [sortedFilms, setSortedFilms] = useState([]);
+  const [sortedFilms, setSortedFilms] = useState(null);
   const [votedFilms, setVotedFilms] = useState([]);
+  const [loading, setLoading] = useState(false);
   const host = localStorage.getItem('host');
-  // Query
-  const { mutateAsync: updateGuestList, isLoading } = useUpdatePickAFilmGuestList();
 
-  console.log('sortedFilms', sortedFilms);  
+  // Query
+  const { mutateAsync: updateGuestList, isLoading: isLoadingGuestList } = useUpdatePickAFilmGuestList();
+  const { mutateAsync: updatePickAFilm, isLoading } = useUpdatePickAFilm();
 
   // if it's the host, set the host to be the current user
   useEffect(() => {
-    if (host && !selectedGuest) setSelectedGuest("0")
-  }), [host];
+    if (host && !selectedGuest) setSelectedGuest("0");
+  }, [host]);
 
   // sort the films, when selectedFilms is updated
   useEffect(() => {
-    console.log('formData.selectedFilms', formData.selectedFilms);
-    setSortedFilms(formData.selectedFilms);
-  }, [formData.selectedFilms]);
-
-  // when sortedFilms is updated, sort the films
-  useEffect(() => {
-    console.log('sortedFilms', sortedFilms);
-    handleSortChange(sortOrder);
-  }, [sortedFilms]);
+    // https://stackoverflow.com/questions/62617690/array-shows-empty-but-should-have-one-element
+    // not sure why if not setting a delay, the array would be empty with one element, leading to not populating the films
+    setLoading(true);
+    setTimeout(() => {
+      handleSortChange(sortOrder, formData.selectedFilms);
+      setLoading(false);
+    }, 400);
+  }, [formData.selectedFilms, sortOrder]);
 
   // set the voted films, when the selected guest changes
   useEffect(() => {
-    console.log('selectedGuest', selectedGuest);
     // call api to get the voted films of the selected user
     setVotedFilms(formData.guestList.find(guest => (guest.id === selectedGuest))?.filmsVoted);
-    handleSortChange(sortOrder);
+    handleSortChange(sortOrder, formData.selectedFilms);
   }, [selectedGuest]);
 
   /**********************************************************************************
@@ -79,39 +82,39 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
    * Votes
    * ******************************************************************************/
 
-	// Update the guestList to DB
-	const handleUpdateGuestList = async (newGuestList) => {
+  // Update the guestList to DB
+  const handleUpdateGuestList = async (newGuestList) => {
 
-		// convert guestList back to string before sending to the DB
-		newGuestList = newGuestList.map((guest) => JSON.stringify(guest))
+    // convert guestList back to string before sending to the DB
+    newGuestList = newGuestList.map((guest) => JSON.stringify(guest))
 
-		// send the new guest to the DB
-		let updatedGuestList = await updateGuestList({
-			id: formData.$id,
-			newGuestList
-		});
+    // send the new guest to the DB
+    let updatedGuestList = await updateGuestList({
+      id: formData.$id,
+      newGuestList
+    });
 
-		// show a toast message
-		if (!updatedGuestList) {
-			toast({
-				variant: "destructive",
-				title: (
-					<p className='subtitle'>🚨 Error adding guest</p>
-				),
-				description: (
-					<p className='bold leading-[1.5]'>
-						There was an error adding <span className='italic subtitle'>${newGuest.name}</span> to the guest list.
-					</p>
-				),
-			});
-			return false;
-		} else {
-			return true;
-		}
-	}
+    // show a toast message
+    if (!updatedGuestList) {
+      toast({
+        variant: "destructive",
+        title: (
+          <p className='subtitle'>🚨 Error adding guest</p>
+        ),
+        description: (
+          <p className='bold leading-[1.5]'>
+            There was an error adding <span className='italic subtitle'>${newGuest.name}</span> to the guest list.
+          </p>
+        ),
+      });
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   const handleVotedFilmsOptimistic = (allVotedFilms) => {
-    
+
     // store existing guestList
     const existingGuestList = formData.guestList;
 
@@ -143,10 +146,10 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
         guestList: existingGuestList
       }));
     }
-    
+
     // update the sorted films
-    handleSortChange(sortOrder);
-  }    
+    handleSortChange(sortOrder, formData.selectedFilms);
+  }
 
   const VoteResultModal = () => {
     return (
@@ -176,13 +179,13 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
 
     return (
       <Dialog open={showFilmSearch} onOpenChange={setShowFilmSearch}>
-        <DialogContent 
-          hasClose={false} 
+        <DialogContent
+          hasClose={false}
           className="max-w-[1024px] w-full h-full lg:w-[75%] lg:h-[80%] overflow-y-auto custom-scrollbar bg-primary text-secondary"
         >
           <FilmSearch
             formData={formData}
-            nextStep={handleSearchApply} 
+            nextStep={handleSearchApplyOptimistic}
             title={"Apply"}
             protectedFilms={formData.selectedFilms}
             setModalOpen={setShowFilmSearch}
@@ -192,20 +195,66 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     )
   }
 
-  // handle search apply, prompt to user selection
-  const handleSearchApply = (newData) => {
 
-    console.log('newData', newData);
+  // update the selectedFilms to DB
+  const handleUpdateSelectedFilms = async (newSelectedFilms) => {
+
+    // only send the id of the films to the DB
+    newSelectedFilms = newSelectedFilms.map(film => film.id);
+
+    // send the new selectedFilms to the DB
+    let updatedSelectedFilms = await updatePickAFilm({
+      id: formData.$id,
+      selectedFilms: newSelectedFilms
+    });
+
+    // show a toast message
+    if (!updatedSelectedFilms) {
+      toast({
+        variant: "destructive",
+        title: (
+          <p className='subtitle'>🚨 Error adding film</p>
+        ),
+        description: (
+          <p className='bold leading-[1.5]'>
+            There was an error adding the film to the selected films.
+          </p>
+        ),
+      });
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  // handle search apply, prompt to user selection
+  const handleSearchApplyOptimistic = (newData) => {
+
+    // close the search modal
     setShowFilmSearch(false);
+
+    // store existing selectedFilms
+    const existingSelectedFilms = formData.selectedFilms;
+    // get the new selected films
     const newSelectedFilms = newData.selectedFilms;
+
     // set parent state
     setFormData(previous => ({
       ...previous,
       selectedFilms: newSelectedFilms
     }))
 
-    // set local state
-    setSelectedFilms(newSelectedFilms);
+    // send to the DB
+    const success = handleUpdateSelectedFilms(newSelectedFilms);
+
+    // if there was an error, remove the films from the selectedFilms in local state
+    if (!success) {
+      // remove the guest from the guestList in local state
+      setFormData((previous) => ({
+        ...previous,
+        selectedFilms: existingSelectedFilms
+      }));
+    }
   }
 
   /**********************************************************************************
@@ -213,6 +262,7 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
    *******************************************************************************/
 
   const sortByVotedFilmsByCurrentUser = (sortedItems) => {
+
     if (!sortedItems || !votedFilms) return sortByVotes(sortedItems);
 
     // Split films into voted and unvoted
@@ -264,14 +314,15 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
         sortedItems = sortByVotedFilmsByCurrentUser(sortedItems); // Sort from voted to not voted
         break;
     }
+
     return sortedItems;
   }
 
-  const handleSortChange = (value) => {
-    
-    if (!formData.selectedFilms) return;
-    
-    let sortedItems = sortFilms(value, formData.selectedFilms);
+  const handleSortChange = (value, films) => {
+
+    if (!films || films.length === 0) return;
+
+    let sortedItems = sortFilms(value, films);
     if (value === 'Default') value = '';
 
     setSortedFilms(sortedItems);
@@ -295,7 +346,7 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
           </button>
           <Select
             value={sortOrder}
-            onValueChange={handleSortChange}
+            onValueChange={value => handleSortChange(value, formData.selectedFilms)}
           >
             <SelectTrigger className="w-[110px] lg:w-[180px]">
               <SelectValue placeholder="Sort by" />
@@ -311,9 +362,17 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
         </div>
         {/* Film Cards */}
         <div className='grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4 '>
-          {( sortedFilms?.length === 0 || sortedFilms === undefined) && 
-          (<div className='col-span-4 py-32 mx-auto md:py-36 text-primary-foreground h3'>No film selected</div>)}
-          
+          {loading && !sortedFilms && (
+            Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className="relative flex flex-col gap-y-2">
+                <Skeleton className="aspect-w-1 aspect-h-[1.5]" />
+              </div>
+            ))
+          )}
+
+          {sortedFilms?.length === 0 &&
+            (<div className='col-span-4 py-32 mx-auto md:py-36 text-primary-foreground h3'>No film selected</div>)}
+
           {sortedFilms?.map((item) => (
             <div key={item.id}>
               <FilmCard

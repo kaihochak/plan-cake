@@ -13,6 +13,13 @@ const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, gues
     const [viewFilmId, setViewFilmId] = React.useState(false)
     const watchlisters = watchlistObject ? watchlistObject[item.id] : null;
 
+
+
+    useEffect(() => {
+        console.log('re-mounded, time down to second', new Date().toLocaleTimeString());
+    }, []);
+
+
     // Select or de-select a film, then update the selectedFilms state back in the parent component
     const handleSelect = (itemId) => {
 
