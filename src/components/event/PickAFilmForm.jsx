@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom'
 import { useCreatePickAFilm } from '@/lib/react-query/queries'
 
 const formSchema = z.object({
-    title: z.string().min(2).max(50),
+    title: z.string().optional(),
     host: z.string().min(2).max(50)
 })
 
@@ -52,6 +52,7 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 
     // form submit
     async function handleFormSubmit(values) {
+        console.log("values", values);
         setFormData({ ...formData, title: values.title, host: values.host });
         localStorage.setItem('host', values.host);
         onClose(!isOpen);
@@ -59,7 +60,7 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 
     // useEffect to handle form submission after formData is set
     useEffect(() => {
-        if (formData.title && formData.host) {
+        if (formData.host) {
             submitToDB(formData);
         }
     }, [formData]);

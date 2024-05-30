@@ -59,7 +59,7 @@ const PickAFilmPage = () => {
   const PageContent = () => {
     return (
       <div className='flex flex-col justify-end w-full max-w-[1024px] mx-auto gap-y-2 pt-3 lg:pt-12 xl:pt-0 md:pb-32'>
-        <h2 className="title">Pick A Film</h2>
+        <h2 className="title">{formData.title || "Pick A Film"}</h2>
         <div className='flex-between'>
           {/* Guests */}
           {/* <GuestList /> */}
