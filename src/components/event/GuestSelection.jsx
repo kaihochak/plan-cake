@@ -5,7 +5,7 @@ import { IoMdAdd } from "react-icons/io";
 import { cn } from "@/lib/utils"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/guestCommand"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { useUpdatePickAFilmGuestList } from "@/lib/react-query/queries";
+import { useUpdatePickAFilm } from "@/lib/react-query/queries";
 import { useToast } from "@/components/ui/use-toast"
 
 
@@ -13,7 +13,7 @@ const GuestSelection = ({ formData, setFormData, selectedGuest, setSelectedGuest
 	const [openGuestList, setOpenGuestList] = useState(false);
 	const [searchGuestName, setSearchGuestName] = useState("");
 	const { toast } = useToast()
-	const { mutateAsync: updateGuestList, isLoading } = useUpdatePickAFilmGuestList(); 	// Query: Update the guestList
+	const { mutateAsync: updateGuestList, isLoading } = useUpdatePickAFilm(); 	// Query: Update the guestList
 
 	// Update the guestList to DB
 	const handleUpdateGuestList = async (newGuest) => {
@@ -25,7 +25,7 @@ const GuestSelection = ({ formData, setFormData, selectedGuest, setSelectedGuest
 		// send the new guest to the DB
 		let updatedGuestList = await updateGuestList({
 			id: formData.$id,
-			newGuestList
+			guestList: newGuestList
 		});
 
 		// show a toast message
@@ -37,7 +37,7 @@ const GuestSelection = ({ formData, setFormData, selectedGuest, setSelectedGuest
 				),
 				description: (
 					<p className='bold leading-[1.5]'>
-						There was an error adding <span className='italic subtitle'>${newGuest.name}</span> to the guest list.
+						There was an error adding <span className='italic subtitle'>{newGuest.name}</span> to the guest list.
 					</p>
 				),
 			});
@@ -59,7 +59,7 @@ const GuestSelection = ({ formData, setFormData, selectedGuest, setSelectedGuest
 	}
 
 	// Update the guestList
-	const handleAddGuestOptimistic = () => {
+	const handleAddGuestOptimistic = async () => {
 
 		// make sure the name is valid
 		const existingGuest = formData.guestList.find((guest) => guest.name === searchGuestName);
@@ -88,10 +88,12 @@ const GuestSelection = ({ formData, setFormData, selectedGuest, setSelectedGuest
 			setSelectedGuest(newGuest.id);
 
 			// send the new guest to the DB
-			const success = handleUpdateGuestList(newGuest);
-
+			const success = await handleUpdateGuestList(newGuest);
+			console.log("Success adding guest", success);
+			
 			// if there was an error, remove the guest from the guestList in local state
 			if (!success) {
+				console.log("Error adding guest, reverting changes", existingGuestList);
 				// remove the guest from the guestList in local state
 				setFormData((previous) => ({
 					...previous,

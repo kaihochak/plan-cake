@@ -9,13 +9,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import VoteResult from "@/components/event/VoteResult";
 import GuestSelection from "@/components/event/GuestSelection";
 import { PiFilmStripBold } from "react-icons/pi";
-import { useUpdatePickAFilmGuestList, useUpdatePickAFilm } from "@/lib/react-query/queries";
+import { useUpdatePickAFilm } from "@/lib/react-query/queries";
 import { Skeleton } from "@/components/ui/skeleton"
-
-
-const MemoizedFilmCard = React.memo(FilmCard); // Memoize the FilmCard component
+import { useToast } from "@/components/ui/use-toast"
 
 const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) => {
+	const { toast } = useToast()
   const [showFilmSearch, setShowFilmSearch] = useState(false);
   const [showGuestSelection, setShowGuestSelection] = useState(false);
   const [showVoteResult, setShowVoteResult] = useState(false);
@@ -26,7 +25,6 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
   const host = localStorage.getItem('host');
 
   // Query
-  const { mutateAsync: updateGuestList, isLoading: isLoadingGuestList } = useUpdatePickAFilmGuestList();
   const { mutateAsync: updatePickAFilm, isLoading } = useUpdatePickAFilm();
 
   // if it's the host, set the host to be the current user
@@ -89,9 +87,9 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     newGuestList = newGuestList.map((guest) => JSON.stringify(guest))
 
     // send the new guest to the DB
-    let updatedGuestList = await updateGuestList({
+    let updatedGuestList = await updatePickAFilm({
       id: formData.$id,
-      newGuestList
+      guestList: newGuestList
     });
 
     // show a toast message
@@ -113,7 +111,7 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     }
   }
 
-  const handleVotedFilmsOptimistic = (allVotedFilms) => {
+  const handleVotedFilmsOptimistic = async (allVotedFilms) => {
 
     // store existing guestList
     const existingGuestList = formData.guestList;
@@ -136,7 +134,7 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     }))
 
     // update the guestList in the DB
-    const success = handleUpdateGuestList(newGuestList);
+    const success = await handleUpdateGuestList(newGuestList);
 
     // if there was an error, remove the guest from the guestList in local state
     if (!success) {
@@ -228,7 +226,7 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
   }
 
   // handle search apply, prompt to user selection
-  const handleSearchApplyOptimistic = (newData) => {
+  const handleSearchApplyOptimistic = async (newData) => {
 
     // close the search modal
     setShowFilmSearch(false);
@@ -245,7 +243,7 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     }))
 
     // send to the DB
-    const success = handleUpdateSelectedFilms(newSelectedFilms);
+    const success = await handleUpdateSelectedFilms(newSelectedFilms);
 
     // if there was an error, remove the films from the selectedFilms in local state
     if (!success) {
@@ -370,7 +368,7 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
             ))
           )}
 
-          {sortedFilms?.length === 0 &&
+          {sortedFilms?.length === 0 || sortedFilms === null &&
             (<div className='col-span-4 py-32 mx-auto md:py-36 text-primary-foreground h3'>No film selected</div>)}
 
           {sortedFilms?.map((item) => (
