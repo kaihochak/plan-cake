@@ -16,15 +16,13 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
   const [showGuestSelection, setShowGuestSelection] = useState(false);
   const [showVoteResult, setShowVoteResult] = useState(false);
   const [sortOrder, setSortOrder] = useState('');
-  const [selectedFilms, setSelectedFilms] = useState(formData.selectedFilms);
-  const [sortedFilms, setSortedFilms] = useState(formData.selectedFilms);
+  const [sortedFilms, setSortedFilms] = useState([]);
   const [votedFilms, setVotedFilms] = useState([]);
   const host = localStorage.getItem('host');
-
-  console.log('sortedFilms', sortedFilms);  
-
   // Query
   const { mutateAsync: updateGuestList, isLoading } = useUpdatePickAFilmGuestList();
+
+  console.log('sortedFilms', sortedFilms);  
 
   // if it's the host, set the host to be the current user
   useEffect(() => {
@@ -33,11 +31,19 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
 
   // sort the films, when selectedFilms is updated
   useEffect(() => {
+    console.log('formData.selectedFilms', formData.selectedFilms);
+    setSortedFilms(formData.selectedFilms);
+  }, [formData.selectedFilms]);
+
+  // when sortedFilms is updated, sort the films
+  useEffect(() => {
+    console.log('sortedFilms', sortedFilms);
     handleSortChange(sortOrder);
-  }, [selectedFilms]);
+  }, [sortedFilms]);
 
   // set the voted films, when the selected guest changes
   useEffect(() => {
+    console.log('selectedGuest', selectedGuest);
     // call api to get the voted films of the selected user
     setVotedFilms(formData.guestList.find(guest => (guest.id === selectedGuest))?.filmsVoted);
     handleSortChange(sortOrder);
@@ -175,12 +181,11 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
           className="max-w-[1024px] w-full h-full lg:w-[75%] lg:h-[80%] overflow-y-auto custom-scrollbar bg-primary text-secondary"
         >
           <FilmSearch
-            setModalOpen={setShowFilmSearch}
             formData={formData}
-            nextStep={handleSearchApply}
-            hasTitle={false}
-            selectedGuest={selectedGuest}
+            nextStep={handleSearchApply} 
+            title={"Apply"}
             protectedFilms={formData.selectedFilms}
+            setModalOpen={setShowFilmSearch}
           />
         </DialogContent>
       </Dialog>
@@ -189,6 +194,8 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
 
   // handle search apply, prompt to user selection
   const handleSearchApply = (newData) => {
+
+    console.log('newData', newData);
     setShowFilmSearch(false);
     const newSelectedFilms = newData.selectedFilms;
     // set parent state
@@ -262,9 +269,9 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
 
   const handleSortChange = (value) => {
     
-    if (!selectedFilms) return;
+    if (!formData.selectedFilms) return;
     
-    let sortedItems = sortFilms(value, selectedFilms);
+    let sortedItems = sortFilms(value, formData.selectedFilms);
     if (value === 'Default') value = '';
 
     setSortedFilms(sortedItems);

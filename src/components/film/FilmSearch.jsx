@@ -46,7 +46,7 @@ import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog"
  *
  */
 
-const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFilms, setModalOpen }) => {
+const FilmSearch = ({ formData: parentFormData, nextStep, title, protectedFilms, setModalOpen }) => {
     const [loading, setLoading] = useState(false);
 
     // Form 
@@ -216,7 +216,6 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFil
         [sortedWatchlist, upcomingFilms]
         // make sure when search term is empty, sortedWatchlist and upcomingFilms are not going to be remounted, leading to empty filmData
     );
-
 
     /************************************************************************
      * FILTERS & SORTING
@@ -447,15 +446,9 @@ const FilmSearch = ({ formData: parentFormData, nextStep, hasTitle, protectedFil
 
                 {/* Next Step */}
                 <div className="sticky bottom-0 z-50 flex items-center justify-center w-full">
-                    {hasTitle ? (
-                        <Button onClick={handleNextStep} type="submit" className="w-[95%] border-none bg-accent  text-primary shadow-xl">
-                            Next
-                        </Button>
-                    ) :
-                        <Button onClick={handleNextStep} type="submit" className="w-[95%] border-none bg-accent  text-primary shadow-xl">
-                            Apply
-                        </Button>
-                    }
+                    <Button onClick={handleNextStep} type="submit" className="w-[95%] border-none bg-accent  text-primary shadow-xl">
+                        {title}
+                    </Button>
                 </div>
 
             </div>

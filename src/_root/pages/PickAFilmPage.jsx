@@ -15,7 +15,6 @@ const PickAFilmPage = () => {
   const { id } = useParams();
   const [formData, setFormData] = useState(null);
   const [selectedGuest, setSelectedGuest] = useState(null);
-  const [selectedFilms, setSelectedFilms] = useState({});
   const host = localStorage.getItem('host');
 
   // Query: Get PickAFilm by ID
@@ -24,8 +23,6 @@ const PickAFilmPage = () => {
   // Initialize local state with data from the query 
   useEffect(() => {
     if (data && !formData) {
-      console.log('data', data);
-      
       // convert the stringified guestList to JSON
       let guestJSONs = [];
       data.guestList.map((guest) => {
@@ -33,9 +30,11 @@ const PickAFilmPage = () => {
       });
 
       // get the selectedFilms by ID
+      let selectedFilmsJSONs = [];
       data.selectedFilms?.map(async (filmID) => {
         try {
-          selectedFilms[filmID] = await fetchFilmDetails(filmID);
+          const film = await fetchFilmDetails(filmID);
+          selectedFilmsJSONs.push(film);
         } catch (error) {
           console.error("Error fetching selected film id:", filmID, error);
         }
@@ -45,6 +44,7 @@ const PickAFilmPage = () => {
       setFormData({
         ...data,
         guestList: guestJSONs,
+        selectedFilms: selectedFilmsJSONs,
       });
     }
   }, [data]);
@@ -63,7 +63,6 @@ const PickAFilmPage = () => {
         <div className='flex-between'>
           {/* Guests */}
           {/* <GuestList /> */}
-
           <GuestSelection
             selectedGuest={selectedGuest}
             setSelectedGuest={setSelectedGuest}
