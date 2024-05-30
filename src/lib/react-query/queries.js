@@ -27,6 +27,9 @@ export const useSignOutAccount = () => {
  ***************************************************/
 
 export const useCreatePickAFilm = () => {
+
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (pickAFilm) => createPickAFilm(pickAFilm),
     onSuccess: () => {

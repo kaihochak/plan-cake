@@ -67,6 +67,9 @@ const GuestSelection = ({ formData, setFormData, selectedGuest, setSelectedGuest
 
 		// add the new guest
 		if (searchGuestName) {
+
+			// store existing guestList
+			const existingGuestList = formData.guestList;
 			
 			// create a new guest object
 			const newGuest = {
@@ -92,7 +95,7 @@ const GuestSelection = ({ formData, setFormData, selectedGuest, setSelectedGuest
 				// remove the guest from the guestList in local state
 				setFormData((previous) => ({
 					...previous,
-					guestList: previous.guestList.filter((guest) => guest.id !== newGuest.id)
+					guestList: existingGuestList
 				}));
 				setSelectedGuest("");
 			}
@@ -101,7 +104,6 @@ const GuestSelection = ({ formData, setFormData, selectedGuest, setSelectedGuest
 			setSearchGuestName("");
 		}
 	}
-
 
 	/************************************************************
 	 * Render

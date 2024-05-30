@@ -22,7 +22,6 @@ const formSchema = z.object({
 })
 
 const PickAFilmForm = ({ isOpen, onClose }) => {
-
     const { toast } = useToast();
     const navigate = useNavigate();
     const [newPickAFilm, setNewPickAFilm] = useState(null);
@@ -77,13 +76,28 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 
         if (!newPickAFilm) {
             toast({
-                variant: "error",
-                title: `Create event failed. Please try again.`,
-            });
+				variant: "destructive",
+				title: (
+					<p className='subtitle'>🚨 Error add PickAFilm</p>
+				),
+				description: (
+					<p className='bold leading-[1.5]'>
+						There was an error creating <span className='italic subtitle'>${formData.title}</span>. Please try again.
+					</p>
+				),
+			});
+			return false;
         } else {
             toast({
                 variant: "success",
-                title: `Event created successfully.`,
+                title: (
+                    <p className='subtitle'>🎉 PickAFilm created!</p>
+                ),
+                description: (
+                    <p className='bold leading-[1.5] pt-2'>
+                        <span className='italic subtitle'>{formData.title} </span>has been created.
+                    </p>
+                ),
             });
             setNewPickAFilm(newPickAFilm);
         }

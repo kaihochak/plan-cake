@@ -8,13 +8,14 @@ import { useParams } from 'react-router-dom';
 import { useGetPickAFilmById } from '@/lib/react-query/queries';
 import Loader from "@/components/utility/Loader";
 import { fallbackMoviePoster } from '@/lib/tmdb/config'
+import { fetchFilmDetails } from "@/lib/tmdb/api";
 
 const PickAFilmPage = () => {
   const [event, setEvent] = useState(null);
   const { id } = useParams();
-  const [selectedGuest, setSelectedGuest] = useState(null);
   const [formData, setFormData] = useState(null);
-  const films = {};
+  const [selectedGuest, setSelectedGuest] = useState(null);
+  const [selectedFilms, setSelectedFilms] = useState({});
   const host = localStorage.getItem('host');
 
   // Query: Get PickAFilm by ID
@@ -24,15 +25,26 @@ const PickAFilmPage = () => {
   useEffect(() => {
     if (data && !formData) {
       console.log('data', data);
+      
       // convert the stringified guestList to JSON
       let guestJSONs = [];
       data.guestList.map((guest) => {
         guestJSONs.push(JSON.parse(guest));
       });
-      // set the formData state
+
+      // get the selectedFilms by ID
+      data.selectedFilms?.map(async (filmID) => {
+        try {
+          selectedFilms[filmID] = await fetchFilmDetails(filmID);
+        } catch (error) {
+          console.error("Error fetching selected film id:", filmID, error);
+        }
+      });
+
+      // set the formData local state
       setFormData({
         ...data,
-        guestList: guestJSONs
+        guestList: guestJSONs,
       });
     }
   }, [data]);

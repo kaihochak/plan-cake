@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { image500 } from "@/lib/tmdb/config";
 import { useMediaQuery } from '@react-hook/media-query'
 import { IoIosAddCircleOutline, IoIosCheckmarkCircleOutline } from "react-icons/io";
@@ -15,6 +15,7 @@ const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, gues
 
     // Select or de-select a film, then update the selectedFilms state back in the parent component
     const handleSelect = (itemId) => {
+
         // check if the item is already in the selectedFilms array, if yes, remove it, if not, add it
         const newSelectedFilms = selectedFilms.find(film => parseInt(film.id) === itemId) ?
             selectedFilms.filter(film => parseInt(film.id) !== itemId) : [...selectedFilms, item];
@@ -94,7 +95,6 @@ const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, gues
                 </div>
             </div>
 
-
             {/* Info */}
             <div className="flex flex-col justify-start gap-y-1">
 
@@ -127,12 +127,10 @@ const FilmCard = ({ item, selectedFilms, setSelectedFilms, watchlistObject, gues
                     </div>
 
                     {/* votes */}
-                    {votes &&
-                        <div className="flex items-center">
-                            <div className="body">{votes}</div>
-                            <MdPoll className="w-4 h-4 ml-1 md:w-5 md:h-5" />
-                        </div>
-                    }
+                    <div className="flex items-center">
+                        <div className="body">{votes}</div>
+                        <MdPoll className="w-4 h-4 mb-1 ml-1 md:w-5 md:h-5" />
+                    </div>
 
                 </div>
             </div>

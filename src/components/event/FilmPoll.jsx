@@ -21,26 +21,15 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
   const [votedFilms, setVotedFilms] = useState([]);
   const host = localStorage.getItem('host');
 
+  console.log('sortedFilms', sortedFilms);  
+
   // Query
-  const { mutate: updateGuestList, isLoading } = useUpdatePickAFilmGuestList();
+  const { mutateAsync: updateGuestList, isLoading } = useUpdatePickAFilmGuestList();
 
   // if it's the host, set the host to be the current user
   useEffect(() => {
     if (host && !selectedGuest) setSelectedGuest("0")
   }), [host];
-
-  // update formData, when votedFilms is updated
-  useEffect(() => {
-    if (votedFilms.length === 0) return;
-    setFormData(previous => ({
-      ...previous,
-      guestList: previous.guestList.map(guest => (
-        guest.id === selectedGuest ? { ...guest, filmsVoted: votedFilms } : guest
-      ))
-    }))
-
-    handleSortChange(sortOrder);
-  }, [votedFilms]);
 
   // sort the films, when selectedFilms is updated
   useEffect(() => {
@@ -84,6 +73,75 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
    * Votes
    * ******************************************************************************/
 
+	// Update the guestList to DB
+	const handleUpdateGuestList = async (newGuestList) => {
+
+		// convert guestList back to string before sending to the DB
+		newGuestList = newGuestList.map((guest) => JSON.stringify(guest))
+
+		// send the new guest to the DB
+		let updatedGuestList = await updateGuestList({
+			id: formData.$id,
+			newGuestList
+		});
+
+		// show a toast message
+		if (!updatedGuestList) {
+			toast({
+				variant: "destructive",
+				title: (
+					<p className='subtitle'>🚨 Error adding guest</p>
+				),
+				description: (
+					<p className='bold leading-[1.5]'>
+						There was an error adding <span className='italic subtitle'>${newGuest.name}</span> to the guest list.
+					</p>
+				),
+			});
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+  const handleVotedFilmsOptimistic = (allVotedFilms) => {
+    
+    // store existing guestList
+    const existingGuestList = formData.guestList;
+
+    // update the voted films in local state
+    setVotedFilms(allVotedFilms);
+
+    // get the new guestList with the updated voted films
+    const newGuestList = formData.guestList.map(guest => {
+      if (guest.id === selectedGuest) {
+        return { ...guest, filmsVoted: allVotedFilms }
+      }
+      return guest;
+    });
+
+    // update the guestList in parent state 
+    setFormData(previous => ({
+      ...previous,
+      guestList: newGuestList
+    }))
+
+    // update the guestList in the DB
+    const success = handleUpdateGuestList(newGuestList);
+
+    // if there was an error, remove the guest from the guestList in local state
+    if (!success) {
+      // remove the guest from the guestList in local state
+      setFormData((previous) => ({
+        ...previous,
+        guestList: existingGuestList
+      }));
+    }
+    
+    // update the sorted films
+    handleSortChange(sortOrder);
+  }    
+
   const VoteResultModal = () => {
     return (
       <SmallDialog open={showVoteResult} onOpenChange={setShowVoteResult}>
@@ -103,14 +161,12 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     return count;
   }
 
-
   /**********************************************************************************
   * Film Search
   * ******************************************************************************/
 
   const FilmSearchModal = () => {
     if (!showFilmSearch) return null;
-    else console.log('showFilmSearch', showFilmSearch);
 
     return (
       <Dialog open={showFilmSearch} onOpenChange={setShowFilmSearch}>
@@ -248,13 +304,15 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
         </div>
         {/* Film Cards */}
         <div className='grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4 '>
-          {sortedFilms.length === 0 && (<div className='col-span-4 py-32 mx-auto md:py-36 text-primary-foreground h3'>No film selected</div>)}
-          {sortedFilms.map((item) => (
+          {( sortedFilms?.length === 0 || sortedFilms === undefined) && 
+          (<div className='col-span-4 py-32 mx-auto md:py-36 text-primary-foreground h3'>No film selected</div>)}
+          
+          {sortedFilms?.map((item) => (
             <div key={item.id}>
               <FilmCard
                 item={item}
                 selectedFilms={votedFilms}
-                setSelectedFilms={setVotedFilms}
+                setSelectedFilms={handleVotedFilmsOptimistic}
                 voteDisabled={!selectedGuest}
                 setShowGuestSelection={!selectedGuest && setShowGuestSelection}
                 votes={getVotes(item)}
@@ -279,8 +337,6 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
           variant="accent"
           className="w-[100px] h-[25px] md:w-[120px] md:h-[35px] "
           onClick={() => {
-            console.log("test");
-            console.log('selectedGuest', selectedGuest);
             if (selectedGuest) setShowFilmSearch(true);
             else setShowGuestSelection(true);
           }}
@@ -300,7 +356,6 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
 
       {/* Vote Result Modal */}
       <VoteResultModal />
-
     </div>
   )
 }
