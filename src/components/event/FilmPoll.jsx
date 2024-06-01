@@ -13,7 +13,7 @@ import { useUpdatePickAFilm } from "@/lib/react-query/queries";
 import { Skeleton } from "@/components/ui/skeleton"
 import { useToast } from "@/components/ui/use-toast"
 
-const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) => {
+const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGuest, setSelectedGuest, setGuestList, setConfirmedFilm }) => {
 	const { toast } = useToast()
   const [showFilmSearch, setShowFilmSearch] = useState(false);
   const [showGuestSelection, setShowGuestSelection] = useState(false);
@@ -27,6 +27,11 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
   // Query
   const { mutateAsync: updatePickAFilm, isLoading } = useUpdatePickAFilm();
 
+
+  useEffect(() => {
+    console.log('re-mounded, time down to second', new Date().toLocaleTimeString());
+  }, []);
+
   // if it's the host, set the host to be the current user
   useEffect(() => {
     if (host && !selectedGuest) setSelectedGuest("0");
@@ -38,16 +43,15 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     // not sure why if not setting a delay, the array would be empty with one element, leading to not populating the films
     setLoading(true);
     setTimeout(() => {
-      handleSortChange(sortOrder, formData.selectedFilms);
+      handleSortChange(sortOrder, selectedFilms);
       setLoading(false);
-    }, 400);
-  }, [formData.selectedFilms, sortOrder]);
+    }, 200);
+  }, [selectedFilms, sortOrder]);
 
   // set the voted films, when the selected guest changes
   useEffect(() => {
-    // call api to get the voted films of the selected user
-    setVotedFilms(formData.guestList.find(guest => (guest.id === selectedGuest))?.filmsVoted);
-    handleSortChange(sortOrder, formData.selectedFilms);
+    setVotedFilms(guestList?.find(guest => (guest.id === selectedGuest))?.filmsVoted);
+    handleSortChange(sortOrder, selectedFilms);
   }, [selectedGuest]);
 
   /**********************************************************************************
@@ -60,11 +64,12 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
         <AlertDialogContent>
           <AlertDialogTitle>Who are you voting as?</AlertDialogTitle>
           <div className='p-6'>
-            <GuestSelection
+          <GuestSelection
+              id={id}
+              guestList={guestList}
               selectedGuest={selectedGuest}
-              setFormData={setFormData}
               setSelectedGuest={setSelectedGuest}
-              formData={formData}
+              setGuestList={setGuestList}
             />
           </div>
           <AlertDialogFooter>
@@ -82,13 +87,12 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
 
   // Update the guestList to DB
   const handleUpdateGuestList = async (newGuestList) => {
-
     // convert guestList back to string before sending to the DB
-    newGuestList = newGuestList.map((guest) => JSON.stringify(guest))
+    newGuestList = newGuestList.map((guest) => JSON.stringify(guest));
 
     // send the new guest to the DB
     let updatedGuestList = await updatePickAFilm({
-      id: formData.$id,
+      id: id,
       guestList: newGuestList
     });
 
@@ -112,41 +116,33 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
   }
 
   const handleVotedFilmsOptimistic = async (allVotedFilms) => {
-
     // store existing guestList
-    const existingGuestList = formData.guestList;
+    const existingGuestList = guestList;
 
     // update the voted films in local state
     setVotedFilms(allVotedFilms);
 
     // get the new guestList with the updated voted films
-    const newGuestList = formData.guestList.map(guest => {
+    const newGuestList = guestList.map(guest => {
       if (guest.id === selectedGuest) {
-        return { ...guest, filmsVoted: allVotedFilms }
+        return { ...guest, filmsVoted: allVotedFilms };
       }
       return guest;
     });
 
     // update the guestList in parent state 
-    setFormData(previous => ({
-      ...previous,
-      guestList: newGuestList
-    }))
+    setGuestList(newGuestList);
 
     // update the guestList in the DB
     const success = await handleUpdateGuestList(newGuestList);
 
-    // if there was an error, remove the guest from the guestList in local state
+    // if there was an error, revert the guestList in local state
     if (!success) {
-      // remove the guest from the guestList in local state
-      setFormData((previous) => ({
-        ...previous,
-        guestList: existingGuestList
-      }));
+      setGuestList(existingGuestList);
     }
 
     // update the sorted films
-    handleSortChange(sortOrder, formData.selectedFilms);
+    handleSortChange(sortOrder, selectedFilms);
   }
 
   const VoteResultModal = () => {
@@ -154,8 +150,9 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
       <SmallDialog open={showVoteResult} onOpenChange={setShowVoteResult}>
         <SmallDialogContent hasClose={true} className="overflow-y-auto custom-scrollbar bg-primary text-secondary border-border w-[90%]">
           <VoteResult
-            formData={formData}
-            setFormData={setFormData}
+            selectedFilms={selectedFilms}
+            guestList={guestList}
+            setConfirmedFilm={setConfirmedFilm}
             setShowVoteResult={setShowVoteResult}
           />
         </SmallDialogContent>
@@ -164,7 +161,7 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
   }
 
   const getVotes = (film) => {
-    let count = formData.guestList.filter(guest => guest.filmsVoted?.some(vote => vote.id.toString() === film.id.toString())).length
+    let count = guestList.filter(guest => guest.filmsVoted?.some(vote => vote.id.toString() === film.id.toString())).length
     return count;
   }
 
@@ -182,10 +179,10 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
           className="max-w-[1024px] w-full h-full lg:w-[75%] lg:h-[80%] overflow-y-auto custom-scrollbar bg-primary text-secondary"
         >
           <FilmSearch
-            formData={formData}
+            selectedFilms={selectedFilms}
             nextStep={handleSearchApplyOptimistic}
             title={"Apply"}
-            protectedFilms={formData.selectedFilms}
+            protectedFilms={selectedFilms}
             setModalOpen={setShowFilmSearch}
           />
         </DialogContent>
@@ -202,7 +199,7 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
 
     // send the new selectedFilms to the DB
     let updatedSelectedFilms = await updatePickAFilm({
-      id: formData.$id,
+      id: id,
       selectedFilms: newSelectedFilms
     });
 
@@ -227,31 +224,23 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
 
   // handle search apply, prompt to user selection
   const handleSearchApplyOptimistic = async (newData) => {
-
     // close the search modal
     setShowFilmSearch(false);
 
     // store existing selectedFilms
-    const existingSelectedFilms = formData.selectedFilms;
+    const existingSelectedFilms = selectedFilms;
     // get the new selected films
     const newSelectedFilms = newData.selectedFilms;
 
     // set parent state
-    setFormData(previous => ({
-      ...previous,
-      selectedFilms: newSelectedFilms
-    }))
+    setSelectedFilms(newSelectedFilms);
 
     // send to the DB
     const success = await handleUpdateSelectedFilms(newSelectedFilms);
 
-    // if there was an error, remove the films from the selectedFilms in local state
+    // if there was an error, revert the selectedFilms in local state
     if (!success) {
-      // remove the guest from the guestList in local state
-      setFormData((previous) => ({
-        ...previous,
-        selectedFilms: existingSelectedFilms
-      }));
+      setSelectedFilms(existingSelectedFilms);
     }
   }
 
@@ -260,7 +249,6 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
    *******************************************************************************/
 
   const sortByVotedFilmsByCurrentUser = (sortedItems) => {
-
     if (!sortedItems || !votedFilms) return sortByVotes(sortedItems);
 
     // Split films into voted and unvoted
@@ -344,7 +332,7 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
           </button>
           <Select
             value={sortOrder}
-            onValueChange={value => handleSortChange(value, formData.selectedFilms)}
+            onValueChange={value => handleSortChange(value, selectedFilms)}
           >
             <SelectTrigger className="w-[110px] lg:w-[180px]">
               <SelectValue placeholder="Sort by" />
@@ -423,4 +411,4 @@ const FilmPoll = ({ formData, setFormData, selectedGuest, setSelectedGuest }) =>
     </div>
   )
 }
-export default FilmPoll
+export default FilmPoll;

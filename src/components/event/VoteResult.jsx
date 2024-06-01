@@ -1,37 +1,32 @@
-import React, { useEffect, useState } from 'react'
-import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { toast } from "@/components/ui/use-toast"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import React, { useEffect, useState } from 'react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { toast } from "@/components/ui/use-toast";
+import { Form, FormControl, FormItem, FormLabel } from "@/components/ui/form";
 
 const FormSchema = z.object({
   film: z.string().nonempty(),
-})
+});
 
-// VoteResult component
-const VoteResult = ({ formData, setFormData, setShowVoteResult }) => {
-  const [results, setResults] = useState([])
-  const confirmedId = formData.confirmedFilm?.id?.toString();
+const VoteResult = ({ selectedFilms, guestList, setConfirmedFilm, setShowVoteResult }) => {
+  const [results, setResults] = useState([]);
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      film: confirmedId,
+      film: selectedFilms.find(film => film.confirmed)?.id.toString() || "",
     },
-  })
+  });
 
   function onSubmit(data) {
-    let confirmedFilm = formData.selectedFilms.filter((film) => film.id.toString() === data.film.toString())[0];
+    const confirmedFilm = selectedFilms.find(film => film.id.toString() === data.film.toString());
 
-    setFormData((previous) => ({
-      ...previous,
-      confirmedFilm
-    }))
-    setShowVoteResult(false)
+    setConfirmedFilm(confirmedFilm);
+    setShowVoteResult(false);
 
     toast({
       variant: "success",
@@ -40,9 +35,10 @@ const VoteResult = ({ formData, setFormData, setShowVoteResult }) => {
       ),
       description: (
         <p className='subtitle leading-[1.5]'>
-          {confirmedFilm.title} ({confirmedFilm.release_date.split("-")[0]})</p>
+          {confirmedFilm.title} ({confirmedFilm.release_date.split("-")[0]})
+        </p>
       ),
-    })
+    });
   }
 
   /************************************************************************
@@ -51,39 +47,34 @@ const VoteResult = ({ formData, setFormData, setShowVoteResult }) => {
 
   const getVoters = (film) => {
     if (film) {
-      let voters = formData.guestList.filter(guest => {
-        console.log(guest, film);
-        return guest.filmsVoted.some(vote => vote.id.toString() === film.id.toString())
-      })
+      const voters = guestList.filter(guest => guest.filmsVoted.some(vote => vote.id.toString() === film.id.toString()));
       return voters;
     }
     return [];
-  }
+  };
 
   /************************************************************************
    *  populate results
    ************************************************************************/
+
   const populateResults = () => {
-    const newResults = formData.selectedFilms.map(film => {
+    const newResults = selectedFilms.map(film => {
       const voters = getVoters(film);
-      console.log("Voters for film", film, ":", voters);
       return {
         id: film.id,
         title: film.title,
         votes: voters.length,
-        voters
+        voters,
       };
     });
     setResults(newResults);
   };
 
   useEffect(() => {
-    console.log("Initial formData:", formData);
-    console.log("Initial selected films:", formData.selectedFilms);
-    if (formData.selectedFilms && formData.selectedFilms.length > 0) {
+    if (selectedFilms && selectedFilms.length > 0) {
       populateResults();
     }
-  }, [formData.selectedFilms]);
+  }, [selectedFilms]);
 
   /************************************************************************
    *  Rendering
@@ -95,48 +86,39 @@ const VoteResult = ({ formData, setFormData, setShowVoteResult }) => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Table for the results */}
           <Table>
-            <TableHeader>
+            <TableHead>
               <TableRow>
-                <TableHead className="w-[50px]"></TableHead>
-                <TableHead>Films</TableHead>
-                <TableHead>Votes</TableHead>
-                <TableHead className="text-right">Voters</TableHead>
+                <TableCell className="w-[50px]"></TableCell>
+                <TableCell>Films</TableCell>
+                <TableCell>Votes</TableCell>
+                <TableCell className="text-right">Voters</TableCell>
               </TableRow>
-            </TableHeader>
+            </TableHead>
             <TableBody>
-              {/* map over the formData.selectedFilms */}
               {results.map((film, index) => (
                 <TableRow key={index}>
-                  <TableCell className="">
-                    <FormField
-                      key={film.id}
-                      control={form.control}
-                      name="film"
-                      render={({ field }) => {
-                        return (
-                          <FormItem
-                            key={film.id}
-                            className="flex flex-row items-start space-x-3 space-y-0"
-                          >
-                            <FormControl>
-                              <Checkbox
-                                checked={field.value === film.id.toString()}
-                                onCheckedChange={() => field.onChange(film.id.toString())}
-                              />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              {film.label}
-                            </FormLabel>
-                          </FormItem>
-                        )
-                      }}
-                    />
+                  <TableCell>
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={form.watch('film') === film.id.toString()}
+                          onCheckedChange={() => form.setValue('film', film.id.toString())}
+                        />
+                      </FormControl>
+                      <FormLabel className="font-normal">
+                        {film.title}
+                      </FormLabel>
+                    </FormItem>
                   </TableCell>
                   <TableCell>{film.title}</TableCell>
                   <TableCell>{film.votes}</TableCell>
-                  <TableCell className="text-right">{film.voters.map((voter, index) => (
-                    <span key={index}>{voter.name}{index < film.voters.length - 1 ? ', ' : ''}</span>
-                  ))}</TableCell>
+                  <TableCell className="text-right">
+                    {film.voters.map((voter, index) => (
+                      <span key={index}>
+                        {voter.name}{index < film.voters.length - 1 ? ', ' : ''}
+                      </span>
+                    ))}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -145,7 +127,7 @@ const VoteResult = ({ formData, setFormData, setShowVoteResult }) => {
         </form>
       </Form>
     </div>
-  )
-}
+  );
+};
 
-export default VoteResult
+export default VoteResult;

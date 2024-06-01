@@ -3,11 +3,11 @@ import { fallbackMoviePoster, image500, imagePath } from '@/lib/tmdb/config'
 import { useMediaQuery } from '@react-hook/media-query'
 
 
-const ConfirmedFilm = ({confirmedFilm, formData}) => {
+const ConfirmedFilm = ({confirmedFilm, guestList}) => {
   
     const getVotes = (confirmedFilm) => {
         if (confirmedFilm) {
-            let count = formData.guestList.filter(guest => 
+            let count = guestList.filter(guest => 
                 guest.filmsVoted?.some(vote => vote.id.toString() === confirmedFilm.id?.toString())).length
             return count;
         } return [];
