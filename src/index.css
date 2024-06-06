@@ -61,7 +61,7 @@ body {
     --popover-foreground: var(--foreground);
 
     /* Red */
-    --destructive: 0 100% 30%;
+    --destructive: 0 65% 20%;
     --destructive-foreground: 0 0% 85%;
 
     --border: 0 0% 50%;
@@ -612,7 +612,7 @@ body {
   /* Bottom bar */
   .bottom-bar {
     @apply sticky bottom-0 z-50 w-full px-2 py-1 border-t bg-primary/90 backdrop-blur-xl border-primary-light flex-between;
-    @apply md:px-8 md:py-4 xl:hidden;
+    @apply md:px-8 xl:hidden;
   }
 
   /* User card */

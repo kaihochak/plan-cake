@@ -17,19 +17,18 @@ import { useNavigate } from 'react-router-dom'
 import { useCreatePickAFilm } from '@/lib/react-query/queries'
 
 const formSchema = z.object({
-    title: z.string().min(2).max(50),
+    title: z.string().optional(),
     host: z.string().min(2).max(50)
 })
 
 const PickAFilmForm = ({ isOpen, onClose }) => {
-
     const { toast } = useToast();
     const navigate = useNavigate();
     const [newPickAFilm, setNewPickAFilm] = useState(null);
     const [formData, setFormData] = useState({
         title: "",
-        host: "",
         date: "",
+        host: ""
     })
 
     // Query to create a new event
@@ -53,6 +52,7 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 
     // form submit
     async function handleFormSubmit(values) {
+        console.log("values", values);
         setFormData({ ...formData, title: values.title, host: values.host });
         localStorage.setItem('host', values.host);
         onClose(!isOpen);
@@ -60,7 +60,7 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 
     // useEffect to handle form submission after formData is set
     useEffect(() => {
-        if (formData.title && formData.host) {
+        if (formData.host) {
             submitToDB(formData);
         }
     }, [formData]);
@@ -77,13 +77,28 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 
         if (!newPickAFilm) {
             toast({
-                variant: "error",
-                title: `Create event failed. Please try again.`,
-            });
+				variant: "destructive",
+				title: (
+					<p className='subtitle'>🚨 Error add PickAFilm</p>
+				),
+				description: (
+					<p className='bold leading-[1.5]'>
+						There was an error creating <span className='italic subtitle'>${formData.title}</span>. Please try again.
+					</p>
+				),
+			});
+			return false;
         } else {
             toast({
                 variant: "success",
-                title: `Event created successfully.`,
+                title: (
+                    <p className='subtitle'>🎉 PickAFilm created!</p>
+                ),
+                description: (
+                    <p className='bold leading-[1.5] pt-2'>
+                        <span className='italic subtitle'>{formData.title} </span>has been created.
+                    </p>
+                ),
             });
             setNewPickAFilm(newPickAFilm);
         }

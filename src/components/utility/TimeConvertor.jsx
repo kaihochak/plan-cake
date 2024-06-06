@@ -15,25 +15,41 @@ const TimeConvertor = ({ confirmedDateTime }) => {
 		getUserTimezone();
 	}, []);
 
+
 	useEffect(() => {
 		// Convert UTC time to user's timezone
 		if (confirmedDateTime && userTimezone) {
 			const convertedDateTime = new Date(confirmedDateTime);
+
+			// Options without the timeZoneName to prevent duplication
 			const options = {
 				timeZone: userTimezone,
-				hour12: true,
 				weekday: 'short',
-				year: 'numeric',
 				month: 'short',
 				day: 'numeric',
 				hour: 'numeric',
 				minute: 'numeric',
-				second: undefined,
+				hour12: true,
 			};
-			const localDateTimeString = convertedDateTime.toLocaleString(undefined, options);
-			setLocalDateTime(localDateTimeString);
+			const localDateTimeString = convertedDateTime.toLocaleString('en-US', options);
+
+			// Extract components of the date string
+			const [weekday, month, day, time, period] = localDateTimeString.split(/[\s,]+/);
+
+			// Get timezone abbreviation
+			const timeZoneName = new Intl.DateTimeFormat('en-US', {
+				timeZone: userTimezone,
+				timeZoneName: 'short'
+			}).formatToParts(convertedDateTime).find(part => part.type === 'timeZoneName').value;
+
+			// Format the date string as desired
+			const formattedDateTimeString = `${weekday.toUpperCase()}, ${month.toUpperCase()} ${day} · ${time} ${period.replace(/\./g, '')} ${timeZoneName}`;
+
+			setLocalDateTime(formattedDateTimeString);
 		}
 	}, [confirmedDateTime, userTimezone]);
+
+
 
 
 	// Function to generate the timezone abbreviation map
@@ -48,13 +64,13 @@ const TimeConvertor = ({ confirmedDateTime }) => {
 		return timezoneAbbreviationMap;
 	}
 
-// Generate the timezone abbreviation map
-const timezoneAbbreviationMap = generateTimezoneAbbreviationMap();
+	// Generate the timezone abbreviation map
+	const timezoneAbbreviationMap = generateTimezoneAbbreviationMap();
 
-// Function to get timezone abbreviation
-function getTimezoneAbbreviation(timezoneName) {
-    return timezoneAbbreviationMap[timezoneName] || timezoneName;
-}
+	// Function to get timezone abbreviation
+	function getTimezoneAbbreviation(timezoneName) {
+		return timezoneAbbreviationMap[timezoneName] || timezoneName;
+	}
 
 	return (
 		<div>

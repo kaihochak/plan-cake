@@ -4,6 +4,7 @@ import { account, appwriteConfig, avatars, databases, storage } from './config';
 /****************************************
  * Account and User Management Functions
  ***************************************/
+
 // Create a new user account with Appwrite
 export async function createUserAccount(user) {
     try {
@@ -109,17 +110,28 @@ export async function getCurrentUser() {
     }
 }
 
-
-
 /****************************************
  * Event Management Functions
  ***************************************/
+
 export async function createPickAFilm(pickAFilm) {
+
+    if (!pickAFilm) return new Error('No pickAFilm data provided');
+
+    // Add the host to the guestList
+    const host = {
+        id: "0",
+        name: pickAFilm.host,
+        filmsVoted: []
+    }
+
+    let guestList = [];
+
     try {
         // Prepare the pickAFilm document object
         let pickAFilmDocument = {
-            host: pickAFilm.host,
             title: pickAFilm.title,
+            guestList: [...guestList, JSON.stringify(host)],
             date: pickAFilm.date,
         };
 
@@ -135,6 +147,71 @@ export async function createPickAFilm(pickAFilm) {
     } catch (error) {
         console.log(error);
         throw error; // Rethrow the original error after attempting cleanup
+    }
+}
+
+export async function getPickAFilm(pickAFilmId) {
+
+    if (!pickAFilmId) return;
+
+    try {
+        const pickAFilm = await databases.getDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.pickAFilmsCollectionId,
+            pickAFilmId
+        );
+        return pickAFilm;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function updatePickAFilm(updateDocument) {
+    try {
+        const { id, ...fieldsToUpdate } = updateDocument; // Extract the id and the fields to update
+        const res = await databases.updateDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.pickAFilmsCollectionId,
+            id,
+            fieldsToUpdate // Use the rest of the fields to update the document
+        );
+        return res;
+    } catch (error) {
+        console.error('Error updating document:', error);
+        return null;
+    }
+}
+
+export async function updatePickAFilmGuestList(updateDocument) {
+
+    try {
+        const res = await databases.updateDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.pickAFilmsCollectionId,
+            updateDocument.id,
+            { guestList: updateDocument.newGuestList }
+        );
+        return res;
+    } catch (error) {
+        console.error('Error updating guest list:', error);
+        return null;
+    }
+}
+
+export async function deletePickAFilm(pickAFilmId) {
+    try {
+        const deletedPickAFilm = await databases.deleteDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.pickAFilmsCollectionId,
+            pickAFilmId
+        );
+
+        if (!deletedPickAFilm) throw Error;
+
+        return deletedPickAFilm;
+
+    } catch (error) {
+        console.log(error);
     }
 }
 
@@ -249,21 +326,21 @@ export function getFilePreview(fileId) {
 
 export async function getUserEvents(userId) {
     if (!userId) return;
-  
+
     try {
-      const events = await databases.listDocuments(
-        appwriteConfig.databaseId,
-        appwriteConfig.eventsCollectionId,
-        [Query.equal("creator", userId), Query.orderDesc("$createdAt")]
-      );
-  
-      if (!events) {
-        console.log("No events found");
-        throw Error;
-      } 
-  
-      return events;
+        const events = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.eventsCollectionId,
+            [Query.equal("creator", userId), Query.orderDesc("$createdAt")]
+        );
+
+        if (!events) {
+            console.log("No events found");
+            throw Error;
+        }
+
+        return events;
     } catch (error) {
-      console.log(error);
+        console.log(error);
     }
-  }
+}

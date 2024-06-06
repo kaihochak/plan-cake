@@ -8,7 +8,6 @@ import GuestList from '@/components/event/GuestList'
 import CommentSection from '@/components/event/CommentSection'
 import TimeConvertor from '../../components/utility/TimeConvertor'
 
-
 const EventPage = () => {
   const [event, setEvent] = useState(null);
   const { id } = useParams(); // Get the event id from the URL
