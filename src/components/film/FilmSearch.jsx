@@ -159,7 +159,7 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
                 } else setFilmData(upcomingFilms);
             }
             setLoading(false);
-        }, 500),
+        }, 400),
         [sortedWatchlist, upcomingFilms]
         // make sure when search term is empty, sortedWatchlist and upcomingFilms are not going to be remounted, leading to empty filmData
     );

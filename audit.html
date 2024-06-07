@@ -1,0 +1,1000 @@
+<ix:DetailPage>
+  <ix:DetailPageMenuBar ID="DetailPageMenuBar">
+<ix:SaveActionLink Override="true"/>
+<ix:SaveEditActionLink Override="false" DisplayMode="Create" Visible="False"/>
+<ix:CancelActionLink Override="false" DisplayMode="Create"/>
+<ix:SaveAddNewActionLink Override="true" Visible="false" DisplayMode="Create,Edit" runat="server"/>
+<ix:AddEntryActionLink Override="true" Visible="false" runat="server"/>
+<ix:SaveExitActionLink Override="true" DisplayMode="Edit"/>
+<ix:CancelActionLink Override="true" DisplayMode="Edit"/>
+<ix:SpellCheckActionLink Override="true" Visible="false" runat="server"/>
+<ix:CloneActionLink Override="true" Visible="false" runat="server"/>
+<ix:SecurityActionLink Override="true" Visible="False" runat="server"/>
+<ix:DeleteActionLink Override="true" Visible="True" runat="server"/>
+<ix:HardDeleteActionLink Override="true" Visible="false" runat="server"/>
+  </ix:DetailPageMenuBar>
+  <div class="wfDiagram">
+    <div>
+      <div Selected="<%= ViewData.Eval("WorkflowStatus").ToString().Equals("0")||( ViewData.Eval("WorkflowStage") != null && ViewData.Eval("WorkflowStage").ToString().Equals("Draft")) ? "blue" : "" %>">
+        <asp:literal runat="server" text="<%$Resources:Javascript, Draft%>"/>
+        </div>
+      </div>
+      <div>
+        <div Selected="<%= ViewData.Eval("WorkflowStage") != null && ViewData.Eval("WorkflowStage").ToString().Equals("ScheduledAudit") ? "blue" : "" %>">
+          <asp:literal runat="server" text="<%$Resources:Javascript, Scheduled%>"/>
+          </div>
+        </div>
+        <div>
+          <div Selected="<%= ViewData.Eval("WorkflowStage") != null && ViewData.Eval("WorkflowStage").ToString().Equals("InProgress") ? "blue" : "" %>">
+            <asp:literal runat="server" text="<%$Resources:Javascript, In Progress%>"/>
+            </div>
+          </div>
+          <div>
+            <div Selected="<%= ViewData.Eval("WorkflowStage") != null && (ViewData.Eval("WorkflowStage").ToString().Equals("Review")||ViewData.Eval("WorkflowStage").ToString().Equals("ReviewSS")) ? "blue" : "" %>">
+              <asp:literal runat="server" text="<%$Resources:Javascript, Review Draft Report%>"/>
+              </div>
+            </div>
+            <div>
+              <div Selected="<%= ViewData.Eval("WorkflowStage") != null && ViewData.Eval("WorkflowStage").ToString().Equals("CompPending") ? "blue" : "" %>">
+                <asp:literal runat="server" text="<%$Resources:Javascript, Acknowledge Final Report%>"/>
+                </div>
+              </div>
+              <div style="display:<%= ViewData.Eval("WorkflowStatus") != null && ViewData.Eval("WorkflowStatus").ToString().Equals("Completed") ? "" : "" %>;">
+                <div style="display:block" Selected="<%= ViewData.Eval("WorkflowStatus") != null && ViewData.Eval("WorkflowStatus").ToString().Equals("Completed") ? "Green" : "" %>">
+                  <asp:literal runat="server" text="<%$Resources:Javascript, Completed%>"/>
+                  </div>
+                </div>
+              </div>
+              <ix:DetailSection Title="Hidden Fields" Id="HiddenDetail" visible="False" ModernIcon="Raven/Icons/BrightBlue_48/note21.png" meta:resourcekey="DetailSection5" ResourceKey="DetailSection5">
+                <ix:FieldArea Span="True">
+<ix:Field For="WorkflowStatus" Visible="False"/>
+<ix:Field For="WorkflowStage" Visible="False"/>
+<ix:Field For="FormofAudit"/>
+<ix:Field For="CategoryofAudit" Visible="False"/>
+<ix:Field For="AuditSubType"/>
+<ix:Field For="ChCategoryHelp"/>
+<ix:Field For="RecommStarLevel"/>
+<ix:Field For="Questionnaires"/>
+<ix:Field For="ConductHelper"/>
+<ix:Field For="SectionIMerged"/>
+<ix:Field For="SectionIVMerge"/>
+<ix:Field For="SectionVMerge"/>
+<ix:Field For="SectionVIMerge"/>
+<ix:Field For="SafetyStarMerge"/>
+<ix:Field For="SectionIIIMerge"/>
+<ix:Field For="SectionIIMerge"/>
+                </ix:FieldArea>
+              </ix:DetailSection>
+              <ix:StageContainer UseDefaultDuringCreate="True" UseDefaultWhenCancelled="false" UseDefaultWhenCompleted="false" ID="StageContainer_Create" Visiblefor="Draft">
+                <ix:DetailSection Title="Audit Details" ModernIcon="Raven/Icons/BrightBlue_48/note21.png" meta:resourcekey="DetailSection0" ResourceKey="DetailSection0">
+                  <ix:FieldArea span="true">
+<ix:Field DisplayAs="String" EditAs="EntitySelector" For="Location"/>
+<ix:Field Caption="Segment" DisplayAs="String" For="SectorCFW.SegmentField" SpellCheck="false" meta:resourcekey="Field14" ResourceKey="Field14"/>
+<ix:Field DisplayAs="String" For="SectorCFW" IsMandatory="True" SpellCheck="false"/>
+<ix:Field For="AbeingConducted" IsMandatory="True"/>
+<ix:Field For="Name" Readonly="True"/>
+<ix:Field For="Type" IsMandatory="True"/>
+<ix:Field For="FormofAudit" IsMandatory="True"/>
+<ix:Field For="CategoryofAudit" IsMandatory="True" Visible="False"/>
+<ix:Field For="CategoryCheck" IsMandatory="True"/>
+<ix:Field For="AuditSubType" IsMandatory="True"/>
+<ix:Field For="Scope" IsMandatory="True"/>
+<ix:Field For="RiskLevel" IsMandatory="True"/>
+<ix:Field For="Workflow.RecurringSeries.Frequency" Span="true" SpellCheck="false"/>
+<ix:Field Caption="Scheduled Date" For="Date" IsMandatory="True" Span="true" meta:resourcekey="Field0" ResourceKey="Field0"/>
+<ix:Field Caption="End Date" For="EndDate" meta:resourcekey="Field3" ResourceKey="Field3"/>
+<ix:Field DisplayMode="Create,Edit" For="Auditor"/>
+<ix:Field DisplayMode="View" For="LeadAuditor"/>
+                  </ix:FieldArea>
+                </ix:DetailSection>
+              </ix:StageContainer>
+              <ix:StageContainer UseDefaultDuringCreate="False" UseDefaultWhenCancelled="false" UseDefaultWhenCompleted="false" VisibleFor="ScheduledAudit" ID="StageContainer_Draft_ScheduledAudit">
+                <ix:DetailSection Title="Audit Details" ModernIcon="Raven/Icons/BrightBlue_48/note21.png" meta:resourcekey="DetailSection1" ResourceKey="DetailSection1">
+                  <ix:FieldArea span="true">
+<ix:Field DisplayAs="String" EditAs="EntitySelector" For="Location" Readonly="True"/>
+<ix:Field Caption="Segment" DisplayAs="String" For="SectorCFW.SegmentField" Readonly="True" SpellCheck="false" meta:resourcekey="Field15" ResourceKey="Field15"/>
+<ix:Field DisplayAs="String" For="SectorCFW" IsMandatory="True" Readonly="True" SpellCheck="false"/>
+<ix:Field DisplayMode="View,Edit" For="RecordNo" Readonly="True"/>
+<ix:Field For="AbeingConducted" IsMandatory="True" Readonly="True"/>
+<ix:Field For="Name" Readonly="True"/>
+<ix:Field For="Type" IsMandatory="True" Readonly="True"/>
+<ix:Field For="FormofAudit" IsMandatory="True" Readonly="True"/>
+<ix:Field For="CategoryofAudit" IsMandatory="True" Readonly="True" Visible="False"/>
+<ix:Field For="CategoryCheck" IsMandatory="True" Readonly="True"/>
+<ix:Field For="AuditSubType" IsMandatory="True" Readonly="True"/>
+<ix:Field For="Scope" IsMandatory="True" Readonly="True"/>
+<ix:Field For="RiskLevel" IsMandatory="True" Readonly="True"/>
+<ix:Field For="Workflow.RecurringSeries.Frequency" Readonly="True" Span="true" SpellCheck="false"/>
+<ix:Field Caption="Scheduled Date" For="Date" IsMandatory="False" Readonly="True" meta:resourcekey="Field2" ResourceKey="Field2"/>
+<ix:Field Caption="End Date" For="EndDate" IsMandatory="True" Readonly="True" meta:resourcekey="Field6" ResourceKey="Field6"/>
+<ix:Field DisplayMode="Create,Edit" For="Auditor"/>
+<ix:Field DisplayMode="View" For="LeadAuditor"/>
+                  </ix:FieldArea>
+                </ix:DetailSection>
+                <ix:GridSection DisplayEditColumn="false" For="AuditorMaps" HideGroupAddButton="true" ID="AuditorMapsGridSection_Draft" ModernIcon="Raven/Icons/BrightBlue_48/group.png" Title="Audit Team" meta:resourcekey="GridSection0" ResourceKey="GridSection0">
+                  <Menu>
+<ix:GridCreateActionLink Override="true" For="Auditor" Caption="Attach Auditor" CSSClass="gridCreateLink" meta:resourcekey="GridCreateActionLink0" ResourceKey="GridCreateActionLink0"/>
+<ix:GridDeleteActionLink Override="true" Caption="Detach Auditor" meta:resourcekey="GridDeleteActionLink0" ResourceKey="GridDeleteActionLink0"/>
+                  </Menu>
+                  <grouping>
+<ix:Group By="Auditor.Type"/>
+                  </grouping>
+                  <Columns>
+<ix:Column For="Auditor.AuditorName"/>
+<ix:Column DisplayAs="List" FetchAs="Collection" For="Auditor.Qualifications"/>
+<ix:Column DisplayAs="List" FetchAs="Collection" For="Auditor.SMExperiences"/>
+                  </Columns>
+                </ix:GridSection>
+                <ix:GridSection CSSClass="hidePencil" DisplayEditColumn="true" EditLinkTarget="popup" For="Questionnaires:AuditMgmt_AuditQnnWFObject" HideGroupAddButton="true" ID="QuestionnairesGridSection_Draft" ModernIcon="Raven/Icons/BrightBlue_48/note24.png" Pagesize="100" Title="Checklists" meta:resourcekey="GridSection1" ResourceKey="GridSection1">
+                  <Menu>
+<ix:GridCreateActionLink Override="true" Caption="Select Checklists" For="AuditChecklist" CSSClass="gridCreateLink" meta:resourcekey="GridCreateActionLink1" ResourceKey="GridCreateActionLink1"/>
+<ix:GridExecuteActionLink Name="GenResponses" Override="true" Visible="false"/>
+<ix:GridDeleteActionLink Override="true" Visible="false"/>
+<ix:GridArchiveActionLink Override="true" Visible="true"/>
+                  </Menu>
+                  <aliases>
+<ix:Alias For="SelectPubVer" Name="SelectPubVer"/>
+                  </aliases>
+                  <Columns>
+<ix:Column Caption="Name" For="AuditChecklist" LinkTo="default" Visible="True" meta:resourcekey="Column1" ResourceKey="Column1"/>
+                    <ix:MergeColumn For="SelectPubVer" LinkTo="default" Caption="Name" Visible="False" width="250px" meta:resourcekey="MergeColumn1" ResourceKey="MergeColumn1">
+                      <MappedColumns>
+<ix:Column Caption="Version" EditMode="inline" For="PubChecklist" MapValue="true" width="250px" meta:resourcekey="Column2" ResourceKey="Column2"/>
+<ix:Column Caption="Version" For="PubChecklist" MapValue="false" width="250px" meta:resourcekey="Column3" ResourceKey="Column3"/>
+                      </MappedColumns>
+                    </ix:MergeColumn>
+<ix:Column EditMode="inline" For="AuditorMap" width="5px"/>
+<ix:Column For="Progress" width="5px"/>
+<ix:Column For="pScore" width="5px"/>
+<ix:Column Caption="No. of Findings" For="NbFindings" width="5px" meta:resourcekey="Column5" ResourceKey="Column5"/>
+<ix:Column For="Workflow.Status" width="50px"/>
+                  </Columns>
+                </ix:GridSection>
+                <ix:GridSection CSSClass="hidePencil" DisplayEditColumn="true" EditLinkTarget="popup" Entity="AuditMgmt_FindingObject" HideGroupAddButton="true" ID="FindingSummaryGridSection_DraftRecurring" ModernIcon="Raven/Icons/BrightBlue_48/seo21.png" Title="Previous Audit Findings" meta:resourcekey="GridSection4" ResourceKey="GridSection4">
+                  <Menu>
+<ix:GridCreateActionLink Override="true" Visible="false"/>
+<ix:GridDeleteActionLink Override="true" Visible="false"/>
+                  </Menu>
+                  <aliases>
+<ix:Alias For="Response.Id" Name="ResponseId"/>
+<ix:Alias For="Assessment.Location" Name="AssessmentId"/>
+<ix:Alias For="Questionnaire.Checklist" Name="Checklist"/>
+<ix:Alias For="FindingSeverity.CriticalLevel" Name="CriticalLevel"/>
+<ix:Alias For="FindingSeverity.Color.Value" Name="BC"/>
+<ix:Alias For="FindingSeverity.Color.TextColor.Value" Name="TC"/>
+<ix:Alias For="Assessment.CategoCheckHelp" Name="Category"/>
+                  </aliases>
+                  <Filters>
+                    <ix:Filter>
+                      <ix:CommonPredicate For="AssessmentId" Type="Equal">
+                        <ix:Value Parse="true">
+<%= Model.Location%>
+                        </ix:Value>
+                      </ix:CommonPredicate>
+                      <ix:CommonPredicate For="Category" Type="Equal">
+                        <ix:Value Parse="true">
+<%= Model.CategoryCheck%>
+                        </ix:Value>
+                      </ix:CommonPredicate>
+                    </ix:Filter>
+                  </Filters>
+                  <grouping>
+<ix:Group By="Questionnaire.Checklist"/>
+                  </grouping>
+                  <Sorting>
+<ix:Sort By="CriticalLevel" Direction="Descending"/>
+                  </Sorting>
+                  <Columns>
+<ix:Column For="Name" LinkTarget="popup" LinkTo="default"/>
+<ix:Column Caption="Finding Description" For="Description" meta:resourcekey="Column22" ResourceKey="Column22"/>
+<ix:Column Caption="Question" For="Response.PubQuestion.QuestionText" width="200px" meta:resourcekey="Column16" ResourceKey="Column16"/>
+                    <ix:MergeColumn For="Response.PubQuestion.AnswerType.AnswerField.Value" Caption="Answer" width="100px" meta:resourcekey="MergeColumn3" ResourceKey="MergeColumn3">
+                      <MappedColumns>
+<ix:Column For="Response.PubAnswer" MapValue="PubAnswer"/>
+<ix:Column DisplayAs="List" FetchAs="Collection" For="Response.PubAnswers" MapValue="PubAnswers"/>
+<ix:Column For="Response.Text" MapValue="Text"/>
+<ix:Column For="Response.Float" HorizontalAlign="right" MapValue="Float"/>
+<ix:Column For="Response.Checkbox" MapValue="Checkbox"/>
+<ix:Column For="Response.Date" Format="d" MapValue="Date"/>
+<ix:Column For="Response.File" MapValue="File"/>
+                      </MappedColumns>
+                    </ix:MergeColumn>
+                    <ix:TemplateColumn For="NbDocs" Caption="Evidence" LinKTarget="popup" width="50px" meta:resourcekey="TemplateColumn2" ResourceKey="TemplateColumn2">
+                      <template>
+                        <div class="nbAttachments" style="background-image:url(&apos;<%=ImageHelper.GetStaticPath("Raven/Icons/BrightBlue_48/folder232.png") %>&apos;);display:<%# Container.ViewData.Eval("NbDocs").ToString()=="0" ? "none": "inline-block" %>;"/>
+                        </template>
+                      </ix:TemplateColumn>
+                      <ix:TemplateColumn For="FindingSeverity">
+                        <template>
+                          <div class="prettyCell" style="background-color:<%# Container.ViewData.Eval("BC") %>;color:<%# Container.ViewData.Eval("TC") %>;">
+<%# Container.ViewData.Eval("FindingSeverity") %>
+                          </div>
+                        </template>
+                      </ix:TemplateColumn>
+                    </Columns>
+                  </ix:GridSection>
+                </ix:StageContainer>
+                <ix:StageContainer UseDefaultDuringCreate="False" UseDefaultWhenCancelled="False" UseDefaultWhenCompleted="false" VisibleFor="InProgress" ID="StageContainer_InProgress">
+                  <ix:DetailSection Title="Audit Details" ModernIcon="Raven/Icons/BrightBlue_48/note21.png" meta:resourcekey="DetailSection3" ResourceKey="DetailSection3">
+                    <ix:FieldArea span="true">
+<ix:Field DisplayAs="String" For="Location" Readonly="True"/>
+<ix:Field Caption="Segment" DisplayAs="String" For="SectorCFW.SegmentField" Readonly="True" SpellCheck="false" meta:resourcekey="Field16" ResourceKey="Field16"/>
+<ix:Field DisplayAs="String" For="SectorCFW" IsMandatory="True" Readonly="True" SpellCheck="false"/>
+<ix:Field For="RecordNo" Readonly="True"/>
+<ix:Field For="AbeingConducted" IsMandatory="True" Readonly="True"/>
+<ix:Field For="Name" Readonly="True"/>
+<ix:Field For="Type" Readonly="True"/>
+<ix:Field For="FormofAudit" Readonly="True"/>
+<ix:Field For="CategoryofAudit" Readonly="True" Visible="False"/>
+<ix:Field For="CategoryCheck" Readonly="True"/>
+<ix:Field For="AuditSubType" Readonly="True"/>
+<ix:Field For="Scope" Readonly="True"/>
+<ix:Field For="RiskLevel" Readonly="True"/>
+<ix:Field For="Workflow.RecurringSeries.Frequency" Span="true" SpellCheck="false"/>
+<ix:Field Caption="Scheduled Date" For="Date" Readonly="True" Span="true" meta:resourcekey="Field8" ResourceKey="Field8"/>
+<ix:Field Caption="End Date" For="EndDate" IsMandatory="True" SpellCheck="false" meta:resourcekey="Field9" ResourceKey="Field9"/>
+<ix:Field DisplayMode="Create,Edit" Editreadonly="True" For="Auditor" IsMandatory="True"/>
+<ix:Field Caption="Lead Auditor" DisplayAs="string" DisplayMode="View" For="LeadAuditor" Readonly="True" Span="true" meta:resourcekey="Field1" ResourceKey="Field1"/>
+<ix:Field For="ReportUpload"/>
+                    </ix:FieldArea>
+                  </ix:DetailSection>
+                  <ix:GridSection DisplayEditColumn="false" For="AuditorMaps" HideGroupAddButton="true" ID="AuditorMapsGridSection_InProgress" ModernIcon="Raven/Icons/BrightBlue_48/group.png" Title="Audit Team" meta:resourcekey="GridSection2" ResourceKey="GridSection2">
+                    <Menu>
+<ix:GridCreateActionLink Override="true" For="Auditor" Caption="Attach Auditor" CSSClass="gridCreateLink" meta:resourcekey="GridCreateActionLink2" ResourceKey="GridCreateActionLink2"/>
+<ix:GridDeleteActionLink Override="true" For="Auditor" Caption="Detach Auditor" meta:resourcekey="GridDeleteActionLink1" ResourceKey="GridDeleteActionLink1"/>
+                    </Menu>
+                    <grouping>
+<ix:Group By="Auditor.Type"/>
+                    </grouping>
+                    <Columns>
+<ix:Column For="Auditor.AuditorName"/>
+<ix:Column DisplayAs="List" FetchAs="Collection" For="Auditor.Qualifications"/>
+<ix:Column DisplayAs="List" FetchAs="Collection" For="Auditor.SMExperiences"/>
+                    </Columns>
+                  </ix:GridSection>
+                  <ix:GridSection DisplayEditColumn="false" For="Questionnaires:AuditMgmt_AuditQnnWFObject" HideGroupAddButton="true" ID="QuestionnairesGridSection_InProgress" ModernIcon="Raven/Icons/BrightBlue_48/note24.png" Pagesize="100" Title="Checklists" meta:resourcekey="GridSection3" ResourceKey="GridSection3">
+                    <Menu>
+<ix:GridCreateActionLink Override="true" Caption="Select Checklists" For="AuditChecklist" CSSClass="gridCreateLink" Title="test" meta:resourcekey="GridCreateActionLink3" ResourceKey="GridCreateActionLink3"/>
+<ix:GridDeleteActionLink Override="true" Visible="false"/>
+<ix:GridArchiveActionLink Override="true" Visible="true"/>
+                    </Menu>
+                    <Columns>
+<ix:Column Caption="Name" For="AuditChecklist" LinkTo="default" Visible="False" meta:resourcekey="Column10" ResourceKey="Column10"/>
+<ix:Column Caption="Name" For="PubChecklist" LinkTo="default" width="250px" meta:resourcekey="Column12" ResourceKey="Column12"/>
+                      <ix:MergeColumn For="Workflow.Status.Name" Caption="Auditor" width="5px" meta:resourcekey="MergeColumn5" ResourceKey="MergeColumn5">
+                        <MappedColumns>
+<ix:Column Caption="Auditor" EditMode="inline" For="AuditorMap" MapValue="Open" width="5px" meta:resourcekey="Column0" ResourceKey="Column0"/>
+<ix:Column Caption="Auditor" For="AuditorMap" MapValue="Review" width="5px" meta:resourcekey="Column28" ResourceKey="Column28"/>
+<ix:Column Caption="Auditor" For="AuditorMap" MapValue="Closed" width="5px" meta:resourcekey="Column6" ResourceKey="Column6"/>
+                        </MappedColumns>
+                      </ix:MergeColumn>
+<ix:Column For="Progress" width="5px"/>
+<ix:Column Aggregate="Avg" AggregateCaption="Average" For="pScore" width="5px"/>
+<ix:Column Caption="No. of Findings" For="NbFindings" width="5px" meta:resourcekey="Column18" ResourceKey="Column18"/>
+<ix:Column For="Workflow.Status" width="50px"/>
+                    </Columns>
+                  </ix:GridSection>
+                  <ix:DetailSection Title="Safety Star Score by Section" ID="SS1" meta:resourcekey="DetailSection6" ResourceKey="DetailSection6">
+                    <ix:FieldArea span="false">
+<ix:Field For="SectionIScore"/>
+<ix:Field For="SectionIIScore"/>
+<ix:Field For="SectionIIIScore"/>
+<ix:Field For="SectionIVScore"/>
+<ix:Field For="SectionVScore"/>
+<ix:Field For="SectionVIScore"/>
+<ix:Field For="SectionTot"/>
+<ix:Field For="RecommStarLevel" IsMandatory="True"/>
+                    </ix:FieldArea>
+                  </ix:DetailSection>
+                  <ix:GridSection CSSClass="hidePencil" DisplayEditColumn="false" For="SafeStarSummary" ID="SSS1">
+                    <Menu>
+<ix:GridCreateActionLink Override="true" Visible="false"/>
+<ix:GridDeleteActionLink Override="true" Visible="false"/>
+<ix:GridArchiveActionLink Override="true" Visible="false"/>
+<ix:GridListAllActionLink Override="true" Visible="false"/>
+                    </Menu>
+                    <Sorting>
+<ix:Sort By="Order" Direction="Ascending"/>
+                    </Sorting>
+                    <Columns>
+<ix:Column For="Section"/>
+<ix:Column For="NA"/>
+<ix:Column For="Critical"/>
+<ix:Column For="Major"/>
+<ix:Column For="Minor"/>
+<ix:Column For="OFI"/>
+<ix:Column For="FME"/>
+<ix:Column For="BP"/>
+<ix:Column For="OverallScore"/>
+                    </Columns>
+                  </ix:GridSection>
+                  <ix:GridSection CSSClass="hidePencil" DisplayEditColumn="true" EditLinkTarget="popup" For="Findings:AuditMgmt_FindingObject" HideGroupAddButton="true" ID="FindingSummaryGridSection_InProgress" ModernIcon="Raven/Icons/BrightBlue_48/warning.png" PageSize="100" Title="Summary of Findings" meta:resourcekey="GridSection6" ResourceKey="GridSection6">
+                    <Menu>
+<ix:GridCreateActionLink Override="true" Visible="false"/>
+<ix:GridDeleteActionLink Override="true" Visible="false"/>
+                    </Menu>
+                    <aliases>
+<ix:Alias For="Response.Id" Name="ResponseId"/>
+<ix:Alias For="Questionnaire.Checklist" Name="Checklist"/>
+<ix:Alias For="FindingSeverity.CriticalLevel" Name="CriticalLevel"/>
+<ix:Alias For="FindingSeverity.Color.Value" Name="BC"/>
+<ix:Alias For="FindingSeverity.Color.TextColor.Value" Name="TC"/>
+                    </aliases>
+                    <grouping>
+<ix:Group By="Questionnaire.Checklist"/>
+                    </grouping>
+                    <Sorting>
+<ix:Sort By="CriticalLevel" Direction="Descending"/>
+                    </Sorting>
+                    <Columns>
+<ix:Column Caption="Title" For="Name" LinkTarget="popup" LinkTo="default" meta:resourcekey="Column4" ResourceKey="Column4"/>
+<ix:Column DisplayAs="Truncate" For="ShorDescription"/>
+<ix:Column Caption="Question" For="Response.PubQuestion.QuestionText" width="200px" meta:resourcekey="Column7" ResourceKey="Column7"/>
+                      <ix:TemplateColumn For="FindingSeverity">
+                        <template>
+                          <div class="prettyCell" style="background-color:<%# Container.ViewData.Eval("BC") %>;color:<%# Container.ViewData.Eval("TC") %>;">
+<%# Container.ViewData.Eval("FindingSeverity") %>
+                          </div>
+                        </template>
+                      </ix:TemplateColumn>
+<ix:Column Caption="Finding Description" For="Description" meta:resourcekey="Column23" ResourceKey="Column23"/>
+<ix:Column For="RecommendAction"/>
+                      <ix:TemplateColumn For="NbDocs" Caption="Evidence" LinKTarget="popup" width="50px" meta:resourcekey="TemplateColumn0" ResourceKey="TemplateColumn0">
+                        <template>
+                          <div class="nbAttachments" style="background-image:url(&apos;<%=ImageHelper.GetStaticPath("Raven/Icons/BrightBlue_48/folder232.png") %>&apos;);display:<%# Container.ViewData.Eval("NbDocs").ToString()=="0" ? "none": "inline-block" %>;"/>
+                          </template>
+                        </ix:TemplateColumn>
+<ix:Column For="NbOfAP"/>
+<ix:Column For="ReguRequirement"/>
+                      </Columns>
+                    </ix:GridSection>
+                    <ix:GridSection CSSClass="hidePencil" DisplayEditColumn="true" EditLinkTarget="popup" For="Findings.APsWF:ActionPlans_FindiActionPlanObject" HideGroupAddButton="true" ID="APSummaryGridSection_InProgress" ModernIcon="Raven/Icons/BrightBlue_48/warning.png" Title="Summary of Action Plans" meta:resourcekey="GridSection15" ResourceKey="GridSection15">
+                      <Menu>
+<ix:GridListAllActionLink Override="true" runat="server" Visible="True"/>
+<ix:GridCreateActionLink Override="true" Visible="false"/>
+<ix:GridDeleteActionLink Override="true" Visible="false"/>
+                      </Menu>
+                      <grouping>
+<ix:Group By="FindingCFW"/>
+                      </grouping>
+                      <Sorting>
+<ix:Sort By="ActionNo" Direction="Descending"/>
+                      </Sorting>
+                      <Columns>
+<ix:Column For="ActionNo" LinkTarget="Popup" LinkTo="Default"/>
+<ix:Column For="CPARActionReq"/>
+<ix:Column For="effectivereview"/>
+<ix:Column DisplayAs="String" For="Workflow.PersonResponsible"/>
+<ix:Column For="Workflow.DueDate" Format="d"/>
+<ix:Column For="CompletionDate" Format="d"/>
+<ix:Column For="Workflow.Status"/>
+                      </Columns>
+                    </ix:GridSection>
+                  </ix:StageContainer>
+                  <ix:StageContainer UseDefaultDuringCreate="False" UseDefaultWhenCancelled="False" UseDefaultWhenCompleted="false" VisibleFor="Review,ReviewSS" ID="StageContainer_Review">
+                    <ix:DetailSection Title="Audit Details" ModernIcon="Raven/Icons/BrightBlue_48/note21.png" meta:resourcekey="DetailSection4" ResourceKey="DetailSection4">
+                      <ix:FieldArea span="true">
+<ix:Field For="RecordNo" Readonly="True"/>
+<ix:Field DisplayAs="String" For="Location" Readonly="True"/>
+<ix:Field Caption="Segment" DisplayAs="String" For="SectorCFW.SegmentField" Readonly="True" SpellCheck="false" meta:resourcekey="Field17" ResourceKey="Field17"/>
+<ix:Field DisplayAs="String" For="SectorCFW" IsMandatory="True" Readonly="True" SpellCheck="false"/>
+<ix:Field For="AbeingConducted" IsMandatory="True" Readonly="True"/>
+<ix:Field For="Name" Readonly="True"/>
+<ix:Field For="Type" Readonly="True"/>
+<ix:Field For="FormofAudit" Readonly="True"/>
+<ix:Field For="CategoryofAudit" Readonly="True" Visible="False"/>
+<ix:Field For="CategoryCheck" Readonly="True"/>
+<ix:Field For="AuditSubType" Readonly="True"/>
+<ix:Field For="Scope" Readonly="True"/>
+<ix:Field For="RiskLevel" Readonly="True"/>
+<ix:Field For="Workflow.RecurringSeries.Frequency" Readonly="True" Span="true" SpellCheck="false"/>
+<ix:Field Caption="Scheduled Date" For="Date" Readonly="True" Span="true" SpellCheck="false" meta:resourcekey="Field4" ResourceKey="Field4"/>
+<ix:Field Caption="End Date" For="EndDate" IsMandatory="True" Readonly="True" SpellCheck="false" meta:resourcekey="Field12" ResourceKey="Field12"/>
+<ix:Field DisplayMode="Create,Edit" Editreadonly="True" For="Auditor" IsMandatory="True"/>
+<ix:Field Caption="Lead Auditor" DisplayAs="string" DisplayMode="View" For="LeadAuditor" Readonly="True" Span="true" meta:resourcekey="Field7" ResourceKey="Field7"/>
+<ix:Field For="ReportUpload" Readonly="True"/>
+<ix:Field For="Summary" IsMandatory="True"/>
+<ix:Field For="ReReportComment"/>
+<ix:Field For="CreateNextAudit"/>
+<ix:Field For="CopyPrevAudit"/>
+                      </ix:FieldArea>
+                    </ix:DetailSection>
+                    <ix:GridSection DisplayEditColumn="false" For="AuditorMaps" HideGroupAddButton="true" ID="AuditorMapsGridSection_Review" ModernIcon="Raven/Icons/BrightBlue_48/group.png" Title="Audit Team" meta:resourcekey="GridSection7" ResourceKey="GridSection7">
+                      <Menu>
+<ix:GridAttachActionLink Override="true" Visible="False"/>
+<ix:GridDetachActionLink Override="true" Visible="False"/>
+<ix:GridCreateActionLink Override="true" Visible="False" For="Auditor" Caption="Attach Auditor" CSSClass="gridCreateLink" meta:resourcekey="GridCreateActionLink4" ResourceKey="GridCreateActionLink4"/>
+<ix:GridDeleteActionLink Override="true" Visible="False" For="Auditor" Caption="Detach Auditor" meta:resourcekey="GridDeleteActionLink2" ResourceKey="GridDeleteActionLink2"/>
+<ix:GridExecuteActionLink Name="Send Notification" Override="true" Visible="false"/>
+<ix:GridListAllActionLink Override="true" Visible="True"/>
+                      </Menu>
+                      <grouping>
+<ix:Group By="Auditor.Type"/>
+                      </grouping>
+                      <Columns>
+<ix:Column For="Auditor.AuditorName"/>
+<ix:Column DisplayAs="List" FetchAs="Collection" For="Auditor.Qualifications" Readonly="True"/>
+<ix:Column DisplayAs="List" FetchAs="Collection" For="Auditor.SMExperiences" Readonly="True"/>
+                      </Columns>
+                    </ix:GridSection>
+                    <ix:GridSection DisplayEditColumn="false" For="Questionnaires:AuditMgmt_AuditQnnWFObject" HideGroupAddButton="true" ID="QuestionnairesGridSection_Review" ModernIcon="Raven/Icons/BrightBlue_48/note24.png" Pagesize="100" RowSelectionMode="None" Title="Checklists" meta:resourcekey="GridSection5" ResourceKey="GridSection5">
+                      <Menu>
+<ix:GridCreateActionLink Override="true" Caption="Select Checklists" For="AuditChecklist" CSSClass="gridCreateLink" Visible="false" meta:resourcekey="GridCreateActionLink6" ResourceKey="GridCreateActionLink6"/>
+<ix:GridDeleteActionLink Override="true" For="Auditor" Caption="Detach Auditor" Visible="false" meta:resourcekey="GridDeleteActionLink3" ResourceKey="GridDeleteActionLink3"/>
+<ix:GridExecuteActionLink Name="GenResponses" Override="true" Visible="false"/>
+<ix:GridListAllActionLink Override="true" Visible="True"/>
+                      </Menu>
+                      <Columns>
+<ix:Column Caption="Name" For="AuditChecklist" LinkTo="default" Visible="False" meta:resourcekey="Column13" ResourceKey="Column13"/>
+<ix:Column Caption="Name" For="PubChecklist" LinkTo="default" width="5px" meta:resourcekey="Column14" ResourceKey="Column14"/>
+<ix:Column For="AuditorMap" width="5px"/>
+<ix:Column For="Progress" width="5px"/>
+<ix:Column Aggregate="Avg" AggregateCaption="Average" For="pScore" width="5px"/>
+<ix:Column Caption="No. of Findings" For="NbFindings" width="5px" meta:resourcekey="Column17" ResourceKey="Column17"/>
+<ix:Column For="Workflow.Status" width="50px"/>
+                      </Columns>
+                    </ix:GridSection>
+                    <ix:DetailSection Title="Safety Star Score by Section" ID="SS2" meta:resourcekey="DetailSection7" ResourceKey="DetailSection7">
+                      <ix:FieldArea span="false">
+<ix:Field For="SectionIScore"/>
+<ix:Field For="SectionIIScore"/>
+<ix:Field For="SectionIIIScore"/>
+<ix:Field For="SectionIVScore"/>
+<ix:Field For="SectionVScore"/>
+<ix:Field For="SectionVIScore"/>
+<ix:Field For="SectionTot"/>
+<ix:Field For="RecommStarLevel" IsMandatory="True"/>
+                      </ix:FieldArea>
+                    </ix:DetailSection>
+                    <ix:GridSection CSSClass="hidePencil" DisplayEditColumn="false" For="SafeStarSummary" ID="SSS2">
+                      <Menu>
+<ix:GridCreateActionLink Override="true" Visible="false"/>
+<ix:GridDeleteActionLink Override="true" Visible="false"/>
+<ix:GridArchiveActionLink Override="true" Visible="false"/>
+<ix:GridListAllActionLink Override="true" Visible="false"/>
+                      </Menu>
+                      <Sorting>
+<ix:Sort By="Order" Direction="Ascending"/>
+                      </Sorting>
+                      <Columns>
+<ix:Column For="Section"/>
+<ix:Column For="NA"/>
+<ix:Column For="Critical"/>
+<ix:Column For="Major"/>
+<ix:Column For="Minor"/>
+<ix:Column For="OFI"/>
+<ix:Column For="FME"/>
+<ix:Column For="BP"/>
+<ix:Column For="OverallScore"/>
+                      </Columns>
+                    </ix:GridSection>
+                    <ix:GridSection CSSClass="hidePencil" DisplayEditColumn="true" EditLinkTarget="popup" For="Findings:AuditMgmt_FindingObject" HideGroupAddButton="true" ID="FindingSummaryGridSection_Review" ModernIcon="Raven/Icons/BrightBlue_48/warning.png" PageSize="100" RowSelectionMode="None" Title="Summary of Findings" meta:resourcekey="GridSection8" ResourceKey="GridSection8">
+                      <Menu>
+<ix:GridCreateActionLink Override="true" Visible="false"/>
+<ix:GridDeleteActionLink Override="true" Visible="false"/>
+<ix:GridListAllActionLink Override="true" Visible="True"/>
+                      </Menu>
+                      <aliases>
+<ix:Alias For="Response.Id" Name="ResponseId"/>
+<ix:Alias For="Questionnaire.Checklist" Name="Checklist"/>
+<ix:Alias For="FindingSeverity.CriticalLevel" Name="CriticalLevel"/>
+<ix:Alias For="FindingSeverity.Color.Value" Name="BC"/>
+<ix:Alias For="FindingSeverity.Color.TextColor.Value" Name="TC"/>
+<ix:Alias For="Source" Name="Source"/>
+                      </aliases>
+                      <grouping>
+<ix:Group By="Questionnaire.Checklist"/>
+                      </grouping>
+                      <Sorting>
+<ix:Sort By="CriticalLevel" Direction="Descending"/>
+                      </Sorting>
+                      <Columns>
+<ix:Column Caption="Title" For="Name" LinkTarget="popup" LinkTo="default" meta:resourcekey="Column8" ResourceKey="Column8"/>
+<ix:Column DisplayAs="Truncate" For="ShorDescription"/>
+<ix:Column Caption="Question" For="Response.PubQuestion.QuestionText" width="200px" meta:resourcekey="Column19" ResourceKey="Column19"/>
+                        <ix:TemplateColumn For="FindingSeverity">
+                          <template>
+                            <div class="prettyCell" style="background-color:<%# Container.ViewData.Eval("BC") %>;color:<%# Container.ViewData.Eval("TC") %>;">
+<%# Container.ViewData.Eval("FindingSeverity") %>
+                            </div>
+                          </template>
+                        </ix:TemplateColumn>
+<ix:Column Caption="Finding Description" For="Description" meta:resourcekey="Column23" ResourceKey="Column23"/>
+<ix:Column For="RecommendAction"/>
+                        <ix:TemplateColumn For="NbDocs" Caption="Evidence" LinKTarget="popup" width="50px" meta:resourcekey="TemplateColumn3" ResourceKey="TemplateColumn3">
+                          <template>
+                            <div class="nbAttachments" style="background-image:url(&apos;<%=ImageHelper.GetStaticPath("Raven/Icons/BrightBlue_48/folder232.png") %>&apos;);display:<%# Container.ViewData.Eval("NbDocs").ToString()=="0" ? "none": "inline-block" %>;"/>
+                            </template>
+                          </ix:TemplateColumn>
+<ix:Column For="NbOfAP"/>
+<ix:Column For="ReguRequirement"/>
+                        </Columns>
+                      </ix:GridSection>
+                      <ix:GridSection CSSClass="hidePencil" DisplayEditColumn="true" EditLinkTarget="popup" For="Findings.APsWF:ActionPlans_FindiActionPlanObject" HideGroupAddButton="true" ID="APSummaryGridSection_Review" ModernIcon="Raven/Icons/BrightBlue_48/warning.png" Title="Summary of Action Plans" meta:resourcekey="GridSection14" ResourceKey="GridSection14">
+                        <Menu>
+<ix:GridListAllActionLink Override="true" runat="server" Visible="True"/>
+<ix:GridCreateActionLink Override="true" Visible="false"/>
+<ix:GridDeleteActionLink Override="true" Visible="false"/>
+                        </Menu>
+                        <grouping>
+<ix:Group By="FindingCFW"/>
+                        </grouping>
+                        <Sorting>
+<ix:Sort By="ActionNo" Direction="Descending"/>
+                        </Sorting>
+                        <Columns>
+<ix:Column For="ActionNo" LinkTarget="Popup" LinkTo="Default"/>
+<ix:Column For="CPARActionReq"/>
+<ix:Column For="effectivereview"/>
+<ix:Column DisplayAs="String" For="Workflow.PersonResponsible"/>
+<ix:Column For="Workflow.DueDate" Format="d"/>
+<ix:Column For="CompletionDate" Format="d"/>
+<ix:Column For="Workflow.Status"/>
+                        </Columns>
+                      </ix:GridSection>
+                    </ix:StageContainer>
+                    <ix:StageContainer UseDefaultDuringCreate="False" UseDefaultWhenCancelled="False" UseDefaultWhenCompleted="false" VisibleFor="CompPending" ID="StageContainer_CompPending">
+                      <ix:DetailSection Title="Audit Details" ModernIcon="Raven/Icons/BrightBlue_48/note21.png" meta:resourcekey="DetailSection4CP" ResourceKey="DetailSection4CP">
+                        <ix:FieldArea span="true">
+<ix:Field For="RecordNo" Readonly="True"/>
+<ix:Field DisplayAs="String" For="Location" Readonly="True"/>
+<ix:Field Caption="Segment" DisplayAs="String" For="SectorCFW.SegmentField" Readonly="True" SpellCheck="false" meta:resourcekey="Field17CP" ResourceKey="Field17CP"/>
+<ix:Field DisplayAs="String" For="SectorCFW" IsMandatory="True" Readonly="True" SpellCheck="false"/>
+<ix:Field For="AbeingConducted" IsMandatory="True" Readonly="True"/>
+<ix:Field For="Name" Readonly="True"/>
+<ix:Field For="Type" Readonly="True"/>
+<ix:Field For="FormofAudit" Readonly="True"/>
+<ix:Field For="CategoryofAudit" Readonly="True" Visible="False"/>
+<ix:Field For="CategoryCheck" Readonly="True"/>
+<ix:Field For="AuditSubType" Readonly="True"/>
+<ix:Field For="Scope" Readonly="True"/>
+<ix:Field For="RiskLevel" Readonly="True"/>
+<ix:Field For="Workflow.RecurringSeries.Frequency" Readonly="True" Span="true" SpellCheck="false"/>
+<ix:Field Caption="Scheduled Date" For="Date" Readonly="True" Span="true" SpellCheck="false" meta:resourcekey="Field4CP" ResourceKey="Field4CP"/>
+<ix:Field Caption="End Date" For="EndDate" IsMandatory="True" Readonly="True" SpellCheck="false" meta:resourcekey="Field12CP" ResourceKey="Field12CP"/>
+<ix:Field DisplayMode="Create,Edit" Editreadonly="True" For="Auditor" IsMandatory="True"/>
+<ix:Field Caption="Lead Auditor" DisplayAs="string" DisplayMode="View" For="LeadAuditor" Readonly="True" Span="true" meta:resourcekey="Field10" ResourceKey="Field10"/>
+<ix:Field For="ReportUpload" Readonly="True"/>
+<ix:Field For="Summary"/>
+<ix:Field For="ReReportComment"/>
+<ix:Field For="CreateNextAudit"/>
+<ix:Field For="CopyPrevAudit"/>
+                        </ix:FieldArea>
+                      </ix:DetailSection>
+                      <ix:GridSection DisplayEditColumn="false" For="AuditorMaps" HideGroupAddButton="true" ID="AuditorMapsGridSection_CompPending" ModernIcon="Raven/Icons/BrightBlue_48/group.png" Title="Audit Team" meta:resourcekey="GridSection7CP" ResourceKey="GridSection7CP">
+                        <Menu>
+<ix:GridAttachActionLink Override="true" Visible="False"/>
+<ix:GridDetachActionLink Override="true" Visible="False"/>
+<ix:GridCreateActionLink Override="true" Visible="False" For="Auditor" Caption="Attach Auditor" CSSClass="gridCreateLink" meta:resourcekey="GridCreateActionLink4CP" ResourceKey="GridCreateActionLink4CP"/>
+<ix:GridDeleteActionLink Override="true" Visible="False" For="Auditor" Caption="Detach Auditor" meta:resourcekey="GridDeleteActionLink2CP" ResourceKey="GridDeleteActionLink2CP"/>
+<ix:GridExecuteActionLink Name="Send Notification" Override="true" Visible="false"/>
+<ix:GridListAllActionLink Override="true" Visible="True"/>
+                        </Menu>
+                        <grouping>
+<ix:Group By="Auditor.Type"/>
+                        </grouping>
+                        <Columns>
+<ix:Column For="Auditor.AuditorName"/>
+<ix:Column DisplayAs="List" FetchAs="Collection" For="Auditor.Qualifications" Readonly="True"/>
+<ix:Column DisplayAs="List" FetchAs="Collection" For="Auditor.SMExperiences" Readonly="True"/>
+                        </Columns>
+                      </ix:GridSection>
+                      <ix:GridSection DisplayEditColumn="false" For="Questionnaires:AuditMgmt_AuditQnnWFObject" HideGroupAddButton="true" ID="QuestionnairesGridSection_CompPending" ModernIcon="Raven/Icons/BrightBlue_48/note24.png" Pagesize="100" RowSelectionMode="None" Title="Checklists" meta:resourcekey="GridSection5CP" ResourceKey="GridSection5CP">
+                        <Menu>
+<ix:GridCreateActionLink Override="true" Caption="Select Checklists" For="AuditChecklist" CSSClass="gridCreateLink" Visible="false" meta:resourcekey="GridCreateActionLink6CP" ResourceKey="GridCreateActionLink6CP"/>
+<ix:GridDeleteActionLink Override="true" For="Auditor" Caption="Detach Auditor" Visible="false" meta:resourcekey="GridDeleteActionLink3CP" ResourceKey="GridDeleteActionLink3CP"/>
+<ix:GridExecuteActionLink Name="GenResponses" Override="true" Visible="false"/>
+<ix:GridListAllActionLink Override="true" Visible="True"/>
+                        </Menu>
+                        <Columns>
+<ix:Column Caption="Name" For="AuditChecklist" LinkTo="default" Visible="False" meta:resourcekey="Column13CP" ResourceKey="Column13CP"/>
+<ix:Column Caption="Name" For="PubChecklist" LinkTo="default" width="5px" meta:resourcekey="Column14CP" ResourceKey="Column14CP"/>
+<ix:Column For="AuditorMap" width="5px"/>
+<ix:Column For="Progress" width="5px"/>
+<ix:Column Aggregate="Avg" AggregateCaption="Average" For="pScore" width="5px"/>
+<ix:Column Caption="No. of Findings" For="NbFindings" width="5px" meta:resourcekey="Column17CP" ResourceKey="Column17CP"/>
+<ix:Column For="Workflow.Status" width="50px"/>
+                        </Columns>
+                      </ix:GridSection>
+                      <ix:DetailSection Title="Safety Star Score by Section" ID="SS3" meta:resourcekey="DetailSection8" ResourceKey="DetailSection8">
+                        <ix:FieldArea span="false">
+<ix:Field For="SectionIScore"/>
+<ix:Field For="SectionIIScore"/>
+<ix:Field For="SectionIIIScore"/>
+<ix:Field For="SectionIVScore"/>
+<ix:Field For="SectionVScore"/>
+<ix:Field For="SectionVIScore"/>
+<ix:Field For="SectionTot"/>
+<ix:Field For="RecommStarLevel" IsMandatory="True"/>
+                        </ix:FieldArea>
+                      </ix:DetailSection>
+                      <ix:GridSection CSSClass="hidePencil" DisplayEditColumn="false" For="SafeStarSummary" ID="SSS3">
+                        <Menu>
+<ix:GridCreateActionLink Override="true" Visible="false"/>
+<ix:GridDeleteActionLink Override="true" Visible="false"/>
+<ix:GridArchiveActionLink Override="true" Visible="false"/>
+<ix:GridListAllActionLink Override="true" Visible="false"/>
+                        </Menu>
+                        <Sorting>
+<ix:Sort By="Order" Direction="Ascending"/>
+                        </Sorting>
+                        <Columns>
+<ix:Column For="Section"/>
+<ix:Column For="NA"/>
+<ix:Column For="Critical"/>
+<ix:Column For="Major"/>
+<ix:Column For="Minor"/>
+<ix:Column For="OFI"/>
+<ix:Column For="FME"/>
+<ix:Column For="BP"/>
+<ix:Column For="OverallScore"/>
+                        </Columns>
+                      </ix:GridSection>
+                      <ix:GridSection CSSClass="hidePencil" DisplayEditColumn="true" EditLinkTarget="popup" For="Findings:AuditMgmt_FindingObject" HideGroupAddButton="true" ID="FindingSummaryGridSection_CompPending" ModernIcon="Raven/Icons/BrightBlue_48/warning.png" PageSize="100" RowSelectionMode="None" Title="Summary of Findings" meta:resourcekey="GridSection8CP" ResourceKey="GridSection8CP">
+                        <Menu>
+<ix:GridCreateActionLink Override="true" Visible="false"/>
+<ix:GridDeleteActionLink Override="true" Visible="false"/>
+<ix:GridListAllActionLink Override="true" Visible="True"/>
+                        </Menu>
+                        <aliases>
+<ix:Alias For="Response.Id" Name="ResponseId"/>
+<ix:Alias For="Questionnaire.Checklist" Name="Checklist"/>
+<ix:Alias For="FindingSeverity.CriticalLevel" Name="CriticalLevel"/>
+<ix:Alias For="FindingSeverity.Color.Value" Name="BC"/>
+<ix:Alias For="FindingSeverity.Color.TextColor.Value" Name="TC"/>
+<ix:Alias For="Source" Name="Source"/>
+                        </aliases>
+                        <grouping>
+<ix:Group By="Questionnaire.Checklist"/>
+                        </grouping>
+                        <Sorting>
+<ix:Sort By="CriticalLevel" Direction="Descending"/>
+                        </Sorting>
+                        <Columns>
+<ix:Column Caption="Title" For="Name" LinkTarget="popup" LinkTo="default" meta:resourcekey="Column20" ResourceKey="Column20"/>
+<ix:Column DisplayAs="Truncate" For="ShorDescription"/>
+<ix:Column Caption="Question" For="Response.PubQuestion.QuestionText" width="200px" meta:resourcekey="Column24" ResourceKey="Column24"/>
+                          <ix:TemplateColumn For="FindingSeverity">
+                            <template>
+                              <div class="prettyCell" style="background-color:<%# Container.ViewData.Eval("BC") %>;color:<%# Container.ViewData.Eval("TC") %>;">
+<%# Container.ViewData.Eval("FindingSeverity") %>
+                              </div>
+                            </template>
+                          </ix:TemplateColumn>
+<ix:Column Caption="Finding Description" For="Description" meta:resourcekey="Column23" ResourceKey="Column23"/>
+<ix:Column For="RecommendAction"/>
+                          <ix:TemplateColumn For="NbDocs" Caption="Evidence" LinKTarget="popup" width="50px" meta:resourcekey="TemplateColumn4" ResourceKey="TemplateColumn4">
+                            <template>
+                              <div class="nbAttachments" style="background-image:url(&apos;<%=ImageHelper.GetStaticPath("Raven/Icons/BrightBlue_48/folder232.png") %>&apos;);display:<%# Container.ViewData.Eval("NbDocs").ToString()=="0" ? "none": "inline-block" %>;"/>
+                              </template>
+                            </ix:TemplateColumn>
+<ix:Column For="NbOfAP"/>
+<ix:Column For="ReguRequirement"/>
+                          </Columns>
+                        </ix:GridSection>
+                        <ix:GridSection CSSClass="hidePencil" DisplayEditColumn="true" EditLinkTarget="popup" For="Findings.APsWF:ActionPlans_FindiActionPlanObject" HideGroupAddButton="true" ID="APSummaryGridSection_CompPending" ModernIcon="Raven/Icons/BrightBlue_48/warning.png" Title="Summary of Action Plans" meta:resourcekey="GridSection16" ResourceKey="GridSection16">
+                          <Menu>
+<ix:GridListAllActionLink Override="true" runat="server" Visible="True"/>
+<ix:GridCreateActionLink Override="true" Visible="false"/>
+<ix:GridDeleteActionLink Override="true" Visible="false"/>
+                          </Menu>
+                          <grouping>
+<ix:Group By="FindingCFW"/>
+                          </grouping>
+                          <Sorting>
+<ix:Sort By="ActionNo" Direction="Descending"/>
+                          </Sorting>
+                          <Columns>
+<ix:Column For="ActionNo" LinkTarget="Popup" LinkTo="Default"/>
+<ix:Column For="CPARActionReq"/>
+<ix:Column For="effectivereview"/>
+<ix:Column DisplayAs="String" For="Workflow.PersonResponsible"/>
+<ix:Column For="Workflow.DueDate" Format="d"/>
+<ix:Column For="CompletionDate" Format="d"/>
+                          </Columns>
+                        </ix:GridSection>
+                      </ix:StageContainer>
+                      <ix:StageContainer UseDefaultDuringCreate="False" UseDefaultWhenCancelled="False" UseDefaultWhenCompleted="True" ID="StageContainer_Completed">
+                        <ix:DetailSection Title="Audit Details" ModernIcon="Raven/Icons/BrightBlue_48/note21.png" meta:resourcekey="DetailSection2" ResourceKey="DetailSection2">
+                          <ix:FieldArea span="true">
+<ix:Field For="RecordNo" Readonly="True"/>
+<ix:Field DisplayAs="String" For="Location" Readonly="True"/>
+<ix:Field Caption="Segment" DisplayAs="String" For="SectorCFW.SegmentField" Readonly="True" SpellCheck="false" meta:resourcekey="Field18" ResourceKey="Field18"/>
+<ix:Field DisplayAs="String" For="SectorCFW" IsMandatory="True" Readonly="True" SpellCheck="false"/>
+<ix:Field For="AbeingConducted" IsMandatory="True" Readonly="True"/>
+<ix:Field For="Name" Readonly="True"/>
+<ix:Field For="Type" Readonly="True"/>
+<ix:Field For="FormofAudit" Readonly="True"/>
+<ix:Field For="CategoryofAudit" Readonly="True" Visible="False"/>
+<ix:Field For="CategoryCheck" Readonly="True"/>
+<ix:Field For="AuditSubType" Readonly="True"/>
+<ix:Field For="Scope" Readonly="True"/>
+<ix:Field For="RiskLevel" Readonly="True"/>
+<ix:Field For="Workflow.RecurringSeries.Frequency" Readonly="True" Span="true" SpellCheck="false"/>
+<ix:Field Caption="Scheduled Date" For="Date" Readonly="True" Span="true" SpellCheck="false" meta:resourcekey="Field5" ResourceKey="Field5"/>
+<ix:Field For="EndDateHelper"/>
+<ix:Field DisplayMode="Create,Edit" Editreadonly="True" For="Auditor" IsMandatory="True"/>
+<ix:Field Caption="Lead Auditor" DisplayAs="string" DisplayMode="View" For="LeadAuditor" Readonly="True" Span="true" meta:resourcekey="Field11" ResourceKey="Field11"/>
+<ix:Field For="ReportUpload" Readonly="True"/>
+<ix:Field For="Summary" Readonly="True"/>
+<ix:Field For="CreateNextAudit" Readonly="True"/>
+<ix:Field For="CopyPrevAudit" Readonly="True"/>
+                          </ix:FieldArea>
+                        </ix:DetailSection>
+                        <ix:GridSection DisplayEditColumn="false" For="AuditorMaps" HideGroupAddButton="true" ID="AuditorMapsGridSection_Completed" ModernIcon="Raven/Icons/BrightBlue_48/group.png" Title="Audit Team" meta:resourcekey="GridSection9" ResourceKey="GridSection9">
+                          <Menu>
+<ix:GridAttachActionLink Override="true" Visible="False"/>
+<ix:GridDetachActionLink Override="true" Visible="False"/>
+<ix:GridCreateActionLink Override="true" For="Auditor" Caption="Attach Auditor" CSSClass="gridCreateLink" meta:resourcekey="GridCreateActionLink5" ResourceKey="GridCreateActionLink5"/>
+<ix:GridDeleteActionLink Override="true" For="Auditor" Caption="Detach Auditor" meta:resourcekey="GridDeleteActionLink4" ResourceKey="GridDeleteActionLink4"/>
+<ix:GridExecuteActionLink Name="Send Notification" Override="true" Visible="false"/>
+<ix:GridListAllActionLink Override="true" Visible="True"/>
+                          </Menu>
+                          <grouping>
+<ix:Group By="Auditor.Type"/>
+                          </grouping>
+                          <Columns>
+<ix:Column For="Auditor.AuditorName"/>
+<ix:Column DisplayAs="List" FetchAs="Collection" For="Auditor.Qualifications"/>
+<ix:Column DisplayAs="List" FetchAs="Collection" For="Auditor.SMExperiences"/>
+                          </Columns>
+                        </ix:GridSection>
+                        <ix:GridSection DisplayEditColumn="false" For="Questionnaires:AuditMgmt_AuditQnnWFObject" HideGroupAddButton="true" ID="QuestionnairesGridSection_Completed" ModernIcon="Raven/Icons/BrightBlue_48/note24.png" Pagesize="100" RowSelectionMode="None" Title="Checklists" meta:resourcekey="GridSection10" ResourceKey="GridSection10">
+                          <Menu>
+<ix:GridCreateActionLink Override="true" Caption="Select Checklists" For="AuditChecklist" CSSClass="gridCreateLink" Visible="false" meta:resourcekey="GridCreateActionLink6" ResourceKey="GridCreateActionLink6"/>
+<ix:GridDeleteActionLink Override="true" For="Auditor" Caption="Detach Auditor" Visible="false" meta:resourcekey="GridDeleteActionLink5" ResourceKey="GridDeleteActionLink5"/>
+<ix:GridExecuteActionLink Name="GenResponses" Override="true" Visible="false"/>
+<ix:GridListAllActionLink Override="true" Visible="True"/>
+                          </Menu>
+                          <Columns>
+<ix:Column Caption="Name" For="AuditChecklist" LinkTo="default" Visible="False" meta:resourcekey="Column9" ResourceKey="Column9"/>
+<ix:Column Caption="Name" For="PubChecklist" LinkTo="default" width="5px" meta:resourcekey="Column11" ResourceKey="Column11"/>
+<ix:Column For="AuditorMap" width="5px"/>
+<ix:Column For="Progress" width="5px"/>
+<ix:Column Aggregate="Avg" AggregateCaption="Average" For="pScore" width="5px"/>
+<ix:Column Caption="No. of Findings" For="NbFindings" width="5px" meta:resourcekey="Column15" ResourceKey="Column15"/>
+<ix:Column For="Workflow.Status" width="50px"/>
+                          </Columns>
+                        </ix:GridSection>
+                        <ix:DetailSection Title="Safety Star Score by Section" ID="SS4" meta:resourcekey="DetailSection9" ResourceKey="DetailSection9">
+                          <ix:FieldArea span="false">
+<ix:Field For="SectionIScore"/>
+<ix:Field For="SectionIIScore"/>
+<ix:Field For="SectionIIIScore"/>
+<ix:Field For="SectionIVScore"/>
+<ix:Field For="SectionVScore"/>
+<ix:Field For="SectionVIScore"/>
+<ix:Field For="SectionTot"/>
+<ix:Field For="RecommStarLevel" IsMandatory="True"/>
+                          </ix:FieldArea>
+                        </ix:DetailSection>
+                        <ix:GridSection CSSClass="hidePencil" DisplayEditColumn="false" For="SafeStarSummary" ID="SSS4">
+                          <Menu>
+<ix:GridCreateActionLink Override="true" Visible="false"/>
+<ix:GridDeleteActionLink Override="true" Visible="false"/>
+<ix:GridArchiveActionLink Override="true" Visible="false"/>
+<ix:GridListAllActionLink Override="true" Visible="false"/>
+                          </Menu>
+                          <Sorting>
+<ix:Sort By="Order" Direction="Ascending"/>
+                          </Sorting>
+                          <Columns>
+<ix:Column For="Section"/>
+<ix:Column For="NA"/>
+<ix:Column For="Critical"/>
+<ix:Column For="Major"/>
+<ix:Column For="Minor"/>
+<ix:Column For="OFI"/>
+<ix:Column For="FME"/>
+<ix:Column For="BP"/>
+<ix:Column For="OverallScore"/>
+                          </Columns>
+                        </ix:GridSection>
+                        <ix:GridSection CSSClass="hidePencil" DisplayEditColumn="true" EditLinkTarget="popup" For="Findings:AuditMgmt_FindingObject" HideGroupAddButton="true" ID="FindingSummaryGridSection_Completed" ModernIcon="Raven/Icons/BrightBlue_48/warning.png" PageSize="100" RowSelectionMode="None" Title="Summary of Findings" meta:resourcekey="GridSection11" ResourceKey="GridSection11">
+                          <Menu>
+<ix:GridCreateActionLink Override="true" Visible="true"/>
+<ix:GridDeleteActionLink Override="true" Visible="false"/>
+<ix:GridListAllActionLink Override="true" Visible="True"/>
+                          </Menu>
+                          <aliases>
+<ix:Alias For="Response.Id" Name="ResponseId"/>
+<ix:Alias For="Questionnaire.Checklist" Name="Checklist"/>
+<ix:Alias For="FindingSeverity.CriticalLevel" Name="CriticalLevel"/>
+<ix:Alias For="FindingSeverity.Color.Value" Name="BC"/>
+<ix:Alias For="FindingSeverity.Color.TextColor.Value" Name="TC"/>
+                          </aliases>
+                          <grouping>
+<ix:Group By="Questionnaire.Checklist"/>
+                          </grouping>
+                          <Sorting>
+<ix:Sort By="CriticalLevel" Direction="Descending"/>
+                          </Sorting>
+                          <Columns>
+<ix:Column Caption="Title" For="Name" LinkTarget="popup" LinkTo="default" meta:resourcekey="Column25" ResourceKey="Column25"/>
+<ix:Column DisplayAs="Truncate" For="ShorDescription"/>
+<ix:Column Caption="Question" For="Response.PubQuestion.QuestionText" width="200px" meta:resourcekey="Column26" ResourceKey="Column26"/>
+                            <ix:TemplateColumn For="FindingSeverity">
+                              <template>
+                                <div class="prettyCell" style="background-color:<%# Container.ViewData.Eval("BC") %>;color:<%# Container.ViewData.Eval("TC") %>;">
+<%# Container.ViewData.Eval("FindingSeverity") %>
+                                </div>
+                              </template>
+                            </ix:TemplateColumn>
+<ix:Column Caption="Finding Description" For="Description" meta:resourcekey="Column23" ResourceKey="Column23"/>
+<ix:Column For="RecommendAction"/>
+                            <ix:TemplateColumn For="NbDocs" Caption="Evidence" LinKTarget="popup" width="50px" meta:resourcekey="TemplateColumn6" ResourceKey="TemplateColumn6">
+                              <template>
+                                <div class="nbAttachments" style="background-image:url(&apos;<%=ImageHelper.GetStaticPath("Raven/Icons/BrightBlue_48/folder232.png") %>&apos;);display:<%# Container.ViewData.Eval("NbDocs").ToString()=="0" ? "none": "inline-block" %>;"/>
+                                </template>
+                              </ix:TemplateColumn>
+<ix:Column For="NbOfAP"/>
+<ix:Column For="ReguRequirement"/>
+                            </Columns>
+                          </ix:GridSection>
+                          <ix:GridSection CSSClass="hidePencil" DisplayEditColumn="true" EditLinkTarget="popup" For="Findings.APsWF:ActionPlans_FindiActionPlanObject" HideGroupAddButton="true" ID="APSummaryGridSection_Completed" ModernIcon="Raven/Icons/BrightBlue_48/warning.png" Title="Summary of Action Plans" meta:resourcekey="GridSection17" ResourceKey="GridSection17">
+                            <Menu>
+<ix:GridListAllActionLink Override="true" runat="server" Visible="True"/>
+<ix:GridCreateActionLink Override="true" Visible="true"/>
+<ix:GridDeleteActionLink Override="true" Visible="false"/>
+                            </Menu>
+                            <grouping>
+<ix:Group By="FindingCFW"/>
+                            </grouping>
+                            <Sorting>
+<ix:Sort By="ActionNo" Direction="Descending"/>
+                            </Sorting>
+                            <Columns>
+<ix:Column For="ActionNo" LinkTarget="Popup" LinkTo="Default"/>
+<ix:Column For="CPARActionReq"/>
+<ix:Column For="effectivereview"/>
+<ix:Column DisplayAs="String" For="Workflow.PersonResponsible"/>
+<ix:Column For="Workflow.DueDate" Format="d"/>
+<ix:Column For="CompletionDate" Format="d"/>
+<ix:Column For="Workflow.Status"/>
+                            </Columns>
+                          </ix:GridSection>
+                        </ix:StageContainer>
+                        <ix:StageContainer UseDefaultDuringCreate="False" UseDefaultWhenCancelled="True" UseDefaultWhenCompleted="True" VisibleFor="InProgress,Review,ReviewSS,CompPending" ID="StageContainer_ObjectiveEvidence">
+                          <ix:GridSection CSSClass="hidePencil" DisplayEditColumn="True" EditLinkTarget="popup" For="Docs:AuditMgmt_DocObject" HideGroupAddButton="true" ModernIcon="Raven/Icons/BrightBlue_48/briefcase17.png" RowSelectionMode="None" Title="Summary of Objective Evidence" Visible="true" meta:resourcekey="GridSection12" ResourceKey="GridSection12">
+                            <Menu>
+<ix:GridCreateActionLink Override="true" Visible="false" OpenIn="popup"/>
+<ix:GridDeleteActionLink Override="true" Visible="false"/>
+<ix:GridListAllActionLink Override="true" Visible="True"/>
+                            </Menu>
+                            <Sorting>
+<ix:Sort By="RecordNo" Direction="Ascending"/>
+                            </Sorting>
+                            <grouping>
+<ix:Group By="Questionnaire.Checklist"/>
+                            </grouping>
+                            <Columns>
+<ix:Column For="RecordNo" width="5px"/>
+<ix:Column For="Title" wrap="true"/>
+<ix:Column DisplayAs="Truncate" For="Description" wrap="true"/>
+                              <ix:MergeColumn For="Type.Code" Caption="Attachment" meta:resourcekey="MergeColumn0" ResourceKey="MergeColumn0">
+                                <MappedColumns>
+<ix:Column For="File" MapValue="FILE"/>
+<ix:Column For="URL" MapValue="URL"/>
+<ix:Column For="Document" MapValue="DOCCTRL"/>
+                                  <ix:TemplateColumn For="Type" MapValue="PRIVATEDOCATTACHMENT" Caption="Attachment" LinKTarget="popup" width="50px" meta:resourcekey="TemplateColumn1" ResourceKey="TemplateColumn1">
+                                    <template>
+                                      <a class="openInPopup" href="<%= HttpEnvironment.SystemApplicationPath %>/Forms/AuditMgmt_PrivateDocAttachment_Popup/View?entityId=<%# Container.ViewData.Eval("Id") %>">
+View Private Document Attachment
+                                      </a>
+                                    </template>
+                                  </ix:TemplateColumn>
+                                </MappedColumns>
+                              </ix:MergeColumn>
+                              <ix:MergeColumn For="Source.Code" Caption="Source" meta:resourcekey="MergeColumn2" ResourceKey="MergeColumn2">
+                                <MappedColumns>
+<ix:Column For="Assessment" MapValue="ASSESSMENT"/>
+<ix:Column For="Questionnaire.Checklist" MapValue="QUESTIONNAIRE"/>
+<ix:Column For="Response.PubQuestion.QuestionText" MapValue="RESPONSE"/>
+<ix:Column For="Finding" MapValue="FINDING"/>
+                                </MappedColumns>
+                              </ix:MergeColumn>
+                            </Columns>
+                          </ix:GridSection>
+                          <ix:GridSection CSSClass="hidePencil" DisplayEditColumn="true" EditLinkTarget="popup" Entity="AuditMgmt_FindingObject" HideGroupAddButton="true" ID="FindingSummaryGridSection_InProgressRecurring" IsCollapsed="true" ModernIcon="Raven/Icons/BrightBlue_48/seo21.png" Title="Previous Audit Findings" meta:resourcekey="GridSection13" ResourceKey="GridSection13">
+                            <Menu>
+<ix:GridCreateActionLink Override="true" Visible="false"/>
+<ix:GridDeleteActionLink Override="true" Visible="false"/>
+<ix:GridListAllActionLink Override="true" Visible="True"/>
+                            </Menu>
+                            <aliases>
+<ix:Alias For="Response.Id" Name="ResponseId"/>
+<ix:Alias For="Assessment.Location" Name="AssessmentId"/>
+<ix:Alias For="Questionnaire.Checklist" Name="Checklist"/>
+<ix:Alias For="FindingSeverity.CriticalLevel" Name="CriticalLevel"/>
+<ix:Alias For="FindingSeverity.Color.Value" Name="BC"/>
+<ix:Alias For="FindingSeverity.Color.TextColor.Value" Name="TC"/>
+<ix:Alias For="Assessment.CategoCheckHelp" Name="Category"/>
+                            </aliases>
+                            <Filters>
+                              <ix:Filter>
+                                <ix:CommonPredicate For="AssessmentId" Type="Equal">
+                                  <ix:Value Parse="true">
+<%= Model.Location%>
+                                  </ix:Value>
+                                </ix:CommonPredicate>
+                                <ix:CommonPredicate For="Category" Type="Equal">
+                                  <ix:Value Parse="true">
+<%= Model.CategoryCheck%>
+                                  </ix:Value>
+                                </ix:CommonPredicate>
+                              </ix:Filter>
+                            </Filters>
+                            <grouping>
+<ix:Group By="Questionnaire.Checklist"/>
+                            </grouping>
+                            <Sorting>
+<ix:Sort By="CriticalLevel" Direction="Descending"/>
+                            </Sorting>
+                            <Columns>
+<ix:Column Caption="Title" For="Name" LinkTarget="popup" LinkTo="default" meta:resourcekey="Column21" ResourceKey="Column21"/>
+<ix:Column Caption="Finding Description" For="Description" meta:resourcekey="Column27" ResourceKey="Column27"/>
+<ix:Column Caption="Question" For="Response.PubQuestion.QuestionText" width="200px" meta:resourcekey="Column16" ResourceKey="Column16"/>
+                              <ix:MergeColumn For="Response.PubQuestion.AnswerType.AnswerField.Value" Caption="Answer" width="100px" meta:resourcekey="MergeColumn3" ResourceKey="MergeColumn3">
+                                <MappedColumns>
+<ix:Column For="Response.PubAnswer" MapValue="PubAnswer"/>
+<ix:Column DisplayAs="List" FetchAs="Collection" For="Response.PubAnswers" MapValue="PubAnswers"/>
+<ix:Column For="Response.Text" MapValue="Text"/>
+<ix:Column For="Response.Float" HorizontalAlign="right" MapValue="Float"/>
+<ix:Column For="Response.Checkbox" MapValue="Checkbox"/>
+<ix:Column For="Response.Date" Format="d" MapValue="Date"/>
+<ix:Column For="Response.File" MapValue="File"/>
+                                </MappedColumns>
+                              </ix:MergeColumn>
+                              <ix:TemplateColumn For="NbDocs" Caption="Evidence" LinKTarget="popup" width="50px" meta:resourcekey="TemplateColumn5" ResourceKey="TemplateColumn5">
+                                <template>
+                                  <div class="nbAttachments" style="background-image:url(&apos;<%=ImageHelper.GetStaticPath("Raven/Icons/BrightBlue_48/folder232.png") %>&apos;);display:<%# Container.ViewData.Eval("NbDocs").ToString()=="0" ? "none": "inline-block" %>;"/>
+                                  </template>
+                                </ix:TemplateColumn>
+                                <ix:TemplateColumn For="FindingSeverity">
+                                  <template>
+                                    <div class="prettyCell" style="background-color:<%# Container.ViewData.Eval("BC") %>;color:<%# Container.ViewData.Eval("TC") %>;">
+<%# Container.ViewData.Eval("FindingSeverity") %>
+                                    </div>
+                                  </template>
+                                </ix:TemplateColumn>
+                              </Columns>
+                            </ix:GridSection>
+                          </ix:StageContainer>
+<% if(
+		(bool)ApplicationSettings.Get("AuditMgmt_PreferencesObject","EnableDC", false)
+     ) { %>
+<ix:DocumentSection DisplayMode="edit,view" ID="DocumentFragmentGridSection" Visible="false" IsCollapsed="true"/>
+<% } %>
+<ix:AttachmentSection DisplayMode="edit,view" ID="AttachmentFragmentGridSection" IsCollapsed="true"/>
+<ix:MailMergeTemplates DisplayMode="edit,view" ID="MailMergeFragmentGridSection"/>
+<ix:WorkflowTracking DisplayMode="Edit,View" IsCollapsed="true"/>
+                        </ix:DetailPage>
+                        <style type="text/css">
+<%= ApplicationSettings.Get("AuditMgmt_PreferencesObject","CustomCSS","")  %>
+<%= ApplicationSettings.Get("CFW_PreferencesObject","CustomCSS","")  %>
+.wfDiagram > div {
+	display: inline-flex;
+	display: -ms-inline-flexbox;
+	margin-bottom: 5px;
+	padding-left: 24px;
+	background-image: url('<%= ImageHelper.GetVersionedPath("navigate_right.gif") %>');
+	background-repeat: no-repeat;
+	background-position: left center;
+	position: relative;
+}
+.wfDiagram > div:last-child {
+	margin-bottom: 5px;	
+	padding-left: 24px;
+	background-image: url('<%= ImageHelper.GetVersionedPath("navigate_right.gif") %>');
+	position: relative;
+         	background-repeat: no-repeat;
+	background-position: left center;
+
+                          }
+.gridUploadMergeLink{
+display: none;
+}
+.gridRemoveMergeLink{
+display: none;
+                          }
+                        </style>
