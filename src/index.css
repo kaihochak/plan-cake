@@ -360,6 +360,13 @@ body {
     @apply md:aspect-w-[1.4] md:aspect-h-1 md:-mx-20 md:-mt-0 md:-mb-0;
   }
 
+
+  .confirmedfilm-img-container {
+    @apply aspect-w-[1] aspect-h-[1.2] -mx-10 -mt-20 -mb-36;
+    @apply sm:aspect-w-[1.6] sm:aspect-h-1 sm:-mx-20 sm:-mt-8 sm:-mb-2;
+    @apply md:aspect-w-[1.4] md:aspect-h-1 md:-mx-20 md:-mt-0 md:-mb-0;
+  }
+
   .film-img {
     @apply object-cover w-full h-full;
   }
