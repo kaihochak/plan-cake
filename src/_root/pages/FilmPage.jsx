@@ -60,7 +60,7 @@ const FilmPage = () => {
       <div className='inset-0 w-full mb-4 md:mb-0'>
         {/* image & title*/}
         <div className='film-img-container'>
-          {bannerSrc && <img src={bannerSrc} alt={film?.titile} className='film-img' />}
+          {bannerSrc && <img src={bannerSrc} alt={film?.title} className='film-img' />}
           {/* fade mask */}
           <div className='film-img-mask'></div>
         </div>
