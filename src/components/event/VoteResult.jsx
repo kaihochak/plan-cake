@@ -86,19 +86,19 @@ const VoteResult = ({ selectedFilms, guestList, setConfirmedFilm, setShowVoteRes
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Table for the results */}
           <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell className="w-[50px]"></TableCell>
-                <TableCell>Films</TableCell>
-                <TableCell>Votes</TableCell>
-                <TableCell className="text-right">Voters</TableCell>
-              </TableRow>
-            </TableHead>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]"></TableHead>
+              <TableHead>Films</TableHead>
+              <TableHead>Votes</TableHead>
+              <TableHead className="text-right">Voters</TableHead>
+            </TableRow>
+          </TableHeader>
             <TableBody>
               {results.map((film, index) => (
                 <TableRow key={index}>
                   <TableCell>
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 ">
                       <FormControl>
                         <Checkbox
                           checked={form.watch('film') === film.id.toString()}
@@ -106,7 +106,7 @@ const VoteResult = ({ selectedFilms, guestList, setConfirmedFilm, setShowVoteRes
                         />
                       </FormControl>
                       <FormLabel className="font-normal">
-                        {film.title}
+                        {/* {film.title} */}
                       </FormLabel>
                     </FormItem>
                   </TableCell>

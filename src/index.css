@@ -572,7 +572,7 @@ body {
   /* Topbar */
   .topbar {
     @apply absolute top-0 z-50 w-full h-auto;
-    @apply bg-primary/90 backdrop-blur;
+    /* @apply bg-primary/90 backdrop-blur; */
   }
 
   .transTopbar {
@@ -624,6 +624,8 @@ body {
   .thread-card_bar {
     @apply relative mt-2 w-0.5 grow rounded-full bg-neutral-800;
   }
+
+
 }
 
 @layer components {

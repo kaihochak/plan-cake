@@ -321,9 +321,9 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
 
   const FilmDisplay = () => {
     return (
-      <div className='p-4 my-2 rounded-sm bg-primary-light'>
+      <div className='px-4 py-2 my-2 rounded-sm bg-primary-light'>
         {/* Buttons */}
-        <div className='flex-row gap-4 pb-4 flex-between '>
+        <div className='flex-row gap-4 pb-2 flex-between '>
           <button
             className="button-text text-primary-foreground flex-between gap-x-2"
             onClick={() => setShowVoteResult(true)}>

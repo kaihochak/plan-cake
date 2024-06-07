@@ -128,6 +128,13 @@ const PickAFilmPage = () => {
         // If there is data, render the page content, otherwise render a 404 message
         state.id !== null ?
           <div className='flex flex-col justify-end w-full max-w-[1024px] mx-auto gap-y-2 pt-3 lg:pt-12 xl:pt-0 md:pb-32'>
+            {/* Poster */}
+            {state.confirmedFilm &&
+              <ConfirmedFilm
+                confirmedFilm={state.confirmedFilm}
+                guestList={state.guestList}
+              />
+            }
             <div className='items-end flex-between'>
               <h2 className="title">{state.title || "Pick A Film"}</h2>
               {state.date &&
@@ -147,13 +154,7 @@ const PickAFilmPage = () => {
               />
             </div>
 
-            {/* Poster */}
-            {state.confirmedFilm &&
-              <ConfirmedFilm
-                confirmedFilm={state.confirmedFilm}
-                guestList={state.guestList}
-              />
-            }
+  
 
             {/* Film Poll */}
             <FilmPoll
