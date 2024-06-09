@@ -325,7 +325,7 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
      ************************************************************************/
 
     return (
-        <div className="flex flex-col w-full h-full px-8 mb-10 gap-y-2 bg-primary text-primary-foreground lg:mx-auto">
+        <div className="flex flex-col w-full h-full px-2 mb-10 gap-y-2 bg-primary text-primary-foreground lg:mx-auto">
             <div className='my-4 flex-between'>
                 <h3 className='h3'>Pick A Film!</h3>
                 <div onClick={() => setModalOpen(false)} className='cursor-pointer text-m-xl'>

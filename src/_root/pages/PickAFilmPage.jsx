@@ -7,7 +7,6 @@ import { useGetPickAFilmById } from '@/lib/react-query/queries';
 import Loader from "@/components/utility/Loader";
 import { fetchFilmDetails } from "@/lib/tmdb/api";
 import TimeConvertor from '@/components/utility/TimeConvertor'
-import { BiCalendarEvent } from "react-icons/bi";
 import { fallbackMoviePoster, image500, imagePath } from '@/lib/tmdb/config'
 import { useMediaQuery } from '@react-hook/media-query'
 
@@ -125,8 +124,8 @@ const PickAFilmPage = () => {
 
 
   return (
-    <div className='film-container'>
-      <div className='flex flex-col justify-start w-full max-w-[1024px] mx-auto gap-y-2 pt-3 lg:pt-12 xl:pt-0 md:pb-32'>
+    <div className='film-container mb-20 xl:justify-center '>
+      <div className='flex flex-col justify-start w-full max-w-[1024px] mx-6 gap-y-4 pt-3 lg:pt-12 xl:pt-0 md:pb-32'>
         
         {/* banner */}
         {state.confirmedFilm &&
@@ -137,10 +136,10 @@ const PickAFilmPage = () => {
         }
 
         {/* Info */}
-        <div className='relative flex flex-col -mt-60 gap-x-10'>
-          <h2 className="title">{state.title || "Pick A Film"}</h2>
+        <div className={`relative flex flex-col gap-x-10 mt-16${state.confirmedFilm? "-mt-60 sm:-mt-80" : ""}`}>
+          <h2 className="title mb-4">{state.title || "Pick A Film"}</h2>
 
-          <div className='flex-between gap-x-8'>
+          <div className={`gap-x-4 ${state.confirmedFilm? "flex justify-start sm:gap-x-10" : "flex-between "}`}>
             {/* left - poster*/}
             {state.confirmedFilm &&
               <div className='w-[150px] h-[225px]'>
@@ -149,16 +148,23 @@ const PickAFilmPage = () => {
             }
 
             {/* right - details */}
-            <div>
+            <div className={`flex   ${state.confirmedFilm? "flex-col gap-4" : "flex-row gap-8 justify-between"}`}>
+              {/* film title */}
+              {state.confirmedFilm &&
+                <h3 className="body">
+                  <span className='small'>Selected Film</span><br/>
+                  {state.confirmedFilm.title}
+                </h3>
+              }
               {/* date */}
               {state.date &&
-                <h3 className="subtitle flex-between gap-x-2">
-                  <BiCalendarEvent />
+                <h3 className="body">
+                  <span className='small'>Date & Time</span><br/>
                   <TimeConvertor confirmedDateTime={state.date} />
                 </h3>
               }
               {/* Guest List */}
-              <div className='flex-between'>
+              <div className=''>
                 <GuestSelection
                   id={state.id}
                   guestList={state.guestList}

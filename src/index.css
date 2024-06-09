@@ -345,7 +345,8 @@ body {
 
   /* Film details */
   .film-container {
-    @apply flex flex-1 p-0 overflow-y-scroll custom-scrollbar;
+    @apply flex flex-1 p-0 overflow-y-scroll ;
+    /* custom-scrollbar */
   }
 
   .film-page-inner {
