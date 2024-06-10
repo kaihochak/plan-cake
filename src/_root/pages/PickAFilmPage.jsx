@@ -2,16 +2,13 @@ import React, { useEffect, useState, useReducer } from 'react'
 import FilmPoll from '@/components/event/FilmPoll'
 import GuestList from '@/components/event/GuestList'
 import GuestSelection from "@/components/event/GuestSelection";
-import DummyPickAFilmData from '../../data/DummyPickAFilmData';
-import ConfirmedFilm from '@/components/event/ConfirmedFilm';
 import { useParams } from 'react-router-dom';
 import { useGetPickAFilmById } from '@/lib/react-query/queries';
 import Loader from "@/components/utility/Loader";
-import { fallbackMoviePoster } from '@/lib/tmdb/config'
 import { fetchFilmDetails } from "@/lib/tmdb/api";
 import TimeConvertor from '@/components/utility/TimeConvertor'
-import { BiCalendarEvent } from "react-icons/bi";
-
+import { fallbackMoviePoster, image500, imagePath } from '@/lib/tmdb/config'
+import { useMediaQuery } from '@react-hook/media-query'
 
 // Define initial state
 const initialState = {
@@ -51,10 +48,13 @@ const PickAFilmPage = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isInitialized, setIsInitialized] = useState(false);
   const host = localStorage.getItem('host');
+  const bp_768 = useMediaQuery('(min-width:768px)');
+
+  let bannerSrc = image500(state.confirmedFilm?.poster_path);
+  if (bp_768) bannerSrc = imagePath(state.confirmedFilm?.backdrop_path);
 
   // Query: Get PickAFilm by ID
   const { data, isLoading } = useGetPickAFilmById(id);
-
 
   // Initialize local state with data from the query
   useEffect(() => {
@@ -94,11 +94,6 @@ const PickAFilmPage = () => {
     }
   }, [isLoading, data, isInitialized]);
 
-  useEffect(() => {
-    console.log('PickAFilmPage mounted');
-  }, []);
-
-
   /**********************************************************************************
    * Components
    **********************************************************************************/
@@ -119,11 +114,19 @@ const PickAFilmPage = () => {
    * Rendering
    **********************************************************************************/
 
-  return (
-    
-    <div className='film-container'>
-      <div className='flex flex-col justify-start w-full max-w-[1024px] mx-auto gap-y-2 pt-3 lg:pt-12 xl:pt-0 md:pb-32'>
+  if (isLoading) return (
+    <div className='min-h-screen flex-center'>
+      <Loader />
+    </div>
+  )
 
+  if (state.id == null) return <NoData />;
+
+
+  return (
+    <div className='mb-20 film-container xl:justify-center '>
+      <div className='flex flex-col justify-start w-full max-w-[1024px] mx-6 gap-y-4 pt-3 lg:pt-12 xl:pt-0 md:pb-32'>
+        
         {/* banner */}
         {state.confirmedFilm &&
           <div className='confirmedfilm-img-container'>
@@ -133,41 +136,58 @@ const PickAFilmPage = () => {
         }
 
         {/* Info */}
-        <div className='relative flex flex-col -mt-60 gap-x-10'>
-          <h2 className="title">{state.title || "Pick A Film"}</h2>
+        <div className={`relative flex flex-col gap-x-10 mt-16${state.confirmedFilm? "-mt-60 sm:-mt-80" : ""}`}>
+          <h2 className="mb-4 title">{state.title || "Pick A Film"}</h2>
 
-          <div className='flex-between gap-x-8'>
+          <div className={`gap-x-4 ${state.confirmedFilm? "flex justify-start sm:gap-x-10" : "flex-between "}`}>
             {/* left - poster*/}
             {state.confirmedFilm &&
-              <ConfirmedFilm
-                confirmedFilm={state.confirmedFilm}
-                guestList={state.guestList}
-              />
+              <div className='w-[150px] h-[225px]'>
+                <img src={state.confirmedFilm?.poster_path ? image500(state.confirmedFilm?.poster_path) : fallbackMoviePoster} alt={state.confirmedFilm?.title} />
+              </div>
             }
-            <div className='items-end flex-between'>
-              <h2 className="title">{state.title || "Pick A Film"}</h2>
+
+            {/* right - details */}
+            <div className={`flex   ${state.confirmedFilm? "flex-col gap-4" : "flex-row gap-8 justify-between"}`}>
+              {/* film title */}
+              {state.confirmedFilm &&
+                <h3 className="body">
+                  <span className='small'>Selected Film</span><br/>
+                  {state.confirmedFilm.title}
+                </h3>
+              }
+              {/* date */}
               {state.date &&
-                <h3 className="subtitle flex-between gap-x-2">
-                  <BiCalendarEvent />
+                <h3 className="body">
+                  <span className='small'>Date & Time</span><br/>
                   <TimeConvertor confirmedDateTime={state.date} />
                 </h3>
               }
+              {/* Guest List */}
+              <div className=''>
+                <GuestSelection
+                  id={state.id}
+                  guestList={state.guestList}
+                  selectedGuest={state.selectedGuest}
+                  setSelectedGuest={(guest) => dispatch({ type: 'SET_SELECTED_GUEST', payload: guest })}
+                  setGuestList={(guestList) => dispatch({ type: 'SET_GUEST_LIST', payload: guestList })}
+                />
+              </div>
             </div>
           </div>
-          
-          {/* Film Poll */}
-          <FilmPoll
-            id={state.id}
-            guestList={state.guestList}
-            selectedFilms={state.selectedFilms}
-            selectedGuest={state.selectedGuest}
-            setGuestList={(guestList) => dispatch({ type: 'SET_GUEST_LIST', payload: guestList })}
-            setSelectedFilms={(films) => dispatch({ type: 'SET_SELECTED_FILMS', payload: films })}
-            setSelectedGuest={(guest) => dispatch({ type: 'SET_SELECTED_GUEST', payload: guest })}
-            setConfirmedFilm={(film) => dispatch({ type: 'SET_CONFIRMED_FILM', payload: film })}
-          />
         </div>
 
+        {/* Film Poll */}
+        <FilmPoll
+          id={state.id}
+          guestList={state.guestList}
+          selectedFilms={state.selectedFilms}
+          selectedGuest={state.selectedGuest}
+          setGuestList={(guestList) => dispatch({ type: 'SET_GUEST_LIST', payload: guestList })}
+          setSelectedFilms={(films) => dispatch({ type: 'SET_SELECTED_FILMS', payload: films })}
+          setSelectedGuest={(guest) => dispatch({ type: 'SET_SELECTED_GUEST', payload: guest })}
+          setConfirmedFilm={(film) => dispatch({ type: 'SET_CONFIRMED_FILM', payload: film })}
+        />
       </div>
     </div>
   )

@@ -258,9 +258,7 @@ body {
   }
 
   .custom-scrollbar::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
-    border-radius: 2px;
+    @apply w-[8px] h-[8px] rounded-full border-[50px]
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
@@ -292,6 +290,7 @@ body {
     @apply flex flex-col items-center flex-1 p-10 px-5 overflow-scroll xl:pt-20 gap-x-10 gap-y-6 custom-scrollbar;
   }
 
+  
   /* All Users */
   .user-container {
     @apply flex flex-col items-start w-full max-w-5xl gap-6 md:gap-9;
@@ -378,7 +377,8 @@ body {
 
   /* Film details */
   .film-container {
-    @apply flex flex-1 p-0 overflow-y-scroll custom-scrollbar;
+    @apply flex flex-1 p-0 overflow-y-scroll ;
+    /* custom-scrollbar */
   }
 
   .film-page-inner {
@@ -389,6 +389,12 @@ body {
   .film-img-container {
     @apply aspect-w-[1] aspect-h-[1.778] -mx-10 -mt-20 -mb-36;
     @apply sm:aspect-w-[1.6] sm:aspect-h-1 sm:-mx-20 sm:-mt-8 sm:-mb-2;
+    @apply md:aspect-w-[1.4] md:aspect-h-1 md:-mx-20 md:-mt-0 md:-mb-0;
+  }
+
+  .confirmedfilm-img-container {
+    @apply aspect-w-[1] aspect-h-[1.2] -mx-10 -mt-20 -mb-36;
+    @apply sm:aspect-w-[1.6] sm:aspect-h-1 sm:-mx-20 sm:-mt-8 sm:-mb-2; 
     @apply md:aspect-w-[1.4] md:aspect-h-1 md:-mx-20 md:-mt-0 md:-mb-0;
   }
 

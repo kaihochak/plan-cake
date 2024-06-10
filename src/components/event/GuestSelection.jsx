@@ -105,14 +105,14 @@ const GuestSelection = ({ guestList, id, selectedGuest, setSelectedGuest, setGue
    * Render
    * **********************************************************/
   return (
-    <div className='flex-center'>
+    <div className=''>
       <Popover open={openGuestList} onOpenChange={setOpenGuestList}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             role="combobox"
             aria-expanded={openGuestList}
-            className={`w-[200px] justify-between ${selectedGuest ? "bg-accent text-accent-foreground" : "bg-background text-secondary"}`}
+            className={`w-[150px] justify-between ${selectedGuest ? "bg-accent text-accent-foreground" : "bg-background text-secondary"}`}
           >
             {selectedGuest
               ? guestList?.find((guest) => guest.id === selectedGuest)?.name
