@@ -8,19 +8,18 @@ const LandingHeader = () => {
     const [isOpen, setIsOpen] = React.useState(false);
 
     return (
-        <header className='container sticky top-0 z-50 flex items-center justify-between w-full p-6 overflow-x-hidden bg-transparent font-regular backdrop-filter backdrop-blur bg-opacity-10 border-secondary-dark/10'>
+        <header className='container sticky top-0 z-50 flex items-center justify-between w-full p-6 overflow-x-hidden overflow-y-hidden bg-transparent font-regular backdrop-filter backdrop-blur bg-opacity-10 border-secondary-dark/10'>
             {/* Logo Desktop */}
             <div className='hidden md:flex'>
-                <Link
+                {/* <Link
                     to='features'
                     activeClass='active'
                     smooth={true}
                     spy={true}
                     className='flex self-center cursor-pointer pr-9'
-                >
+                > */}
                     <img src="/assets/icons/logo.png" alt="" className='w-[150px] md:w-[120px]' />
-                </Link>
-
+                {/* </Link> */}
             </div>
 
             {/* Nav Items desktop */}
@@ -30,7 +29,7 @@ const LandingHeader = () => {
                     activeClass='active'
                     smooth={true}
                     spy={true}
-                    className='button-text '
+                    className='button-text'
                 >
                     Features
                 </Link>
@@ -91,14 +90,14 @@ const LandingHeader = () => {
                                 </Link>
 
                                 <Link
-                                    to='roadmap'
+                                    to='about'
                                     activeClass='active'
                                     smooth={true}
                                     spy={true}
                                     className='button-text'
                                     onClick={() => setIsOpen(false)}
                                 >
-                                    Roadmap
+                                    About
                                 </Link>
 
                                 <Link
@@ -123,7 +122,7 @@ const LandingHeader = () => {
                                 <SheetClose asChild>
                                     <div className='flex flex-col items-center justify-between gap-y-6'>
                                         {/* Contact Us */}
-                                        <div className='flex self-center'>
+                                        {/* <div className='flex self-center'>
                                             <Link
                                                 to='contact'
                                                 activeClass='active'
@@ -133,9 +132,7 @@ const LandingHeader = () => {
                                             >
                                                 Contact Us
                                             </Link>
-                                        </div>
-
-
+                                        </div> */}
                                     </div>
                                 </SheetClose>
                             </SheetFooter>
