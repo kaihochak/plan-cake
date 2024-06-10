@@ -120,6 +120,7 @@ const PickAFilmPage = () => {
    **********************************************************************************/
 
   return (
+<<<<<<< Updated upstream
     <div className='common-container'>
       {isLoading ?
         <div className='min-h-screen flex-center'>
@@ -129,6 +130,25 @@ const PickAFilmPage = () => {
         state.id !== null ?
           <div className='flex flex-col justify-end w-full max-w-[1024px] mx-auto gap-y-2 pt-3 lg:pt-12 xl:pt-0 md:pb-32'>
             {/* Poster */}
+=======
+    <div className='film-container'>
+      <div className='flex flex-col justify-start w-full max-w-[1024px] mx-auto gap-y-2 pt-3 lg:pt-12 xl:pt-0 md:pb-32'>
+
+        {/* banner */}
+        {state.confirmedFilm &&
+          <div className='confirmedfilm-img-container'>
+            {bannerSrc && <img src={bannerSrc} alt={state.confirmedFilm?.title} className='film-img' />}
+            <div className='film-img-mask'></div>
+          </div>
+        }
+
+        {/* Info */}
+        <div className='relative flex flex-col -mt-60 gap-x-10'>
+          <h2 className="title">{state.title || "Pick A Film"}</h2>
+
+          <div className='flex-between gap-x-8'>
+            {/* left - poster*/}
+>>>>>>> Stashed changes
             {state.confirmedFilm &&
               <ConfirmedFilm
                 confirmedFilm={state.confirmedFilm}
@@ -144,6 +164,7 @@ const PickAFilmPage = () => {
                 </h3>
               }
             </div>
+<<<<<<< Updated upstream
             <div className='flex-between'>
               <GuestSelection
                 id={state.id}
@@ -171,6 +192,24 @@ const PickAFilmPage = () => {
           :
           <NoData />
       }
+=======
+          </div>
+          
+          {/* Film Poll */}
+          <FilmPoll
+            id={state.id}
+            guestList={state.guestList}
+            selectedFilms={state.selectedFilms}
+            selectedGuest={state.selectedGuest}
+            setGuestList={(guestList) => dispatch({ type: 'SET_GUEST_LIST', payload: guestList })}
+            setSelectedFilms={(films) => dispatch({ type: 'SET_SELECTED_FILMS', payload: films })}
+            setSelectedGuest={(guest) => dispatch({ type: 'SET_SELECTED_GUEST', payload: guest })}
+            setConfirmedFilm={(film) => dispatch({ type: 'SET_CONFIRMED_FILM', payload: film })}
+          />
+        </div>
+
+      </div>
+>>>>>>> Stashed changes
     </div>
   )
 }
