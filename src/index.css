@@ -12,17 +12,79 @@
 body {
   font-family: var(--font-urbanist);
   overflow-y: hidden;
+
 }
 
 @layer base {
   #root {
     @apply flex flex-col h-screen overflow-hidden;
+    @apply min-h-screen ;
+  }
+
+  .body {
+    @apply bg-background text-foreground;
   }
 
   :root {
-    @apply min-h-screen bg-background text-foreground;
-
     --default: var(--foreground);
+    --foreground: var(--secondary); /* Off Black */
+    
+    /* Off White */
+    --primary-dark: 0 0% 85%;
+    --primary: 0 0% 90%;
+    --primary-light: 0 0% 95%;
+    --primary-foreground: var(--secondary);
+    
+    /* Off Black */
+    --secondary-dark: 0 0% 0%;
+    --secondary: 0 0% 8%;
+    --secondary-light: 0 0% 27%;
+    --secondary-foreground: var(--foreground);
+    
+    /* Yellow */
+    --accent-dark: 43 99% 37%;
+    --accent: 43 99% 53%;
+    --accent-light: 43 99% 63%;
+    --accent-foreground: 0 0% 12%;
+
+    /* Blue */
+    --accent2-dark: 200 90% 55%;
+    --accent2: 200 90% 70%;
+    --accent2-light: 200 90% 84%;
+    --accent2-foreground: 0 0% 85%;
+
+    --background: var(--secondary);
+    --foreground: var(--primary);
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    /* Off White */
+    --popover: var(--background);
+    --popover-foreground: var(--foreground);
+
+    /* Red */
+    --destructive: 0 65% 20%;
+    --destructive-foreground: 0 0% 85%;
+
+    --border: 0 0% 50%;
+    --input: 0 0% 50%;
+    --ring: 0 0% 50%;
+
+    --radius: 0.5rem;
+
+    /* for react swipe  */
+    --swiper-theme-color: #febb10;
+  }
+
+  .dark {
+    
+    --default: var(--foreground);
+    --foreground: var(--secondary); 
+    
     /* Off Black */
     --primary-dark: 0 0% 0%;
     --primary: 0 0% 8%;
@@ -36,7 +98,7 @@ body {
     --secondary-foreground: var(--primary);
 
     /* Yellow */
-    --accent-dark: 43 99% 47%;
+    --accent-dark: 43 99% 37%;
     --accent: 43 99% 53%;
     --accent-light: 43 99% 63%;
     --accent-foreground: 0 0% 12%;
@@ -73,46 +135,16 @@ body {
     /* for react swipe  */
     --swiper-theme-color: #febb10;
   }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-  }
 }
 
 @layer utilities {
   .title {
-    @apply font-medium tracking-[-0.02em];
+    @apply font-medium tracking-[-0.02em] leading-tight;
     @apply text-[36px] sm:text-[40px] md:text-[48px] lg:text-[64px];
   }
 
   .h2 {
-    @apply font-medium tracking-[-0.02em];
+    @apply font-medium tracking-[-0.02em] leading-tight;
     @apply text-[28px] sm:text-[36px] md:text-[40px] lg:text-[48px];
   }
 
@@ -147,7 +179,7 @@ body {
   }
 
   .button-text {
-    @apply font-medium tracking-wide hover:text-accent;
+    @apply font-medium tracking-wide cursor-pointer hover:text-accent;
     @apply text-[12px] md:text-[14px] lg:text-[16px];
   }
 
@@ -668,10 +700,10 @@ body {
   .highlight-text {
     background: linear-gradient(
       to bottom,
-      hsl(var(--accent) / 0%),
-      hsl(var(--accent) / 0%),
-      hsl(var(--accent) / 100%),
-      hsl(var(--accent) / 0%)
+      hsl(var(--accent-dark) / 0%),
+      hsl(var(--accent-dark) / 0%),
+      hsl(var(--accent-dark) / 100%),
+      hsl(var(--accent-dark) / 0%)
     );
   }
 

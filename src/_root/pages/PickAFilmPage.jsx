@@ -124,7 +124,7 @@ const PickAFilmPage = () => {
 
 
   return (
-    <div className='film-container mb-20 xl:justify-center '>
+    <div className='mb-20 film-container xl:justify-center '>
       <div className='flex flex-col justify-start w-full max-w-[1024px] mx-6 gap-y-4 pt-3 lg:pt-12 xl:pt-0 md:pb-32'>
         
         {/* banner */}
@@ -137,7 +137,7 @@ const PickAFilmPage = () => {
 
         {/* Info */}
         <div className={`relative flex flex-col gap-x-10 mt-16${state.confirmedFilm? "-mt-60 sm:-mt-80" : ""}`}>
-          <h2 className="title mb-4">{state.title || "Pick A Film"}</h2>
+          <h2 className="mb-4 title">{state.title || "Pick A Film"}</h2>
 
           <div className={`gap-x-4 ${state.confirmedFilm? "flex justify-start sm:gap-x-10" : "flex-between "}`}>
             {/* left - poster*/}

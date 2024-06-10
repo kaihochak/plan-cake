@@ -17,6 +17,8 @@ const RootLayout = () => {
     });
   };
 
+  // 
+
   return (
     <div className="w-full xl:flex">
       {isTransparentRoute() ? <TransTopBar /> : <TopBar />}
