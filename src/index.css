@@ -78,6 +78,12 @@ body {
 
     /* for react swipe  */
     --swiper-theme-color: #febb10;
+
+    /* Green */
+    --green: 112 41% 76%;
+
+    /* Light red */
+    --red: 0 44% 75%;
   }
 
   .dark {
@@ -303,6 +309,56 @@ body {
   /* Explore Container */
   .explore-container {
     @apply flex flex-col items-center flex-1 w-full h-full mx-auto gap-y-0;
+  }
+
+  /* Landing Page */
+  .landing-container {
+    @apply w-[100%] m-auto p-10 mt-2;
+  }
+
+  .wave-section {
+    @apply relative flex flex-col items-center min-h-[400px] bg-primary;
+  }
+  
+  .bubble::after {
+    content: '';
+    border-top-left-radius: 100% 100%;
+    border-top-right-radius: 100% 100%;
+    border-bottom-left-radius: 0% 0%;
+    border-bottom-right-radius: 0% 0%;
+    position: absolute;
+    margin-top: 90%;
+    z-index: 1;
+    width: 300%;
+    background-color: #F6F6F6;
+    height: 75%;
+  }
+  
+  .landing-img-container {
+    @apply relative w-full h-auto mt-8;
+  }
+  
+  .bottom-image {
+    @apply relative z-10 rotate-[10deg] translate-x-[20px];
+  }
+  
+  .top-image {
+    @apply absolute top-0 left-0 z-20 scale-[0.9] rotate-[-10deg] translate-x-[30px] translate-y-[30px]; 
+    @apply md:translate-x-[150px] lg:translate-x-[100px];
+  }
+  
+  .features-container {
+    @apply grid grid-cols-2 gap-x-4 gap-y-10 z-10 w-full mx-auto;
+    @apply md:absolute md:top-[30%] md:left-[5%] md:gap-x-[40%] lg:top-[35%] lg:gap-x-[30%] xl:left-[15%] xl:gap-x-[15%];
+  }
+
+  .feature-container {
+    @apply flex flex-col gap-y-1 w-[100%];
+    @apply md:w-[60%] md:h-auto xl:w-[30%];
+  }
+
+  .landing-btn {
+    @apply px-1 py-2 w-[100%] rounded-md mt-2 ;
   }
 
   /* Search Container */
@@ -687,7 +743,7 @@ body {
 
   /* Button */
   .shad-button_primary {
-    @apply bg-primary-500 hover:bg-primary-500 text-secondary flex gap-2 !important;
+    @apply bg-primary hover:bg-primary text-secondary flex gap-2 !important;
   }
 
   .shad-button_dark_4 {
