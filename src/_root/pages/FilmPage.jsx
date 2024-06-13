@@ -5,6 +5,7 @@ import FilmCollection from '@/components/shared/FilmCollection'
 import { useMediaQuery } from '@react-hook/media-query'
 import { fetchFilmDetails, fetchCast, fetchSimilarMovies, fetchCrew } from '@/lib/tmdb/api'
 import { fallbackPersonImage, fallbackMoviePoster, image342, image500, imagePath } from '@/lib/tmdb/config'
+// import ScrollToTop from '@/components/utility/ScrollToTop'
 
 const FilmPage = () => {
   const [loading, setLoading] = useState(true);
@@ -15,19 +16,10 @@ const FilmPage = () => {
   const bp_768 = useMediaQuery('(min-width:768px)');
   const { id } = useParams();   // Get the film id from the URL
 
-  // Get the film from the database
   useEffect(() => {
-    getFilmData();
-    window.scrollTo(0, 0)
+    console.log("FilmPage useEffect id: ", id);
+    window.scrollTo(0, 0);
   }, [id]);
-
-  useEffect(() => {
-    if (film) {
-      getCastData();
-      getCrewData();
-      getSimilarFilms();
-    }
-  }, [film]);
 
   const getFilmData = async () => {
     const data = await fetchFilmDetails(id);
@@ -51,19 +43,85 @@ const FilmPage = () => {
     data && data.results && setSimilarFilms(data.results);
   };
 
-  /**************************************************************
-   * compoenents
-   *************************************************************/
+  // Get the film from the database
+  useEffect(() => {
+    getFilmData();
+    setTimeout(() => {
+      console.log("FilmPage useEffect getFilmData id: ", id);
+      window.scrollTo(0, 0);
+    }, 3000);
+  }, [id]);
 
+  useEffect(() => {
+    film && getCastData();
+    film && getCrewData();
+    film && getSimilarFilms();
+  }, [film]);
+
+  // banner changes based on screen size
+  const FilmInfo = () => {
+    return (
+      <div className='inset-0 w-full mb-4 md:mb-0'>
+        {/* image */}
+        <div className='film-img-container'>
+          {bannerSrc && <img src={bannerSrc} alt={film?.title} className='film-img' />}
+          {/* fade mask */}
+          <div className='film-img-mask'></div>
+        </div>
+
+        {/* Info */}
+        <div className='relative flex -mb-24 gap-x-8 -top-20 sm:-top-36 sm:-mb-36 md:-top-72 md:-mb-60'>
+          {/* image */}
+          {bp_768 &&
+            <div className='flex justify-start'>
+              <img src={film?.poster_path ? image500(film.poster_path) : fallbackMoviePoster} alt={film?.title} className='min-w-[200px] md:min-w-[250px]' />
+            </div>
+          }
+          <div className="flex mx-auto">
+            <div className='flex flex-col justify-center gap-y-1 md:gap-y-2 '>
+              {/* title */}
+              <h1 className="text-m-l md:text-[30px] md:my-4 my-2 font-bold ">{film?.title === film.original_title ? film.title : film.original_title + " (" + film.title + ")"}</h1>
+              {/* <p className='text-m-m md:text-[15px]'>
+                Directed by <a href="">{crew?.filter(member => member.job === "Director").map(director => director.name).join(", ")}</a>
+              </p> */}
+              <p className='text-m-m md:text-[15px]'>
+                Directed by {
+                  crew?.filter(member => member.job === "Director")
+                    .map((director, index, array) => (
+                      <span key={director.id}>
+                        <a href={`/directors/${director.id}`} className="underline cursor-pointer underline-offset-4">
+                          {director.name}
+                        </a>
+                        {index < array.length - 1 ? ', ' : ''}
+                      </span>
+                    ))
+                }
+              </p>
+
+              {/* relase date, runtime, genres */}
+              <p className='text-m-m md:text-[15px]'>
+                {film?.release_date?.split("-")[0] || "N/A"}{" | "}{film?.runtime} min |
+                {film?.genres?.map((genre, index) => (
+                  <span key={index}> {genre.name}{index < film.genres.length - 1 && ' '}</span>
+                ))}
+              </p>
+              <p className='text-m-m md:text-[15px]'>{film?.overview}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
   let bannerSrc = image500(film?.poster_path);
   if (bp_768) bannerSrc = imagePath(film?.backdrop_path);
 
   // Cast
   const Cast = () => {
+
     return (
       <div className='flex flex-col flex-shrink-0 w-full md:mb-10'>
         <h2 className='mb-2 font-bold text-m-l'>Cast</h2>
-        <div className="">
+        <div className="overflow-x-auto scrollbar-hide">
           <div className='flex py-2 gap-x-3'>
             {cast?.map((person, index) => (
               <div key={index} className="items-center px-1 mr-2">
@@ -87,6 +145,9 @@ const FilmPage = () => {
     )
   }
 
+  /*****************************************************
+   * Render 
+    *****************************************************/
   return (
     <div className='pb-20 film-container'>
       <div className='film-page-inner'>
@@ -109,56 +170,7 @@ const FilmPage = () => {
               <Skeleton className="w-[120px] h-[200px] rounded-sm  md:w-[180px] md:h-[240px]" />
             </div>
           </div> :
-          <div className='inset-0 w-full mb-4 md:mb-0'>
-            {/* image */}
-            <div className='film-img-container'>
-              {bannerSrc && <img src={bannerSrc} alt={film?.title} className='film-img' />}
-              {/* fade mask */}
-              <div className='film-img-mask'></div>
-            </div>
-
-            {/* Info */}
-            <div className='relative flex -mb-24 gap-x-8 -top-20 sm:-top-36 sm:-mb-36 md:-top-72 md:-mb-60'>
-              {/* image */}
-              {bp_768 &&
-                <div className='flex justify-start'>
-                  <img src={film?.poster_path ? image500(film.poster_path) : fallbackMoviePoster} alt={film?.title} className='min-w-[200px] md:min-w-[250px]' />
-                </div>
-              }
-              <div className="flex mx-auto">
-                <div className='flex flex-col justify-center gap-y-1 md:gap-y-2 '>
-                  {/* title */}
-                  <h1 className="text-m-l md:text-[30px] md:my-4 my-2 font-bold ">{film?.title === film.original_title ? film.title : film.original_title + " (" + film.title + ")"}</h1>
-                  {/* <p className='text-m-m md:text-[15px]'>
-                          Directed by <a href="">{crew?.filter(member => member.job === "Director").map(director => director.name).join(", ")}</a>
-                        </p> */}
-                  <p className='text-m-m md:text-[15px]'>
-                    Directed by {
-                      crew?.filter(member => member.job === "Director")
-                        .map((director, index, array) => (
-                          <span key={director.id}>
-                            <a href={`/directors/${director.id}`} className="underline cursor-pointer underline-offset-4">
-                              {director.name}
-                            </a>
-                            {index < array.length - 1 ? ', ' : ''}
-                          </span>
-                        ))
-                    }
-                  </p>
-
-                  {/* relase date, runtime, genres */}
-                  <p className='text-m-m md:text-[15px]'>
-                    {film?.release_date?.split("-")[0] || "N/A"}{" | "}{film?.runtime} min |
-                    {film?.genres?.map((genre, index) => (
-                      <span key={index}> {genre.name}{index < film.genres.length - 1 && ' '}</span>
-                    ))}
-                  </p>
-                  <p className='text-m-m md:text-[15px]'>{film?.overview}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        }
+          <FilmInfo />}
 
         {/* Cast */}
         <Cast />
@@ -186,3 +198,31 @@ const FilmPage = () => {
 }
 
 export default FilmPage
+
+
+// API Response template
+// adult: false
+// backdrop_path: "/oe7mWkvYhK4PLRNAVSvonzyUXNy.jpg"
+// belongs_to_collection: {id: 224976, name: 'Road House Collection', poster_path: '/cadfcktKwvKMpg9FFvCTTzj9pFY.jpg', backdrop_path: '/3sC0DdygqYHesLqzFT8etDmDTAX.jpg'}
+// budget: 85000000
+// genres: (2) [{…}, {…}]
+// homepage: "https://www.amazon.com/gp/video/detail/B0CH5YQPZQ"
+// id: 359410
+// imdb_id: "tt3359350"
+// original_language: "en"
+// titile: "Road House"
+// overview: "Ex-UFC fighter Dalton takes a job as a bouncer at a Florida Keys roadhouse, only to discover that this paradise is not all it seems."
+// popularity: 243.044
+// poster_path: "/bXi6IQiQDHD00JFio5ZSZOeRSBh.jpg"
+// production_companies: (2) [{…}, {…}]
+// production_countries: [{…}]
+// release_date: "2024-03-08"
+// revenue: 0
+// runtime: 121
+// spoken_languages: [{…}]
+// status: "Released"
+// tagline: "Take it outside."
+// title: "Road House"
+// video: false
+// vote_average: 6.76
+// vote_count: 131

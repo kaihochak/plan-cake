@@ -2,28 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  scroll-behavior: smooth;
+body {
+  width: 100%;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-urbanist);
+
 }
 
-body {
-  font-family: var(--font-urbanist);
-  overflow-y: hidden;
+:root {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
 }
 
 @layer base {
-  #root {
-    @apply flex flex-col h-screen overflow-hidden;
-    @apply min-h-screen;
-  }
-
-  .body {
-    @apply bg-background text-foreground;
-  }
-
   :root {
     --default: var(--foreground);
     --foreground: var(--secondary); /* Off Black */
@@ -397,7 +392,8 @@ body {
 
   /* Inner Container */
   .explore-inner_container {
-    @apply flex flex-col items-center w-full gap-6 overflow-scroll custom-scrollbar md:gap-9;
+    @apply flex flex-col items-center w-full gap-6 md:gap-9;
+    @apply overflow-scroll custom-scrollbar;
   }
 
   /* Innermost Container */
@@ -461,12 +457,17 @@ body {
 
   /* Film details */
   .film-container {
-    @apply flex flex-1 p-0 overflow-y-scroll custom-scrollbar;
+    /* @apply flex flex-1 p-0 overflow-y-scroll custom-scrollbar; */
+    @apply container flex flex-col items-center flex-1 w-full h-full mx-auto gap-y-0;
+    /* @apply overflow-scroll custom-scrollbar; */
+
+
   }
 
   .film-page-inner {
-    @apply flex flex-col mx-auto top-0 w-full max-w-[1024px];
-    @apply gap-10 px-5 py-10 md:gap-0 md:py-0 md:px-8;
+    /* @apply flex flex-col mx-auto top-0 w-full max-w-[1024px]; */
+    /* @apply gap-10 px-5 py-10 md:gap-0 md:py-0 md:px-8; */
+    @apply flex flex-col items-center w-full gap-6 md:gap-9;
   }
 
   .film-img-container {
