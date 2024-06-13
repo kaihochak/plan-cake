@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react'
 import SearchBar from '@/components/utility/SearchBar'
 import EventCollection from '@/components/shared/EventCollection'
 import DummyEventData from '@/data/DummyEventData';
-import DummyFilmData from '@/data/DummyFilmData';
 import DummyUserData from '@/data/DummyUserData';
 import FilmCollection from '@/components/shared/FilmCollection';
 import MemberCollection from '@/components/shared/MemberCollection';
 import { CiFilter } from 'react-icons/ci';
+import { fetchTrending } from '@/lib/tmdb/api';
 
 const Explore = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredItems, setFilteredItems] = useState([]);
   const [events, setEvents] = useState(DummyEventData);
-  const [films, setFilms] = useState(DummyFilmData);
+  const [films, setFilms] = useState([]);
   const [members, setMembers] = useState(DummyUserData);
   const categories = ["All", "Events", "Films", "Members"];
   const [isFilterApplied, setIsFilterApplied] = useState(false);
@@ -21,6 +21,18 @@ const Explore = () => {
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
   };
+
+  useEffect(() => {
+    getMostWatchlisted();
+  }, []);      
+  
+  // fetch data for most watchlisted films
+  const getMostWatchlisted = async () => {
+    const data = await fetchTrending(); // will be using tmdb trending api for now until more users are there
+    if (data && data.results) setFilms(data.results);
+    setLoading(false);
+  }
+
 
   // Content
   const FilterContent = () => {
