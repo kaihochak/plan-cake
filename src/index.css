@@ -461,7 +461,7 @@ body {
 
   /* Film details */
   .film-container {
-    @apply flex flex-1 p-0 overflow-y-scroll;
+    @apply flex flex-1 p-0;
     /* custom-scrollbar */
   }
 

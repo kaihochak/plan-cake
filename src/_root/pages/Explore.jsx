@@ -25,6 +25,10 @@ const Explore = () => {
   useEffect(() => {
     getMostWatchlisted();
   }, []);      
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   
   // fetch data for most watchlisted films
   const getMostWatchlisted = async () => {

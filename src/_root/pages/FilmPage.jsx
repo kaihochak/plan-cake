@@ -18,6 +18,7 @@ const FilmPage = () => {
 
   useEffect(() => {
     console.log("FilmPage useEffect id: ", id);
+    window.scrollTo(0, 0);
   }, [id]);
 
   const getFilmData = async () => {
@@ -45,7 +46,10 @@ const FilmPage = () => {
   // Get the film from the database
   useEffect(() => {
     getFilmData();
-    // ScrollToTop();
+    setTimeout(() => {
+      console.log("FilmPage useEffect getFilmData id: ", id);
+      window.scrollTo(0, 0);
+    }, 3000);
   }, [id]);
 
   useEffect(() => {

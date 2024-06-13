@@ -15,7 +15,7 @@ const Bottombar = () => {
         <section className="bottom-bar">
             {/* Home */}
             <Link
-                to="/"
+                to="/home"
                 className={`p-2 transition rounded-[10px] 
                       ${pathname === "/" ? "[&_h2]:bg-accent [&_*]:text-accent " : ""}`}
             >
