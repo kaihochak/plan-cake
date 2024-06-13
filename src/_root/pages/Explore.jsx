@@ -6,7 +6,6 @@ import DummyFilmData from '@/data/DummyFilmData';
 import DummyUserData from '@/data/DummyUserData';
 import FilmCollection from '@/components/shared/FilmCollection';
 import MemberCollection from '@/components/shared/MemberCollection';
-import { set } from 'date-fns';
 import { CiFilter } from 'react-icons/ci';
 
 const Explore = () => {
@@ -66,7 +65,7 @@ const Explore = () => {
 
   const FilmContent = ({ title }) => {
     return (
-      <div id="films">
+      <div id="films" className='w-full'>
         {title && <div className='flex items-baseline justify-between pb-2 mb-2 border-b-2'>
           <h2 className='text-m-2xl sm:text-m-3xl'>Films</h2>
         </div>}
@@ -142,7 +141,6 @@ const Explore = () => {
 
       {/* Content */}
       <FilterContent />
-
     </div>
   )
 }

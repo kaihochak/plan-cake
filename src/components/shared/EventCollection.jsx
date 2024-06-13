@@ -6,6 +6,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import DummyUserData from "@/data/DummyUserData";
 import TimeConvertor from "@/components/utility/TimeConvertor";
 import { Link } from "react-router-dom";
+import { Skeleton } from "@/components/ui/skeleton"
 
 const EventCollection = ({
   events,
@@ -34,6 +35,7 @@ const EventCollection = ({
   const filteredEvents = events.filter((event) =>
     event.title.toLowerCase().includes(filter.toLowerCase())
   );
+
 
   return (
     <div className="py-2">
@@ -65,58 +67,64 @@ const EventCollection = ({
                 >
                   {/* image */}
                   <div className={`${desktopLayout === "tall" ? "aspect-w-1 aspect-h-[1.47]" : "aspect-w-1 aspect-h-1"}`}>
-                    <img
+                    <Skeleton className='object-cover object-center w-full h-full rounded-sm bg-primary-light' />
+                    {/* <img
                       src={event.imageURL}
                       alt={event.title}
                       className="object-cover object-center rounded-sm"
-                    />
+                    /> */}
                   </div>
+                  
                   {/* Info */}
                   <div className="flex flex-col justify-start pt-4 gap-y-1 xl:gap-y-3">
+                    
                     {/* Date & Time */}
-                    <div className="flex gap-x-2 text-m xl:text-l">
+                    {/* <div className="flex gap-x-2 text-m xl:text-l">
                       <TimeConvertor confirmedDateTime={event.confirmedDateTime} />
-                    </div>
+                    </div> */}
 
                     {/* Title */}
-                    <h3 className="h-20 text-xl xl:text-3xl">
+                    <Skeleton className='h-10 xl:h-16 bg-primary-light'/>
+                    {/* <h3 className="h-20 text-xl xl:text-3xl">
                       {event.title.length > 30 ? event.title.substring(0, 30) + '...' : event.title}
-                    </h3>
+                    </h3> */}
 
                     {/* Location & Participants */}
-                    <div className="flex justify-between gap-y-2 ">
+                    <div className="flex justify-between gap-y-2">
 
                       {/* Location */}
-                      <div className="flex events-center text-m xl:text-l gap-x-2">
+                      {/* <div className="flex events-center text-m xl:text-l gap-x-2">
                         <GoLocation />
                         <p>{event.location}</p>
-                      </div>
+                      </div> */}
 
                       {/* participants */}
                       {isParticipantsVisible && (
-                        <div className="flex" >
-                          {event.attendingUsers
-                            .slice(0, event.attendingUsers.length > 4 ? 3 : 4)
-                            .map((participant, index) => (
-                              <div
-                                className={`w-6 h-6 rounded-full overflow-hidden flex events-center justify-center 
-                                          ${index > 0 ? "-ml-1" : ""}`}
-                                key={index}
-                              >
-                                <img
-                                  className="object-cover min-w-full min-h-full"
-                                  src={users.find(user => user._id === participant).profile.avatar}
-                                  alt={users.find(user => user._id === participant).profile.username}
-                                />
-                              </div>
-                            ))
-                          }
-                          {/* plus sign + how many more people */}
-                          {event.attendingUsers.length > 4 && (
-                            <div>+{event.attendingUsers.length - 3}</div>
-                          )}
-                        </div>
+                        // <div className="flex" >
+                        //   {event.attendingUsers
+                        //     .slice(0, event.attendingUsers.length > 4 ? 3 : 4)
+                        //     .map((participant, index) => (
+                        //       <div
+                        //         className={`w-6 h-6 rounded-full overflow-hidden flex events-center justify-center 
+                        //                   ${index > 0 ? "-ml-1" : ""}`}
+                        //         key={index}
+                        //       >
+                        //         <img
+                        //           className="object-cover min-w-full min-h-full"
+                        //           src={users.find(user => user._id === participant).profile.avatar}
+                        //           alt={users.find(user => user._id === participant).profile.username}
+                        //         />
+                        //       </div>
+                        //     ))
+                        //   }
+                        //   {/* plus sign + how many more people */}
+                        //   {event.attendingUsers.length > 4 && (
+                        //     <div>+{event.attendingUsers.length - 3}</div>
+                        //   )}
+                        // </div>
+                        <></>
                       )}
+                      
                     </div>
                   </div>
 
@@ -155,13 +163,13 @@ const EventCollection = ({
             className={cn("grid", // universal
               mobileLayout === "grid" ? "grid-cols-2 sm:grid-cols-3 gap-x-1 gap-y-4" : "grid-cols-1 sm:grid-cols-3 sm:gap-x-4",
               hasButton && "sm:grid-cols-3 sm:w-full")}
-              key={events._id}
+            key={events._id}
           >
             {/* each event */}
             {filteredEvents.slice(0, maxMobile).map((event) => (
               <Link to={`/event/${event._id}`} key={event._id}>
                 <div
-                  
+
                   className={`flex ${mobileLayout === "grid" ? "flex-col gap-y-4" : "justify-between sm:justify-start py-4 gap-x-6 sm:gap-x-8 sm:flex-col"}`}
                 >
 
@@ -169,11 +177,12 @@ const EventCollection = ({
                   <div className={`${mobileLayout === "grid" ? "w-[90%]" : "inset-0 w-[35%] sm:w-full"}`}>
                     {/* The image fills the square container */}
                     <div className={`aspect-w-1 aspect-h-1 ${mobileLayout === "grid" ? "" : "sm:aspect-h-[1.47]"}`}>
-                      <img
+                      {/* <img
                         src={event.imageURL}
                         alt={event.title}
                         className="object-cover object-center rounded-sm"
-                      />
+                      /> */}
+                      <Skeleton className='object-cover object-center w-full h-full rounded-sm bg-primary-light' />
                     </div>
                   </div>
 
@@ -182,49 +191,50 @@ const EventCollection = ({
                   ${mobileLayout === "grid" ? "gap-y-1 pr-4" : "gap-y-2 sm:pt-3 w-[65%] sm:w-full"}`
                   }>
                     {/* Date & Time */}
-                    <div className={`flex gap-x-2 
+                    {/* <div className={`flex gap-x-2 
                     ${mobileLayout === "grid" ? "text-m-s sm:text-m-m" : "text-m-m"}`}>
                       <TimeConvertor confirmedDateTime={event.confirmedDateTime} />
-                    </div>
+                    </div> */}
 
                     {/* Title */}
-                    <h3 className={`${mobileLayout === "grid" ? "text-m-l sm:text-m-xl mb-2 h-10 sm:h-16" : "text-m-xl sm:h-16"}`}>
+                    {/* <h3 className={`${mobileLayout === "grid" ? "text-m-l sm:text-m-xl mb-2 h-10 sm:h-16" : "text-m-xl sm:h-16"}`}>
                       {event.title.length > 30 ? event.title.substring(0, 30) + '...' : event.title}
-                    </h3>
+                    </h3> */}
 
                     {/* Location & Participants */}
                     <div className="flex justify-between events-center">
                       {/* Location */}
-                      <div className={`flex events-center ${mobileLayout === "grid" ? "text-m-s sm:text-m-m gap-x-2" : "gap-x-2 text-m-m"}`}>
+                      {/* <div className={`flex events-center ${mobileLayout === "grid" ? "text-m-s sm:text-m-m gap-x-2" : "gap-x-2 text-m-m"}`}>
                         <GoLocation />
                         <p>{event.location}</p>
-                      </div>
+                      </div> */}
 
                       {/* participants */}
                       {isParticipantsVisible && (
-                        <div className="flex">
-                          {event.attendingUsers
-                            .slice(0, event.attendingUsers.length > 4 ? 3 : 4)
-                            .map((participant, index) => (
-                              <div
-                                className={`w-6 h-6 rounded-full overflow-hidden flex events-center justify-center 
-                                ${index > 0 ? "-ml-1" : ""} 
-                              `}
-                                key={index}
-                              >
-                                <img
-                                  className="object-cover min-w-full min-h-full"
-                                  src={users.find(user => user._id === participant).profile.avatar}
-                                  alt={users.find(user => user._id === participant).profile.username}
-                                />
-                              </div>
-                            ))
-                          }
-                          {/* plus sign + how many more people */}
-                          {event.attendingUsers.length > 4 && (
-                            <div>+{event.attendingUsers.length - 3}</div>
-                          )}
-                        </div>
+                        // <div className="flex">
+                        //   {event.attendingUsers
+                        //     .slice(0, event.attendingUsers.length > 4 ? 3 : 4)
+                        //     .map((participant, index) => (
+                        //       <div
+                        //         className={`w-6 h-6 rounded-full overflow-hidden flex events-center justify-center 
+                        //         ${index > 0 ? "-ml-1" : ""} 
+                        //       `}
+                        //         key={index}
+                        //       >
+                        //         <img
+                        //           className="object-cover min-w-full min-h-full"
+                        //           src={users.find(user => user._id === participant).profile.avatar}
+                        //           alt={users.find(user => user._id === participant).profile.username}
+                        //         />
+                        //       </div>
+                        //     ))
+                        //   }
+                        //   {/* plus sign + how many more people */}
+                        //   {event.attendingUsers.length > 4 && (
+                        //     <div>+{event.attendingUsers.length - 3}</div>
+                        //   )}
+                        // </div>
+                        <Skeleton className='w-full h-16 bg-primary-light'/>
                       )}
                     </div>
                   </div>

@@ -31,6 +31,7 @@ const FilmCard = React.memo(({ item, selectedFilms, setSelectedFilms, watchlistO
 	return (
 		<div className="relative flex flex-col gap-y-2">
 			{/* Poster */}
+			
 			<div className="w-full ">
 				<div className="aspect-w-1 aspect-h-[1.5]">
 					{/* Image */}
