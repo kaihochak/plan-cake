@@ -61,8 +61,6 @@ function App() {
         {/* Toaster from Shadcn */}
         <Toaster />
       </main>
-
-
     </ThemeProvider>
     // </MantineProvider>
   );

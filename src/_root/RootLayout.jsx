@@ -26,12 +26,12 @@ const RootLayout = () => {
 
   return (
     <div className="w-full xl:flex">
+      {/* <LeftSidebar /> */}
       {isTransparentRoute() ? <TransTopBar /> : <TopBar />}
-      <LeftSidebar />
       <section id="rootLayout" className="flex flex-1 h-full">
         <Outlet />
       </section>
-      <Bottombar />
+      {/* <Bottombar /> */}
     </div>
   );
 };

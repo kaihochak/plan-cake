@@ -381,10 +381,10 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
    * ******************************************************************************/
 
   return (
-    <div className='mt-2'>
+    <div className='flex flex-col gap-2'>
       {/* Title */}
       <div className='flex justify-between'>
-        <div className='subtitle'>Film</div>
+        <div className='subtitle text-foreground-dark'>Films</div>
         <Button
           variant="accent"
           className="w-[100px] h-[25px] md:w-[120px] md:h-[35px] "
