@@ -10,6 +10,7 @@ import { Home, PickAFilm, CreateEvent, Explore, Profile, FilmPage, EventPage, Pi
 import { Toaster } from "@/components/ui/toaster"
 import { ThemeProvider } from "@/components/utility/theme-provider";
 import './index.css';
+import ScrollToTop from './components/utility/ScrollToTop';
 // import '@mantine/core/styles.css';
 
 // import { MantineProvider } from '@mantine/core';
@@ -29,33 +30,35 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
 
       <main className="flex h-screen bg-primary font-Urbanist text-default">
-          {/* Routes */}
-          <Routes>
-            {/* auth */}
-            <Route element={<AuthLayout />}>
-              <Route path="/sign-in" element={<SigninForm />} />
-              <Route path="/sign-up" element={<SignupForm />} />
-            </Route>
+      <ScrollToTop />
 
-            {/* public */}
-            <Route element={<RootLayout />}>
-              <Route path="/home" element={<Home />} />
-              <Route path="/pickAFilm" element={<PickAFilm />} />
-              <Route path="/pickAFilm/:id" element={<PickAFilmPage />} />
-              <Route path="/create-event" element={<CreateEvent />} />
-              <Route path='/explore/*' element={<Explore />} />
-              <Route path='/profile/:id/*' element={<Profile />} />
-              <Route path='/film/:id' element={<FilmPage />} />
-              <Route path='/event/:id' element={<EventPage />} />
-            </Route>
+        {/* Routes */}
+        <Routes> 
+          {/* auth */}
+          <Route element={<AuthLayout />}>
+            <Route path="/sign-in" element={<SigninForm />} />
+            <Route path="/sign-up" element={<SignupForm />} />
+          </Route>
 
-            {/* landing */}
-            <Route element={<LandingLayout />}>
-              <Route index element={<Landing />} />
-            </Route>
-          </Routes>
+          {/* public */}
+          <Route element={<RootLayout />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/pickAFilm" element={<PickAFilm />} />
+            <Route path="/pickAFilm/:id" element={<PickAFilmPage />} />
+            <Route path="/create-event" element={<CreateEvent />} />
+            <Route path='/explore/*' element={<Explore />} />
+            <Route path='/profile/:id/*' element={<Profile />} />
+            <Route path='/film/:id' element={<FilmPage />} />
+            <Route path='/event/:id' element={<EventPage />} />
+          </Route>
 
-          {/* Toaster from Shadcn */}
+          {/* landing */}
+          <Route element={<LandingLayout />}>
+            <Route index element={<Landing />} />
+          </Route>
+        </Routes>
+
+        {/* Toaster from Shadcn */}
         <Toaster />
       </main>
 
