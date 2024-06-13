@@ -48,18 +48,6 @@ export const useGetPickAFilmById = (pickAFilmId) => {
   });
 };
 
-export const useUpdatePickAFilmGuestList = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (updateDocument) => updatePickAFilmGuestList(updateDocument),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_PICKAFILM_BY_ID, data?.$id],
-      });
-    },
-  });
-}
-
 export const useUpdatePickAFilm = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -71,6 +59,18 @@ export const useUpdatePickAFilm = () => {
     },
   });
 }
+
+export const useUpdatePickAFilmOptimistic = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (updateDocument) => updatePickAFilm(updateDocument),
+    onSettled: async () => {
+      return await queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.GET_PICKAFILM_BY_ID] });
+    },
+  });
+}
+    
+
 
 // Event
 export const useCreateEvent = () => {

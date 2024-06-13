@@ -30,10 +30,10 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
 
       <main className="flex h-screen bg-primary font-Urbanist text-default">
-      <ScrollToTop />
+        <ScrollToTop />
 
         {/* Routes */}
-        <Routes> 
+        <Routes>
           {/* auth */}
           <Route element={<AuthLayout />}>
             <Route path="/sign-in" element={<SigninForm />} />
@@ -61,8 +61,6 @@ function App() {
         {/* Toaster from Shadcn */}
         <Toaster />
       </main>
-
-
     </ThemeProvider>
     // </MantineProvider>
   );
