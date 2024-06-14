@@ -777,6 +777,12 @@ body {
   .shad-button_ghost {
     @apply flex gap-4 items-center justify-start hover:bg-transparent hover:text-white !important;
   }
+
+  .AccordionContent { overflow: hidden; } 
+  .AccordionContent[data-state='open'] { animation: slideDown 300ms ease-out; } 
+  .AccordionContent[data-state='closed'] { animation: slideUp 300ms ease-out; }
+
+
   .highlight-text {
     background: linear-gradient(
       to bottom,
@@ -786,6 +792,8 @@ body {
       hsl(var(--accent-dark) / 0%)
     );
   }
+
+
 
   .custom-z-index {
     z-index: 100;
