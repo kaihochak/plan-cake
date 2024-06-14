@@ -8,7 +8,7 @@ import { FaRegCircleQuestion } from "react-icons/fa6";
 
 const Features = () => {
   return (
-    <section className='landing-container bubble' id="features">
+    <section className='landing-container ' id="features">
 
       {/* Hero */}
       <div className='flex-col flex-between'>
