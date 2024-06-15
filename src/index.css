@@ -351,10 +351,10 @@ body {
   } 
 
   .reverse-bubble {
-    border-bottom-left-radius: 42% 42%;
-    border-bottom-right-radius: 42% 42%;
-
+    border-bottom-left-radius: 10% 10%;
+    border-bottom-right-radius: 10% 10%;
     background-color: #f6f6f6;
+    
   }
 
   .landing-img-container {
