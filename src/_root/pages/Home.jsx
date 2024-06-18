@@ -97,8 +97,6 @@ const Home = () => {
             </DialogContent>
           </Dialog>
 
-
-
           <div className='home-posts'>
             {/* Most Watchlisted Section */}
             <MostWatchlisted />
@@ -126,7 +124,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
     </div>
   );
 };
