@@ -3,9 +3,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 const FAQ = () => {
   return (
-    <div className='landing-container reverse-bubble' id='faq'>
+    <div className='landing-container reverse-bubble min-w-full' id='faq'>
       <p className='z-10 body-bold text-primary'>Frequently Asked Questions</p>
-      <div className='mb-16 md:mb-12'>
+      <div className='mb-16 md:mb-12 w-[80%]'>
         <Accordion type="single" collapsible className="">
           <AccordionItem value="item-1">
             <AccordionTrigger className='base-medium text-primary'>How can I create and customize my academic profile?</AccordionTrigger>
