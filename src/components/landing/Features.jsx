@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 const Features = () => {
 
   return (
-    <section className='landing-container bubble' id="features">
+    <section className='landing-container ' id="features">
 
       {/* Hero */}
       <div className='flex-col flex-between'>

@@ -307,8 +307,9 @@ body {
 
   /* Landing Page */
   .landing-container {
-    @apply container relative flex flex-col items-center w-full p-10 mt-2 gap-y-14 bg-primary min-h-[400px];
+    @apply container relative flex flex-col items-center w-full p-10 gap-y-14 min-h-[400px];
   }
+
 
   .bubble::after {
     content: "";
@@ -317,44 +318,41 @@ body {
     border-bottom-left-radius: 0% 0%;
     border-bottom-right-radius: 0% 0%;
     position: absolute;
-    margin-top: 90%;
-    z-index: 1;
-    width: 300%;
+    bottom: 0;
+    z-index: 0;
+    width: 400%;
     background-color: #f6f6f6;
-    height: 75%;
+    height: 165%;
   }
 
   @screen md {
     .bubble::after {
-      width: 150%;
+      width: 190%;
       height: 100%;
-      margin-top: 60%;
-    }
-  }
-  /* 
-  @screen md {
-    .bubble::after {
-      width: 200%;
-      height: 60%;
-      margin-top: 85%;
     }
   }
 
   @screen lg {
     .bubble::after {
-      width: 250%;
-      height: 70%;
-      margin-top: 87%;
+      width: 160%;
+      height: 100%;
+
     }
   }
 
   @screen xl {
     .bubble::after {
-      width: 300%;
-      height: 75%;
-      margin-top: 90%;
+      width: 150%;
+      height: 100%;
     }
-  } */
+  } 
+
+  .reverse-bubble {
+    border-bottom-left-radius: 10% 10%;
+    border-bottom-right-radius: 10% 10%;
+    background-color: #f6f6f6;
+    
+  }
 
   .landing-img-container {
     @apply relative w-full h-auto mt-8;
@@ -784,6 +782,12 @@ body {
   .shad-button_ghost {
     @apply flex gap-4 items-center justify-start hover:bg-transparent hover:text-white !important;
   }
+
+  .AccordionContent { overflow: hidden; } 
+  .AccordionContent[data-state='open'] { animation: slideDown 300ms ease-out; } 
+  .AccordionContent[data-state='closed'] { animation: slideUp 300ms ease-out; }
+
+
   .highlight-text {
     background: linear-gradient(
       to bottom,
@@ -793,6 +797,8 @@ body {
       hsl(var(--accent-dark) / 0%)
     );
   }
+
+
 
   .custom-z-index {
     z-index: 100;
