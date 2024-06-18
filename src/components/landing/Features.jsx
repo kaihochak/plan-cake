@@ -5,8 +5,10 @@ import { TbMovie } from "react-icons/tb";
 import { CgMusic } from "react-icons/cg";
 import { RiBook3Line } from "react-icons/ri";
 import { FaRegCircleQuestion } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const Features = () => {
+
   return (
     <section className='landing-container ' id="features">
 
@@ -36,7 +38,9 @@ const Features = () => {
           <TbMovie className='text-accent text-[30px]' />
           <p className='body-bold text-primary md:text-primary-foreground'>Pick A Film</p>
           <p className='base-medium text-primary md:text-primary-foreground'>Everyone adds their favorite movies to a shared list and then votes.</p>
-          <button className='button-text landing-btn bg-accent text-accent-foreground px-1 py-2 w-[80%] rounded-md mt-2 hover:bg-accent-dark'>Create Event</button>
+          <Link to='/pickAFilm'>
+            <button className='button-text landing-btn bg-accent text-accent-foreground px-1 py-2 w-[80%] rounded-md mt-2 hover:bg-accent-dark'>Create Event</button>
+          </Link>
         </div>
 
         {/* Gig Buddies */}

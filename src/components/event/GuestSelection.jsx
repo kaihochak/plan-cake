@@ -5,18 +5,15 @@ import { IoMdAdd } from "react-icons/io";
 import { cn } from "@/lib/utils";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/guestCommand";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useUpdatePickAFilm } from "@/lib/react-query/queries";
+import { useUpdatePickAFilm, useUpdatePickAFilmOptimistic } from "@/lib/react-query/queries";
 import { useToast } from "@/components/ui/use-toast";
 
 const GuestSelection = ({ guestList, id, selectedGuest, setSelectedGuest, setGuestList }) => {
   const [openGuestList, setOpenGuestList] = useState(false);
   const [searchGuestName, setSearchGuestName] = useState("");
   const { toast } = useToast();
-  const { mutateAsync: updateGuestList, isLoading } = useUpdatePickAFilm(); 	// Query: Update the guestList
-
-  useEffect(() => {
-    console.log('re-mounded, time down to second', new Date().toLocaleTimeString());
-  }, []);
+  // const { mutateAsync: updateGuestList, isLoading, variables } = useUpdatePickAFilm(); 	// Query: Update the guestList
+  const { isPending, submittedAt, variables, mutateAsync: updateGuestList, isError } = useUpdatePickAFilmOptimistic(); 	// Query: Update the guestList optimistically
 
   // Update the guestList to DB
   const handleUpdateGuestList = async (newGuest) => {
@@ -32,6 +29,7 @@ const GuestSelection = ({ guestList, id, selectedGuest, setSelectedGuest, setGue
 
     // show a toast message
     if (!updatedGuestList) {
+      console.log("Error adding guest", updatedGuestList);
       toast({
         variant: "destructive",
         title: (
@@ -75,23 +73,19 @@ const GuestSelection = ({ guestList, id, selectedGuest, setSelectedGuest, setGue
       const newGuest = {
         id: `-${guestList.length + 1}`,
         name: searchGuestName,
-        // avatar: "/assets/avatars/avatar1.jpg",
         filmsVoted: []
       };
 
-      // update the guestList in local state OPTIMISTICALLY
+      // update the guestList & selected guest in client state OPTIMISTICALLY
       setGuestList([...existingGuestList, newGuest]);
-      // update the selected guest
       setSelectedGuest(newGuest.id);
 
       // send the new guest to the DB
       const success = await handleUpdateGuestList(newGuest);
-      console.log("Success adding guest", success);
 
-      // if there was an error, remove the guest from the guestList in local state
+      // if there was an error, remove the guest from the guestList in client state
       if (!success) {
-        console.log("Error adding guest, reverting changes", existingGuestList);
-        // remove the guest from the guestList in local state
+        // remove the guest from the guestList in client state
         setGuestList(existingGuestList);
         setSelectedGuest("");
       }
@@ -105,63 +99,64 @@ const GuestSelection = ({ guestList, id, selectedGuest, setSelectedGuest, setGue
    * Render
    * **********************************************************/
   return (
-    <div className=''>
-      <Popover open={openGuestList} onOpenChange={setOpenGuestList}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            role="combobox"
-            aria-expanded={openGuestList}
-            className={`w-[150px] justify-between ${selectedGuest ? "bg-accent text-accent-foreground" : "bg-background text-secondary"}`}
-          >
-            {selectedGuest
-              ? guestList?.find((guest) => guest.id === selectedGuest)?.name
-              : "Select your name"}
-            <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0">
-          <Command>
-            <div className='relative'>
-              <CommandInput
-                placeholder="Enter your name"
-                value={searchGuestName}
-                onValueChange={(value) => setSearchGuestName(value)}
-              />
-              <Button
-                size="icon"
-                className="absolute top-0.5 right-0 border-none bg-background hover:bg-accent"
-                onClick={handleAddGuestOptimistic}
+    <Popover 
+      open={openGuestList} 
+      onOpenChange={setOpenGuestList}
+    >
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={openGuestList}
+          className={`w-[130px] h-[35px] justify-between body ${selectedGuest ? "bg-accent text-accent-foreground" : "bg-background text-secondary"}`}
+        >
+          {selectedGuest
+            ? guestList?.find((guest) => guest.id === selectedGuest)?.name
+            : "Select a guest"}
+          <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[200px] p-0">
+        <Command>
+          <div className='relative'>
+            <CommandInput
+              placeholder="Enter your name"
+              value={searchGuestName}
+              onValueChange={(value) => setSearchGuestName(value)}
+            />
+            <Button
+              size="icon"
+              className="absolute top-0.5 right-0 border-none bg-background hover:bg-accent"
+              onClick={handleAddGuestOptimistic}
+            >
+              <IoMdAdd className="w-6 h-6" />
+            </Button>
+          </div>
+          <CommandEmpty>Welcome, <b>{searchGuestName}</b>! 🎉</CommandEmpty>
+          <CommandGroup>
+            {guestList?.map((guest, index) => (
+              <CommandItem
+                key={index}
+                value={guest.name || ""}
+                onSelect={() => {
+                  setSelectedGuest(guest.id === selectedGuest ? "" : guest.id);
+                  setOpenGuestList(false);
+                }}
+                className="cursor-pointer hover:bg-accent hover:text-accent-foreground flex-between"
               >
-                <IoMdAdd className="w-6 h-6" />
-              </Button>
-            </div>
-            <CommandEmpty>Welcome, <b>{searchGuestName}</b>! 🎉</CommandEmpty>
-            <CommandGroup>
-              {guestList?.map((guest, index) => (
-                <CommandItem
-                  key={index}
-                  value={guest.name || ""}
-                  onSelect={() => {
-                    setSelectedGuest(guest.id === selectedGuest ? "" : guest.id);
-                    setOpenGuestList(false);
-                  }}
-                  className="cursor-pointer hover:bg-accent hover:text-accent-foreground flex-between"
-                >
-                  {guest.name}
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4 ",
-                      selectedGuest === guest.id ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </Command>
-        </PopoverContent>
-      </Popover>
-    </div>
+                {guest.name}
+                <Check
+                  className={cn(
+                    "mr-2 h-4 w-4 ",
+                    selectedGuest === guest.id ? "opacity-100" : "opacity-0"
+                  )}
+                />
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, BrowserRouter, ScrollRestoration } from 'react-router-dom';
 import SigninForm from './_auth/forms/SigninForm';
 import SignupForm from './_auth/forms/SignupForm';
 import AuthLayout from './_auth/AuthLayout';
@@ -10,6 +10,7 @@ import { Home, PickAFilm, CreateEvent, Explore, Profile, FilmPage, EventPage, Pi
 import { Toaster } from "@/components/ui/toaster"
 import { ThemeProvider } from "@/components/utility/theme-provider";
 import './index.css';
+import ScrollToTop from './components/utility/ScrollToTop';
 // import '@mantine/core/styles.css';
 
 // import { MantineProvider } from '@mantine/core';
@@ -29,6 +30,7 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
 
       <main className="flex h-screen bg-primary font-Urbanist text-default">
+        <ScrollToTop />
 
         {/* Routes */}
         <Routes>
@@ -59,7 +61,6 @@ function App() {
         {/* Toaster from Shadcn */}
         <Toaster />
       </main>
-
     </ThemeProvider>
     // </MantineProvider>
   );
