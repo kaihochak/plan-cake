@@ -192,7 +192,7 @@ const PickAFilmPage = () => {
 
   return (
     <div className='container mx-auto max-w-[1280px] flex-col items-center justify-start overflow-x-hidden mt-10 md:mt-14 md:px-4 xl:mt-24 xl:px-10'>
-      <div className='flex flex-col justify-start pt-3 gap-y-4 lg:pt-12 xl:pt-0 md:pb-32'>
+      <div className='flex flex-col justify-start gap-y-4 md:pb-32'>
 
         {/* banner */}
         {state.confirmedFilm &&
@@ -222,10 +222,10 @@ const PickAFilmPage = () => {
               }
 
               {/* Info */}
-              <div className={`${state.confirmedFilm ? "flex-start gap-x-8 md:gap-x-14" : "flex-between "}`}>
+              <div className={`${state.confirmedFilm ? "flex-start gap-x-4 md:gap-x-14" : "flex-between "}`}>
                 {/* left - poster*/}
                 {state.confirmedFilm &&
-                  <div className='w-[300px] lg:w-[320px] xl:w-[380px] 2xl:w-[400px]'>
+                  <div className='min-w-[150px] w-[300px] lg:w-[320px] xl:w-[380px] 2xl:w-[400px]'>
                     <img
                       src={state.confirmedFilm?.poster_path ? image500(state.confirmedFilm?.poster_path) : fallbackMoviePoster}
                       alt={state.confirmedFilm?.title}
@@ -235,7 +235,7 @@ const PickAFilmPage = () => {
                 }
 
                 {/* right - details */}
-                <div className={`flex w-full justify-start ${state.confirmedFilm ? "flex-col gap-4" : "gap-8 "}`}>
+                <div className={`flex w-full justify-start ${state.confirmedFilm ? "flex-col gap-2 md:gap-4" : "gap-8 "}`}>
 
                   {/* title & Share */}
 
