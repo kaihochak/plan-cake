@@ -347,11 +347,38 @@ body {
     }
   } 
 
-  .reverse-bubble {
+  /* .reverse-bubble {
     border-bottom-left-radius: 10% 10%;
     border-bottom-right-radius: 10% 10%;
     background-color: #f6f6f6;
+  } */
 
+  .reverse-bubble::after {
+    content: "";
+    border-top-left-radius: 0% 0%;
+    border-top-right-radius: 0% 0%;
+    border-bottom-left-radius: 100% 100%;
+    border-bottom-right-radius: 100% 100%;
+    position: absolute;
+    top: 0;
+    z-index: 0;
+    width: 400%;
+    background-color: #f6f6f6;
+    height: 165%;
+  }
+
+  @screen md {
+    .reverse-bubble::after {
+      width: 190%;
+      height: 100%;
+    }
+  }
+
+  @screen lg {
+    .reverse-bubble::after {
+      width: 160%;
+      height: 100%;
+    }
   }
 
   .landing-img-container {

@@ -5,7 +5,7 @@ import FAQ from '@/components/landing/FAQ'
 
 const Landing = () => {
   return (
-    <div className='flex flex-col w-full mx-auto overflow-x-hidden'>
+    <div className='flex flex-col w-full mx-auto overflow-x-hidden max-w-[1280px]'>
       <Features />
       <About /> 
       <FAQ />
