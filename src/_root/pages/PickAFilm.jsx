@@ -48,7 +48,7 @@ const PickAFilm = () => {
    * Rendering
    *****************************************************************************/
   return (
-    <div className='flex flex-col items-center flex-1 max-h-screen py-10 mx-auto overflow-hidden max-w-screen-2xl gap-x-10 gap-y-6 custom-scrollbar xl:items-startc'>
+    <div className='flex flex-col items-center flex-1 max-h-screen py-10 mx-auto overflow-hidden gap-x-10 gap-y-6 custom-scrollbar xl:items-startc'>
       <div className='flex-col justify-start h-screen pt-10 xl:pt-0 gap-y-2 xl:ml-20 xl:grid xl:grid-cols-5'>
 
         {/* text */}

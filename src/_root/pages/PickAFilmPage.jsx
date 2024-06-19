@@ -175,6 +175,39 @@ const PickAFilmPage = () => {
     )
   }
 
+  const EventTitle = () => {
+    if (!rename) return ( 
+        <div className="flex items-center gap-x-2">
+          <h2
+            onClick={() => setRename(true)}
+            className={`hover:underline flex-wrap transition-all duration-500 ease-in-out cursor-pointer h3 " ${isPending ? "text-foreground-dark" : "text-foreground"}`}
+          >
+            {state.title || "Pick A Film"}
+          </h2>
+        </div> 
+    ) 
+    if (rename) return
+    (        
+        <div className="relative flex ">
+            <input
+            type="text"
+            value={newName || state.title}
+            onChange={(e) => setNewName(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && handleRename()}
+            onKeyUp={(e) => e.key === 'Escape' && setRename(false)}
+            className={`w-full pr-8 transition-all duration-500 ease-in-out border-b bg-primary h3 border-accent-dark text-foreground-dark focus:outline-none focus:border-primary ${isError ? "border-destructive" : "border-accent-dark"}`}
+          />
+          <button
+            onClick={handleRename}
+            className="absolute bottom-1.5 text-accent h3 right-1"
+          >
+            <PiKeyReturnFill />
+          </button>
+        </div>
+        )
+    
+  }
+
   /**********************************************************************************
    * Rendering
    **********************************************************************************/
@@ -194,8 +227,8 @@ const PickAFilmPage = () => {
   console.log('state', state);
 
   return (
-    <div className='container flex-col items-center justify-start w-full overflow-x-hidden'>
-      <div className='flex flex-col justify-start w-full max-w-[1024px] gap-y-4 pt-3 lg:pt-12 xl:pt-0 md:pb-32'>
+    <div className='container mx-auto max-w-[1280px] flex-col items-center justify-start overflow-x-hidden mt-10 md:mt-14 md:px-4 xl:mt-24 xl:px-10'>
+      <div className='flex flex-col justify-start gap-y-4 pt-3 lg:pt-12 xl:pt-0 md:pb-32'>
 
         {/* banner */}
         {state.confirmedFilm &&
@@ -205,14 +238,14 @@ const PickAFilmPage = () => {
           </div>
         }
 
-        <div className={`relative flex flex-col gap-y-10 ${state.confirmedFilm ? "-mt-10 sm:-mt-80" : ""}`}>
+        <div className={`relative flex flex-col gap-y-10 w-full max-w-[1280px] mx-auto md:px-10 ${state.confirmedFilm ? "-mt-10 sm:-mt-80" : ""}`}>
           <div className={`flex flex-col gap-y-8`}>
 
             <section className='flex flex-col gap-y-4'>
               {/* title & Share */}
               <div className='flex-between gap-x-10'>
                 {/* title */}
-                {!rename ?
+                {/* {!rename ?
                   <div className="flex items-center gap-x-2">
                     <h2
                       onClick={() => setRename(true)}
@@ -237,7 +270,9 @@ const PickAFilmPage = () => {
                       <PiKeyReturnFill />
                     </button>
                   </div>
-                }
+                } */}
+
+                <EventTitle />
 
                 {/* Share */}
                 <button
@@ -249,19 +284,20 @@ const PickAFilmPage = () => {
               </div>
 
               {/* Info */}
-              <div className={`gap-x-8 ${state.confirmedFilm ? "grid grid-cols-2" : "flex-between "}`}>
+              <div className={`${state.confirmedFilm ? "flex-start gap-x-8 md:gap-x-14" : "flex-between "}`}>
                 {/* left - poster*/}
                 {state.confirmedFilm &&
-                  <div className=''>
-                    <img
+                  <div className='w-[300px] lg:w-[320px] xl:w-[380px] 2xl:w-[400px]'>
+                    <img 
                       src={state.confirmedFilm?.poster_path ? image500(state.confirmedFilm?.poster_path) : fallbackMoviePoster}
                       alt={state.confirmedFilm?.title}
+                      className=''
                     />
                   </div>
                 }
 
                 {/* right - details */}
-                <div className={`flex w-full justify-between ${state.confirmedFilm ? "flex-col gap-4" : "gap-8 "}`}>
+                <div className={`flex w-full justify-start ${state.confirmedFilm ? "flex-col gap-4" : "gap-8 "}`}>
                   {/* film title */}
                   {state.confirmedFilm &&
                     <h3 className="body">

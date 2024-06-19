@@ -3,7 +3,7 @@ import { image500 } from '@/lib/tmdb/config'
 
     const ConfirmedFilmInfo = ({confirmedFilm, formData}) => {
         return (
-          <div className='inset-0 w-full mb-4 md:mb-0'>
+          <div className='inset-0 w-full mb-4 md:mb-0 '>
             {/* image & title*/}
             <div className='film-img-container'>
               {bannerSrc && <img src={bannerSrc} alt={confirmedFilm?.titile} className='film-img' />}
