@@ -27,11 +27,6 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
   // Query
   const { mutateAsync: updatePickAFilm, isLoading } = useUpdatePickAFilm();
 
-
-  useEffect(() => {
-    console.log('re-mounded, time down to second', new Date().toLocaleTimeString());
-  }, []);
-
   // if it's the host, set the host to be the current user
   useEffect(() => {
     if (host && !selectedGuest) setSelectedGuest("0");
@@ -327,8 +322,8 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
           <button
             className="button-text text-primary-foreground flex-between gap-x-2"
             onClick={() => setShowVoteResult(true)}>
-            <p>View Result</p>
             <PiFilmStripBold className="w-5 h-5 mb-[0.5]" />
+            <p>Confirm Vote</p>
           </button>
           <Select
             value={sortOrder}
@@ -384,7 +379,7 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
     <div className='flex flex-col gap-2'>
       {/* Title */}
       <div className='flex justify-between'>
-        <div className='subtitle text-foreground-dark'>Films</div>
+        <div className='subtitle text-foreground-dark'>Film Poll</div>
         <Button
           variant="accent"
           className="w-[100px] h-[25px] md:w-[120px] md:h-[35px] "
