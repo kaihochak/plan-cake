@@ -517,7 +517,7 @@ body {
   }
 
   .film-img-mask {
-    @apply absolute left-0 right-0 top-5;
+    @apply absolute left-0 right-0 h-[105%];
     background-image:
       /* left and right */ linear-gradient(
         90deg,

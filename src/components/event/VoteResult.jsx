@@ -88,10 +88,10 @@ const VoteResult = ({ selectedFilms, guestList, setConfirmedFilm, setShowVoteRes
           <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px]"></TableHead>
+              <TableHead className=""></TableHead>
               <TableHead>Films</TableHead>
               <TableHead>Votes</TableHead>
-              <TableHead className="text-right">Voters</TableHead>
+              <TableHead className="">Voters</TableHead>
             </TableRow>
           </TableHeader>
             <TableBody>
@@ -112,7 +112,7 @@ const VoteResult = ({ selectedFilms, guestList, setConfirmedFilm, setShowVoteRes
                   </TableCell>
                   <TableCell>{film.title}</TableCell>
                   <TableCell>{film.votes}</TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="">
                     {film.voters.map((voter, index) => (
                       <span key={index}>
                         {voter.name}{index < film.voters.length - 1 ? ', ' : ''}
@@ -123,7 +123,7 @@ const VoteResult = ({ selectedFilms, guestList, setConfirmedFilm, setShowVoteRes
               ))}
             </TableBody>
           </Table>
-          <Button type="submit">Confirm film</Button>
+          <Button type="submit" className="w-[100%] border-none bg-accent  text-primary shadow-xl">Confirm film</Button>
         </form>
       </Form>
     </div>
