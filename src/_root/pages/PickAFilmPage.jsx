@@ -174,6 +174,7 @@ const PickAFilmPage = () => {
     )
   }
 
+
   /**********************************************************************************
    * Rendering
    **********************************************************************************/
@@ -192,7 +193,9 @@ const PickAFilmPage = () => {
 
   return (
     <div className='container mx-auto max-w-[1280px] flex-col items-center justify-start overflow-x-hidden mt-10 md:mt-14 md:px-4 xl:mt-24 xl:px-10'>
-      <div className='flex flex-col justify-start gap-y-4 md:pb-32'>
+
+      <div className='flex flex-col justify-start gap-y-4 pt-12 md:pt-16 lg:pt-24 xl:pt-12 md:pb-32'>
+
 
         {/* banner */}
         {state.confirmedFilm &&
