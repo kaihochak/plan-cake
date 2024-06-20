@@ -4,7 +4,7 @@ import { PiKeyReturnFill } from 'react-icons/pi'
 
 const EventTitleAndShare = ({ state, isPending, copyToClipboard, rename, setRename, newName, setNewName, handleRename, isError }) => {
     return (
-        < div className='flex flex-col items-start w-full gap-y-4 md:flex-row-reverse md:flex-between gap-x-10' >
+        < div className={`flex  w-full gap-y-1 md:flex-between gap-x-10 ${state.confirmedFilm? "flex-col items-start md:flex-row-reverse " : "flex-row-reverse items-center"}`} >
             {/* Share */}
             <button
                 className='flex items-center justify-end w-full pl-2 rounded-lg md:w-auto gap-x-2 text-accent h3'
