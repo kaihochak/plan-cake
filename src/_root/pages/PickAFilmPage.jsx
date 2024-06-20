@@ -10,6 +10,7 @@ import { fallbackMoviePoster, image500, imagePath } from '@/lib/tmdb/config'
 import { useMediaQuery } from '@react-hook/media-query'
 import { useToast } from "@/components/ui/use-toast"
 import EventTitleAndShare from '@/components/event/EventTitleAndShare';
+import FilmPreview from "@/components/film/FilmPreview";
 
 // Define initial state
 const initialState = {
@@ -53,6 +54,16 @@ const PickAFilmPage = () => {
   const [rename, setRename] = useState(false);
   const [newName, setNewName] = useState("");
   const { toast } = useToast()
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [viewFilmId, setViewFilmId] = React.useState(false);
+
+  // Open the Film Preview Modal
+  const handleViewFilm = (itemId) => {
+    console.log("hi");
+    setViewFilmId(itemId);
+    setIsModalOpen(true);
+  };
+
 
   // let bannerSrc = image500(state.confirmedFilm?.poster_path);
   // if (bp_768) bannerSrc = imagePath(state.confirmedFilm?.backdrop_path);
@@ -205,7 +216,7 @@ const PickAFilmPage = () => {
           </div>
         }
 
-        <div className={`relative flex flex-col gap-y-10 w-full max-w-[1280px] mx-auto md:px-10 ${state.confirmedFilm ? "-mt-10 sm:-mt-80" : ""}`}>
+        <div className={`relative flex flex-col gap-y-10 w-full max-w-[1280px] mx-auto md:px-10 ${state.confirmedFilm ? "-mt-10 md:-mt-80 lg:-mt-96 xl:-mt-[450px]" : ""}`}>
           <div className={`flex flex-col gap-y-8`}>
 
             <section className='flex flex-col gap-y-4'>
@@ -228,11 +239,12 @@ const PickAFilmPage = () => {
               <div className={`${state.confirmedFilm ? "flex-start gap-x-4 md:gap-x-14" : "flex-between "}`}>
                 {/* left - poster*/}
                 {state.confirmedFilm &&
-                  <div className='min-w-[150px] w-[300px] lg:w-[320px] xl:w-[380px] 2xl:w-[400px]'>
+                  <div className='min-w-[150px] w-[300px] lg:w-[320px] xl:w-[380px] 2xl:w-[400px] cursor-pointer'>
                     <img
                       src={state.confirmedFilm?.poster_path ? image500(state.confirmedFilm?.poster_path) : fallbackMoviePoster}
                       alt={state.confirmedFilm?.title}
                       className=''
+                      onClick={() => handleViewFilm(state.confirmedFilm?.id)}
                     />
                   </div>
                 }
@@ -314,6 +326,13 @@ const PickAFilmPage = () => {
           </div>
         </div>
       </div>
+
+
+      <FilmPreview
+        filmId={viewFilmId}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
     </div >
   )
 }
