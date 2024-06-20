@@ -2,19 +2,18 @@ import React, { useEffect, useState } from 'react'
 import SearchBar from '@/components/utility/SearchBar'
 import EventCollection from '@/components/shared/EventCollection'
 import DummyEventData from '@/data/DummyEventData';
-import DummyFilmData from '@/data/DummyFilmData';
 import DummyUserData from '@/data/DummyUserData';
 import FilmCollection from '@/components/shared/FilmCollection';
 import MemberCollection from '@/components/shared/MemberCollection';
-import { set } from 'date-fns';
 import { CiFilter } from 'react-icons/ci';
+import { fetchTrending } from '@/lib/tmdb/api';
 
 const Explore = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredItems, setFilteredItems] = useState([]);
   const [events, setEvents] = useState(DummyEventData);
-  const [films, setFilms] = useState(DummyFilmData);
+  const [films, setFilms] = useState([]);
   const [members, setMembers] = useState(DummyUserData);
   const categories = ["All", "Events", "Films", "Members"];
   const [isFilterApplied, setIsFilterApplied] = useState(false);
@@ -22,6 +21,22 @@ const Explore = () => {
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
   };
+
+  useEffect(() => {
+    getMostWatchlisted();
+  }, []);      
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
+  // fetch data for most watchlisted films
+  const getMostWatchlisted = async () => {
+    const data = await fetchTrending(); // will be using tmdb trending api for now until more users are there
+    if (data && data.results) setFilms(data.results);
+    setLoading(false);
+  }
+
 
   // Content
   const FilterContent = () => {
@@ -66,7 +81,7 @@ const Explore = () => {
 
   const FilmContent = ({ title }) => {
     return (
-      <div id="films">
+      <div id="films" className='w-full'>
         {title && <div className='flex items-baseline justify-between pb-2 mb-2 border-b-2'>
           <h2 className='text-m-2xl sm:text-m-3xl'>Films</h2>
         </div>}
@@ -142,7 +157,6 @@ const Explore = () => {
 
       {/* Content */}
       <FilterContent />
-
     </div>
   )
 }

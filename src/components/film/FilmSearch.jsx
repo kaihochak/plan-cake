@@ -159,7 +159,7 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
                 } else setFilmData(upcomingFilms);
             }
             setLoading(false);
-        }, 500),
+        }, 400),
         [sortedWatchlist, upcomingFilms]
         // make sure when search term is empty, sortedWatchlist and upcomingFilms are not going to be remounted, leading to empty filmData
     );
@@ -325,7 +325,7 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
      ************************************************************************/
 
     return (
-        <div className="flex flex-col w-full h-full px-8 mb-10 gap-y-2 bg-primary text-primary-foreground lg:mx-auto">
+        <div className="flex flex-col w-full h-full px-2 mb-10 gap-y-2 bg-primary text-primary-foreground lg:mx-auto">
             <div className='my-4 flex-between'>
                 <h3 className='h3'>Pick A Film!</h3>
                 <div onClick={() => setModalOpen(false)} className='cursor-pointer text-m-xl'>
@@ -348,7 +348,7 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
                     </button>
                 </div>
                 <FilmFiltersDisplay
-                    openFilterModal={setModalOpen}
+                    openFilterModal={setFilterModalOpen}
                     isFilterApplied={isFilterApplied}
                     setIsFilterApplied={setIsFilterApplied}
                     filters={filters}

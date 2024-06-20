@@ -46,7 +46,7 @@ const LeftSidebar = () => {
         switch (basePath) {
             case 'profile':
                 return 0;
-            case '':  // This is the base case, equivalent to '/'
+            case 'home':  
                 return 1;
             case 'pickafilm':
                 return 2;
@@ -121,7 +121,7 @@ const LeftSidebar = () => {
             {/* Links */}
             <ul className="flex flex-col mb-20">
                 {/* Home */}
-                <NavLink to="/"
+                <NavLink to="/home"
                     className="leftsidebar-link"
                     onMouseEnter={() => handleMouseEnter(1)}
                     onMouseLeave={handleMouseLeave}

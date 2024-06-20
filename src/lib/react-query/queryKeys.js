@@ -16,6 +16,7 @@ export const QUERY_KEYS = {
   GET_FILE_PREVIEW: "getFilePreview",
   CREATE_PICKAFILM: "createPickAFilm",
   GET_PICKAFILM_BY_ID: "getPickAFilmById",
+  UPDATE_PICKAFILM: "updatePickAFilm",
 
   //  SEARCH KEYS
   SEARCH_EVENTS: "getSearchEvents",

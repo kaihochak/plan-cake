@@ -3,6 +3,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { Link } from "react-router-dom";
 import { fallbackMoviePoster, image342 } from "@/lib/tmdb/config";
 import FilmCard from "@/components/film/FilmCard";
+import {Skeleton} from "@/components/ui/skeleton";
 
 const FilmCollection = ({
 	items,
@@ -44,8 +45,6 @@ const FilmCollection = ({
 		}
 	}
 
-	console.log("FilmCollection items: ", items);
-
 	return (
 		<div className="py-2">
 			<div >
@@ -56,6 +55,7 @@ const FilmCollection = ({
 				<div className="grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4">
 					{/* each item */}
 					{filteredItems.slice(0, max).map((item, index) => (
+						// <Skeleton key={index} className="w-full h-[300px] md:h-[400px] bg-primary-light rounded-md" />
 						<div key={index}>
 							<FilmCard item={item}/>
 						</div>

@@ -75,7 +75,7 @@ const TimeConvertor = ({ confirmedDateTime }) => {
 	return (
 		<div>
 			{localDateTime && (
-				<p>{localDateTime} {getTimezoneAbbreviation(userTimezone)}</p>
+				<p>{localDateTime}</p>
 			)}
 		</div>
 	);

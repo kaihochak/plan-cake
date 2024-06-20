@@ -18,6 +18,7 @@ const FilmPage = () => {
 
   useEffect(() => {
     console.log("FilmPage useEffect id: ", id);
+    window.scrollTo(0, 0);
   }, [id]);
 
   const getFilmData = async () => {
@@ -45,7 +46,10 @@ const FilmPage = () => {
   // Get the film from the database
   useEffect(() => {
     getFilmData();
-    // ScrollToTop();
+    setTimeout(() => {
+      console.log("FilmPage useEffect getFilmData id: ", id);
+      window.scrollTo(0, 0);
+    }, 3000);
   }, [id]);
 
   useEffect(() => {
@@ -58,9 +62,9 @@ const FilmPage = () => {
   const FilmInfo = () => {
     return (
       <div className='inset-0 w-full mb-4 md:mb-0'>
-        {/* image & title*/}
+        {/* image */}
         <div className='film-img-container'>
-          {bannerSrc && <img src={bannerSrc} alt={film?.titile} className='film-img' />}
+          {bannerSrc && <img src={bannerSrc} alt={film?.title} className='film-img' />}
           {/* fade mask */}
           <div className='film-img-mask'></div>
         </div>
@@ -122,7 +126,6 @@ const FilmPage = () => {
             {cast?.map((person, index) => (
               <div key={index} className="items-center px-1 mr-2">
                 {/* profile pic */}
-                {/* <div className="items-center object-cover w-32 h-32 overflow-hidden rounded-full shadow-md"> */}
                 <div className="min-w-[90px]">
                   <img src={person?.profile_path ? image342(person.profile_path) : fallbackPersonImage} className="w-[90px] h-[90px] md:w-[120px] rounded-full object-cover" />
                 </div>
@@ -142,8 +145,11 @@ const FilmPage = () => {
     )
   }
 
+  /*****************************************************
+   * Render 
+    *****************************************************/
   return (
-    <div className='justify-between pb-20 film-container'>
+    <div className='pb-20 film-container'>
       <div className='film-page-inner'>
         {/* Film Info */}
         {loading ?
@@ -163,7 +169,6 @@ const FilmPage = () => {
               <Skeleton className="w-[120px] h-[200px] rounded-sm  md:w-[180px] md:h-[240px]" />
               <Skeleton className="w-[120px] h-[200px] rounded-sm  md:w-[180px] md:h-[240px]" />
             </div>
-
           </div> :
           <FilmInfo />}
 

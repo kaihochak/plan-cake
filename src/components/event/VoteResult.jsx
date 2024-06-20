@@ -9,16 +9,16 @@ import { toast } from "@/components/ui/use-toast";
 import { Form, FormControl, FormItem, FormLabel } from "@/components/ui/form";
 
 const FormSchema = z.object({
-  film: z.string().nonempty(),
+  film: z.string()
 });
 
-const VoteResult = ({ selectedFilms, guestList, setConfirmedFilm, setShowVoteResult }) => {
+const VoteResult = ({ selectedFilms, guestList, confirmedFilm, setConfirmedFilm, setShowVoteResult }) => {
   const [results, setResults] = useState([]);
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      film: selectedFilms.find(film => film.confirmed)?.id.toString() || "",
+      film: confirmedFilm?.id.toString() || "",
     },
   });
 
@@ -86,33 +86,37 @@ const VoteResult = ({ selectedFilms, guestList, setConfirmedFilm, setShowVoteRes
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Table for the results */}
           <Table>
-            <TableHead>
+            <TableHeader>
               <TableRow>
-                <TableCell className="w-[50px]"></TableCell>
-                <TableCell>Films</TableCell>
-                <TableCell>Votes</TableCell>
-                <TableCell className="text-right">Voters</TableCell>
+                <TableHead className=""></TableHead>
+                <TableHead>Films</TableHead>
+                <TableHead>Votes</TableHead>
+                <TableHead className="">Voters</TableHead>
               </TableRow>
-            </TableHead>
+            </TableHeader>
             <TableBody>
               {results.map((film, index) => (
-                <TableRow key={index}>
+                <TableRow key={index} className={`${form.watch('film') == film.id.toString()
+                  ? 'bg-accent-dark text-accent-foreground' : ''}`}>
                   <TableCell>
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 ">
                       <FormControl>
                         <Checkbox
                           checked={form.watch('film') === film.id.toString()}
-                          onCheckedChange={() => form.setValue('film', film.id.toString())}
+                          onCheckedChange={() => {
+                            if (form.watch('film') === film.id.toString()) {
+                              form.setValue('film', '');
+                            } else {
+                              form.setValue('film', film.id.toString())
+                            }
+                          }}
                         />
                       </FormControl>
-                      <FormLabel className="font-normal">
-                        {film.title}
-                      </FormLabel>
                     </FormItem>
                   </TableCell>
                   <TableCell>{film.title}</TableCell>
                   <TableCell>{film.votes}</TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="">
                     {film.voters.map((voter, index) => (
                       <span key={index}>
                         {voter.name}{index < film.voters.length - 1 ? ', ' : ''}
@@ -123,7 +127,12 @@ const VoteResult = ({ selectedFilms, guestList, setConfirmedFilm, setShowVoteRes
               ))}
             </TableBody>
           </Table>
-          <Button type="submit">Confirm film</Button>
+          <Button
+            type="submit"
+            className="w-[100%] border-none bg-accent text-primary shadow-xl"
+          >
+            Confirm Film
+          </Button>
         </form>
       </Form>
     </div>

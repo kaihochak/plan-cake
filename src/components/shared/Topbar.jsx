@@ -16,7 +16,7 @@ const TopBar = ({isSticky}) => {
     }, [isSuccess]);
 
     return (
-        <section className="topbar">
+        <section className="cursor-pointer topbar">
             <nav className="flex justify-center p-5">
                 {/* Logo as Home Button */}
                 <Link to="/" className="home-logo">

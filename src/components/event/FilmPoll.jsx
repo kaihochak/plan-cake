@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { Button } from '@/components/ui/button'
+import React, { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import FilmCard from "@/components/film/FilmCard";
-import FilmSearch from '@/components/film/FilmSearch';
+import FilmSearch from "@/components/film/FilmSearch";
 import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Dialog as SmallDialog, DialogContent as SmallDialogContent } from "@/components/ui/voteSelectDialog";
@@ -10,27 +10,22 @@ import VoteResult from "@/components/event/VoteResult";
 import GuestSelection from "@/components/event/GuestSelection";
 import { PiFilmStripBold } from "react-icons/pi";
 import { useUpdatePickAFilm } from "@/lib/react-query/queries";
-import { Skeleton } from "@/components/ui/skeleton"
-import { useToast } from "@/components/ui/use-toast"
+import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/components/ui/use-toast";
 
-const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGuest, setSelectedGuest, setGuestList, setConfirmedFilm }) => {
-	const { toast } = useToast()
+const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGuest, setSelectedGuest, setGuestList, confirmedFilm, setConfirmedFilm }) => {
+  const { toast } = useToast();
   const [showFilmSearch, setShowFilmSearch] = useState(false);
   const [showGuestSelection, setShowGuestSelection] = useState(false);
   const [showVoteResult, setShowVoteResult] = useState(false);
-  const [sortOrder, setSortOrder] = useState('');
+  const [sortOrder, setSortOrder] = useState("");
   const [sortedFilms, setSortedFilms] = useState(null);
   const [votedFilms, setVotedFilms] = useState([]);
   const [loading, setLoading] = useState(false);
-  const host = localStorage.getItem('host');
+  const host = localStorage.getItem("host");
 
   // Query
   const { mutateAsync: updatePickAFilm, isLoading } = useUpdatePickAFilm();
-
-
-  useEffect(() => {
-    console.log('re-mounded, time down to second', new Date().toLocaleTimeString());
-  }, []);
 
   // if it's the host, set the host to be the current user
   useEffect(() => {
@@ -50,7 +45,9 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
 
   // set the voted films, when the selected guest changes
   useEffect(() => {
-    setVotedFilms(guestList?.find(guest => (guest.id === selectedGuest))?.filmsVoted);
+    setVotedFilms(
+      guestList?.find((guest) => guest.id === selectedGuest)?.filmsVoted
+    );
     handleSortChange(sortOrder, selectedFilms);
   }, [selectedGuest]);
 
@@ -60,11 +57,14 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
 
   const GuestSelectionModal = () => {
     return (
-      <AlertDialog open={showGuestSelection} onOpenChange={setShowGuestSelection}>
+      <AlertDialog
+        open={showGuestSelection}
+        onOpenChange={setShowGuestSelection}
+      >
         <AlertDialogContent>
           <AlertDialogTitle>Who are you voting as?</AlertDialogTitle>
-          <div className='p-6'>
-          <GuestSelection
+          <div className="p-6">
+            <GuestSelection
               id={id}
               guestList={guestList}
               selectedGuest={selectedGuest}
@@ -78,8 +78,8 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    )
-  }
+    );
+  };
 
   /**********************************************************************************
    * Votes
@@ -93,19 +93,19 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
     // send the new guest to the DB
     let updatedGuestList = await updatePickAFilm({
       id: id,
-      guestList: newGuestList
+      guestList: newGuestList,
     });
 
     // show a toast message
     if (!updatedGuestList) {
       toast({
         variant: "destructive",
-        title: (
-          <p className='subtitle'>🚨 Error adding guest</p>
-        ),
+        title: <p className="subtitle">🚨 Error adding guest</p>,
         description: (
-          <p className='bold leading-[1.5]'>
-            There was an error adding <span className='italic subtitle'>${newGuest.name}</span> to the guest list.
+          <p className="bold leading-[1.5]">
+            There was an error adding{" "}
+            <span className="italic subtitle">${newGuest.name}</span> to the
+            guest list.
           </p>
         ),
       });
@@ -113,7 +113,7 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
     } else {
       return true;
     }
-  }
+  };
 
   const handleVotedFilmsOptimistic = async (allVotedFilms) => {
     // store existing guestList
@@ -123,14 +123,14 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
     setVotedFilms(allVotedFilms);
 
     // get the new guestList with the updated voted films
-    const newGuestList = guestList.map(guest => {
+    const newGuestList = guestList.map((guest) => {
       if (guest.id === selectedGuest) {
         return { ...guest, filmsVoted: allVotedFilms };
       }
       return guest;
     });
 
-    // update the guestList in parent state 
+    // update the guestList in parent state
     setGuestList(newGuestList);
 
     // update the guestList in the DB
@@ -143,31 +143,39 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
 
     // update the sorted films
     handleSortChange(sortOrder, selectedFilms);
-  }
+  };
 
   const VoteResultModal = () => {
     return (
       <SmallDialog open={showVoteResult} onOpenChange={setShowVoteResult}>
-        <SmallDialogContent hasClose={true} className="overflow-y-auto custom-scrollbar bg-primary text-secondary border-border w-[90%]">
+        <SmallDialogContent
+          hasClose={true}
+          className="overflow-y-auto custom-scrollbar bg-primary text-secondary border-border w-[90%] max-w-[1024px] xl:w-[70%]"
+        >
           <VoteResult
             selectedFilms={selectedFilms}
             guestList={guestList}
+            confirmedFilm={confirmedFilm}
             setConfirmedFilm={setConfirmedFilm}
             setShowVoteResult={setShowVoteResult}
           />
         </SmallDialogContent>
       </SmallDialog>
-    )
-  }
+    );
+  };
 
   const getVotes = (film) => {
-    let count = guestList.filter(guest => guest.filmsVoted?.some(vote => vote.id.toString() === film.id.toString())).length
+    let count = guestList.filter((guest) =>
+      guest.filmsVoted?.some(
+        (vote) => vote.id.toString() === film.id.toString()
+      )
+    ).length;
     return count;
-  }
+  };
 
   /**********************************************************************************
-  * Film Search
-  * ******************************************************************************/
+   * Film Search
+   * ******************************************************************************/
 
   const FilmSearchModal = () => {
     if (!showFilmSearch) return null;
@@ -187,31 +195,27 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
           />
         </DialogContent>
       </Dialog>
-    )
-  }
-
+    );
+  };
 
   // update the selectedFilms to DB
   const handleUpdateSelectedFilms = async (newSelectedFilms) => {
-
     // only send the id of the films to the DB
-    newSelectedFilms = newSelectedFilms.map(film => film.id);
+    newSelectedFilms = newSelectedFilms.map((film) => film.id);
 
     // send the new selectedFilms to the DB
     let updatedSelectedFilms = await updatePickAFilm({
       id: id,
-      selectedFilms: newSelectedFilms
+      selectedFilms: newSelectedFilms,
     });
 
     // show a toast message
     if (!updatedSelectedFilms) {
       toast({
         variant: "destructive",
-        title: (
-          <p className='subtitle'>🚨 Error adding film</p>
-        ),
+        title: <p className="subtitle">🚨 Error adding film</p>,
         description: (
-          <p className='bold leading-[1.5]'>
+          <p className="bold leading-[1.5]">
             There was an error adding the film to the selected films.
           </p>
         ),
@@ -220,7 +224,7 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
     } else {
       return true;
     }
-  }
+  };
 
   // handle search apply, prompt to user selection
   const handleSearchApplyOptimistic = async (newData) => {
@@ -242,7 +246,7 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
     if (!success) {
       setSelectedFilms(existingSelectedFilms);
     }
-  }
+  };
 
   /**********************************************************************************
    * Sorting
@@ -254,8 +258,9 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
     // Split films into voted and unvoted
     let voted = [];
     let unvoted = [];
-    sortedItems.forEach(item => {
-      if (votedFilms.some(vote => vote.id.toString() === item.id.toString())) voted.push(item);
+    sortedItems.forEach((item) => {
+      if (votedFilms.some((vote) => vote.id.toString() === item.id.toString()))
+        voted.push(item);
       else unvoted.push(item);
     });
 
@@ -274,27 +279,39 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
       if (aVotes === bVotes) return 0;
       return aVotes > bVotes ? -1 : 1;
     });
-  }
+  };
 
   const sortFilms = (sortBy, sortedItems) => {
     switch (sortBy) {
-      case 'Default':
+      case "Default":
         sortedItems = sortByVotedFilmsByCurrentUser(sortedItems); // Sort from voted to not voted
         break;
-      case 'Votes: High to Low':
+      case "Votes: High to Low":
         sortedItems = sortByVotes(sortedItems);
         break;
       case "Rating: High to Low":
-        sortedItems = sortedItems.sort((a, b) => b.vote_average - a.vote_average); // if b > a, b comes first
+        sortedItems = sortedItems.sort(
+          (a, b) => b.vote_average - a.vote_average
+        ); // if b > a, b comes first
         break;
       case "Rating: Low to High":
-        sortedItems = sortedItems.sort((a, b) => a.vote_average - b.vote_average); // if a > b, b comes first
+        sortedItems = sortedItems.sort(
+          (a, b) => a.vote_average - b.vote_average
+        ); // if a > b, b comes first
         break;
       case "Year: New to Old":
-        sortedItems = sortedItems.sort((a, b) => parseInt(b.release_date.split("-")[0]) - parseInt(a.release_date.split("-")[0]));
+        sortedItems = sortedItems.sort(
+          (a, b) =>
+            parseInt(b.release_date.split("-")[0]) -
+            parseInt(a.release_date.split("-")[0])
+        );
         break;
       case "Year: Old to New":
-        sortedItems = sortedItems.sort((a, b) => parseInt(a.release_date.split("-")[0]) - parseInt(b.release_date.split("-")[0]));
+        sortedItems = sortedItems.sort(
+          (a, b) =>
+            parseInt(a.release_date.split("-")[0]) -
+            parseInt(b.release_date.split("-")[0])
+        );
         break;
       default:
         sortedItems = sortByVotedFilmsByCurrentUser(sortedItems); // Sort from voted to not voted
@@ -302,18 +319,17 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
     }
 
     return sortedItems;
-  }
+  };
 
   const handleSortChange = (value, films) => {
-
     if (!films || films.length === 0) return;
 
     let sortedItems = sortFilms(value, films);
-    if (value === 'Default') value = '';
+    if (value === "Default") value = "";
 
     setSortedFilms(sortedItems);
     setSortOrder(value);
-  }
+  };
 
   /**********************************************************************************
    * Film Display
@@ -321,43 +337,52 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
 
   const FilmDisplay = () => {
     return (
-      <div className='p-4 my-2 rounded-sm bg-primary-light'>
+      <div className="px-4 py-2 my-2 rounded-sm bg-primary-light">
         {/* Buttons */}
-        <div className='flex-row gap-4 pb-4 flex-between '>
+        <div className="flex-row gap-4 pb-2 flex-between ">
           <button
             className="button-text text-primary-foreground flex-between gap-x-2"
-            onClick={() => setShowVoteResult(true)}>
-            <p>View Result</p>
+            onClick={() => setShowVoteResult(true)}
+          >
             <PiFilmStripBold className="w-5 h-5 mb-[0.5]" />
+            <p>Confirm Vote</p>
           </button>
           <Select
             value={sortOrder}
-            onValueChange={value => handleSortChange(value, selectedFilms)}
+            onValueChange={(value) => handleSortChange(value, selectedFilms)}
           >
             <SelectTrigger className="w-[110px] lg:w-[180px]">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="Default">Default</SelectItem>
-              <SelectItem value="Votes: High to Low">Votes: High to Low</SelectItem>
+              <SelectItem value="Votes: High to Low">
+                Votes: High to Low
+              </SelectItem>
               <SelectItem value="Year: Old to New">Year: Old to New</SelectItem>
               <SelectItem value="Year: New to Old">Year: New to Old</SelectItem>
-              <SelectItem value="Rating: High to Low">Rating: High to Low</SelectItem>
+              <SelectItem value="Rating: High to Low">
+                Rating: High to Low
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
         {/* Film Cards */}
-        <div className='grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4 '>
-          {loading && !sortedFilms && (
+        <div className="grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4 ">
+          {loading &&
+            !sortedFilms &&
             Array.from({ length: 4 }).map((_, index) => (
               <div key={index} className="relative flex flex-col gap-y-2">
                 <Skeleton className="aspect-w-1 aspect-h-[1.5]" />
               </div>
-            ))
-          )}
+            ))}
 
-          {sortedFilms?.length === 0 || sortedFilms === null &&
-            (<div className='col-span-4 py-32 mx-auto md:py-36 text-primary-foreground h3'>No film selected</div>)}
+          {sortedFilms?.length === 0 ||
+            (sortedFilms === null && (
+              <div className="col-span-4 py-32 mx-auto md:py-36 text-primary-foreground h3">
+                No film selected
+              </div>
+            ))}
 
           {sortedFilms?.map((item) => (
             <div key={item.id}>
@@ -373,28 +398,42 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
           ))}
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   /**********************************************************************************
    * Rendering
    * ******************************************************************************/
-
   return (
-    <div className='mt-2'>
+    <div className="flex flex-col gap-2">
       {/* Title */}
-      <div className='flex justify-between'>
-        <div className='subtitle'>Film</div>
-        <Button
-          variant="accent"
-          className="w-[100px] h-[25px] md:w-[120px] md:h-[35px] "
-          onClick={() => {
-            if (selectedGuest) setShowFilmSearch(true);
-            else setShowGuestSelection(true);
-          }}
-        >
-          <p className='body'>Add Film</p>
-        </Button>
+      <div className="flex justify-between">
+        <div className="subtitle text-foreground-dark">Film Poll</div>
+
+        <div className="relative">
+          <Button
+            variant="accent"
+            className="w-[100px] h-[25px] md:w-[120px] md:h-[35px] "
+            onClick={() => {
+              if (selectedGuest) setShowFilmSearch(true);
+              else setShowGuestSelection(true);
+            }}
+          >
+            <p className="body">Add Film</p>
+          </Button>
+          <div
+            className={`${selectedFilms?.length > 0
+                ? ""
+                : "absolute top-0 right-0 -mr-1 -mt-1 w-4 h-4 rounded-full bg-accent2 animate-ping opacity-75"
+              } `}
+          ></div>
+          <div
+            className={`${selectedFilms?.length > 0
+                ? ""
+                : "absolute top-0 right-0 -mr-1 -mt-1 w-4 h-4 rounded-full bg-accent2"
+              }`}
+          ></div>
+        </div>
       </div>
 
       {/* Film poll */}
@@ -409,6 +448,6 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
       {/* Vote Result Modal */}
       <VoteResultModal />
     </div>
-  )
-}
+  );
+};
 export default FilmPoll;

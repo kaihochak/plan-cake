@@ -13,10 +13,6 @@ const FilmCard = React.memo(({ item, selectedFilms, setSelectedFilms, watchlistO
 	const [viewFilmId, setViewFilmId] = React.useState(false)
 	const watchlisters = watchlistObject ? watchlistObject[item.id] : null;
 
-	useEffect(() => {
-		console.log('re-mounded, time down to second', new Date().toLocaleTimeString());
-	}, []);
-
 	// Select or de-select a film, then update the selectedFilms state back in the parent component
 	const handleSelect = (itemId) => {
 
@@ -35,6 +31,7 @@ const FilmCard = React.memo(({ item, selectedFilms, setSelectedFilms, watchlistO
 	return (
 		<div className="relative flex flex-col gap-y-2">
 			{/* Poster */}
+			
 			<div className="w-full ">
 				<div className="aspect-w-1 aspect-h-[1.5]">
 					{/* Image */}

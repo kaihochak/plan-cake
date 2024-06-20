@@ -12,7 +12,7 @@ const WhatsNearby = ({hasTitle, isFilterVisible, hasViewMore, hasButton, max, ma
       {hasTitle &&
         <div>
           <div className='flex items-baseline justify-between pb-2 mb-2 border-b-2'>
-            <h2 className='h2'>What's Nearby</h2>
+            <h2 className='h2'>What's Nearby (Coming Soon)</h2>
             <NavLink
               to={`/explore/nearby`}
               className='flex items-center'
