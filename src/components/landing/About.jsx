@@ -32,7 +32,7 @@ const About = () => {
           {/* Jacob Chak */}
           <div className='p-6 rounded-lg md:p-8 bg-accent'>
             <div className='flex flex-between'>
-              <p className='mb-2 subtitle text-primary'>Jacob Chak</p>
+              <p className='mb-2 font-bold subtitle text-primary'>Jacob Chak</p>
               <div className='flex justify-end mb-2 gap-x-3'>
                 <a href="https://www.jacobchak.com/"><RiFolderImageLine className='text-primary text-[25px]' /></a>
                 <a href="https://www.linkedin.com/in/kaihochak/"><AiOutlineLinkedin className='text-primary text-[25px]' /></a>
