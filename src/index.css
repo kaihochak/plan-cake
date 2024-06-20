@@ -151,7 +151,7 @@ body {
 
   .h2 {
     @apply font-medium tracking-[-0.02em] leading-tight;
-    @apply text-[28px] sm:text-[36px] md:text-[40px] lg:text-[48px];
+    @apply text-[32px] sm:text-[36px] md:text-[40px] lg:text-[48px];
   }
 
   .h3 {
@@ -166,17 +166,17 @@ body {
 
   .body {
     @apply font-medium;
-    @apply text-[12px] md:text-[14px] lg:text-[16px];
+    @apply text-[13px] md:text-[14px] lg:text-[16px];
   }
 
   .bold {
     @apply font-semibold;
-    @apply text-[12px] md:text-[14px] lg:text-[16px];
+    @apply text-[13px] md:text-[14px] lg:text-[16px];
   }
 
   .small {
     @apply font-normal;
-    @apply text-[10px] md:text-[12px] lg:text-[14px];
+    @apply text-[11px] md:text-[12px] lg:text-[14px];
   }
 
   .pretitle {
@@ -305,11 +305,6 @@ body {
     @apply grid w-full max-w-5xl grid-cols-1 xs:grid-cols-2 md:chgrid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-7;
   }
 
-  /* Landing Page */
-  .landing-container {
-    @apply container relative flex flex-col items-center w-full gap-y-14 min-h-[400px];
-  }
-
   /* Wave */
   .wave {
     position: absolute;
@@ -320,12 +315,12 @@ body {
   }
 
   .top-wave {
-    top: 0;
+    top: -5px;
     transform: rotate(180deg);
   }
 
   .bottom-wave {
-    bottom: 0;
+    bottom: -10px;
   }
 
   .wave svg {
@@ -338,36 +333,28 @@ body {
   .shape-fill {
     fill: hsl(var(--primary));
   }
-  
-  .landing-img-container {
-    @apply relative w-full h-auto mt-8;
-  }
 
   .top-image {
-    @apply absolute z-20 scale-[0.9] rotate-[-10deg] rounded-lg h-full object-cover top-0 left-0;
-    @apply translate-x-[30px] md:translate-x-[150px] lg:translate-x-[100px]  translate-y-[30px];
-    @apply w-[60%] md:w-[35%] lg:w-[40%] xl:w-[50%];
+    @apply absolute z-20 scale-[0.9] rotate-[-10deg] rounded-lg h-full object-cover;
+    @apply -translate-y-1/2 -translate-x-2/3 top-1/2 left-1/2 transform-gpu;
   }
 
   .bottom-image {
     @apply relative z-10 rotate-[10deg] h-full object-cover rounded-lg;
     @apply translate-x-[20px];
-    @apply w-[60%] md:w-[35%] lg:w-[40%] xl:w-[50%];
-  }
-
-  .features-container {
-    @apply z-10 grid w-full grid-cols-2 mx-auto gap-x-4 gap-y-10;
-    @apply md:absolute md:top-[25%] lg:top-[25%] md:left-[5%] xl:left-[15%] md:gap-x-[40%] lg:gap-x-[30%] xl:gap-x-[15%];
-  }
-
-  .feature-container {
-    @apply flex flex-col gap-y-1 w-[100%];
-    @apply md:w-[80%] md:h-auto xl:w-[30%];
   }
 
   .landing-btn {
-    @apply px-1 py-2 w-[100%] rounded-md mt-2;
+    @apply w-full px-1 py-2 mt-2 rounded-md button-text;
   }
+
+  .feature-col {
+    @apply flex justify-between w-full mt-10 md:w-auto md:mt-0 md:flex-col gap-x-6 gap-y-10;
+  }
+
+  .feature-container {
+    @apply flex flex-col items-start gap-y-1 w-[160px];
+  }  
 
   /* Explore Container */
   .explore-container {
@@ -723,16 +710,6 @@ body {
   .bottom-bar {
     @apply sticky bottom-0 z-50 w-full px-2 py-1 border-t bg-primary/90 backdrop-blur-xl border-primary-light flex-between;
     @apply md:px-8 xl:hidden;
-  }
-
-  /* User card */
-  .user-card {
-    @apply flex-center flex-col gap-4 border border-dark-4 rounded-[20px] px-5 py-8;
-  }
-
-  /* thread card  */
-  .thread-card_bar {
-    @apply relative mt-2 w-0.5 grow rounded-full bg-neutral-800;
   }
 }
 

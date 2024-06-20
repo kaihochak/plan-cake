@@ -11,15 +11,15 @@ const LandingHeader = () => {
         <header className='container sticky top-0 z-50 flex items-center justify-between w-full p-8 overflow-hidden bg-transparent font-regular backdrop-filter backdrop-blur bg-opacity-10 border-secondary-dark/10'>
             {/* Logo Desktop */}
             <div className='hidden md:flex'>
-                {/* <Link
+                <Link
                     to='features'
                     activeClass='active'
                     smooth={true}
                     spy={true}
                     className='flex self-center cursor-pointer pr-9'
-                > */}
+                >
                     <img src="/assets/icons/logo.png" alt="" className='w-[150px] md:w-[120px]' />
-                {/* </Link> */}
+                </Link>
             </div>
 
             {/* Nav Items desktop */}

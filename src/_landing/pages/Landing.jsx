@@ -2,6 +2,7 @@ import React from 'react'
 import Features from '@/components/landing/Features'
 import About from '@/components/landing/About'
 import FAQ from '@/components/landing/FAQ'
+import LandingFooter from '@/components/landing/LandingFooter'
 
 const Landing = () => {
   return (
@@ -9,6 +10,7 @@ const Landing = () => {
       <Features />
       <About /> 
       <FAQ />
+      <LandingFooter/>
     </div>
   )
 }

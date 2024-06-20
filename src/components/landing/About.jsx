@@ -4,7 +4,7 @@ import { AiOutlineLinkedin } from "react-icons/ai";
 
 const About = () => {
   return (
-    <section className='flex flex-col bg-[#f6f6f6] -mt-[700px] md:-mt-[180px] lg:-mt-[150px]' id="about">
+    <section className='flex flex-col bg-[#f6f6f6] -mt-[700px] md:-mt-[180px] lg:-mt-[200px]' id="about">
       {/* top wave */}
       <div className='relative w-full mb-36'>
         <div className="wave top-wave">

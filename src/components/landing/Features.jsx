@@ -10,62 +10,74 @@ import { Link } from "react-router-dom";
 const Features = () => {
 
   return (
-    <section className='landing-container' id="features">
+    <section className='z-10 w-full md:min-h-[700px]' id="features">
 
       {/* Hero */}
-      <div className='flex-col flex-between'>
-        <h2 className='text-center h2 md:max-w-[500px]'>
-          Plancake makes it easy to plan your social life!
-        </h2>
-        {/* images */}
-        <div className='flex-center landing-img-container'>
-          <img
-            src="/assets/landingpage-mockup2.png"
-            alt="app mockup"
-            className='top-image'
-          />
-          <img
-            src="/assets/landingpage-mockup1.png"
-            alt="app mockup"
-            className='bottom-image'
-          />
-        </div>
-      </div>
+      <div className='container flex-col w-full flex-between 2xl:max-w-[1000px] md:flex-row min-w-[300px] h-full'>
+        {/* Title & Images */}
+        <div className='flex flex-col md:order-2 w-full gap-y-2 md:w-[50%] md:gap-y-0'>
+          <h2 className='py-8 text-center h2 md:py-10 md:w-auto w-[80%] mx-auto'>
+            Plancake makes social event easy!
+          </h2>
 
-      {/* Features */}
-      <div className='features-container'>
-        {/* Pick A Film */}
-        <div className='feature-container'>
-          <TbMovie className='text-accent text-[30px]' />
-          <p className='body-bold text-primary md:text-primary-foreground'>Pick A Film</p>
-          <p className='body text-primary md:text-primary-foreground'>Everyone adds their favorite movies to a shared list and then votes.</p>
-          <Link to='/pickAFilm'>
-            <button className='button-text landing-btn bg-accent text-accent-foreground px-1 py-2 w-[80%] rounded-md mt-2 hover:bg-accent-dark'>Create Event</button>
-          </Link>
+          {/* images */}
+          <div className='relative flex w-[75%] mx-auto md:w-full flex-center '>
+            <img
+              src="/assets/landingpage-mockup2.png"
+              alt="app mockup"
+              className='top-image'
+            />
+            <img
+              src="/assets/landingpage-mockup1.png"
+              alt="app mockup"
+              className='bottom-image'
+            />
+          </div>
         </div>
 
-        {/* Gig Buddies */}
-        <div className='feature-container'>
-          <CgMusic className='text-accent2 text-[30px]' />
-          <p className='body-bold text-primary md:text-primary-foreground'>Gig Buddies</p>
-          <p className='body text-primary md:text-primary-foreground'>Everyone adds their favorite movies to a shared list and then votes.</p>
-          <button className='border button-text text-accent2 hover:text-white landing-btn border-accent2'>Coming Soon</button>
+
+        {/* Feature Column 1 */}
+        <div className='feature-col md:order-1'>
+          {/* Feature: Pick A Film */}
+          <div className='feature-container'>
+            <TbMovie className='text-accent text-[30px] mb-2' />
+            <p className='bold text-primary md:text-primary-foreground'>Pick A Film</p>
+            <p className='small text-primary md:text-primary-foreground'>Everyone adds their favorite movies to a shared list and then votes.</p>
+            <button 
+              className='landing-btn bg-accent text-accent-foreground hover:bg-accent-dark' 
+              onClick={() => window.location.href = '/pickAFilm'}
+            >
+              Create Event
+            </button>
+          </div>
+
+          {/* Feature: Gig Buddies */}
+          <div className='feature-container'>
+            <CgMusic className='text-accent2 text-[30px] mb-2' />
+            <p className='bold text-primary md:text-primary-foreground'>Gig Buddies</p>
+            <p className='small text-primary md:text-primary-foreground'>Everyone adds their favorite movies to a shared list and then votes.</p>
+            <button className='border text-accent2 hover:text-white landing-btn border-accent2'>Coming Soon</button>
+          </div>
         </div>
 
-        {/* Book Club */}
-        <div className='feature-container'>
-          <RiBook3Line className='text-green text-[30px]' />
-          <p className='body-bold text-primary md:text-primary-foreground'>Book Club</p>
-          <p className='body text-primary md:text-primary-foreground'>Everyone adds their favorite movies to a shared list and then votes.</p>
-          <button className='border button-text text-green hover:text-white landing-btn border-green'>Coming Soon</button>
-        </div>
+        {/* Feature Column 2 */}
+        <div className='feature-col md:order-3'>
+          {/* Feature: Book Club */}
+          <div className='feature-container'>
+            <RiBook3Line className='text-green text-[30px] mb-2' />
+            <p className='bold text-primary md:text-primary-foreground'>Book Club</p>
+            <p className='small text-primary md:text-primary-foreground'>Everyone adds their favorite movies to a shared list and then votes.</p>
+            <button className='border text-green hover:text-white landing-btn border-green'>Coming Soon</button>
+          </div>
 
-        {/* Vote Everything */}
-        <div className='feature-container'>
-          <FaRegCircleQuestion className='text-red text-[30px]' />
-          <p className='body-bold text-primary md:text-primary-foreground'>Gig Buddies</p>
-          <p className='body text-primary md:text-primary-foreground'>Everyone adds their favorite movies to a shared list and then votes.</p>
-          <button className='border button-text text-red hover:text-white landing-btn border-red'>Coming Soon</button>
+          {/* Feature: Vote Everything */}
+          <div className='feature-container'>
+            <FaRegCircleQuestion className='text-red text-[30px] mb-2' />
+            <p className='bold text-primary md:text-primary-foreground'>Gig Buddies</p>
+            <p className='small text-primary md:text-primary-foreground'>Everyone adds their favorite movies to a shared list and then votes.</p>
+            <button className='border text-red hover:text-white landing-btn border-red'>Coming Soon</button>
+          </div>
+
         </div>
       </div>
     </section>
