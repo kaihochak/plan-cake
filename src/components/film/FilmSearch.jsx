@@ -348,7 +348,7 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
                     </button>
                 </div>
                 <FilmFiltersDisplay
-                    openFilterModal={setModalOpen}
+                    openFilterModal={setFilterModalOpen}
                     isFilterApplied={isFilterApplied}
                     setIsFilterApplied={setIsFilterApplied}
                     filters={filters}
