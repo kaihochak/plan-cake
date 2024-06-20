@@ -65,8 +65,6 @@ const PickAFilmPage = () => {
   };
 
 
-  // let bannerSrc = image500(state.confirmedFilm?.poster_path);
-  // if (bp_768) bannerSrc = imagePath(state.confirmedFilm?.backdrop_path);
   let bannerSrc = imagePath(state.confirmedFilm?.backdrop_path);
 
   // Query: Get PickAFilm by ID
@@ -185,7 +183,6 @@ const PickAFilmPage = () => {
     )
   }
 
-
   /**********************************************************************************
    * Rendering
    **********************************************************************************/
@@ -205,7 +202,7 @@ const PickAFilmPage = () => {
   return (
     <div className='container mx-auto max-w-[1280px] flex-col items-center justify-start overflow-x-hidden mt-10 md:mt-14 md:px-4 xl:mt-24 xl:px-10'>
 
-      <div className='flex flex-col justify-start gap-y-4 pt-12 md:pt-16 lg:pt-24 xl:pt-12 md:pb-32'>
+      <div className='flex flex-col justify-start pt-12 gap-y-4 md:pt-16 lg:pt-24 xl:pt-12 md:pb-32'>
 
 
         {/* banner */}
@@ -268,7 +265,6 @@ const PickAFilmPage = () => {
                     />
                   }
 
-
                   {/* film title */}
                   {state.confirmedFilm &&
                     <h3 className="body">
@@ -317,6 +313,7 @@ const PickAFilmPage = () => {
               guestList={state.guestList}
               selectedFilms={state.selectedFilms}
               selectedGuest={state.selectedGuest}
+              confirmedFilm={state.confirmedFilm}
               setGuestList={(guestList) => dispatch({ type: 'SET_GUEST_LIST', payload: guestList })}
               setSelectedFilms={(films) => dispatch({ type: 'SET_SELECTED_FILMS', payload: films })}
               setSelectedGuest={(guest) => dispatch({ type: 'SET_SELECTED_GUEST', payload: guest })}

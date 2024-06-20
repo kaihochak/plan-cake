@@ -3,27 +3,9 @@ import { Button } from "@/components/ui/button";
 import FilmCard from "@/components/film/FilmCard";
 import FilmSearch from "@/components/film/FilmSearch";
 import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import {
-  Dialog as SmallDialog,
-  DialogContent as SmallDialogContent,
-} from "@/components/ui/voteSelectDialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/sortSelect";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Dialog as SmallDialog, DialogContent as SmallDialogContent } from "@/components/ui/voteSelectDialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/sortSelect";
 import VoteResult from "@/components/event/VoteResult";
 import GuestSelection from "@/components/event/GuestSelection";
 import { PiFilmStripBold } from "react-icons/pi";
@@ -31,16 +13,7 @@ import { useUpdatePickAFilm } from "@/lib/react-query/queries";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
 
-const FilmPoll = ({
-  selectedFilms,
-  setSelectedFilms,
-  guestList,
-  id,
-  selectedGuest,
-  setSelectedGuest,
-  setGuestList,
-  setConfirmedFilm,
-}) => {
+const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGuest, setSelectedGuest, setGuestList, confirmedFilm, setConfirmedFilm }) => {
   const { toast } = useToast();
   const [showFilmSearch, setShowFilmSearch] = useState(false);
   const [showGuestSelection, setShowGuestSelection] = useState(false);
@@ -182,6 +155,7 @@ const FilmPoll = ({
           <VoteResult
             selectedFilms={selectedFilms}
             guestList={guestList}
+            confirmedFilm={confirmedFilm}
             setConfirmedFilm={setConfirmedFilm}
             setShowVoteResult={setShowVoteResult}
           />
@@ -430,8 +404,6 @@ const FilmPoll = ({
   /**********************************************************************************
    * Rendering
    * ******************************************************************************/
-  console.log(selectedFilms);
-
   return (
     <div className="flex flex-col gap-2">
       {/* Title */}
@@ -450,18 +422,16 @@ const FilmPoll = ({
             <p className="body">Add Film</p>
           </Button>
           <div
-            className={`${
-              selectedFilms?.length > 0
+            className={`${selectedFilms?.length > 0
                 ? ""
                 : "absolute top-0 right-0 -mr-1 -mt-1 w-4 h-4 rounded-full bg-accent2 animate-ping opacity-75"
-            } `}
+              } `}
           ></div>
           <div
-            className={`${
-              selectedFilms?.length > 0
+            className={`${selectedFilms?.length > 0
                 ? ""
                 : "absolute top-0 right-0 -mr-1 -mt-1 w-4 h-4 rounded-full bg-accent2"
-            }`}
+              }`}
           ></div>
         </div>
       </div>
