@@ -60,7 +60,7 @@ const LandingHeader = () => {
             </div>
 
             {/* Mobile NAV */}
-            <section className='grid grid-cols-3 md:hidden'>
+            <section className='grid w-full grid-cols-3 md:hidden'>
                 <div className='col-span-1'></div>
                 <Link
                     to='features'

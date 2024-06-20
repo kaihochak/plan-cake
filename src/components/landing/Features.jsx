@@ -13,15 +13,15 @@ const Features = () => {
     <section className='z-10 w-full md:min-h-[700px]' id="features">
 
       {/* Hero */}
-      <div className='container flex-col w-full flex-between 2xl:max-w-[1000px] md:flex-row min-w-[300px] h-full'>
+      <div className='container flex-col w-full flex-between md:max-w-[900px] 2xl:max-w-[1200px] md:flex-row min-w-[300px] h-full'>
         {/* Title & Images */}
         <div className='flex flex-col md:order-2 w-full gap-y-2 md:w-[50%] md:gap-y-0'>
           <h2 className='py-8 text-center h2 md:py-10 md:w-auto w-[80%] mx-auto'>
-            Plancake makes social event easy!
+          Plan Less, Enjoy More with <span className='text-accent'>Plancake</span>!
           </h2>
 
           {/* images */}
-          <div className='relative flex w-[75%] mx-auto md:w-full flex-center '>
+          <div className='relative flex w-[55%] mx-auto flex-center md:max-w-[250px] lg:max-w-[300px]'>
             <img
               src="/assets/landingpage-mockup2.png"
               alt="app mockup"
@@ -42,7 +42,7 @@ const Features = () => {
           <div className='feature-container'>
             <TbMovie className='text-accent text-[30px] mb-2' />
             <p className='bold text-primary md:text-primary-foreground'>Pick A Film</p>
-            <p className='small text-primary md:text-primary-foreground'>Everyone adds their favorite movies to a shared list and then votes.</p>
+            <p className='small text-primary md:text-primary-foreground'>lets everyone add movies and vote, making movie night planning simple and fun.</p>
             <button 
               className='landing-btn bg-accent text-accent-foreground hover:bg-accent-dark' 
               onClick={() => window.location.href = '/pickAFilm'}
@@ -55,7 +55,9 @@ const Features = () => {
           <div className='feature-container'>
             <CgMusic className='text-accent2 text-[30px] mb-2' />
             <p className='bold text-primary md:text-primary-foreground'>Gig Buddies</p>
-            <p className='small text-primary md:text-primary-foreground'>Everyone adds their favorite movies to a shared list and then votes.</p>
+            <p className='small text-primary md:text-primary-foreground'>
+            connects you with people who share your music interests, ensuring you never miss a live show.
+            </p>
             <button className='border text-accent2 hover:text-white landing-btn border-accent2'>Coming Soon</button>
           </div>
         </div>
@@ -66,15 +68,19 @@ const Features = () => {
           <div className='feature-container'>
             <RiBook3Line className='text-green text-[30px] mb-2' />
             <p className='bold text-primary md:text-primary-foreground'>Book Club</p>
-            <p className='small text-primary md:text-primary-foreground'>Everyone adds their favorite movies to a shared list and then votes.</p>
+            <p className='small text-primary md:text-primary-foreground'>
+            lets you create a shared list and vote on books to read, making group reading easy and enjoyable.
+            </p>
             <button className='border text-green hover:text-white landing-btn border-green'>Coming Soon</button>
           </div>
 
           {/* Feature: Vote Everything */}
           <div className='feature-container'>
             <FaRegCircleQuestion className='text-red text-[30px] mb-2' />
-            <p className='bold text-primary md:text-primary-foreground'>Gig Buddies</p>
-            <p className='small text-primary md:text-primary-foreground'>Everyone adds their favorite movies to a shared list and then votes.</p>
+            <p className='bold text-primary md:text-primary-foreground'>Vote Everthing</p>
+            <p className='small text-primary md:text-primary-foreground'>
+            allows you to create lists and vote on any topic, making group decisions simple and fun.
+            </p>
             <button className='border text-red hover:text-white landing-btn border-red'>Coming Soon</button>
           </div>
 

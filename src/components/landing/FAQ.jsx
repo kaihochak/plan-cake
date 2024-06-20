@@ -6,32 +6,32 @@ const FAQ = () => {
     <section className='flex flex-col bg-[#f6f6f6] -mt-0.5' id="faq">
       
       {/* <div className='absolute top-0 left-0 w-full landing-container reverse-bubble'></div> */}
-      <div className='container lg:w-[70%] flex flex-col items-center justify-center w-full h-full pt-10 gap-y-6'>
+      <div className='container lg:w-[70%] flex flex-col items-center justify-center w-full h-full py-10 gap-y-6'>
         <p className='z-50 body-bold text-primary'>Frequently Asked Questions</p>
         <div className='mb-16 md:mb-12 md:w-[80%]'>
           <Accordion type="single" collapsible className="">
             <AccordionItem value="item-1">
-              <AccordionTrigger className='base-medium text-primary text-start'>How can I create and customize my academic profile?</AccordionTrigger>
+              <AccordionTrigger className='base-medium text-primary text-start'>How exactly does Plancake simplify event planning?</AccordionTrigger>
               <AccordionContent className='base-medium text-primary AccordionContent'>
-                To create your academic profile, sign up for an account and follow the  prompts to enter your personal and academic information. You can  customize your profile by adding a profile picture, a brief bio, your  research interests, publications, and any other relevant details. Navigate to the "Profile" section anytime to update and edit your  information.
+              Plancake allows users to create shared lists, add their favorite options, and vote on them. This makes organizing events like movie nights, book clubs, and concerts easy and fun. For example, the PickAFilm feature lets you and your friends add movies to a poll where everyone can vote. It displays the runtime, genres, and ratings, making it easy to choose and enjoy your movie night without the endless scrolling.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2">
-              <AccordionTrigger className='base-medium text-primary text-start'>How do I find and connect with potential collaborators?</AccordionTrigger>
+              <AccordionTrigger className='base-medium text-primary text-start'>How do I find and connect with people who share the same interest?</AccordionTrigger>
               <AccordionContent className='base-medium text-primary AccordionContent'>
-                Our platform features a powerful search and recommendation engine. You can use the search bar to find researchers based on keywords, interests, or specific fields of study. Additionally, our AI-powered recommendations will suggest potential collaborators based on your profile information and activity. Simply visit their profile and send a connection request or message to start a conversation.
+              Plancake makes it easy to connect with like-minded people. With features like discovering local events, concerts, and galleries, you can find and join activities that interest you. Instead of aimlessly connecting with people on dating apps and finding no common ground, Plancake helps you meet those who share your tastes. For example, if you want to see a concert but none of your friends are interested, Gig Buddies will find you a friend to go with.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">
-              <AccordionTrigger className='base-medium text-primary text-start'>What kind of academic resources can I share and access on the platform?</AccordionTrigger>
+              <AccordionTrigger className='base-medium text-primary text-start'>Is Plancake suitable for all types of cultural events?</AccordionTrigger>
               <AccordionContent className='base-medium text-primary AccordionContent'>
-                You can share and access a wide variety of academic resources, including research papers, presentations, datasets, and multimedia materials. To share a resource, go to the "Resources" section, click on "Add Resource," and follow the prompts to upload your file. You can browse and download resources shared by other users through the same section.
+              It depends. Currently, we are developing features for movie screenings, concerts, and book clubs. Feel free to let us know your suggestions, and we will explore adding more features.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-4">
-              <AccordionTrigger className='base-medium text-primary text-start'>How can I participate in academic discussions and forums?</AccordionTrigger>
+              <AccordionTrigger className='base-medium text-primary text-start'>How is Plancake different from Letterboxd, Eventbrite, or Meetup?</AccordionTrigger>
               <AccordionContent className='base-medium text-primary AccordionContent'>
-                Our platform hosts several discussion forums on a range of academic topics. To participate, navigate to the "Forums" section, select a topic of interest, and join the conversation by posting your questions, insights, or responses. You can also create new discussion threads if you have a specific topic you’d like to discuss with the community.
+              Plancake combines the best of both worlds by offering information and functionality for event planning. Unlike Letterboxd, which focuses solely on movies, Plancake supports a variety of cultural events and helps organize them. Unlike Eventbrite, which is primarily for ticketed events, Plancake emphasizes community-building and shared decision-making for any type of social activity. Unlike Meetup, Plancake offers integrated voting and shared list features, making the planning process collaborative and fun.
               </AccordionContent>
             </AccordionItem>
           </Accordion>

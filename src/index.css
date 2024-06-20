@@ -335,12 +335,12 @@ body {
   }
 
   .top-image {
-    @apply absolute z-20 scale-[0.9] rotate-[-10deg] rounded-lg h-full object-cover;
+    @apply absolute z-20 scale-[0.9] rotate-[-10deg] rounded-lg object-cover md:w-[200px] lg:w-[250px];
     @apply -translate-y-1/2 -translate-x-2/3 top-1/2 left-1/2 transform-gpu;
   }
 
   .bottom-image {
-    @apply relative z-10 rotate-[10deg] h-full object-cover rounded-lg;
+    @apply relative z-10 rotate-[10deg] object-cover rounded-lg md:w-[200px] lg:w-[250px];
     @apply translate-x-[20px];
   }
 
