@@ -54,9 +54,9 @@ const LandingHeader = () => {
                     FAQ
                 </Link>
                 {/* Dark Mode */}
-                <div className="flex self-center ml-2 ">
+                {/* <div className="flex self-center ml-2 ">
                     <ModeToggle />
-                </div>
+                </div> */}
             </div>
 
             {/* Mobile NAV */}

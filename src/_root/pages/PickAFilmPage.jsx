@@ -265,7 +265,7 @@ const PickAFilmPage = () => {
                     />
                   }
 
-                  {/* film title */}
+                  {/* Selected film title */}
                   {state.confirmedFilm &&
                     <h3 className="body">
                       <span className='text-foreground-dark'>Selected Film</span><br />

@@ -4,7 +4,7 @@ import { AiOutlineLinkedin } from "react-icons/ai";
 
 const About = () => {
   return (
-    <section className='flex flex-col bg-[#f6f6f6] -mt-[700px] md:-mt-[150px]' id="about">
+    <section className='flex flex-col bg-[#f6f6f6] -mt-[700px] md:-mt-[180px] lg:-mt-[150px]' id="about">
       {/* top wave */}
       <div className='relative w-full mb-36'>
         <div className="wave top-wave">
@@ -15,7 +15,6 @@ const About = () => {
       </div>
 
       <div className='container flex flex-col items-center justify-center w-full lg:w-[60%] h-full gap-y-10 mt-[600px] md:mt-[100px]'>
-        {/* <div className='landing-container bubble md:mt-20' > */}
         
         {/* title  */}
         <div className='flex flex-col max-w-lg gap-y-4'>
@@ -28,7 +27,7 @@ const About = () => {
 
           {/* Jacob Chak */}
           <div className='p-6 rounded-lg md:p-8 bg-accent'>
-            <div className='flex flex-between '>
+            <div className='flex flex-between'>
               <p className='mb-2 body-bold text-primary'>Jacob Chak</p>
               <div className='flex justify-end mb-2 gap-x-1'>
                 <a href="https://www.jacobchak.com/"><RiFolderImageLine className='text-primary text-[25px]' /></a>
