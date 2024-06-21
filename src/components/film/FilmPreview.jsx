@@ -61,15 +61,16 @@ const FilmPreview = ({ filmId, isModalOpen, setIsModalOpen }) => {
                     {/* Info */}
                     <div className="flex flex-col gap-2 lg:gap-4">
                         {/* title */}
-                        <h1 className="mt-2 h3 md:mt-4 ">{film?.original_title}</h1>
+                        <h1 className="h3 md:mt-4 mt-2 ">{film?.original_title}</h1>
+
                         {/* relase date, runtime, genres */}
-                        <p className='text-m-s md:text-[15px]'>
+                        <p className='bold text-foreground-dark'>
                             {film?.release_date?.split("-")[0] || "N/A"}{" | "}{film?.runtime} min |
                             {film?.genres?.map((genre, index) => (
                                 <span key={index}> {genre.name}{index < film.genres.length - 1 && ' '}</span>
                             ))}
                         </p>
-                        <p className='text-m-m md:text-[15px]'>
+                        <p className='bold'>
                             Directed by {
                             crew?.filter(member => member.job === "Director")
                                 .map((director, index, array) => (
@@ -83,14 +84,14 @@ const FilmPreview = ({ filmId, isModalOpen, setIsModalOpen }) => {
                             }
                         </p>
 
-                        <p className='text-m-s md:text-[15px] mb-2'>{film?.overview}</p>
+                        <p className='body mb-2'>{film?.overview}</p>
 
 
                         <div className='flex flex-col flex-shrink-0 w-full'>
-                            <h2 className='mb-1 font-bold text-m-l'>Cast</h2>
+                            <h2 className='subtitle'>Cast</h2>
                             <div className="overflow-x-auto scrollbar-hide">
-                                <div className='flex py-2 gap-x-3'>
-                                <p className='text-m-s md:text-[15px]'>{
+                                <div className='flex gap-x-3'>
+                                <p className='body'>{
                                     cast?.slice(0,10).map((person, id, array) => (
                                         <span key={id}>
                                             <a href="" className="underline cursor-pointer underline-offset-4">
@@ -105,7 +106,7 @@ const FilmPreview = ({ filmId, isModalOpen, setIsModalOpen }) => {
                                 </div>
                             </div>
                         </div>
-                        <div><a className="text-m-s md:text-[15px] text-center underline cursor-pointer underline-offset-4" href={`/film/${film.id}`}>View details</a></div>
+                        <div><a className="body text-foreground-dark text-center underline cursor-pointer underline-offset-4" href={`/film/${film.id}`}>View details</a></div>
                     </div>
                 </div>
 
