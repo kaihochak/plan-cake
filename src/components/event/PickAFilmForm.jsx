@@ -30,6 +30,7 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
         date: "",
         host: ""
     })
+    const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
     // Query to create a new event
     const { mutateAsync: createPickAFilmToDB, isPending: isLoadingCreate } = useCreatePickAFilm();
@@ -147,7 +148,10 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
                             )}
                         />
                         {/* Date */}
-                        <Popover>
+                        <Popover
+                            open={isDatePickerOpen}
+                            onOpenChange={setIsDatePickerOpen}
+                        >
                             <PopoverTrigger asChild className="hover:bg-white">
                                 <Button
                                     variant='input'
@@ -171,7 +175,10 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
                                     <Calendar
                                         mode="single"
                                         selected={formData.date}
-                                        onSelect={(date) => setFormData({ ...formData, date: date })}
+                                        onSelect={(date) => {
+                                            setIsDatePickerOpen(false);
+                                            setFormData({ ...formData, date: date })
+                                        }}
                                     />
                                 </div>
                             </PopoverContent>

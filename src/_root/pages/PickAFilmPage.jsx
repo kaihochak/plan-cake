@@ -14,8 +14,7 @@ import EventTitleAndShare from '@/components/event/EventTitleAndShare';
 import FilmPreview from "@/components/film/FilmPreview";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon } from "@radix-ui/react-icons";
-
+// import timeConvertor from '../../components/utility/timeConvertor';
 
 // Define initial state
 const initialState = {
@@ -61,7 +60,7 @@ const PickAFilmPage = () => {
   const { toast } = useToast()
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [viewFilmId, setViewFilmId] = React.useState(false);
-  const [rescheduleModalOpen, setRescheduleModalOpen] = React.useState(false);
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
   // Open the Film Preview Modal
   const handleViewFilm = (itemId) => {
@@ -172,15 +171,24 @@ const PickAFilmPage = () => {
       dispatch({ type: 'SET_DATE', payload: variables.date }); // recover the previous state
       toast({
         variant: "destructive",
-        title: (<p className='subtitle'>🚨 Error rescheduling event</p>)
+        title: (<p className='subtitle'>🚨 Error rescheduling event</p>),
+        description: (
+          <p className='bold leading-[1.5]'>
+            There was an error rescheduling the event
+          </p>
+        ),
       });
     }
     // if successful, show a toast message
     else {
       toast({
         variant: "success",
-        title: (<p className='subtitle'>🎉 Event rescheduled!</p>)
-
+        title: (<p className='subtitle'>🎉 Event rescheduled!</p>),
+        description: (
+          <p className='bold leading-[1.5]'>
+            Event is rescheduled to <br></br><span className='italic'>{newDate.toLocaleString()}</span>
+          </p>
+        ),
       });
     }
   }
@@ -232,6 +240,9 @@ const PickAFilmPage = () => {
     </div>
   )
 
+  console.log('state', state);
+  // console.log('newTime', timeConvertor(state.date));
+
   return (
     <div className='mx-auto w-full max-w-[1280px] flex-col items-center justify-start overflow-x-hidden mt-10 md:mt-14 px-4 xl:mt-24 xl:px-10'>
 
@@ -281,7 +292,6 @@ const PickAFilmPage = () => {
                 <div className={`flex w-full justify-start ${state.confirmedFilm ? "flex-col gap-2 md:gap-4" : "justify-between gap-8"}`}>
 
                   {/* title & Share */}
-
                   {state.confirmedFilm &&
                     <EventTitleAndShare
                       state={state}
@@ -317,7 +327,10 @@ const PickAFilmPage = () => {
 
                   {/* date */}
                   {state.date &&
-                    <Popover>
+                    <Popover
+                      // open={isDatePickerOpen}
+                      // onOpenChange={setIsDatePickerOpen}
+                    >
                       <PopoverTrigger asChild >
                         <p className="flex flex-col gap-y-0 cursor-pointer [&_div]:hover:underline">
                           <span className='body text-foreground-dark'>Date & Time</span>
@@ -332,7 +345,10 @@ const PickAFilmPage = () => {
                           <Calendar
                             mode="single"
                             selected={state.date}
-                            onSelect={(date) => handleReschedule(date)}
+                            onSelect={(date) => {
+                              setIsDatePickerOpen(false);
+                              handleReschedule(state.date)
+                            }}
                           />
                         </div>
                       </PopoverContent>
