@@ -73,9 +73,9 @@ const TimeConvertor = ({ confirmedDateTime }) => {
 	}
 
 	return (
-		<div>
+		<div className='w-full flex-center'>
 			{localDateTime && (
-				<p>{localDateTime}</p>
+				<span>{localDateTime}</span>
 			)}
 		</div>
 	);

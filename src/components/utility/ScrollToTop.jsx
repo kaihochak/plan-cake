@@ -14,8 +14,6 @@ const ScrollToTop = () => {
             left: 0,
             behavior: "instant",
         });
-
-        console.log("Called");
     }, [pathname]);
 
     return null;

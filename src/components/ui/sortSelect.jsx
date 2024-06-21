@@ -1,8 +1,10 @@
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { Check, ChevronDown, ChevronUp } from "lucide-react"
-import { RxCaretSort } from "react-icons/rx";
+import { RxCaretSort } from "react-icons/rx"
 import { cn } from "@/lib/utils"
+// import { TbSortAscendingShapes } from "react-icons/tb"
+import { HiOutlineAdjustments } from "react-icons/hi";
 
 const Select = SelectPrimitive.Root
 
@@ -14,13 +16,13 @@ const SelectTrigger = React.forwardRef(({ className, children, ...props }, ref) 
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex h-10 w-full items-center justify-between text-secondary rounded-md border-none bg-transparent px-2 py-2 button-text ring-offset-primary-light placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+      "hover:bg-accent hover:text-accent-foreground border border-border rounded-md flex h-[32px] md:h-[40px]  items-center justify-between text-secondary bg-transparent px-2 py-2 button-text ring-offset-primary-light placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 transition-colors duration-300 ease-in-out",
       className
     )}
     {...props}>
     {children}
     <SelectPrimitive.Icon asChild>
-      <RxCaretSort className="w-5 h-5 mb-1 opacity-50" />
+      <HiOutlineAdjustments className="w-full h-full"/>
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ))

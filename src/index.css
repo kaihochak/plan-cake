@@ -348,6 +348,10 @@ body {
     @apply w-full px-1 py-2 mt-2 rounded-md button-text;
   }
 
+  .button-sizing {
+    @apply h-[32px] w-[120px] md:w-[150px] md:h-[40px];
+  }
+
   .feature-col {
     @apply flex justify-between w-full mt-10 md:w-auto md:mt-0 md:flex-col gap-x-6 gap-y-10;
   }
@@ -618,6 +622,7 @@ body {
   .invert-white {
     @apply transition invert brightness-0;
   }
+
 
   .overlay-buttons {
     @apply absolute bottom-0 right-0 z-20 flex items-center justify-center hover:bg-black/50;
