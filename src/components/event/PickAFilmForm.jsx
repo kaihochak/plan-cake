@@ -77,17 +77,17 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 
         if (!newPickAFilm) {
             toast({
-				variant: "destructive",
-				title: (
-					<p className='subtitle'>🚨 Error add PickAFilm</p>
-				),
-				description: (
-					<p className='bold leading-[1.5]'>
-						There was an error creating <span className='italic subtitle'>${formData.title}</span>. Please try again.
-					</p>
-				),
-			});
-			return false;
+                variant: "destructive",
+                title: (
+                    <p className='subtitle'>🚨 Error add PickAFilm</p>
+                ),
+                description: (
+                    <p className='bold leading-[1.5]'>
+                        There was an error creating <span className='italic subtitle'>${formData.title}</span>. Please try again.
+                    </p>
+                ),
+            });
+            return false;
         } else {
             toast({
                 variant: "success",
@@ -165,7 +165,7 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
                             </PopoverTrigger>
                             <PopoverContent
                                 align="start"
-                                className="flex flex-col w-auto p-2 space-y-2"
+                                className="flex flex-col w-full p-2 space-y-2"
                             >
                                 <div className="rounded-md">
                                     <Calendar

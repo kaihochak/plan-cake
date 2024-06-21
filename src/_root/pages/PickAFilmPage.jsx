@@ -233,7 +233,7 @@ const PickAFilmPage = () => {
   )
 
   return (
-    <div className='mx-auto max-w-[1280px] flex-col items-center justify-start overflow-x-hidden mt-10 md:mt-14 md:px-4 xl:mt-24 xl:px-10'>
+    <div className='mx-auto w-full max-w-[1280px] flex-col items-center justify-start overflow-x-hidden mt-10 md:mt-14 px-4 xl:mt-24 xl:px-10'>
 
       <div className='flex flex-col justify-start pt-12 gap-y-4 md:pt-16 lg:pt-24 xl:pt-12 md:pb-32'>
 
@@ -267,7 +267,7 @@ const PickAFilmPage = () => {
               <div className={`w-full ${state.confirmedFilm ? "flex-start gap-x-4 md:gap-x-14" : "flex-between "}`}>
                 {/* left - poster*/}
                 {state.confirmedFilm &&
-                  <div className=' w-full min-w-[150px] w-[300px] lg:w-[320px] xl:w-[380px] 2xl:w-[400px] cursor-pointer'>
+                  <div className='w-full min-w-[150px] w-[300px] lg:w-[320px] xl:w-[380px] 2xl:w-[400px] cursor-pointer'>
                     <img
                       src={state.confirmedFilm?.poster_path ? image500(state.confirmedFilm?.poster_path) : fallbackMoviePoster}
                       alt={state.confirmedFilm?.title}
