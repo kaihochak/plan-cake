@@ -343,23 +343,24 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
     return (
       <div className="flex flex-col p-2 my-2 rounded-sm gap-y-2 md:gap-y-4 md:p-4 bg-primary-light">
         {/* Buttons */}
-        <div className="flex-row gap-4 flex-between ">
+        <div className="flex flex-row items-center self-end gap-4 jusitfy-end ">
           <Button
             variant="outline"
             className="button-sizing"
             onClick={() => setShowVoteResult(true)}
           >
             <div className="w-full flex-start gap-x-2">
-              <LuVote className="w-5 h-5 mb-[0.5]" />
               <p className="body">Confirm Film</p>
+              <LuVote className="w-5 h-5 mb-[0.5]" />
             </div>
           </Button>
+
           <Select
             value={sortOrder}
             onValueChange={(value) => handleSortChange(value, selectedFilms)}
           >
-            <SelectTrigger className="button-sizing">
-              <SelectValue placeholder="Sort by" />
+            <SelectTrigger className={`${sortOrder ? "text-accent-foreground bg-accent" : "" }`}>
+              {/* <SelectValue placeholder="" /> */}
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="Default">Default</SelectItem>

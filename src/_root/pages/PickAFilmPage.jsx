@@ -245,7 +245,7 @@ const PickAFilmPage = () => {
                 }
 
                 {/* right - details */}
-                <div className={`flex w-full justify-start ${state.confirmedFilm ? "flex-col gap-2 md:gap-4" : "gap-8"}`}>
+                <div className={`flex w-full justify-start ${state.confirmedFilm ? "flex-col gap-2 md:gap-4" : "justify-between gap-8"}`}>
 
                   {/* title & Share */}
 
