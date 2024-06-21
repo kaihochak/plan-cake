@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useReducer } from 'react'
+import { Button } from "@/components/ui/button"
 import FilmPoll from '@/components/event/FilmPoll'
 import GuestSelection from "@/components/event/GuestSelection";
 import { useParams } from 'react-router-dom';
@@ -11,6 +12,10 @@ import { useMediaQuery } from '@react-hook/media-query'
 import { useToast } from "@/components/ui/use-toast"
 import EventTitleAndShare from '@/components/event/EventTitleAndShare';
 import FilmPreview from "@/components/film/FilmPreview";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { CalendarIcon } from "@radix-ui/react-icons";
+
 
 // Define initial state
 const initialState = {
@@ -56,10 +61,10 @@ const PickAFilmPage = () => {
   const { toast } = useToast()
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [viewFilmId, setViewFilmId] = React.useState(false);
+  const [rescheduleModalOpen, setRescheduleModalOpen] = React.useState(false);
 
   // Open the Film Preview Modal
   const handleViewFilm = (itemId) => {
-    console.log("hi");
     setViewFilmId(itemId);
     setIsModalOpen(true);
   };
@@ -71,6 +76,7 @@ const PickAFilmPage = () => {
   const { data, isLoading: isLoadingPickAFilm } = useGetPickAFilmById(id);
   // Query: Update PickAFilm optimistically
   const { isPending, variables, mutateAsync: updatePickAFilmOptimistic, isError } = useUpdatePickAFilmOptimistic(); // Query: Update the guestList optimistically
+
 
   // Initialize local state with data from the query
   useEffect(() => {
@@ -152,6 +158,33 @@ const PickAFilmPage = () => {
     }
   }
 
+  // Handle rescheduling event
+  const handleReschedule = async (newDate) => {
+
+    // update client state
+    dispatch({ type: 'SET_DATE', payload: newDate });
+
+    // update server state
+    const success = await updatePickAFilmOptimistic({ id: state.id, date: newDate });
+
+    // if not successful, recover the previous state and show a toast message
+    if (!success) {
+      dispatch({ type: 'SET_DATE', payload: variables.date }); // recover the previous state
+      toast({
+        variant: "destructive",
+        title: (<p className='subtitle'>🚨 Error rescheduling event</p>)
+      });
+    }
+    // if successful, show a toast message
+    else {
+      toast({
+        variant: "success",
+        title: (<p className='subtitle'>🎉 Event rescheduled!</p>)
+
+      });
+    }
+  }
+
   // Copy the URL to the clipboard
   const copyToClipboard = () => {
     const url = `${import.meta.env.VITE_HOSTING_URL}/pickAFilm/${state.id}`;
@@ -216,11 +249,11 @@ const PickAFilmPage = () => {
           <div className={`flex flex-col gap-y-4 md:gap-y-8`}>
             <section className='flex flex-col gap-y-4'>
               {/* title & Share */}
-              {!state.confirmedFilm && 
+              {!state.confirmedFilm &&
                 <EventTitleAndShare
                   state={state}
                   isPending={isPending}
-                  copyToClipboard={copyToClipboard} 
+                  copyToClipboard={copyToClipboard}
                   rename={rename}
                   setRename={setRename}
                   newName={newName}
@@ -284,12 +317,27 @@ const PickAFilmPage = () => {
 
                   {/* date */}
                   {state.date &&
-                    <p className="flex flex-col gap-y-0">
-                      <span className='body text-foreground-dark'>Date & Time</span>
-                      <TimeConvertor confirmedDateTime={state.date} />
-                    </p>
+                    <Popover>
+                      <PopoverTrigger asChild >
+                        <p className="flex flex-col gap-y-0 cursor-pointer [&_div]:hover:underline">
+                          <span className='body text-foreground-dark'>Date & Time</span>
+                          <TimeConvertor confirmedDateTime={state.date} />
+                        </p>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        align="start"
+                        className="flex flex-col w-auto p-2 space-y-2"
+                      >
+                        <div className="rounded-md">
+                          <Calendar
+                            mode="single"
+                            selected={state.date}
+                            onSelect={(date) => handleReschedule(date)}
+                          />
+                        </div>
+                      </PopoverContent>
+                    </Popover>
                   }
-
 
                   {/* Guest List */}
                   <div className='md:self-end'>

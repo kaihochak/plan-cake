@@ -69,8 +69,6 @@ export const useUpdatePickAFilmOptimistic = () => {
     },
   });
 }
-    
-
 
 // Event
 export const useCreateEvent = () => {
