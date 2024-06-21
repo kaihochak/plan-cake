@@ -108,7 +108,7 @@ const GuestSelection = ({ guestList, id, selectedGuest, setSelectedGuest, setGue
           variant="outline"
           role="combobox"
           aria-expanded={openGuestList}
-          className={`w-[130px] h-[35px] justify-between body ${selectedGuest ? "bg-accent text-accent-foreground" : "bg-background text-secondary"}`}
+          className={`button-sizing justify-between body ${selectedGuest ? "" : "text-foreground-dark"}`}
         >
           {selectedGuest
             ? guestList?.find((guest) => guest.id === selectedGuest)?.name
