@@ -50,7 +50,7 @@ const About = () => {
                 <a href="https://www.linkedin.com/in/joannachowhy/"><AiOutlineLinkedin className='text-primary text-[25px]' /></a>
               </div>
             </div>
-            <p className='z-10 body text-primary'>I'm the product designer and frontend developer for Plancake. I believe that the best way to enjoy life is to spend time with the people you care about. That's why I created this app to help you spend less time planning and more time enjoying the things you love. I hope you enjoy using Plancake as much as I enjoyed creating it.</p>
+            <p className='z-10 body text-primary'>Hey! I'm Joanna, the product designer and front-end developer for Plancake. Making plans with friends doesn't have to be annoying—it can be a lot of fun choosing which films to watch, books to read, and shows to see. I hope you find that same fun and excitement in using the app we've created!</p>
           </div>
         </div>
       </div>
