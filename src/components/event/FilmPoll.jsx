@@ -12,6 +12,10 @@ import { PiFilmStripBold } from "react-icons/pi";
 import { useUpdatePickAFilm } from "@/lib/react-query/queries";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
+import { LuVote } from "react-icons/lu";
+
+
+
 
 const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGuest, setSelectedGuest, setGuestList, confirmedFilm, setConfirmedFilm }) => {
   const { toast } = useToast();
@@ -337,21 +341,24 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
 
   const FilmDisplay = () => {
     return (
-      <div className="px-4 py-2 my-2 rounded-sm bg-primary-light">
+      <div className="flex flex-col p-2 my-2 rounded-sm gap-y-2 md:gap-y-4 md:p-4 bg-primary-light">
         {/* Buttons */}
-        <div className="flex-row gap-4 pb-2 flex-between ">
-          <button
-            className="button-text text-primary-foreground flex-between gap-x-2"
+        <div className="flex-row gap-4 flex-between ">
+          <Button
+            variant="outline"
+            className="button-sizing"
             onClick={() => setShowVoteResult(true)}
           >
-            <PiFilmStripBold className="w-5 h-5 mb-[0.5]" />
-            <p>Confirm Vote</p>
-          </button>
+            <div className="w-full flex-start gap-x-2">
+              <LuVote className="w-5 h-5 mb-[0.5]" />
+              <p className="body">Confirm Film</p>
+            </div>
+          </Button>
           <Select
             value={sortOrder}
             onValueChange={(value) => handleSortChange(value, selectedFilms)}
           >
-            <SelectTrigger className="w-[110px] lg:w-[180px]">
+            <SelectTrigger className="button-sizing">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
@@ -405,15 +412,15 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
    * Rendering
    * ******************************************************************************/
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col md:gap-2">
       {/* Title */}
-      <div className="flex justify-between">
+      <div className="flex items-end justify-between">
         <div className="subtitle text-foreground-dark">Film Poll</div>
 
         <div className="relative">
           <Button
             variant="accent"
-            className="w-[100px] h-[25px] md:w-[120px] md:h-[35px] "
+            className="button-sizing"
             onClick={() => {
               if (selectedGuest) setShowFilmSearch(true);
               else setShowGuestSelection(true);
@@ -421,6 +428,7 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
           >
             <p className="body">Add Film</p>
           </Button>
+          {/* ping animation */}
           <div
             className={`${selectedFilms?.length > 0
                 ? ""

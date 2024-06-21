@@ -61,7 +61,7 @@ const FilmPreview = ({ filmId, isModalOpen, setIsModalOpen }) => {
                     {/* Info */}
                     <div className="flex flex-col gap-2 lg:gap-4">
                         {/* title */}
-                        <h1 className="text-m-xl md:text-[30px] lg:text-[38px] md:mt-4 mt-2 font-bold ">{film?.original_title}</h1>
+                        <h1 className="mt-2 h3 md:mt-4 ">{film?.original_title}</h1>
                         {/* relase date, runtime, genres */}
                         <p className='text-m-s md:text-[15px]'>
                             {film?.release_date?.split("-")[0] || "N/A"}{" | "}{film?.runtime} min |

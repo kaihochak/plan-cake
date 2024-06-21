@@ -200,10 +200,9 @@ const PickAFilmPage = () => {
   )
 
   return (
-    <div className='container mx-auto max-w-[1280px] flex-col items-center justify-start overflow-x-hidden mt-10 md:mt-14 md:px-4 xl:mt-24 xl:px-10'>
+    <div className='mx-auto max-w-[1280px] flex-col items-center justify-start overflow-x-hidden mt-10 md:mt-14 md:px-4 xl:mt-24 xl:px-10'>
 
       <div className='flex flex-col justify-start pt-12 gap-y-4 md:pt-16 lg:pt-24 xl:pt-12 md:pb-32'>
-
 
         {/* banner */}
         {state.confirmedFilm &&
@@ -214,8 +213,7 @@ const PickAFilmPage = () => {
         }
 
         <div className={`relative flex flex-col gap-y-10 w-full max-w-[1280px] mx-auto md:px-10 ${state.confirmedFilm ? "-mt-10 md:-mt-80 lg:-mt-96 xl:-mt-[450px]" : ""}`}>
-          <div className={`flex flex-col gap-y-8`}>
-
+          <div className={`flex flex-col gap-y-4 md:gap-y-8`}>
             <section className='flex flex-col gap-y-4'>
               {/* title & Share */}
               {!state.confirmedFilm && 
@@ -233,10 +231,10 @@ const PickAFilmPage = () => {
               }
 
               {/* Info */}
-              <div className={`${state.confirmedFilm ? "flex-start gap-x-4 md:gap-x-14" : "flex-between "}`}>
+              <div className={`w-full ${state.confirmedFilm ? "flex-start gap-x-4 md:gap-x-14" : "flex-between "}`}>
                 {/* left - poster*/}
                 {state.confirmedFilm &&
-                  <div className='min-w-[150px] w-[300px] lg:w-[320px] xl:w-[380px] 2xl:w-[400px] cursor-pointer'>
+                  <div className=' w-full min-w-[150px] w-[300px] lg:w-[320px] xl:w-[380px] 2xl:w-[400px] cursor-pointer'>
                     <img
                       src={state.confirmedFilm?.poster_path ? image500(state.confirmedFilm?.poster_path) : fallbackMoviePoster}
                       alt={state.confirmedFilm?.title}
@@ -247,7 +245,7 @@ const PickAFilmPage = () => {
                 }
 
                 {/* right - details */}
-                <div className={`flex w-full justify-start ${state.confirmedFilm ? "flex-col gap-2 md:gap-4" : "gap-8 "}`}>
+                <div className={`flex w-full justify-start ${state.confirmedFilm ? "flex-col gap-2 md:gap-4" : "gap-8"}`}>
 
                   {/* title & Share */}
 
@@ -267,10 +265,10 @@ const PickAFilmPage = () => {
 
                   {/* Selected film title */}
                   {state.confirmedFilm &&
-                    <h3 className="body">
+                    <div className="body">
                       <span className='text-foreground-dark'>Selected Film</span><br />
                       {state.confirmedFilm.title} ({state.confirmedFilm.release_date?.split("-")[0]})
-                    </h3>
+                    </div>
                   }
 
                   {/* runtime */}
@@ -284,17 +282,17 @@ const PickAFilmPage = () => {
                     </h3>
                   }
 
-                  {/* genres */}
-
                   {/* date */}
                   {state.date &&
-                    <h3 className="body">
-                      <span className='body text-foreground-dark'>Date & Time</span><br />
+                    <p className="flex flex-col gap-y-0">
+                      <span className='body text-foreground-dark'>Date & Time</span>
                       <TimeConvertor confirmedDateTime={state.date} />
-                    </h3>
+                    </p>
                   }
+
+
                   {/* Guest List */}
-                  <div className='self-end w-full'>
+                  <div className='md:self-end'>
                     <GuestSelection
                       id={state.id}
                       guestList={state.guestList}
