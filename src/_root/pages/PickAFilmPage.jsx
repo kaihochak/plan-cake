@@ -15,6 +15,36 @@ import FilmPreview from "@/components/film/FilmPreview";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 // import timeConvertor from '../../components/utility/timeConvertor';
+import Joyride from 'react-joyride';
+
+// Set Tour Guide
+const tourSteps = [
+  {
+    target: '.tour-add-film',
+    content: (
+      <div>
+        You can interact with your own components through the spotlight.
+        <br />
+        Click the menu above!
+      </div>
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    hideCloseButton: true,
+    hideFooter: true,
+    placement: 'bottom',
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: '.tour-share',
+    content: 'Share the event with your friends by copying the URL.',
+  }
+];
 
 // Define initial state
 const initialState = {
@@ -49,6 +79,7 @@ const reducer = (state, action) => {
   }
 };
 
+// Define the component
 const PickAFilmPage = () => {
   const { id } = useParams();
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -61,6 +92,7 @@ const PickAFilmPage = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [viewFilmId, setViewFilmId] = React.useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [{run, stepsIndex}, setTourState] = useState({run: true, stepsIndex: 0});
 
   // Open the Film Preview Modal
   const handleViewFilm = (itemId) => {
@@ -208,6 +240,19 @@ const PickAFilmPage = () => {
     });
   }
 
+
+  // Handle the next step in the tour
+  const handleJoyrideCallback = (data) => {
+    const { action, index, status, type } = data;
+    console.log('Type:', type, 'Action:', action, 'Index:', index, 'Status:', status);
+  
+    if (action === 'next') {
+      setTourState({ run: true, stepsIndex: index });
+    }
+  };
+
+
+
   /**********************************************************************************
    * Components
    **********************************************************************************/
@@ -240,12 +285,27 @@ const PickAFilmPage = () => {
     </div>
   )
 
-  console.log('state', state);
   // console.log('newTime', timeConvertor(state.date));
 
   return (
     <div className='mx-auto w-full max-w-[1280px] flex-col items-center justify-start overflow-x-hidden mt-10 md:mt-14 px-4 xl:mt-24 xl:px-10'>
-
+      <Joyride
+        run={run}
+        steps={tourSteps}
+        styles={{
+          options: {
+            arrowColor: 'hsl(var(--secondary))',
+            backgroundColor: 'hsl(var(--secondary))',
+            overlayColor: 'hsl(var(--primary-light))',
+            primaryColor: 'hsl(var(--accent2))',
+            textColor: 'hsl(var(--secondary-foreground))',
+            width: 400,
+            zIndex: 1000,
+          },
+        }}
+        callback={handleJoyrideCallback}
+      />
+  
       <div className='flex flex-col justify-start pt-12 gap-y-4 md:pt-16 lg:pt-24 xl:pt-12 md:pb-32'>
 
         {/* banner */}
@@ -371,6 +431,7 @@ const PickAFilmPage = () => {
 
             {/* Film Poll */}
             <FilmPoll
+              setTourState={setTourState}
               id={state.id}
               guestList={state.guestList}
               selectedFilms={state.selectedFilms}

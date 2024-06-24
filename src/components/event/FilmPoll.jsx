@@ -15,9 +15,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { LuVote } from "react-icons/lu";
 
 
-
-
-const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGuest, setSelectedGuest, setGuestList, confirmedFilm, setConfirmedFilm }) => {
+const FilmPoll = ({ setTourState, selectedFilms, setSelectedFilms, guestList, id, selectedGuest, setSelectedGuest, setGuestList, confirmedFilm, setConfirmedFilm }) => {
   const { toast } = useToast();
   const [showFilmSearch, setShowFilmSearch] = useState(false);
   const [showGuestSelection, setShowGuestSelection] = useState(false);
@@ -359,7 +357,7 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
             value={sortOrder}
             onValueChange={(value) => handleSortChange(value, selectedFilms)}
           >
-            <SelectTrigger className={`${sortOrder ? "text-accent-foreground bg-accent" : "" }`}>
+            <SelectTrigger className={`${sortOrder ? "text-accent-foreground bg-accent" : ""}`}>
               {/* <SelectValue placeholder="" /> */}
             </SelectTrigger>
             <SelectContent>
@@ -418,13 +416,17 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
       <div className="flex items-end justify-between">
         <div className="subtitle text-foreground-dark">Film Poll</div>
 
-        <div className="relative">
+        <div className="relative tour-add-film">
           <Button
             variant="accent"
             className="button-sizing"
             onClick={() => {
               if (selectedGuest) setShowFilmSearch(true);
               else setShowGuestSelection(true);
+              setTourState({
+                run: false,
+                step: 0,
+              });
             }}
           >
             <p className="body">Add Film</p>
@@ -432,14 +434,14 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
           {/* ping animation */}
           <div
             className={`${selectedFilms?.length > 0
-                ? ""
-                : "absolute top-0 right-0 -mr-1 -mt-1 w-4 h-4 rounded-full bg-accent2 animate-ping opacity-75"
+              ? ""
+              : "absolute top-0 right-0 -mr-1 -mt-1 w-4 h-4 rounded-full bg-accent2 animate-ping opacity-75"
               } `}
           ></div>
           <div
             className={`${selectedFilms?.length > 0
-                ? ""
-                : "absolute top-0 right-0 -mr-1 -mt-1 w-4 h-4 rounded-full bg-accent2"
+              ? ""
+              : "absolute top-0 right-0 -mr-1 -mt-1 w-4 h-4 rounded-full bg-accent2"
               }`}
           ></div>
         </div>
