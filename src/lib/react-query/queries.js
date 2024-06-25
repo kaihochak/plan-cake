@@ -113,22 +113,21 @@ export const useGetUserEvents = (userId) => {
 
 export const useGetUpcoming = () => {
   return useInfiniteQuery({
-    queryKey: QUERY_KEYS.GET_UPCOMING,
+    queryKey: [QUERY_KEYS.GET_UPCOMING],
     queryFn: fetchUpcoming,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
 };
 
-export const useSearchFilms = (searchTerm) => {
+export const useGetSearchResults = (query) => {
   return useInfiniteQuery({
-    queryKey: [QUERY_KEYS.SEARCH_FILMS, searchTerm],
-    queryFn: () => searchFilms({ query: searchTerm }),
+    queryKey: [QUERY_KEYS.SEARCH_FILMS, query],
+    queryFn: () => fetchSearchResults(query),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
-};
-
+}
 
 export const useGetFilmById = (filmId) => {
   return useQuery({

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import SearchDisplay from "./SearchDisplay";
 import { Button } from "@/components/ui/button";
 import "@/styles/utility.css"
@@ -13,7 +13,7 @@ import { IoClose } from "react-icons/io5";
 import { cn } from "@/lib/utils";
 import { defaultFilters, defaultSortBy } from "@/constants";
 import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog";
-import { useGetUpcoming } from "@/lib/react-query/queries";
+import { useGetUpcoming, useGetSearchResults } from "@/lib/react-query/queries";
 
 const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOpen }) => {
     const [loading, setLoading] = useState(false);
@@ -27,7 +27,6 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
     const [filmData, setFilmData] = useState([]);
     const [watchlistObject, setWatchlistObject] = useState({}); // key: film ID, value: array of user IDs
     const [sortedWatchlist, setSortedWatchlist] = useState([]); // sorted watchlisted films in TMDB format
-    const [upcomingFilms, setUpcomingFilms] = useState([]); // upcoming films in TMDB format
     const [filteredResults, setFilteredResults] = useState([]); // filtered results to be displayed
 
     // Filter and Search
@@ -45,19 +44,52 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
     });
 
     // Query upcoming films
-    // const { data: upcomingData, isLoading: upcomingLoading } = useGetUpcoming();
-    const {data: upcomingData, error: upcomingError, fetchNextPage: fetchNextPageUpcoming, 
+    const { data: upcomingData, error: upcomingError, fetchNextPage: fetchNextPageUpcoming, 
         hasNextPage: hasNextPageUpcoming, isFetching: isFetchingUpcoming,
         isFetchingNextPage: isFetchingNextPageUpcoming, status: statusUpcoming,
     } = useGetUpcoming();
+    // Query search results
+    const { data: searchData, error: searchError, fetchNextPage: fetchNextPageSearch,
+        hasNextPage: hasNextPageSearch, isFetching: isFetchingSearch,
+        isFetchingNextPage: isFetchingNextPageSearch, status: statusSearch,
+    } = useGetSearchResults();
 
+    // Observer for infinite scrolling
+    const observerElem = useRef();
+
+    // Filter and sort the films based on the selected filters
     useEffect(() => {
         if (upcomingData) {
-            console.log("upcomingData", upcomingData.pages);  
+            const allFilms = upcomingData.pages.flatMap(page => page.results);
+            setFilteredResults(sortResults(filterResults(allFilms)));
         }
     }, [upcomingData]);
 
+    // Update the film data when the upcoming data changes
+    useEffect(() => {
+        if (upcomingData) {
+            console.log("upcomingData", upcomingData);
+        }
+        
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasNextPageUpcoming) {
+                    fetchNextPageUpcoming();
+                }
+            },
+            { threshold: 1.0 }
+        );
 
+        if (observerElem.current) {
+            observer.observe(observerElem.current);
+        }
+
+        return () => {
+            if (observerElem.current) {
+                observer.unobserve(observerElem.current);
+            }
+        };
+    }, [fetchNextPageUpcoming, hasNextPageUpcoming]);
 
     /************************************************************************
      * INITIAL FILM DATA
@@ -66,8 +98,7 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
     // Start from storing user watchlist
     useEffect(() => {
         setLoading(true);
-        // storeUserWatchlist();
-        getAndSetUpcomingFilms();
+        storeUserWatchlist();
     }, []);
 
     // Store user watchlist in a map, where key is the film ID and value is an array of user IDs
@@ -131,7 +162,7 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
     const getAndSetUpcomingFilms = async () => {
         try {
             const upcoming = await fetchUpcoming(); // fetch upcoming films as part of the initial data
-            if (upcoming && upcoming.results) setUpcomingFilms(filterWatchlistedFilms(upcoming.results));
+            if (upcoming && upcoming.results) setFilteredResults(filterWatchlistedFilms(upcoming.results));
             setLoading(false);
         } catch (error) {
             console.error("Error fetching initial films:", error);
@@ -139,11 +170,6 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
             throw error; // Propagate the error to the caller
         }
     };
-
-    // When both watchlist and upcoming films are stored, set the film data
-    useEffect(() => {
-        if (sortedWatchlist.length > 0 && upcomingFilms.length > 0) setFilmData([...sortedWatchlist, ...upcomingFilms]);
-    }, [sortedWatchlist, upcomingFilms]);
 
     /************************************************************************
      * SEARCH
@@ -158,25 +184,25 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
     const debouncedSearch = useCallback(
         debounce(async (searchTerm) => {
             // if search term is not empty, fetch search results
-            if (searchTerm && searchTerm.length > 0) {
-                setLoading(true);
-                const data = await searchFilms({
-                    query: searchTerm,
-                    include_adult: false,
-                    language: 'en-US',
-                    page: 1
-                });
-                if (data && data.results) setFilmData(data.results);
-            } else {
-                if (sortedWatchlist.length > 0 && upcomingFilms.length > 0) {
-                    console.log("setting film data");
-                    setFilmData([...sortedWatchlist, ...upcomingFilms]);
-                } else setFilmData(upcomingFilms);
-            }
-            setLoading(false);
+            // if (searchTerm && searchTerm.length > 0) {
+            //     setLoading(true);
+            //     const data = await searchFilms({
+            //         query: searchTerm,
+            //         include_adult: false,
+            //         language: 'en-US',
+            //         page: 1
+            //     });
+            //     if (data && data.results) setFilteredResults(data.results);
+            // } else {
+            //     const allFilms = upcomingData.pages.flatMap(page => page.results);
+            //     setFilteredResults(sortResults(filterResults(allFilms)));
+            // }
+            // setLoading(false);
+            console.log("searchTerm", searchTerm);
+                
+
         }, 300),
-        [sortedWatchlist, upcomingFilms]
-        // make sure when search term is empty, sortedWatchlist and upcomingFilms are not going to be remounted, leading to empty filmData
+        [sortedWatchlist, upcomingData]
     );
 
     /************************************************************************
@@ -379,7 +405,7 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
                     </div> :
                     <SearchDisplay
                         isLoading={isFetchingUpcoming}
-                        filteredResults={upcomingData?.results}
+                        filteredResults={filteredResults}
                         selectedFilms={formData.selectedFilms}
                         setSelectedFilms={updateSelection}
                         watchlistObject={watchlistObject}
@@ -404,6 +430,9 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
 
             </div>
 
+            {/* Observer element for infinite scrolling */}
+            <div ref={observerElem} className="w-full h-10"></div>
+            
             {/* Filters Modal */}
             <FilmFiltersDialog />
 
