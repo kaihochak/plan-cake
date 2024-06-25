@@ -6,9 +6,10 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import FilmPreview from "@/components/film/FilmPreview";
 import { Link } from 'react-router-dom';
 import { MdPoll } from "react-icons/md";
+import { Skeleton } from "@/components/ui/skeleton"
+import { fallbackMoviePoster } from "@/lib/tmdb/config";
 
 const FilmCard = React.memo(({ item, selectedFilms, setSelectedFilms, watchlistObject, guests, isProtected, voteDisabled, setShowGuestSelection, votes }) => {
-	const bp_768 = useMediaQuery('(min-width:768px)');
 	const [isModalOpen, setIsModalOpen] = React.useState(false)
 	const [viewFilmId, setViewFilmId] = React.useState(false)
 	const watchlisters = watchlistObject ? watchlistObject[item.id] : null;
@@ -31,17 +32,22 @@ const FilmCard = React.memo(({ item, selectedFilms, setSelectedFilms, watchlistO
 	return (
 		<div className="relative flex flex-col gap-y-2">
 			{/* Poster */}
-			
-			<div className="w-full ">
+			<div className="w-full">
 				<div className="aspect-w-1 aspect-h-[1.5]">
-					{/* Image */}
 					{selectedFilms ? (
-						<img
-							src={image500(item.poster_path)}
-							alt={item.title}
-							className={`object-cover object-center rounded-sm ${isProtected ? 'border-4 border-accent2' :
-								selectedFilms?.find((film) => parseInt(film.id) == item.id) ? 'border-4 border-accent' : ''}`}
-						/>
+						(item.poster_path === null || item.poster_path === undefined) ?
+							<img
+								src={fallbackMoviePoster}
+								alt={item.title}
+								className={`object-cover object-center rounded-sm ${isProtected ? 'border-4 border-accent2' :
+									selectedFilms?.find((film) => parseInt(film.id) == item.id) ? 'border-4 border-accent' : ''}`}
+							/> :
+							<img
+								src={image500(item.poster_path)}
+								alt={item.title}
+								className={`object-cover object-center rounded-sm ${isProtected ? 'border-4 border-accent2' :
+									selectedFilms?.find((film) => parseInt(film.id) == item.id) ? 'border-4 border-accent' : ''}`}
+							/>
 					) : (
 						<Link to={`/film/${item.id}`}>
 							<img
@@ -128,10 +134,12 @@ const FilmCard = React.memo(({ item, selectedFilms, setSelectedFilms, watchlistO
 					</div>
 
 					{/* votes */}
-					<div className="flex items-center">
-						<div className="body">{votes}</div>
-						<MdPoll className="w-4 h-4 mb-1 ml-1 md:w-5 md:h-5" />
-					</div>
+					{voteDisabled &&
+						<div className="flex items-center">
+							<div className="body">{votes}</div>
+							<MdPoll className="w-4 h-4 mb-1 ml-1 md:w-5 md:h-5" />
+						</div>
+					}
 
 				</div>
 			</div>
