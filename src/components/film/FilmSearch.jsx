@@ -15,14 +15,12 @@ import { defaultFilters, defaultSortBy } from "@/constants";
 import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog";
 import { useGetUpcoming, useGetSearchResults } from "@/lib/react-query/queries";
 
-const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOpen }) => {
-    const [loading, setLoading] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
-
+const FilmSearch = ({ selectedFilms, handleApply, protectedFilms, setModalOpen }) => {
+    
     // Form Data
+    const [searchTerm, setSearchTerm] = useState("");
     const [formData, setFormData] = useState({ selectedFilms });
     const [users, setUsers] = useState([]);
-    const [showNoSelectionError, setShowNoSelectionError] = useState(false);
 
     // Film Data
     const [filmData, setFilmData] = useState([]);
@@ -44,7 +42,7 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
     });
 
     // Query upcoming films
-    const { data: upcomingData, error: upcomingError, fetchNextPage: fetchNextPageUpcoming, 
+    const { data: upcomingData, error: upcomingError, fetchNextPage: fetchNextPageUpcoming,
         hasNextPage: hasNextPageUpcoming, isFetching: isFetchingUpcoming,
         isFetchingNextPage: isFetchingNextPageUpcoming, status: statusUpcoming,
     } = useGetUpcoming();
@@ -102,75 +100,6 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
     }, [fetchNextPageUpcoming, fetchNextPageSearch, hasNextPageUpcoming, hasNextPageSearch, searchTerm]);
 
     /************************************************************************
-     * INITIAL FILM DATA
-     ************************************************************************/
-
-    useEffect(() => {
-        setLoading(true);
-        storeUserWatchlist();
-    }, []);
-
-    const storeUserWatchlist = () => {
-        let tempWatchlistedFilms = {};
-        users.forEach(user => {
-            user.films.watchlist.forEach(film => {
-                if (tempWatchlistedFilms[film._id]) {
-                    if (!tempWatchlistedFilms[film._id].includes(user._id)) {
-                        tempWatchlistedFilms[film._id].push(user._id);
-                    }
-                } else {
-                    tempWatchlistedFilms[film._id] = [user._id];
-                }
-            });
-        });
-
-        if (Object.keys(tempWatchlistedFilms).length > 0) setWatchlistObject(tempWatchlistedFilms);
-        else getAndSetUpcomingFilms();
-    };
-
-    useEffect(() => {
-        if (Object.keys(watchlistObject).length > 0) getAndSetUserWatchlist();
-    }, [watchlistObject]);
-
-    const getAndSetUserWatchlist = async () => {
-        try {
-            const watchlistPromises = Object.keys(watchlistObject).map(async filmID => {
-                try {
-                    const film = await fetchFilmDetails(filmID);
-                    return film;
-                } catch (error) {
-                    console.error("Error fetching watchlisted film id:", filmID, error);
-                    return null;
-                }
-            });
-
-            let userWatchlists = await Promise.all(watchlistPromises);
-            userWatchlists = userWatchlists.filter(film => film.id !== undefined);
-
-            userWatchlists = sortFilmsByWatchlist(userWatchlists);
-
-            setSortedWatchlist(userWatchlists);
-        } catch (error) {
-            console.error("Error fetching watchlisted films:", error);
-            throw error;
-        }
-
-        getAndSetUpcomingFilms();
-    };
-
-    const getAndSetUpcomingFilms = async () => {
-        try {
-            const upcoming = await fetchUpcoming();
-            if (upcoming && upcoming.results) setFilteredResults(filterWatchlistedFilms(upcoming.results));
-            setLoading(false);
-        } catch (error) {
-            console.error("Error fetching initial films:", error);
-            setLoading(false);
-            throw error;
-        }
-    };
-
-    /************************************************************************
      * SEARCH
      ************************************************************************/
 
@@ -178,7 +107,6 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
         setSearchTerm(e.target.value);
         debouncedSearch(e.target.value);
     };
-
     const debouncedSearch = useCallback(
         debounce((searchTerm) => {
             setSearchTerm(searchTerm);
@@ -295,24 +223,8 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
     };
 
     /************************************************************************
-     *  Update selected films
+     *  Components
      ************************************************************************/
-
-    const updateSelection = (newSelectedFilms) => {
-        setFormData(formData => ({ ...formData, selectedFilms: newSelectedFilms }));
-    };
-
-    /************************************************************************
-     *  Handle next step
-     ************************************************************************/
-
-    const handleNextStep = () => {
-        if (formData.selectedFilms.length === 0) {
-            setShowNoSelectionError(true);
-            return;
-        } else setShowNoSelectionError(false);
-        nextStep(formData);
-    };
 
     const FilmFiltersDialog = () => {
         return (
@@ -322,7 +234,7 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
                         filmData={filmData}
                         users={users}
                         setIsFilterApplied={setIsFilterApplied}
-                        setModalOpen={setModalOpen}
+                        setModalOpen={setFilterModalOpen}
                         sortBy={sortBy}
                         setSortBy={setSortBy}
                         filters={filters}
@@ -351,17 +263,15 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
                 {/* Search & Filters */}
                 <div className="flex gap-x-4">
                     <SearchBar searchTerm={searchTerm} handleSearchChange={handleSearchChange} />
-                    {/* Filters Modal defined at the bottom */}
                     <button
                         onClick={() => setFilterModalOpen(true)}
-                        className={cn(
-                            "flex items-center text-[30px] mr-2 mb-2 text-primary-foreground/60",
-                            { "text-accent/70": isFilterApplied }
-                        )}
+                        className={`flex items-center text-[30px] mr-2 mb-2 text-primary-foreground/60 ${isFilterApplied ? "text-accent/70" : ""}`}
                     >
                         <BiFilterAlt />
                     </button>
+                    <FilmFiltersDialog />
                 </div>
+
                 <FilmFiltersDisplay
                     openFilterModal={setFilterModalOpen}
                     isFilterApplied={isFilterApplied}
@@ -373,46 +283,32 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
                 />
 
                 {/* Result */}
-                {loading ? (
-                    <div className="flex-center h-[400px] md:h-[800px]">
-                        <Loader height="h-[60px]" weight="h-[60px]" />
-                    </div>
-                ) : (
-                    <SearchDisplay
-                        isLoading={searchTerm ? isFetchingSearch : isFetchingUpcoming}
-                        filteredResults={filteredResults}
-                        selectedFilms={formData.selectedFilms}
-                        setSelectedFilms={updateSelection}
-                        watchlistObject={watchlistObject}
-                        guests={users}
-                        protectedFilms={protectedFilms}
-                    />
-                )}
-
-                {/* Display error message if no film is selected */}
-                {showNoSelectionError && (
-                    <div className="pt-10 text-destructive-foreground text-m-m">
-                        Please select at least one film.
-                    </div>
-                )}
+                <SearchDisplay
+                    isLoading={searchTerm ? isFetchingSearch : isFetchingUpcoming}
+                    filteredResults={filteredResults}
+                    selectedFilms={formData.selectedFilms}
+                    setSelectedFilms={(newSelectedFilms) =>
+                        setFormData({ ...formData, selectedFilms: newSelectedFilms })
+                    }
+                    watchlistObject={watchlistObject}
+                    guests={users}
+                    protectedFilms={protectedFilms}
+                />
 
                 {/* Next Step */}
                 <div className="sticky bottom-0 z-50 flex items-center justify-center w-full">
                     <Button
-                        onClick={handleNextStep}
+                        onClick={() => handleApply(formData)}
                         type="submit"
-                        className="w-[95%] border-none bg-accent  text-primary shadow-xl"
+                        className="w-[95%] border-none bg-accent text-primary shadow-xl"
                     >
-                        {title}
+                        Apply
                     </Button>
                 </div>
             </div>
 
             {/* Observer element for infinite scrolling */}
             <div ref={observerElem} className="w-full h-10"></div>
-            
-            {/* Filters Modal */}
-            <FilmFiltersDialog />
         </div>
     );
 };

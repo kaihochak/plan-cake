@@ -192,8 +192,7 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
         >
           <FilmSearch
             selectedFilms={selectedFilms}
-            nextStep={handleSearchApplyOptimistic}
-            title={"Apply"}
+            handleApply={handleSearchApplyOptimistic}
             protectedFilms={selectedFilms}
             setModalOpen={setShowFilmSearch}
           />
