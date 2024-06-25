@@ -335,9 +335,9 @@ const PickAFilmPage = () => {
 
                   {/* Selected film title */}
                   {state.confirmedFilm &&
-                    <div className="cursor-pointer body" onClick={() => console.log("")} >
+                    <div className="cursor-pointer body [&_div]:hover:underline" onClick={() => setShowVoteResult(true)}>
                       <span className='text-foreground-dark'>Selected Film</span><br />
-                      {state.confirmedFilm.title} ({state.confirmedFilm.release_date?.split("-")[0]})
+                      <div>{state.confirmedFilm.title} ({state.confirmedFilm.release_date?.split("-")[0]})</div>
                     </div>
                   }
 
