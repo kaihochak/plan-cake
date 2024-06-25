@@ -13,6 +13,7 @@ const FilmCard = React.memo(({ item, selectedFilms, setSelectedFilms, watchlistO
 	const [isModalOpen, setIsModalOpen] = React.useState(false)
 	const [viewFilmId, setViewFilmId] = React.useState(false)
 	const watchlisters = watchlistObject ? watchlistObject[item.id] : null;
+	const [imageLoaded, setImageLoaded] = React.useState(false);
 
 	// Select or de-select a film, then update the selectedFilms state back in the parent component
 	const handleSelect = (itemId) => {
@@ -34,26 +35,25 @@ const FilmCard = React.memo(({ item, selectedFilms, setSelectedFilms, watchlistO
 			{/* Poster */}
 			<div className="w-full">
 				<div className="aspect-w-1 aspect-h-[1.5]">
+					{!imageLoaded && <Skeleton className="w-full h-full rounded-sm" />}
 					{selectedFilms ? (
-						(item.poster_path === null || item.poster_path === undefined) ?
-							<img
-								src={fallbackMoviePoster}
-								alt={item.title}
-								className={`object-cover object-center rounded-sm ${isProtected ? 'border-4 border-accent2' :
-									selectedFilms?.find((film) => parseInt(film.id) == item.id) ? 'border-4 border-accent' : ''}`}
-							/> :
-							<img
-								src={image500(item.poster_path)}
-								alt={item.title}
-								className={`object-cover object-center rounded-sm ${isProtected ? 'border-4 border-accent2' :
-									selectedFilms?.find((film) => parseInt(film.id) == item.id) ? 'border-4 border-accent' : ''}`}
-							/>
+						<img
+							src={item.poster_path === null || item.poster_path === undefined ? 
+								fallbackMoviePoster :image500(item.poster_path)}
+							alt={item.title}
+							className={`object-cover object-center rounded-sm ${isProtected ? 'border-4 border-accent2' :
+								selectedFilms?.find((film) => parseInt(film.id) == item.id) ? 'border-4 border-accent' : ''}`}
+							onLoad={() => setImageLoaded(true)}
+							loading='lazy'
+						/>
 					) : (
 						<Link to={`/film/${item.id}`}>
 							<img
 								src={image500(item.poster_path)}
 								alt={item.title}
 								className="object-cover object-center rounded-sm"
+								onLoad={() => setImageLoaded(true)}
+								loading='lazy'
 							/>
 						</Link>
 					)}

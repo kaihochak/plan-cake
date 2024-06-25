@@ -358,7 +358,7 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
             value={sortOrder}
             onValueChange={(value) => handleSortChange(value, selectedFilms)}
           >
-            <SelectTrigger className={`${sortOrder ? "text-accent-foreground bg-accent" : "" }`}>
+            <SelectTrigger className={`${sortOrder ? "text-accent-foreground bg-accent" : ""}`}>
               {/* <SelectValue placeholder="" /> */}
             </SelectTrigger>
             <SelectContent>
@@ -431,14 +431,14 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
           {/* ping animation */}
           <div
             className={`${selectedFilms?.length > 0
-                ? ""
-                : "absolute top-0 right-0 -mr-1 -mt-1 w-4 h-4 rounded-full bg-accent2 animate-ping opacity-75"
+              ? ""
+              : "absolute top-0 right-0 -mr-1 -mt-1 w-4 h-4 rounded-full bg-accent2 animate-ping opacity-75"
               } `}
           ></div>
           <div
             className={`${selectedFilms?.length > 0
-                ? ""
-                : "absolute top-0 right-0 -mr-1 -mt-1 w-4 h-4 rounded-full bg-accent2"
+              ? ""
+              : "absolute top-0 right-0 -mr-1 -mt-1 w-4 h-4 rounded-full bg-accent2"
               }`}
           ></div>
         </div>
