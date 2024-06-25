@@ -23,9 +23,46 @@ const tourSteps = [
     target: '.tour-add-film',
     content: (
       <div>
-        You can interact with your own components through the spotlight.
-        <br />
-        Click the menu above!
+        <p className='bold mb-1'>Add a Film</p> 
+        <p className='body'>Got a movie in mind? Hit the "Add Film" button to start adding your favorites.</p>
+      </div>
+    ),
+    disableBeacon: true,
+    stepIndex: 0,
+    disableOverlayClose: true,
+    hideCloseButton: true,
+    hideFooter: true,
+    placement: 'bottom',
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: '.tour-share',
+    content: (
+      <div>
+        <p className='bold mb-1'>Add Guest Name</p> 
+        <p className='body'>Open the guest name drop-down, and add your friends' names. Want to vote on their behalf? Select their name and cast their vote (but make sure you've got their permission first)!</p>
+      </div>
+    ),
+    placement: 'bottom',
+    stepIndex: 1,
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: '.tour-search-filter',
+    content: (
+      <div>
+        <p className='bold mb-1'>Search/Filter for a Film</p> 
+        <p className='body'>Use the search bar to find the movie you’re looking for, or click on the filter button to narrow down your choices.</p>
       </div>
     ),
     disableBeacon: true,
@@ -41,8 +78,17 @@ const tourSteps = [
     },
   },
   {
-    target: '.tour-share',
-    content: 'Share the event with your friends by copying the URL.',
+    target: '.tour-apply',
+    content: (
+      <div>
+        <p className='bold mb-1'>Apply selection</p> 
+        <p className='body'>Found something interesting? Hover over the film to see the "Add" button and an "Info" button for details. Click "Apply" after selecting the films you want to add to the poll.</p>
+      </div>
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    hideCloseButton: true,
+    hideFooter: true,
     placement: 'bottom',
     spotlightClicks: true,
     styles: {
@@ -50,7 +96,67 @@ const tourSteps = [
         zIndex: 10000,
       },
     },
-  }
+  },
+  {
+    target: '.tour-vote',
+    content: (
+      <div>
+        <p className='bold mb-1'>Vote for the Film</p> 
+        <p className='body'>Check out the selected films in the poll section. Hover over your pick and click the "+" button to cast your vote for the movie you want to watch.</p>
+      </div>
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    hideCloseButton: true,
+    hideFooter: true,
+    placement: 'bottom',
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: '.tour-confirm',
+    content: (
+      <div>
+        <p className='bold mb-1'>Confirm Film</p> 
+        <p className='body'>After everyone has voted, click the "Confirmed Film" button to see which movie the group decided to watch. Popcorn(pancake) time!</p>
+      </div>
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    hideCloseButton: true,
+    hideFooter: true,
+    placement: 'bottom',
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: '.tour-edit',
+    content: (
+      <div>
+        <p className='bold mb-1'>Edit Event Title and Date & Time</p> 
+        <p className='body'>Want to change the event name or tweak the date and time? Just click on the title or the date & time fields and make it yours!</p>
+      </div>
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    hideCloseButton: true,
+    hideFooter: true,
+    placement: 'bottom',
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
 ];
 
 // Define initial state
@@ -359,7 +465,7 @@ const PickAFilmPage = () => {
                 }
 
                 {/* right - details */}
-                <div className={`flex w-full justify-start ${state.confirmedFilm ? "flex-col gap-2 md:gap-4" : "justify-between gap-8"}`}>
+                <div className={`flex w-full justify-start tour-edit ${state.confirmedFilm ? "flex-col gap-2 md:gap-4" : "justify-between gap-8"}`}>
 
                   {/* title & Share */}
                   {state.confirmedFilm &&

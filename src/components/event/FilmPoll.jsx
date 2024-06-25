@@ -347,7 +347,7 @@ const FilmPoll = ({ setTourState, selectedFilms, setSelectedFilms, guestList, id
             className="button-sizing"
             onClick={() => setShowVoteResult(true)}
           >
-            <div className="w-full flex-start gap-x-2">
+            <div className="w-full flex-start gap-x-2 tour-confirm">
               <p className="body">Confirm Film</p>
               <LuVote className="w-5 h-5 mb-[0.5]" />
             </div>
@@ -374,7 +374,7 @@ const FilmPoll = ({ setTourState, selectedFilms, setSelectedFilms, guestList, id
           </Select>
         </div>
         {/* Film Cards */}
-        <div className="grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4 ">
+        <div className="grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4 tour-vote">
           {loading &&
             !sortedFilms &&
             Array.from({ length: 4 }).map((_, index) => (

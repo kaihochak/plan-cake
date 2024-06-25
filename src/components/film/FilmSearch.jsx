@@ -333,9 +333,9 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
                 </div>
             </div>
 
-            <div className="flex flex-col">
+            <div className="flex flex-col ">
                 {/* Search & Filters */}
-                <div className="flex gap-x-4">
+                <div className="flex gap-x-4 tour-search-filter">
                     <SearchBar
                         searchTerm={searchTerm}
                         handleSearchChange={handleSearchChange}
