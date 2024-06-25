@@ -43,6 +43,13 @@ const tourSteps = [
   {
     target: '.tour-share',
     content: 'Share the event with your friends by copying the URL.',
+    placement: 'bottom',
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
   }
 ];
 
@@ -247,7 +254,7 @@ const PickAFilmPage = () => {
     console.log('Type:', type, 'Action:', action, 'Index:', index, 'Status:', status);
   
     if (action === 'next') {
-      setTourState({ run: true, stepsIndex: index });
+      setTourState({ run: true, stepsIndex: index + 1 });
     }
   };
 
@@ -292,6 +299,10 @@ const PickAFilmPage = () => {
       <Joyride
         run={run}
         steps={tourSteps}
+        stepIndex={stepsIndex}
+        continuous={true}
+        showProgress={true}
+        showSkipButton={true}
         styles={{
           options: {
             arrowColor: 'hsl(var(--secondary))',
@@ -303,7 +314,6 @@ const PickAFilmPage = () => {
             zIndex: 1000,
           },
         }}
-        callback={handleJoyrideCallback}
       />
   
       <div className='flex flex-col justify-start pt-12 gap-y-4 md:pt-16 lg:pt-24 xl:pt-12 md:pb-32'>
