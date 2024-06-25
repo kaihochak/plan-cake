@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query'
 import { QUERY_KEYS } from './queryKeys';
 import { createPickAFilm, getPickAFilm, updatePickAFilm, updatePickAFilmGuestList, createEvent, createUserAccount, getUserEvents, signInAccount, signOutAccount } from '../appwrite/api'
+import { fetchUpcoming, fetchFilmDetails } from '../tmdb/api'
 
 // Auth
 export const useCreateUserAccount = () => {
@@ -102,6 +103,33 @@ export const useGetUserEvents = (userId) => {
 
 
 // FILMS
+
+// export const useGetUpcoming = () => {
+//   return useQuery({
+//     queryKey: [QUERY_KEYS.GET_UPCOMING],
+//     queryFn: () => fetchUpcoming(),
+//   });
+// }
+
+export const useGetUpcoming = () => {
+  return useInfiniteQuery({
+    queryKey: QUERY_KEYS.GET_UPCOMING,
+    queryFn: fetchUpcoming,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  });
+};
+
+export const useSearchFilms = (searchTerm) => {
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYS.SEARCH_FILMS, searchTerm],
+    queryFn: () => searchFilms({ query: searchTerm }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  });
+};
+
+
 export const useGetFilmById = (filmId) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_FILM_BY_ID, filmId],

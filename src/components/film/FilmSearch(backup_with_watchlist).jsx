@@ -45,19 +45,7 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
     });
 
     // Query upcoming films
-    // const { data: upcomingData, isLoading: upcomingLoading } = useGetUpcoming();
-    const {data: upcomingData, error: upcomingError, fetchNextPage: fetchNextPageUpcoming, 
-        hasNextPage: hasNextPageUpcoming, isFetching: isFetchingUpcoming,
-        isFetchingNextPage: isFetchingNextPageUpcoming, status: statusUpcoming,
-    } = useGetUpcoming();
-
-    useEffect(() => {
-        if (upcomingData) {
-            console.log("upcomingData", upcomingData.pages);  
-        }
-    }, [upcomingData]);
-
-
+    const { data: upcomingData, isLoading: upcomingLoading } = useGetUpcoming();
 
     /************************************************************************
      * INITIAL FILM DATA
@@ -157,6 +145,7 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
     // debounce the search function
     const debouncedSearch = useCallback(
         debounce(async (searchTerm) => {
+            console.log("searching for", searchTerm);
             // if search term is not empty, fetch search results
             if (searchTerm && searchTerm.length > 0) {
                 setLoading(true);
@@ -174,7 +163,7 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
                 } else setFilmData(upcomingFilms);
             }
             setLoading(false);
-        }, 300),
+        }, 400),
         [sortedWatchlist, upcomingFilms]
         // make sure when search term is empty, sortedWatchlist and upcomingFilms are not going to be remounted, leading to empty filmData
     );
@@ -378,8 +367,7 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
                         <Loader height="h-[60px]" weight="h-[60px]" />
                     </div> :
                     <SearchDisplay
-                        isLoading={isFetchingUpcoming}
-                        filteredResults={upcomingData?.results}
+                        filteredResults={filteredResults}
                         selectedFilms={formData.selectedFilms}
                         setSelectedFilms={updateSelection}
                         watchlistObject={watchlistObject}
