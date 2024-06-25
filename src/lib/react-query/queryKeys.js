@@ -23,7 +23,7 @@ export const QUERY_KEYS = {
 
 
   // FILM KEYS
-  GET_UPCOMING: "getUpcoming",
-  SEARCH_FILMS: "searchFilms",
+  GET_UPCOMING: "fetchUpcoming",
+  SEARCH_FILMS: "fetchSearchResults",
   GET_FILM_BY_ID: "fetchFilmDetails",
 }
