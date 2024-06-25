@@ -24,7 +24,8 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watch
 									guests={guests}
 									isProtected={isProtected}
 								/>
-							</div>)
+							</div>
+						)
 					})}
 				</div>
 			) : (

@@ -20,7 +20,7 @@ const FilmSearch = ({ selectedFilms, nextStep, title, protectedFilms, setModalOp
 
     // Form Data
     const [formData, setFormData] = useState({ selectedFilms });  // Adjusted to only use selectedFilms
-    const [users, setUsers] = useState(DummyUserData);  // Dummy user data
+    const [users, setUsers] = useState([]);  // Dunommy user data
     const [showNoSelectionError, setShowNoSelectionError] = useState(false);
 
     // Film Data

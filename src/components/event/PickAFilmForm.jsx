@@ -30,6 +30,7 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
         date: "",
         host: ""
     })
+    const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
     // Query to create a new event
     const { mutateAsync: createPickAFilmToDB, isPending: isLoadingCreate } = useCreatePickAFilm();
@@ -77,17 +78,17 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 
         if (!newPickAFilm) {
             toast({
-				variant: "destructive",
-				title: (
-					<p className='subtitle'>🚨 Error add PickAFilm</p>
-				),
-				description: (
-					<p className='bold leading-[1.5]'>
-						There was an error creating <span className='italic subtitle'>${formData.title}</span>. Please try again.
-					</p>
-				),
-			});
-			return false;
+                variant: "destructive",
+                title: (
+                    <p className='subtitle'>🚨 Error add PickAFilm</p>
+                ),
+                description: (
+                    <p className='bold leading-[1.5]'>
+                        There was an error creating <span className='italic subtitle'>${formData.title}</span>. Please try again.
+                    </p>
+                ),
+            });
+            return false;
         } else {
             toast({
                 variant: "success",
@@ -147,7 +148,10 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
                             )}
                         />
                         {/* Date */}
-                        <Popover>
+                        <Popover
+                            open={isDatePickerOpen}
+                            onOpenChange={setIsDatePickerOpen}
+                        >
                             <PopoverTrigger asChild className="hover:bg-white">
                                 <Button
                                     variant='input'
@@ -165,13 +169,16 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
                             </PopoverTrigger>
                             <PopoverContent
                                 align="start"
-                                className="flex flex-col w-auto p-2 space-y-2"
+                                className="flex flex-col w-full p-2 space-y-2"
                             >
                                 <div className="rounded-md">
                                     <Calendar
                                         mode="single"
                                         selected={formData.date}
-                                        onSelect={(date) => setFormData({ ...formData, date: date })}
+                                        onSelect={(date) => {
+                                            setIsDatePickerOpen(false);
+                                            setFormData({ ...formData, date: date })
+                                        }}
                                     />
                                 </div>
                             </PopoverContent>
