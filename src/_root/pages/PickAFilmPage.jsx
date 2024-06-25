@@ -14,6 +14,8 @@ import EventTitleAndShare from '@/components/event/EventTitleAndShare';
 import FilmPreview from "@/components/film/FilmPreview";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
+import VoteResult from "@/components/event/VoteResult";
+import { Dialog as SmallDialog, DialogContent as SmallDialogContent } from "@/components/ui/voteSelectDialog";
 // import timeConvertor from '../../components/utility/timeConvertor';
 
 // Define initial state
@@ -49,6 +51,11 @@ const reducer = (state, action) => {
   }
 };
 
+
+/**********************************************************************************
+ * PickAFilmPage
+ **********************************************************************************/ 
+
 const PickAFilmPage = () => {
   const { id } = useParams();
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -61,13 +68,13 @@ const PickAFilmPage = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [viewFilmId, setViewFilmId] = React.useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [showVoteResult, setShowVoteResult] = useState(false);
 
   // Open the Film Preview Modal
   const handleViewFilm = (itemId) => {
     setViewFilmId(itemId);
     setIsModalOpen(true);
   };
-
 
   let bannerSrc = imagePath(state.confirmedFilm?.backdrop_path);
 
@@ -81,7 +88,6 @@ const PickAFilmPage = () => {
   useEffect(() => {
     if (!isLoadingPickAFilm && data && !isInitialized) {
 
-      console.log('started------------------', data);
       const initializeState = async () => {
         // Convert the stringified guestList to JSON
         const guestJSONs = data.guestList.map(guest => JSON.parse(guest));
@@ -114,6 +120,26 @@ const PickAFilmPage = () => {
       setIsInitialized(true);
     }
   }, [isLoadingPickAFilm, data, isInitialized]);
+
+  // Copy the URL to the clipboard
+  const copyToClipboard = () => {
+    const url = `${import.meta.env.VITE_HOSTING_URL}/pickAFilm/${state.id}`;
+    navigator.clipboard.writeText(url);
+    toast({
+      variant: "success",
+      title: (<p className='subtitle'>📋 URL copied!</p>),
+      description: (
+        <p className='bold leading-[1.5]'>
+          The URL is copied to your clipboard
+        </p>
+      ),
+    });
+  }
+
+
+  /**********************************************************************************
+   * Handlers
+   *******************************************************************************/
 
   // Handle renaming event
   const handleRename = async () => {
@@ -193,21 +219,6 @@ const PickAFilmPage = () => {
     }
   }
 
-  // Copy the URL to the clipboard
-  const copyToClipboard = () => {
-    const url = `${import.meta.env.VITE_HOSTING_URL}/pickAFilm/${state.id}`;
-    navigator.clipboard.writeText(url);
-    toast({
-      variant: "success",
-      title: (<p className='subtitle'>📋 URL copied!</p>),
-      description: (
-        <p className='bold leading-[1.5]'>
-          The URL is copied to your clipboard
-        </p>
-      ),
-    });
-  }
-
   /**********************************************************************************
    * Components
    **********************************************************************************/
@@ -224,6 +235,25 @@ const PickAFilmPage = () => {
     )
   }
 
+  const VoteResultModal = () => {
+    return (
+      <SmallDialog open={showVoteResult} onOpenChange={setShowVoteResult}>
+        <SmallDialogContent
+          // hasClose={true}
+          className="overflow-y-auto custom-scrollbar bg-primary text-secondary border-border w-[90%] max-w-[1024px] xl:w-[70%]"
+        >
+          <VoteResult
+            selectedFilms={state.selectedFilms}
+            guestList={state.guestList}
+            confirmedFilm={state.confirmedFilm}
+            setConfirmedFilm={(confirmedFilm) => dispatch({ type: 'SET_CONFIRMED_FILM', payload: confirmedFilm })}
+            setShowVoteResult={setShowVoteResult}
+          />
+        </SmallDialogContent>
+      </SmallDialog>
+    );
+  };
+
   /**********************************************************************************
    * Rendering
    **********************************************************************************/
@@ -239,9 +269,6 @@ const PickAFilmPage = () => {
       <NoData />
     </div>
   )
-
-  console.log('state', state);
-  // console.log('newTime', timeConvertor(state.date));
 
   return (
     <div className='mx-auto w-full max-w-[1280px] flex-col items-center justify-start overflow-x-hidden mt-10 md:mt-14 px-4 xl:mt-24 xl:px-10'>
@@ -308,7 +335,7 @@ const PickAFilmPage = () => {
 
                   {/* Selected film title */}
                   {state.confirmedFilm &&
-                    <div className="body">
+                    <div className="cursor-pointer body" onClick={() => console.log("")} >
                       <span className='text-foreground-dark'>Selected Film</span><br />
                       {state.confirmedFilm.title} ({state.confirmedFilm.release_date?.split("-")[0]})
                     </div>
@@ -381,17 +408,17 @@ const PickAFilmPage = () => {
               setSelectedGuest={(guest) => dispatch({ type: 'SET_SELECTED_GUEST', payload: guest })}
               setConfirmedFilm={(film) => dispatch({ type: 'SET_CONFIRMED_FILM', payload: film })}
             />
-
           </div>
         </div>
       </div>
-
 
       <FilmPreview
         filmId={viewFilmId}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />
+
+      <VoteResultModal />
     </div >
   )
 }
