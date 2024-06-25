@@ -249,14 +249,14 @@ const PickAFilmPage = () => {
       <div className='flex flex-col justify-start pt-12 gap-y-4 md:pt-16 lg:pt-24 xl:pt-12 md:pb-32'>
 
         {/* banner */}
-        {state.confirmedFilm &&
+        {state.confirmedFilm && bannerSrc &&
           <div className='confirmedfilm-img-container'>
             {bannerSrc && <img src={bannerSrc} alt={state.confirmedFilm?.title} className='film-img' />}
             <div className='film-img-mask'></div>
           </div>
         }
 
-        <div className={`relative flex flex-col gap-y-10 w-full max-w-[1280px] mx-auto md:px-10 ${state.confirmedFilm ? "-mt-10 md:-mt-80 lg:-mt-96 xl:-mt-[450px]" : ""}`}>
+        <div className={`relative flex flex-col gap-y-10 w-full max-w-[1280px] mx-auto md:px-10 ${state.confirmedFilm && bannerSrc ? "-mt-10 md:-mt-80 lg:-mt-96 xl:-mt-[450px]" : ""}`}>
           <div className={`flex flex-col gap-y-4 md:gap-y-8`}>
             <section className='flex flex-col gap-y-4'>
               {/* title & Share */}
