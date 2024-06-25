@@ -134,10 +134,10 @@ const FilmCard = React.memo(({ item, selectedFilms, setSelectedFilms, watchlistO
 					</div>
 
 					{/* votes */}
-					{voteDisabled &&
+					{votes !== undefined &&
 						<div className="flex items-center">
 							<div className="body">{votes}</div>
-							<MdPoll className="w-4 h-4 mb-1 ml-1 md:w-5 md:h-5" />
+							<MdPoll className="w-4 h-4 mb-[1px] ml-1 md:w-5 md:h-5" />
 						</div>
 					}
 
