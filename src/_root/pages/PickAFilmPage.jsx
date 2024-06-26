@@ -11,7 +11,6 @@ import EventTitleAndShare from '@/components/event/EventTitleAndShare';
 import FilmPreview from "@/components/film/FilmPreview";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import VoteResult from "@/components/event/VoteResult";
 import { Dialog as SmallDialog, DialogContent as SmallDialogContent } from "@/components/ui/voteSelectDialog";
 import getFormattedLocalDateTime from '@/components/utility/getFormattedLocalDateTime';
 
@@ -55,25 +54,20 @@ const reducer = (state, action) => {
 
 const PickAFilmPage = () => {
   const { id } = useParams();
+  const { toast } = useToast();
+
+  // Define local state
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isInitialized, setIsInitialized] = useState(false);
-  const host = localStorage.getItem('host');
   const [rename, setRename] = useState(false);
   const [newName, setNewName] = useState("");
-  const { toast } = useToast()
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [viewFilmId, setViewFilmId] = React.useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [showVoteResult, setShowVoteResult] = useState(false);
+
+  const host = localStorage.getItem('host');
   const localDateTime = getFormattedLocalDateTime(state.date);
-
-  // Open the Film Preview Modal
-  const handleViewFilm = (itemId) => {
-    setViewFilmId(itemId);
-    setIsModalOpen(true);
-  };
-
-  let bannerSrc = imagePath(state.confirmedFilm?.backdrop_path);
 
   // Query: Get PickAFilm by ID
   const { data, isLoading: isLoadingPickAFilm } = useGetPickAFilmById(id);
@@ -103,20 +97,40 @@ const PickAFilmPage = () => {
           dispatch({ type: 'SET_SELECTED_FILMS', payload: selectedFilmsJSONs });
         };
 
+        // Fetch confirmed film 
+        const fetchConfirmedFilm = async () => {
+          if (data.confirmedFilm) {
+            try {
+              const confirmedFilm = await fetchFilmDetails(parseInt(data.confirmedFilm));
+              dispatch({ type: 'SET_CONFIRMED_FILM', payload: confirmedFilm });
+            } catch (error) {
+              console.error("Error fetching confirmed film id:", data.confirmedFilm, error);
+            }
+          }
+        }
+
         // Dispatch actions to set the state
         dispatch({ type: 'SET_TITLE', payload: data.title });
         dispatch({ type: 'SET_DATE', payload: data.date });
-        dispatch({ type: 'SET_CONFIRMED_FILM', payload: data.confirmedFilm });
         dispatch({ type: 'SET_GUEST_LIST', payload: guestJSONs });
         dispatch({ type: 'SET_ID', payload: data.$id });
 
         await fetchSelectedFilms();
+        await fetchConfirmedFilm();
       };
 
       initializeState();
       setIsInitialized(true);
     }
   }, [isLoadingPickAFilm, data, isInitialized]);
+
+
+  useEffect(() => {
+    if (state.confirmedFilm) {
+      console.log("state.confirmedFilm", state.confirmedFilm);
+    }
+  }, [state.confirmedFilm]);
+
 
   // Copy the URL to the clipboard
   const copyToClipboard = () => {
@@ -132,7 +146,6 @@ const PickAFilmPage = () => {
       ),
     });
   }
-
 
   /**********************************************************************************
    * Handlers
@@ -216,6 +229,49 @@ const PickAFilmPage = () => {
     }
   }
 
+  // Handle setting the confirmed film
+  const handleSetConfirmedFilm = async (newConfirmedFilm) => {
+
+    dispatch({ type: 'SET_CONFIRMED_FILM', payload: newConfirmedFilm });
+
+    console.log("newConfirmedFilm", newConfirmedFilm);
+
+    // update server state
+    const success = await updatePickAFilmOptimistic({ id: state.id, confirmedFilm: newConfirmedFilm.id.toString() });
+
+    // if not successful, recover the previous state and show a toast message
+    if (!success) {
+      dispatch({ type: 'SET_CONFIRMED_FILM', payload: variables.confirmedFilm }); // recover the previous state
+      toast({
+        variant: "destructive",
+        title: (<p className='subtitle'>🚨 Error setting the confirmed film</p>),
+        description: (
+          <p className='bold leading-[1.5]'>
+            There was an error setting the confirmed film
+          </p>
+        ),
+      });
+    }
+    // if successful, show a toast message
+    else {
+      toast({
+        variant: "success",
+        title: (<p className='subtitle'>🎉 Confirmed film set!</p>),
+        description: (
+          <p className='bold leading-[1.5]'>
+            The confirmed film is set to <span className='italic'>{newConfirmedFilm.title}</span>
+          </p>
+        ),
+      });
+    }
+  }
+
+  // Open the Film Preview Modal
+  const handleViewFilm = (itemId) => {
+    setViewFilmId(itemId);
+    setIsModalOpen(true);
+  };
+
   /**********************************************************************************
    * Components
    **********************************************************************************/
@@ -231,25 +287,6 @@ const PickAFilmPage = () => {
       </div>
     )
   }
-
-  const VoteResultModal = () => {
-    return (
-      <SmallDialog open={showVoteResult} onOpenChange={setShowVoteResult}>
-        <SmallDialogContent
-          // hasClose={true}
-          className="overflow-y-auto custom-scrollbar bg-primary text-secondary border-border w-[90%] max-w-[1024px] xl:w-[70%]"
-        >
-          <VoteResult
-            selectedFilms={state.selectedFilms}
-            guestList={state.guestList}
-            confirmedFilm={state.confirmedFilm}
-            setConfirmedFilm={(confirmedFilm) => dispatch({ type: 'SET_CONFIRMED_FILM', payload: confirmedFilm })}
-            setShowVoteResult={setShowVoteResult}
-          />
-        </SmallDialogContent>
-      </SmallDialog>
-    );
-  };
 
   /**********************************************************************************
    * Rendering
@@ -271,13 +308,13 @@ const PickAFilmPage = () => {
     <div className='mx-auto w-full max-w-[1280px] flex-col items-center justify-start overflow-x-hidden mt-10 md:mt-14 px-4 xl:mt-24 xl:px-10'>
       <div className='flex flex-col justify-start pt-12 gap-y-4 md:pt-16 lg:pt-24 xl:pt-12 md:pb-32'>
         {/* banner */}
-        {state.confirmedFilm && bannerSrc &&
+        {state.confirmedFilm && imagePath(state.confirmedFilm?.backdrop_path) &&
           <div className='confirmedfilm-img-container'>
-            {bannerSrc && <img src={bannerSrc} alt={state.confirmedFilm?.title} className='film-img' />}
+            {imagePath(state.confirmedFilm?.backdrop_path) && <img src={imagePath(state.confirmedFilm?.backdrop_path)} alt={state.confirmedFilm?.title} className='film-img' />}
             <div className='film-img-mask'></div>
           </div>
         }
-        <div className={`relative flex flex-col gap-y-10 w-full max-w-[1280px] mx-auto md:px-10 ${state.confirmedFilm && bannerSrc ? "-mt-10 md:-mt-80 lg:-mt-96 xl:-mt-[450px]" : ""}`}>
+        <div className={`relative flex flex-col gap-y-10 w-full max-w-[1280px] mx-auto md:px-10 ${state.confirmedFilm && imagePath(state.confirmedFilm?.backdrop_path) ? "-mt-10 md:-mt-80 lg:-mt-96 xl:-mt-[450px]" : ""}`}>
           <div className={`flex flex-col gap-y-4 md:gap-y-8`}>
             <section className='flex flex-col gap-y-4'>
               {/* title & Share */}
@@ -353,18 +390,18 @@ const PickAFilmPage = () => {
                       onOpenChange={setIsDatePickerOpen}
                     >
                       <PopoverTrigger asChild >
-                        <p className="flex flex-col gap-y-0 cursor-pointer [&_div]:hover:underline">
+                        <div className="flex flex-col gap-y-0 cursor-pointer [&_div]:hover:underline">
                           <span className='body text-foreground-dark'>Date & Time</span>
                           <div className={`body transition-all duration-500 ease-in-out ${isPending ? "text-foreground-dark" : "text-foreground"}`}>
                             {localDateTime}
                             <span className='italic small text-foreground-dark'>
                               {
                                 new Date(state.date) > new Date() &&
-                                ` (in ${Math.floor((new Date(state.date) - new Date()) / (1000 * 60 * 60 * 24))} days)`
+                                ` (in ${Math.floor((new Date(state.date) - new Date()) / (1000 * 60 * 60 * 24)) + 1} days)`
                               }
                             </span>
                           </div>
-                        </p>
+                        </div>
                       </PopoverTrigger>
                       <PopoverContent
                         align="start"
@@ -407,7 +444,9 @@ const PickAFilmPage = () => {
               setGuestList={(guestList) => dispatch({ type: 'SET_GUEST_LIST', payload: guestList })}
               setSelectedFilms={(films) => dispatch({ type: 'SET_SELECTED_FILMS', payload: films })}
               setSelectedGuest={(guest) => dispatch({ type: 'SET_SELECTED_GUEST', payload: guest })}
-              setConfirmedFilm={(film) => dispatch({ type: 'SET_CONFIRMED_FILM', payload: film })}
+              setConfirmedFilm={handleSetConfirmedFilm}
+              showVoteResult={showVoteResult}
+              setShowVoteResult={setShowVoteResult}
             />
           </div>
         </div>
@@ -418,8 +457,6 @@ const PickAFilmPage = () => {
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />
-
-      <VoteResultModal />
     </div >
   )
 }

@@ -15,13 +15,16 @@ import { useToast } from "@/components/ui/use-toast";
 import { LuVote } from "react-icons/lu";
 
 
-
-
-const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGuest, setSelectedGuest, setGuestList, confirmedFilm, setConfirmedFilm }) => {
+// FilmPoll component
+const FilmPoll = ({
+  id,
+  selectedFilms, selectedGuest, guestList, confirmedFilm,
+  setSelectedFilms, setSelectedGuest, setGuestList, setConfirmedFilm,
+  showVoteResult, setShowVoteResult
+}) => {
   const { toast } = useToast();
   const [showFilmSearch, setShowFilmSearch] = useState(false);
   const [showGuestSelection, setShowGuestSelection] = useState(false);
-  const [showVoteResult, setShowVoteResult] = useState(false);
   const [sortOrder, setSortOrder] = useState("");
   const [sortedFilms, setSortedFilms] = useState(null);
   const [votedFilms, setVotedFilms] = useState([]);
@@ -147,25 +150,6 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
 
     // update the sorted films
     handleSortChange(sortOrder, selectedFilms);
-  };
-
-  const VoteResultModal = () => {
-    return (
-      <SmallDialog open={showVoteResult} onOpenChange={setShowVoteResult}>
-        <SmallDialogContent
-          hasClose={true}
-          className="overflow-y-auto custom-scrollbar bg-primary text-secondary border-border w-[90%] max-w-[1024px] xl:w-[70%]"
-        >
-          <VoteResult
-            selectedFilms={selectedFilms}
-            guestList={guestList}
-            confirmedFilm={confirmedFilm}
-            setConfirmedFilm={setConfirmedFilm}
-            setShowVoteResult={setShowVoteResult}
-          />
-        </SmallDialogContent>
-      </SmallDialog>
-    );
   };
 
   const getVotes = (film) => {
@@ -454,7 +438,18 @@ const FilmPoll = ({ selectedFilms, setSelectedFilms, guestList, id, selectedGues
       <GuestSelectionModal />
 
       {/* Vote Result Modal */}
-      <VoteResultModal />
+
+      {/* Vote Result */}
+      <VoteResult
+        selectedFilms={selectedFilms}
+        guestList={guestList}
+        confirmedFilm={confirmedFilm}
+        setConfirmedFilm={setConfirmedFilm}
+        showVoteResult={showVoteResult}
+        setShowVoteResult={setShowVoteResult}
+      />
+
+
     </div>
   );
 };
