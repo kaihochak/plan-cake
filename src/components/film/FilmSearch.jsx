@@ -15,6 +15,7 @@ import { useGetUpcoming, useGetSearchResults } from "@/lib/react-query/queries";
 const FilmSearch = ({ selectedFilms, handleApply, protectedFilms, setModalOpen }) => {
     
     // Form Data
+    const [inputValue, setInputValue] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
     const [formData, setFormData] = useState({ selectedFilms });
     const [users, setUsers] = useState([]);
@@ -101,13 +102,14 @@ const FilmSearch = ({ selectedFilms, handleApply, protectedFilms, setModalOpen }
      ************************************************************************/
 
     const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
+        setInputValue(e.target.value);
         debouncedSearch(e.target.value);
     };
     const debouncedSearch = useCallback(
         debounce((searchTerm) => {
+            console.log("searchTerm", searchTerm);
             setSearchTerm(searchTerm);
-        }, 300),
+        }, 350),
         []
     );
 
@@ -259,7 +261,7 @@ const FilmSearch = ({ selectedFilms, handleApply, protectedFilms, setModalOpen }
             <div className="flex flex-col">
                 {/* Search & Filters */}
                 <div className="flex gap-x-4">
-                    <SearchBar searchTerm={searchTerm} handleSearchChange={handleSearchChange} />
+                    <SearchBar searchTerm={inputValue} handleSearchChange={handleSearchChange} />
                     <button
                         onClick={() => setFilterModalOpen(true)}
                         className={`flex items-center text-[30px] mr-2 mb-2 text-primary-foreground/60 ${isFilterApplied ? "text-accent/70" : ""}`}
