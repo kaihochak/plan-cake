@@ -1,14 +1,11 @@
 import React, { useEffect, useState, useReducer } from 'react'
-import { Button } from "@/components/ui/button"
 import FilmPoll from '@/components/event/FilmPoll'
 import GuestSelection from "@/components/event/GuestSelection";
 import { useParams } from 'react-router-dom';
 import { useGetPickAFilmById, useUpdatePickAFilmOptimistic } from '@/lib/react-query/queries';
 import Loader from "@/components/utility/Loader";
 import { fetchFilmDetails } from "@/lib/tmdb/api";
-import TimeConvertor from '@/components/utility/TimeConvertor'
 import { fallbackMoviePoster, image500, imagePath } from '@/lib/tmdb/config'
-import { useMediaQuery } from '@react-hook/media-query'
 import { useToast } from "@/components/ui/use-toast"
 import EventTitleAndShare from '@/components/event/EventTitleAndShare';
 import FilmPreview from "@/components/film/FilmPreview";
@@ -16,12 +13,12 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar } from "@/components/ui/calendar";
 import VoteResult from "@/components/event/VoteResult";
 import { Dialog as SmallDialog, DialogContent as SmallDialogContent } from "@/components/ui/voteSelectDialog";
-// import timeConvertor from '../../components/utility/timeConvertor';
+import getFormattedLocalDateTime from '@/components/utility/getFormattedLocalDateTime';
 
 // Define initial state
 const initialState = {
   title: "",
-  date: null,
+  date: "",
   confirmedFilm: null,
   guestList: [],
   selectedFilms: [],
@@ -54,14 +51,13 @@ const reducer = (state, action) => {
 
 /**********************************************************************************
  * PickAFilmPage
- **********************************************************************************/ 
+ **********************************************************************************/
 
 const PickAFilmPage = () => {
   const { id } = useParams();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isInitialized, setIsInitialized] = useState(false);
   const host = localStorage.getItem('host');
-  const bp_768 = useMediaQuery('(min-width:768px)');
   const [rename, setRename] = useState(false);
   const [newName, setNewName] = useState("");
   const { toast } = useToast()
@@ -69,6 +65,7 @@ const PickAFilmPage = () => {
   const [viewFilmId, setViewFilmId] = React.useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [showVoteResult, setShowVoteResult] = useState(false);
+  const localDateTime = getFormattedLocalDateTime(state.date);
 
   // Open the Film Preview Modal
   const handleViewFilm = (itemId) => {
@@ -272,9 +269,7 @@ const PickAFilmPage = () => {
 
   return (
     <div className='mx-auto w-full max-w-[1280px] flex-col items-center justify-start overflow-x-hidden mt-10 md:mt-14 px-4 xl:mt-24 xl:px-10'>
-
       <div className='flex flex-col justify-start pt-12 gap-y-4 md:pt-16 lg:pt-24 xl:pt-12 md:pb-32'>
-
         {/* banner */}
         {state.confirmedFilm && bannerSrc &&
           <div className='confirmedfilm-img-container'>
@@ -282,7 +277,6 @@ const PickAFilmPage = () => {
             <div className='film-img-mask'></div>
           </div>
         }
-
         <div className={`relative flex flex-col gap-y-10 w-full max-w-[1280px] mx-auto md:px-10 ${state.confirmedFilm && bannerSrc ? "-mt-10 md:-mt-80 lg:-mt-96 xl:-mt-[450px]" : ""}`}>
           <div className={`flex flex-col gap-y-4 md:gap-y-8`}>
             <section className='flex flex-col gap-y-4'>
@@ -303,9 +297,9 @@ const PickAFilmPage = () => {
 
               {/* Info */}
               <div className={`w-full ${state.confirmedFilm ? "flex-start gap-x-4 md:gap-x-14" : "flex-between "}`}>
-                {/* left - poster*/}
+                {/* left - poster */}
                 {state.confirmedFilm &&
-                  <div className='w-full min-w-[150px] w-[300px] lg:w-[320px] xl:w-[380px] 2xl:w-[400px] cursor-pointer'>
+                  <div className='w-full min-w-[150px] lg:w-[320px] xl:w-[380px] 2xl:w-[400px] cursor-pointer'>
                     <img
                       src={state.confirmedFilm?.poster_path ? image500(state.confirmedFilm?.poster_path) : fallbackMoviePoster}
                       alt={state.confirmedFilm?.title}
@@ -361,7 +355,15 @@ const PickAFilmPage = () => {
                       <PopoverTrigger asChild >
                         <p className="flex flex-col gap-y-0 cursor-pointer [&_div]:hover:underline">
                           <span className='body text-foreground-dark'>Date & Time</span>
-                          <TimeConvertor confirmedDateTime={state.date} />
+                          <div className={`body transition-all duration-500 ease-in-out ${isPending ? "text-foreground-dark" : "text-foreground"}`}>
+                            {localDateTime}
+                            <span className='italic small text-foreground-dark'>
+                              {
+                                new Date(state.date) > new Date() &&
+                                ` (in ${Math.floor((new Date(state.date) - new Date()) / (1000 * 60 * 60 * 24))} days)`
+                              }
+                            </span>
+                          </div>
                         </p>
                       </PopoverTrigger>
                       <PopoverContent
@@ -372,16 +374,15 @@ const PickAFilmPage = () => {
                           <Calendar
                             mode="single"
                             selected={state.date}
-                            onSelect={() => {
+                            onSelect={(date) => {
                               setIsDatePickerOpen(false);
-                              handleReschedule(state.date)
+                              handleReschedule(date)
                             }}
                           />
                         </div>
                       </PopoverContent>
                     </Popover>
                   }
-
                   {/* Guest List */}
                   <div className='md:self-end'>
                     <GuestSelection
