@@ -35,7 +35,7 @@ const FilmCard = React.memo(({ item, selectedFilms, setSelectedFilms, watchlistO
 			{/* Poster */}
 			<div className="w-full">
 				<div className="aspect-w-1 aspect-h-[1.5]">
-					{!imageLoaded && <Skeleton className="w-full h-full rounded-sm" />}
+					{!imageLoaded && <Skeleton className="w-full h-full rounded-sm bg-primary-light" />}
 					{selectedFilms ? (
 						<img
 							src={item.poster_path === null || item.poster_path === undefined ? 
