@@ -364,7 +364,7 @@ const FilmPoll = ({
             !sortedFilms &&
             Array.from({ length: 4 }).map((_, index) => (
               <div key={index} className="relative flex flex-col gap-y-2">
-                <Skeleton className="aspect-w-1 aspect-h-[1.5]" />
+                <Skeleton className="aspect-w-1 aspect-h-[1.5] bg-primary-dark" />
               </div>
             ))}
 

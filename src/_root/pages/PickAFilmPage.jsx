@@ -305,8 +305,8 @@ const PickAFilmPage = () => {
   )
 
   return (
-    <div className='mx-auto w-full max-w-[1280px] flex-col items-center justify-start overflow-x-hidden mt-10 md:mt-14 px-4 xl:mt-24 xl:px-10'>
-      <div className='flex flex-col justify-start pt-12 gap-y-4 md:pt-16 lg:pt-24 xl:pt-12 md:pb-32'>
+    <div className='flex-col items-center justify-start w-full px-4 mx-auto overflow-x-hidden overflow-y-scroll xl:px-10 custom-scrollbar'>
+      <div className='mx-auto flex flex-col justify-start gap-y-4 md:pb-32 max-w-[1280px]'>
         {/* banner */}
         {state.confirmedFilm && imagePath(state.confirmedFilm?.backdrop_path) &&
           <div className='confirmedfilm-img-container'>
@@ -314,6 +314,7 @@ const PickAFilmPage = () => {
             <div className='film-img-mask'></div>
           </div>
         }
+        {/* content */}
         <div className={`relative flex flex-col gap-y-10 w-full max-w-[1280px] mx-auto md:px-10 ${state.confirmedFilm && imagePath(state.confirmedFilm?.backdrop_path) ? "-mt-10 md:-mt-80 lg:-mt-96 xl:-mt-[450px]" : ""}`}>
           <div className={`flex flex-col gap-y-4 md:gap-y-8`}>
             <section className='flex flex-col gap-y-4'>
