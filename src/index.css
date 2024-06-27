@@ -358,7 +358,7 @@ body {
 
   .feature-container {
     @apply flex flex-col items-start gap-y-1 w-[160px];
-  }  
+  }
 
   /* Explore Container */
   .explore-container {
@@ -623,7 +623,6 @@ body {
     @apply transition invert brightness-0;
   }
 
-
   .overlay-buttons {
     @apply absolute bottom-0 right-0 z-20 flex items-center justify-center hover:bg-black/50;
   }
@@ -678,7 +677,27 @@ body {
   }
 
   .transTopbar {
-    @apply top-0 z-50 xl:hidden w-full h-[80px] absolute bg-transparent bg-gradient-to-b from-black;
+    @apply top-0 z-50 w-full h-[80px] absolute bg-transparent;
+    /* top to bottom */ 
+    /* background-image:
+   linear-gradient(
+      180deg,
+      hsl(var(--primary) / 100%) 0,
+      hsl(var(--primary) / 98.6%) 0.97%,
+      hsl(var(--primary) / 94.5%) 2%,
+      hsl(var(--primary) / 88.3%) 3.3%,
+      hsl(var(--primary) / 80.3%) 4.6%,
+      hsl(var(--primary) / 71.1%) 6%,
+      hsl(var(--primary) / 61%) 7.4%,
+      hsl(var(--primary) / 50.4%) 8.8%,
+      hsl(var(--primary) / 39.8%) 10.2%,
+      hsl(var(--primary) / 29.6%) 11.5%,
+      hsl(var(--primary) / 20.3%) 12.8%,
+      hsl(var(--primary) / 12.2%) 14%,
+      hsl(var(--primary) / 5.9%) 15%,
+      hsl(var(--primary) / 1.6%) 15.9%,
+      hsl(var(--primary) / 0%) 16.7%,
+    ); */
   }
 
   /* Left sidebar */

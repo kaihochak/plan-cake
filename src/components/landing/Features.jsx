@@ -1,11 +1,8 @@
 import React from 'react'
-import { motion } from "framer-motion";
-import { fadeIn } from "../../lib/variants";
 import { TbMovie } from "react-icons/tb";
 import { CgMusic } from "react-icons/cg";
 import { RiBook3Line } from "react-icons/ri";
 import { FaRegCircleQuestion } from "react-icons/fa6";
-import { Link } from "react-router-dom";
 
 const Features = () => {
 
@@ -34,7 +31,6 @@ const Features = () => {
             />
           </div>
         </div>
-
 
         {/* Feature Column 1 */}
         <div className='feature-col md:order-1'>

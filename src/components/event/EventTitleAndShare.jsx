@@ -7,7 +7,7 @@ const EventTitleAndShare = ({ state, isPending, copyToClipboard, rename, setRena
 		< div className={`flex  w-full gap-y-1 md:flex-between gap-x-10 ${state.confirmedFilm ? "flex-col items-start md:flex-row-reverse " : "flex-row-reverse items-center"}`} >
 			{/* Share */}
 			<button
-				className='flex items-center justify-end w-full pl-2 transition-colors duration-500 ease-in-out rounded-lg md:w-auto gap-x-2 text-accent subtitle hover:text-accent-dark'
+				className='flex items-center justify-end w-full pl-2 transition-colors duration-500 tour-share  ease-in-out rounded-lg md:w-auto gap-x-2 text-accent subtitle hover:text-accent-dark'
 				onClick={copyToClipboard}
 			>
 				<BiShareAlt />

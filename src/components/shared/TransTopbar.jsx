@@ -17,29 +17,29 @@ const TransTopBar = ({isSticky}) => {
 
     return (
         <section className="transTopbar">
-            <nav className="flex-between px-5 py-6">
+            <nav className="flex justify-start px-5 py-6 md:justify-center">
                 {/* Logo as Home Button */}
                 <Link to="/" className="home-logo">
-                    <img src={Logo} alt="Home" className=" w-32 " />
+                    <img src={Logo} alt="Home" className="w-32 " />
                 </Link>
 
                 {/* Right side of TransTopBar */}
                 <div className='flex gap-4'>
                     {/* Logout */}
-                    <button 
+                    {/* <button 
                         variant="ghost"
                         onClick={() => signOut()}
                     >
                         <IoMdLogOut className='text-[30px] text-primary-foreground'/>
-                    </button>
+                    </button> */}
                     {/* Profile */}
-                    <Link to={`/profile/${user.id}`} className='flex-center gap-3'>
+                    {/* <Link to={`/profile/${user.id}`} className='gap-3 flex-center'>
                         <img 
                             src={user.imageUrl || ProfilePlaceholder} 
                             alt="profile"
-                            className="h-8 w-8 rounded-full"
+                            className="w-8 h-8 rounded-full"
                         />
-                    </Link>
+                    </Link> */}
                 </div>
             </nav>
         </section>

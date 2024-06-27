@@ -13,7 +13,7 @@ import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog";
 import { useGetUpcoming, useGetSearchResults } from "@/lib/react-query/queries";
 
 const FilmSearch = ({ selectedFilms, handleApply, protectedFilms, setModalOpen }) => {
-    
+
     // Form Data
     const [inputValue, setInputValue] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
@@ -258,10 +258,14 @@ const FilmSearch = ({ selectedFilms, handleApply, protectedFilms, setModalOpen }
                 </div>
             </div>
 
-            <div className="flex flex-col">
+            <div className="flex flex-col ">
                 {/* Search & Filters */}
-                <div className="flex gap-x-4">
-                    <SearchBar searchTerm={inputValue} handleSearchChange={handleSearchChange} />
+                <div className="flex gap-x-4 tour-search-filter">
+                    <SearchBar
+                        searchTerm={searchTerm}
+                        handleSearchChange={handleSearchChange}
+                    />
+                    {/* Filters Modal defined at the bottom */}
                     <button
                         onClick={() => setFilterModalOpen(true)}
                         className={`flex items-center text-[30px] mr-2 mb-2 text-primary-foreground/60 ${isFilterApplied ? "text-accent/70" : ""}`}
