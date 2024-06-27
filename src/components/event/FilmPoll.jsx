@@ -408,10 +408,10 @@ const FilmPoll = ({
             onClick={() => {
               if (selectedGuest) setShowFilmSearch(true);
               else setShowGuestSelection(true);
-              setTourState({
-                run: false,
-                step: 0,
-              });
+              // setTourState({
+              //   run: false,
+              //   step: 0,
+              // });
             }}
           >
             <p className="body">Add Film</p>

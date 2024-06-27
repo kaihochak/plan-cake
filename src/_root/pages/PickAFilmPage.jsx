@@ -21,7 +21,7 @@ const tourSteps = [
     target: '.tour-add-film',
     content: (
       <div>
-        <p className='bold mb-1'>Add a Film</p> 
+        <p className='mb-1 bold'>Add a Film</p>
         <p className='body'>Got a movie in mind? Hit the "Add Film" button to start adding your favorites.</p>
       </div>
     ),
@@ -42,7 +42,7 @@ const tourSteps = [
     target: '.tour-share',
     content: (
       <div>
-        <p className='bold mb-1'>Add Guest Name</p> 
+        <p className='mb-1 bold'>Add Guest Name</p>
         <p className='body'>Open the guest name drop-down, and add your friends' names. Want to vote on their behalf? Select their name and cast their vote (but make sure you've got their permission first)!</p>
       </div>
     ),
@@ -59,7 +59,7 @@ const tourSteps = [
     target: '.tour-search-filter',
     content: (
       <div>
-        <p className='bold mb-1'>Search/Filter for a Film</p> 
+        <p className='mb-1 bold'>Search/Filter for a Film</p>
         <p className='body'>Use the search bar to find the movie you’re looking for, or click on the filter button to narrow down your choices.</p>
       </div>
     ),
@@ -79,7 +79,7 @@ const tourSteps = [
     target: '.tour-apply',
     content: (
       <div>
-        <p className='bold mb-1'>Apply selection</p> 
+        <p className='mb-1 bold'>Apply selection</p>
         <p className='body'>Found something interesting? Hover over the film to see the "Add" button and an "Info" button for details. Click "Apply" after selecting the films you want to add to the poll.</p>
       </div>
     ),
@@ -99,7 +99,7 @@ const tourSteps = [
     target: '.tour-vote',
     content: (
       <div>
-        <p className='bold mb-1'>Vote for the Film</p> 
+        <p className='mb-1 bold'>Vote for the Film</p>
         <p className='body'>Check out the selected films in the poll section. Hover over your pick and click the "+" button to cast your vote for the movie you want to watch.</p>
       </div>
     ),
@@ -119,7 +119,7 @@ const tourSteps = [
     target: '.tour-confirm',
     content: (
       <div>
-        <p className='bold mb-1'>Confirm Film</p> 
+        <p className='mb-1 bold'>Confirm Film</p>
         <p className='body'>After everyone has voted, click the "Confirmed Film" button to see which movie the group decided to watch. Popcorn(pancake) time!</p>
       </div>
     ),
@@ -139,7 +139,7 @@ const tourSteps = [
     target: '.tour-edit',
     content: (
       <div>
-        <p className='bold mb-1'>Edit Event Title and Date & Time</p> 
+        <p className='mb-1 bold'>Edit Event Title and Date & Time</p>
         <p className='body'>Want to change the event name or tweak the date and time? Just click on the title or the date & time fields and make it yours!</p>
       </div>
     ),
@@ -206,7 +206,7 @@ const PickAFilmPage = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [viewFilmId, setViewFilmId] = React.useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-  const [{run, stepsIndex}, setTourState] = useState({run: true, stepsIndex: 0});
+  const [{ run, stepsIndex }, setTourState] = useState({ run: true, stepsIndex: 0 });
   const [showVoteResult, setShowVoteResult] = useState(false);
 
   const host = localStorage.getItem('host');
@@ -413,7 +413,7 @@ const PickAFilmPage = () => {
   const handleJoyrideCallback = (data) => {
     const { action, index, status, type } = data;
     console.log('Type:', type, 'Action:', action, 'Index:', index, 'Status:', status);
-  
+
     if (action === 'next') {
       setTourState({ run: true, stepsIndex: index + 1 });
     }
@@ -461,7 +461,7 @@ const PickAFilmPage = () => {
 
   return (
     <div className='flex-col items-center justify-start w-full px-4 mx-auto overflow-x-hidden overflow-y-scroll xl:px-10 custom-scrollbar'>
-          <Joyride
+      {/* <Joyride
         run={run}
         steps={tourSteps}
         stepIndex={stepsIndex}
@@ -479,9 +479,11 @@ const PickAFilmPage = () => {
             zIndex: 1000,
           },
         }}
-      />
-      
-      <div className='mx-auto flex flex-col justify-start gap-y-4 md:pb-32 max-w-[1280px]'>
+      /> */}
+
+      <div className={`mx-auto flex flex-col justify-start gap-y-4 md:pb-32 max-w-[1280px]
+        ${!state.confirmedFilm ? "pt-12 md:pt-16 lg:pt-24 xl:pt-12" : ""}
+      `}>
         {/* banner */}
         {state.confirmedFilm && imagePath(state.confirmedFilm?.backdrop_path) &&
           <div className='confirmedfilm-img-container'>

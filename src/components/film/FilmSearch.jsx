@@ -13,7 +13,7 @@ import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog";
 import { useGetUpcoming, useGetSearchResults } from "@/lib/react-query/queries";
 
 const FilmSearch = ({ selectedFilms, handleApply, protectedFilms, setModalOpen }) => {
-    
+
     // Form Data
     const [inputValue, setInputValue] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
@@ -266,9 +266,10 @@ const FilmSearch = ({ selectedFilms, handleApply, protectedFilms, setModalOpen }
                         handleSearchChange={handleSearchChange}
                     />
                     {/* Filters Modal defined at the bottom */}
-                    <button onClick={() => setFilterModalOpen(true)}
-                        className={cn("flex items-center text-[30px] mr-2 mb-2 text-primary-foreground/60",
-                            { "text-accent/70": isFilterApplied })}>
+                    <button
+                        onClick={() => setFilterModalOpen(true)}
+                        className={`flex items-center text-[30px] mr-2 mb-2 text-primary-foreground/60 ${isFilterApplied ? "text-accent/70" : ""}`}
+                    >
                         <BiFilterAlt />
                     </button>
                     <FilmFiltersDialog />
