@@ -25,7 +25,7 @@ const LandingHeader = () => {
 			<div className="flex-row items-center justify-between hidden md:flex gap-x-4 ">
 				<Link
 					to='features'
-					activeClass='active'
+					activeClass='text-accent'
 					smooth={true}
 					spy={true}
 					className='button-text'
@@ -35,7 +35,7 @@ const LandingHeader = () => {
 
 				<Link
 					to='about'
-					activeClass='active'
+					activeClass='text-accent'
 					smooth={true}
 					spy={true}
 					className='button-text'
@@ -45,7 +45,7 @@ const LandingHeader = () => {
 
 				<Link
 					to='faq'
-					activeClass='active'
+					activeClass='text-accent'
 					smooth={true}
 					spy={true}
 					className='button-text'

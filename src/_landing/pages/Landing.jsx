@@ -7,7 +7,7 @@ import ScrollToTopButton from '@/components/utility/ScrollToTopButton'
 
 const Landing = () => {
   return (
-    <div className='w-full mx-auto'>
+    <div className='flex flex-col w-full mx-auto'>
       <Features />
       <About /> 
       <FAQ />

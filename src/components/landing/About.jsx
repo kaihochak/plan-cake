@@ -27,7 +27,7 @@ const About = () => {
         </div>
         
         {/* Team */}
-        <div className='z-10 flex flex-col justify-around gap-8 mb-8 md:flex-row '>
+        <div className='z-10 grid justify-around grid-cols-1 gap-8 mb-8 md:grid-cols-2'>
 
           {/* Jacob Chak */}
           <div className='p-6 rounded-lg md:p-8 bg-accent'>

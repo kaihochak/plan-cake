@@ -1,12 +1,11 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import LandingHeader from '@/components/landing/LandingHeader';
-import LandingFooter from '@/components/landing/LandingFooter';
 
 const LandingLayout = () => {
 
     return (
-        <div className="flex flex-col w-full ">
+        <div className="flex flex-col w-full">
             <LandingHeader />
             <section id="landingLayout" className="flex flex-col w-full h-full">
                 <Outlet />
