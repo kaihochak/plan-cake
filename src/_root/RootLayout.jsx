@@ -17,7 +17,7 @@ const RootLayout = () => {
 
   // only return true if the current route is in the transparentRoutes array
   const isTransparentRoute = () => {
-    return ['/film', '/event'].some(route => {
+    return ['/film', '/event', '/pickAfilm'].some(route => {
       if (location.pathname === route) { return true; } // if the current route is exactly the same as the route in the array
       else if (location.pathname.startsWith(route + '/')) { return true; } // if the current route starts with the route in the array
       else return false; // if the current route is not the same as the route in the array

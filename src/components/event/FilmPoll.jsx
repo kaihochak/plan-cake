@@ -15,11 +15,16 @@ import { useToast } from "@/components/ui/use-toast";
 import { LuVote } from "react-icons/lu";
 
 
-const FilmPoll = ({ setTourState, selectedFilms, setSelectedFilms, guestList, id, selectedGuest, setSelectedGuest, setGuestList, confirmedFilm, setConfirmedFilm }) => {
+// FilmPoll component
+const FilmPoll = ({
+  id,
+  selectedFilms, selectedGuest, guestList, confirmedFilm,
+  setSelectedFilms, setSelectedGuest, setGuestList, setConfirmedFilm,
+  showVoteResult, setShowVoteResult
+}) => {
   const { toast } = useToast();
   const [showFilmSearch, setShowFilmSearch] = useState(false);
   const [showGuestSelection, setShowGuestSelection] = useState(false);
-  const [showVoteResult, setShowVoteResult] = useState(false);
   const [sortOrder, setSortOrder] = useState("");
   const [sortedFilms, setSortedFilms] = useState(null);
   const [votedFilms, setVotedFilms] = useState([]);
@@ -147,25 +152,6 @@ const FilmPoll = ({ setTourState, selectedFilms, setSelectedFilms, guestList, id
     handleSortChange(sortOrder, selectedFilms);
   };
 
-  const VoteResultModal = () => {
-    return (
-      <SmallDialog open={showVoteResult} onOpenChange={setShowVoteResult}>
-        <SmallDialogContent
-          hasClose={true}
-          className="overflow-y-auto custom-scrollbar bg-primary text-secondary border-border w-[90%] max-w-[1024px] xl:w-[70%]"
-        >
-          <VoteResult
-            selectedFilms={selectedFilms}
-            guestList={guestList}
-            confirmedFilm={confirmedFilm}
-            setConfirmedFilm={setConfirmedFilm}
-            setShowVoteResult={setShowVoteResult}
-          />
-        </SmallDialogContent>
-      </SmallDialog>
-    );
-  };
-
   const getVotes = (film) => {
     let count = guestList.filter((guest) =>
       guest.filmsVoted?.some(
@@ -190,8 +176,7 @@ const FilmPoll = ({ setTourState, selectedFilms, setSelectedFilms, guestList, id
         >
           <FilmSearch
             selectedFilms={selectedFilms}
-            nextStep={handleSearchApplyOptimistic}
-            title={"Apply"}
+            handleApply={handleSearchApplyOptimistic}
             protectedFilms={selectedFilms}
             setModalOpen={setShowFilmSearch}
           />
@@ -379,7 +364,7 @@ const FilmPoll = ({ setTourState, selectedFilms, setSelectedFilms, guestList, id
             !sortedFilms &&
             Array.from({ length: 4 }).map((_, index) => (
               <div key={index} className="relative flex flex-col gap-y-2">
-                <Skeleton className="aspect-w-1 aspect-h-[1.5]" />
+                <Skeleton className="aspect-w-1 aspect-h-[1.5] bg-primary-dark" />
               </div>
             ))}
 
@@ -457,7 +442,18 @@ const FilmPoll = ({ setTourState, selectedFilms, setSelectedFilms, guestList, id
       <GuestSelectionModal />
 
       {/* Vote Result Modal */}
-      <VoteResultModal />
+
+      {/* Vote Result */}
+      <VoteResult
+        selectedFilms={selectedFilms}
+        guestList={guestList}
+        confirmedFilm={confirmedFilm}
+        setConfirmedFilm={setConfirmedFilm}
+        showVoteResult={showVoteResult}
+        setShowVoteResult={setShowVoteResult}
+      />
+
+
     </div>
   );
 };

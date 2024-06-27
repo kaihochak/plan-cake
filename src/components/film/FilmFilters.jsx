@@ -367,13 +367,12 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
       <Separator />
 
       {/* WATCHLISTS */}
-      <div className='flex flex-col py-3'>
+      {/* <div className='flex flex-col py-3'>
         <div className='pb-2 subtitle'>Watchlists
           <p className='pt-2 text-m-s text-primary-foreground/70'>The minimum number of watchlists they're on.</p>
         </div>
 
         <div className='w-[100%] mx-auto'>
-          {/* https://mui.com/material-ui/react-slider/ */}
           <div className='flex items-center'>
             <Slider
               defaultValue={filters.watchlistFilter}
@@ -396,21 +395,21 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
                 }
               }}
             />
-          </div>
+          </div> */}
 
           {/* Specific Watchlist */}
-          <div className='mt-4'>
+          {/* <div className='mt-4'>
             <p className='pb-4 text-m-s text-primary-foreground/70'>Whose watchlists they appear on.</p>
           </div>
-          <div className='flex items-center gap-2 '>
+          <div className='flex items-center gap-2 '> */}
             {/* set AND OR */}
-            <Button variant="outline" size="icon" className="bg-accent text-accent-foreground" onClick={() => handleIsSpecificAnd()} >
+            {/* <Button variant="outline" size="icon" className="bg-accent text-accent-foreground" onClick={() => handleIsSpecificAnd()} >
               <div className={` h-[1.2rem] w-[1.4rem] rotate-0  transition-all ${filters.isSpecificAnd ? "-rotate-90 scale-0 hidden md:block" : "scale-100"}`}>OR</div>
               <Ampersand className={`md:absolute h-[1.4rem] w-[1.4rem] transition-all ${filters.isSpecificAnd ? "rotate-0 scale-100" : "hidden md:scale-0 rotate-90"}`} />
               <span className="sr-only">Toggle theme</span>
-            </Button>
+            </Button> */}
             {/* Selection */}
-            <div className='w-full'>
+            {/* <div className='w-full'>
               <MultiSelect
                 options={users}
                 label="Member"
@@ -422,8 +421,7 @@ const FilmFilters = ({ users: parentUsers, setIsFilterApplied, setModalOpen,
             </div>
           </div>
         </div>
-
-      </div>
+      </div> */}
 
       {/* GENRES */}
       <div className='flex flex-col py-3'>
