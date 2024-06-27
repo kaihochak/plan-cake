@@ -332,7 +332,7 @@ const FilmPoll = ({
             className="button-sizing"
             onClick={() => setShowVoteResult(true)}
           >
-            <div className="w-full flex-start gap-x-2">
+            <div className="w-full flex-start gap-x-2 tour-confirm">
               <p className="body">Confirm Film</p>
               <LuVote className="w-5 h-5 mb-[0.5]" />
             </div>
@@ -359,7 +359,7 @@ const FilmPoll = ({
           </Select>
         </div>
         {/* Film Cards */}
-        <div className="grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4 ">
+        <div className="grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4 tour-vote">
           {loading &&
             !sortedFilms &&
             Array.from({ length: 4 }).map((_, index) => (
@@ -401,13 +401,17 @@ const FilmPoll = ({
       <div className="flex items-end justify-between">
         <div className="subtitle text-foreground-dark">Film Poll</div>
 
-        <div className="relative">
+        <div className="relative tour-add-film">
           <Button
             variant="accent"
             className="button-sizing"
             onClick={() => {
               if (selectedGuest) setShowFilmSearch(true);
               else setShowGuestSelection(true);
+              setTourState({
+                run: false,
+                step: 0,
+              });
             }}
           >
             <p className="body">Add Film</p>

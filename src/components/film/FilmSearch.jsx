@@ -258,14 +258,17 @@ const FilmSearch = ({ selectedFilms, handleApply, protectedFilms, setModalOpen }
                 </div>
             </div>
 
-            <div className="flex flex-col">
+            <div className="flex flex-col ">
                 {/* Search & Filters */}
-                <div className="flex gap-x-4">
-                    <SearchBar searchTerm={inputValue} handleSearchChange={handleSearchChange} />
-                    <button
-                        onClick={() => setFilterModalOpen(true)}
-                        className={`flex items-center text-[30px] mr-2 mb-2 text-primary-foreground/60 ${isFilterApplied ? "text-accent/70" : ""}`}
-                    >
+                <div className="flex gap-x-4 tour-search-filter">
+                    <SearchBar
+                        searchTerm={searchTerm}
+                        handleSearchChange={handleSearchChange}
+                    />
+                    {/* Filters Modal defined at the bottom */}
+                    <button onClick={() => setFilterModalOpen(true)}
+                        className={cn("flex items-center text-[30px] mr-2 mb-2 text-primary-foreground/60",
+                            { "text-accent/70": isFilterApplied })}>
                         <BiFilterAlt />
                     </button>
                     <FilmFiltersDialog />
