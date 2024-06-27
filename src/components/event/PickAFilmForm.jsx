@@ -23,7 +23,7 @@ import {
 	SelectLabel,
 	SelectTrigger,
 	SelectValue,
-  } from "@/components/ui/timeSelect"
+} from "@/components/ui/timeSelect"
 
 const formSchema = z.object({
 	title: z.string().optional(),
@@ -36,7 +36,7 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 	const [newPickAFilm, setNewPickAFilm] = useState(null);
 	const [formData, setFormData] = useState({
 		title: "",
-		date: "",
+		date: new Date(),
 		hour: "",
 		minute: "",
 		host: ""
@@ -65,6 +65,8 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 	// form submit
 	async function handleFormSubmit(values) {
 		console.log("values", values);
+		if (formData.hour !== "") formData.date.setHours(formData.hour);
+		if (formData.minute !== "") formData.date.setMinutes(formData.minute);
 		setFormData({ ...formData, title: values.title, host: values.host });
 		localStorage.setItem('host', values.host);
 		onClose(!isOpen);
@@ -72,6 +74,8 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 
 	// useEffect to handle form submission after formData is set
 	useEffect(() => {
+		console.log("formData", formData);
+
 		if (formData.host) {
 			submitToDB(formData);
 		}
@@ -116,12 +120,6 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 		}
 	};
 
-	useEffect(() => {
-		console.log("formData", formData.date);
-		console.log("formData", formData.date.toString().slice(0, 2));
-		// console.log("after insert hour", formData.date && formData.date.split(" ")[3]);
-	}, [formData]);
-
 	/*****************************************************************************
 	 * Rendering
 	 *****************************************************************************/
@@ -165,101 +163,78 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 							)}
 						/>
 						{/* Date */}
-						<div className='flex gap-x-2 items-end'>
-
-						<Popover
-							open={isDatePickerOpen}
-							onOpenChange={setIsDatePickerOpen}
-						>
-							<PopoverTrigger asChild className="hover:bg-white">
-								<Button
-									variant='input'
-									className={cn(
-										"w-full rounded-none justify-start text-left font-normal bg-primary border-foreground-dark border-b-2 h-14 p-2 text-primary-foreground",
-										!formData.date ? "text-input" : ""
-									)}
-								>
-									<CalendarIcon className="w-4 h-4 mr-2" />
-									{formData.date ?
-										(format(formData.date, "PPP")) :
-										(<span className="text-m-m">Pick A Date</span>)
-									}
-								</Button>
-							</PopoverTrigger>
-							<PopoverContent
-								align="start"
-								className="flex flex-col w-full p-2 space-y-2"
+						<div className='flex items-end gap-x-2'>
+							<Popover
+								open={isDatePickerOpen}
+								onOpenChange={setIsDatePickerOpen}
 							>
-								<div className="rounded-md">
-									<Calendar
-										mode="single"
-										selected={formData.date}
-										onSelect={(date) => {
-											setIsDatePickerOpen(false);
-											setFormData({ ...formData, date: date })
-					
-										}}
-									/>
-								</div>
-							</PopoverContent>
-						</Popover>
-						<Select
-							value={formData.hour}
-							onValueChange={(value) => setFormData({ ...formData, hour: value })}
-						>
-							<SelectTrigger className="w-[20%]">
-								<SelectValue placeholder="HH" />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectGroup>
-								<SelectItem value="12">00</SelectItem>
-								<SelectItem value="01">01</SelectItem>
-								<SelectItem value="02">02</SelectItem>
-								<SelectItem value="03">03</SelectItem>
-								<SelectItem value="04">04</SelectItem>
-								<SelectItem value="05">05</SelectItem>
-								<SelectItem value="06">06</SelectItem>
-								<SelectItem value="07">07</SelectItem>
-								<SelectItem value="08">08</SelectItem>
-								<SelectItem value="09">09</SelectItem>
-								<SelectItem value="10">10</SelectItem>
-								<SelectItem value="11">11</SelectItem>
-								<SelectItem value="12">12</SelectItem>
-								<SelectItem value="13">13</SelectItem>
-								<SelectItem value="14">14</SelectItem>
-								<SelectItem value="15">15</SelectItem>	
-								<SelectItem value="16">16</SelectItem>
-								<SelectItem value="17">17</SelectItem>
-								<SelectItem value="18">18</SelectItem>
-								<SelectItem value="19">19</SelectItem>
-								<SelectItem value="20">20</SelectItem>
-								<SelectItem value="21">21</SelectItem>
-								<SelectItem value="22">22</SelectItem>
-								<SelectItem value="23">23</SelectItem>
-								</SelectGroup>
-							</SelectContent>
-						</Select>
-						<Select>
-							<SelectTrigger className="w-[20%]">
-								<SelectValue placeholder="MM" />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectGroup>
-								<SelectItem value="00">00</SelectItem>
-								<SelectItem value="05">05</SelectItem>
-								<SelectItem value="10">10</SelectItem>
-								<SelectItem value="15">15</SelectItem>
-								<SelectItem value="20">20</SelectItem>
-								<SelectItem value="25">25</SelectItem>
-								<SelectItem value="30">30</SelectItem>
-								<SelectItem value="35">35</SelectItem>
-								<SelectItem value="40">40</SelectItem>
-								<SelectItem value="45">45</SelectItem>
-								<SelectItem value="50">50</SelectItem>
-								<SelectItem value="55">55</SelectItem>
-								</SelectGroup>
-							</SelectContent>
-						</Select>
+								<PopoverTrigger asChild className="hover:bg-white">
+									<Button
+										variant='input'
+										className={cn(
+											"w-full rounded-none justify-start text-left font-normal bg-primary border-foreground-dark border-b-2 h-14 p-2 text-primary-foreground",
+											!formData.date ? "text-input" : ""
+										)}
+									>
+										<CalendarIcon className="w-4 h-4 mr-2" />
+										{formData.date && !isNaN(formData.date) ? (
+											format(formData.date, "PPP")
+										) : (
+											<span className="text-m-m">Pick A Date</span>
+										)}
+									</Button>
+								</PopoverTrigger>
+								<PopoverContent
+									align="start"
+									className="flex flex-col w-full p-2 space-y-2"
+								>
+									<div className="rounded-md">
+										<Calendar
+											mode="single"
+											selected={formData.date}
+											onSelect={(date) => {
+												setIsDatePickerOpen(false);
+												setFormData({ ...formData, date: date });
+											}}
+										/>
+									</div>
+								</PopoverContent>
+							</Popover>
+
+							{/* hours */}
+							<Select
+								value={formData.hour}
+								onValueChange={(value) => setFormData({ ...formData, hour: value })}
+							>
+								<SelectTrigger className="w-[20%]">
+									<SelectValue placeholder="HH" />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectGroup>
+										{Array.from({ length: 24 }, (_, i) => i).map((i) => (
+											<SelectItem key={i} value={i.toString().padStart(2, "0")}>{i.toString().padStart(2, "0")}</SelectItem>
+										))}
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+
+							{/* minutes */}
+							<Select
+								value={formData.minute}
+								onValueChange={(value) => setFormData({ ...formData, minute: value })}
+							>
+								<SelectTrigger className="w-[20%]">
+									<SelectValue placeholder="MM" />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectGroup>
+										{/* iterate and render 00 - 55 per each 5 minutes */}
+										{Array.from({ length: 60 }, (_, i) => i).filter((i) => i % 5 === 0).map((i) => (
+											<SelectItem key={i} value={i.toString().padStart(2, "0")}>{i.toString().padStart(2, "0")}</SelectItem>
+										))}
+									</SelectGroup>
+								</SelectContent>
+							</Select>
 
 						</div>
 						<Button type="submit" variant="select" className="w-full">Create Event</Button>
