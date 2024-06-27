@@ -74,8 +74,6 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 
 	// useEffect to handle form submission after formData is set
 	useEffect(() => {
-		console.log("formData", formData);
-
 		if (formData.host) {
 			submitToDB(formData);
 		}
