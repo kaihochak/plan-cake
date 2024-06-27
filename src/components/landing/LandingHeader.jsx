@@ -6,9 +6,8 @@ import { RxHamburgerMenu } from "react-icons/rx";
 
 const LandingHeader = () => {
 	const [isOpen, setIsOpen] = React.useState(false);
-
 	return (
-		<header className='container sticky top-0 z-50 flex items-center justify-between w-full p-8 overflow-hidden bg-transparent font-regular backdrop-filter backdrop-blur bg-opacity-10 border-secondary-dark/10'>
+		<header className='container sticky top-0 z-50 flex items-center justify-between w-full pb-6 overflow-hidden bg-transparent pt-7 md:p-8 font-regular backdrop-filter backdrop-blur bg-opacity-10 border-secondary-dark/10'>
 			{/* Logo Desktop */}
 			<div className='hidden md:flex'>
 				<Link

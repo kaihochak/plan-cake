@@ -6,10 +6,12 @@ import LandingFooter from '@/components/landing/LandingFooter';
 const LandingLayout = () => {
 
     return (
-        <section id="landingLayout" className="flex flex-col w-full h-full">
+        <div className="flex flex-col w-full ">
             <LandingHeader />
-            <Outlet />
-        </section>
+            <section id="landingLayout" className="flex flex-col w-full h-full">
+                <Outlet />
+            </section>
+        </div>
     );
 };
 
