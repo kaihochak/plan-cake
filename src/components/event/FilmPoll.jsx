@@ -165,26 +165,6 @@ const FilmPoll = ({
    * Film Search
    * ******************************************************************************/
 
-  const FilmSearchModal = () => {
-    if (!showFilmSearch) return null;
-
-    return (
-      <Dialog open={showFilmSearch} onOpenChange={setShowFilmSearch}>
-        <DialogContent
-          hasClose={false}
-          className="max-w-[1024px] w-full h-full lg:w-[75%] lg:h-[80%] overflow-y-auto custom-scrollbar bg-primary text-secondary"
-        >
-          <FilmSearch
-            selectedFilms={selectedFilms}
-            handleApply={handleSearchApplyOptimistic}
-            protectedFilms={selectedFilms}
-            setModalOpen={setShowFilmSearch}
-          />
-        </DialogContent>
-      </Dialog>
-    );
-  };
-
   // update the selectedFilms to DB
   const handleUpdateSelectedFilms = async (newSelectedFilms) => {
     // only send the id of the films to the DB
@@ -436,7 +416,14 @@ const FilmPoll = ({
       <FilmDisplay />
 
       {/* FilmSearch */}
-      <FilmSearchModal />
+      <FilmSearch
+        showFilmSearch={showFilmSearch}
+        setShowFilmSearch={setShowFilmSearch}
+        selectedFilms={selectedFilms}
+        handleApply={handleSearchApplyOptimistic}
+        protectedFilms={selectedFilms}
+        setModalOpen={setShowFilmSearch}
+      />
 
       {/* Guest Selection Modal */}
       <GuestSelectionModal />

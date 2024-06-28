@@ -12,7 +12,7 @@ import { defaultFilters, defaultSortBy } from "@/constants";
 import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog";
 import { useGetUpcoming, useGetSearchResults } from "@/lib/react-query/queries";
 
-const FilmSearch = ({ selectedFilms, handleApply, protectedFilms, setModalOpen }) => {
+const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleApply, protectedFilms, setModalOpen }) => {
 
     // Form Data
     const [inputValue, setInputValue] = useState("");
@@ -56,11 +56,9 @@ const FilmSearch = ({ selectedFilms, handleApply, protectedFilms, setModalOpen }
 
     // Filter and sort the films based on the selected filters
     useEffect(() => {
-
         if (searchTerm) {
             if (searchData) {
                 const allFilms = searchData.pages.flatMap(page => page.results);
-                // console.log("allFilms", allFilms);
                 setFilteredResults(sortResults(filterResults(allFilms)));
             }
         } else {
@@ -76,9 +74,9 @@ const FilmSearch = ({ selectedFilms, handleApply, protectedFilms, setModalOpen }
         const observer = new IntersectionObserver(
             (entries) => {
                 if (entries[0].isIntersecting) {
-                    if (searchTerm && hasNextPageSearch) {
+                    if (searchTerm && hasNextPageSearch && !isFetchingNextPageSearch) {
                         fetchNextPageSearch();
-                    } else if (!searchTerm && hasNextPageUpcoming) {
+                    } else if (!searchTerm && hasNextPageUpcoming && !isFetchingNextPageUpcoming) {
                         fetchNextPageUpcoming();
                     }
                 }
@@ -95,7 +93,7 @@ const FilmSearch = ({ selectedFilms, handleApply, protectedFilms, setModalOpen }
                 observer.unobserve(observerElem.current);
             }
         };
-    }, [fetchNextPageUpcoming, fetchNextPageSearch, hasNextPageUpcoming, hasNextPageSearch, searchTerm]);
+    }, [fetchNextPageUpcoming, fetchNextPageSearch, hasNextPageUpcoming, hasNextPageSearch, searchTerm, isFetchingNextPageUpcoming, isFetchingNextPageSearch]);
 
     /************************************************************************
      * SEARCH
@@ -250,53 +248,64 @@ const FilmSearch = ({ selectedFilms, handleApply, protectedFilms, setModalOpen }
      ************************************************************************/
 
     return (
-        <div className="flex flex-col w-full h-full px-2 mb-10 gap-y-2 bg-primary text-primary-foreground lg:mx-auto">
-            <div className="my-4 flex-between">
-                <h3 className="h3">Pick A Film!</h3>
-                <div onClick={() => setModalOpen(false)} className="cursor-pointer text-m-xl">
-                    <IoClose />
+        <Dialog open={showFilmSearch} onOpenChange={setShowFilmSearch}>
+            <DialogContent
+                hasClose={false}
+                className="max-w-[1024px] w-full h-full lg:w-[75%] lg:h-[80%] overflow-y-auto custom-scrollbar bg-primary text-secondary"
+            >
+                <div className="flex flex-col w-full h-full px-2 pb-10 gap-y-2 bg-primary text-primary-foreground lg:mx-auto">
+                    <div className="my-4 flex-between">
+                        <h3 className="h3">Pick A Film!</h3>
+                        <div onClick={() => setModalOpen(false)} className="cursor-pointer text-m-xl">
+                            <IoClose />
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col ">
+                        {/* Search & Filters */}
+                        <div className="flex gap-x-4 tour-search-filter">
+                            <SearchBar
+                                searchTerm={inputValue}
+                                handleSearchChange={handleSearchChange}
+                            />
+                            {/* Filters Modal defined at the bottom */}
+                            <button
+                                onClick={() => setFilterModalOpen(true)}
+                                className={`flex items-center text-[30px] mr-2 mb-2 text-primary-foreground/60 ${isFilterApplied ? "text-accent/70" : ""}`}
+                            >
+                                <BiFilterAlt />
+                            </button>
+                            <FilmFiltersDialog />
+                        </div>
+
+                        <FilmFiltersDisplay
+                            openFilterModal={setFilterModalOpen}
+                            isFilterApplied={isFilterApplied}
+                            setIsFilterApplied={setIsFilterApplied}
+                            filters={filters}
+                            setFilters={setFilters}
+                            sortBy={sortBy}
+                            setSortBy={setSortBy}
+                        />
+
+                        {/* Result */}
+                        <SearchDisplay
+                            isLoading={searchTerm ? isFetchingSearch : isFetchingUpcoming}
+                            filteredResults={filteredResults}
+                            selectedFilms={formData.selectedFilms}
+                            setSelectedFilms={(newSelectedFilms) =>
+                                setFormData({ ...formData, selectedFilms: newSelectedFilms })
+                            }
+                            watchlistObject={watchlistObject}
+                            guests={users}
+                            protectedFilms={protectedFilms}
+                        />
+
+                    </div>
                 </div>
-            </div>
 
-            <div className="flex flex-col ">
-                {/* Search & Filters */}
-                <div className="flex gap-x-4 tour-search-filter">
-                    <SearchBar
-                        searchTerm={searchTerm}
-                        handleSearchChange={handleSearchChange}
-                    />
-                    {/* Filters Modal defined at the bottom */}
-                    <button
-                        onClick={() => setFilterModalOpen(true)}
-                        className={`flex items-center text-[30px] mr-2 mb-2 text-primary-foreground/60 ${isFilterApplied ? "text-accent/70" : ""}`}
-                    >
-                        <BiFilterAlt />
-                    </button>
-                    <FilmFiltersDialog />
-                </div>
-
-                <FilmFiltersDisplay
-                    openFilterModal={setFilterModalOpen}
-                    isFilterApplied={isFilterApplied}
-                    setIsFilterApplied={setIsFilterApplied}
-                    filters={filters}
-                    setFilters={setFilters}
-                    sortBy={sortBy}
-                    setSortBy={setSortBy}
-                />
-
-                {/* Result */}
-                <SearchDisplay
-                    isLoading={searchTerm ? isFetchingSearch : isFetchingUpcoming}
-                    filteredResults={filteredResults}
-                    selectedFilms={formData.selectedFilms}
-                    setSelectedFilms={(newSelectedFilms) =>
-                        setFormData({ ...formData, selectedFilms: newSelectedFilms })
-                    }
-                    watchlistObject={watchlistObject}
-                    guests={users}
-                    protectedFilms={protectedFilms}
-                />
+                {/* Observer element for infinite scrolling */}
+                <div ref={observerElem} className="w-full h-10 bg-white"></div>
 
                 {/* Next Step */}
                 <div className="sticky bottom-0 z-50 flex items-center justify-center w-full">
@@ -308,11 +317,9 @@ const FilmSearch = ({ selectedFilms, handleApply, protectedFilms, setModalOpen }
                         Apply
                     </Button>
                 </div>
-            </div>
 
-            {/* Observer element for infinite scrolling */}
-            <div ref={observerElem} className="w-full h-10"></div>
-        </div>
+            </DialogContent>
+        </Dialog>
     );
 };
 
