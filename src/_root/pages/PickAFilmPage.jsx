@@ -14,6 +14,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { Dialog as SmallDialog, DialogContent as SmallDialogContent } from "@/components/ui/voteSelectDialog";
 import getFormattedLocalDateTime from '@/components/utility/getFormattedLocalDateTime';
 import Joyride from 'react-joyride';
+import DateTimePicker from '../../components/event/DateTimePicker';
+import { min } from 'date-fns';
 
 // Set Tour Guide
 const tourSteps = [
@@ -161,6 +163,8 @@ const tourSteps = [
 const initialState = {
   title: "",
   date: "",
+  hour: "",
+  minute: "",
   confirmedFilm: null,
   guestList: [],
   selectedFilms: [],
@@ -175,6 +179,10 @@ const reducer = (state, action) => {
       return { ...state, title: action.payload };
     case 'SET_DATE':
       return { ...state, date: action.payload };
+    case 'SET_HOUR':
+      return { ...state, hour: action.payload };
+    case 'SET_MINUTE':
+      return { ...state, minute: action.payload };
     case 'SET_CONFIRMED_FILM':
       return { ...state, confirmedFilm: action.payload };
     case 'SET_GUEST_LIST':
@@ -255,6 +263,8 @@ const PickAFilmPage = () => {
         // Dispatch actions to set the state
         dispatch({ type: 'SET_TITLE', payload: data.title });
         dispatch({ type: 'SET_DATE', payload: data.date });
+        dispatch({ type: 'SET_HOUR', payload: data.hour });
+        dispatch({ type: 'SET_MINUTE', payload: data.minute });
         dispatch({ type: 'SET_GUEST_LIST', payload: guestJSONs });
         dispatch({ type: 'SET_ID', payload: data.$id });
 
@@ -339,8 +349,10 @@ const PickAFilmPage = () => {
   // Handle rescheduling event
   const handleReschedule = async (newDate) => {
 
-    // update client state
+    // update client state 
     dispatch({ type: 'SET_DATE', payload: newDate });
+    dispatch({ type: 'SET_HOUR', payload: newDate.getHours() });
+    dispatch({ type: 'SET_MINUTE', payload: newDate.getMinutes() });
 
     // update server state
     const success = await updatePickAFilmOptimistic({ id: state.id, date: newDate });
@@ -348,6 +360,8 @@ const PickAFilmPage = () => {
     // if not successful, recover the previous state and show a toast message
     if (!success) {
       dispatch({ type: 'SET_DATE', payload: variables.date }); // recover the previous state
+      dispatch({ type: 'SET_HOUR', payload: variables.hour });  
+      dispatch({ type: 'SET_MINUTE', payload: variables.minute });
       toast({
         variant: "destructive",
         title: (<p className='subtitle'>🚨 Error rescheduling event</p>),
@@ -586,6 +600,15 @@ const PickAFilmPage = () => {
                         className="flex flex-col w-auto p-2 space-y-2"
                       >
                         <div className="rounded-md">
+                          {/* <DateTimePicker 
+                            formData={{ date: state.date, hour: state.hour, minute: state.minute}}
+                            setFormData={({ date, hour, minute }) => { 
+                              dispatch({ type: 'SET_DATE', payload: date });
+                              dispatch({ type: 'SET_HOUR', payload: hour });
+                              dispatch({ type: 'SET_MINUTE', payload: minute });
+                            }} 
+                            
+                          /> */}
                           <Calendar
                             mode="single"
                             selected={state.date}
