@@ -104,19 +104,22 @@ export const useGetUserEvents = (userId) => {
 
 // FILMS
 
-// export const useGetUpcoming = () => {
-//   return useQuery({
-//     queryKey: [QUERY_KEYS.GET_UPCOMING],
-//     queryFn: () => fetchUpcoming(),
-//   });
-// }
-
 export const useGetUpcoming = () => {
   return useInfiniteQuery({
     queryKey: [QUERY_KEYS.GET_UPCOMING],
     queryFn: fetchUpcoming,
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    getNextPageParam: (lastPage) => {
+      console.log('lastPage', lastPage);
+
+      // If lastPage is empty or does not contain results, there are no more pages
+      if (!lastPage.page < lastPage.totalPages) {
+        return null;
+      }
+
+      // Return the next page number
+      const nextPage = lastPage.page + 1;
+      return nextPage || null;
+    },
   });
 };
 
@@ -132,6 +135,6 @@ export const useGetFilmById = (filmId) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_FILM_BY_ID, filmId],
     queryFn: () => fetchFilmDetails(filmId),
-    enabled: !!filmId, 
+    enabled: !!filmId,
   });
 };

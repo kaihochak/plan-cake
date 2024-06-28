@@ -11,9 +11,10 @@ import { IoClose } from "react-icons/io5";
 import { defaultFilters, defaultSortBy } from "@/constants";
 import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog";
 import { useGetUpcoming, useGetSearchResults } from "@/lib/react-query/queries";
+import { useInView } from "react-intersection-observer";
+import Loader from '@/components/utility/Loader';
 
 const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleApply, protectedFilms, setModalOpen }) => {
-
     // Form Data
     const [inputValue, setInputValue] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
@@ -39,6 +40,8 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
         ratingFilter: defaultFilters.ratingFilter,
     });
 
+    const { ref, inView } = useInView();
+
     // Query upcoming films
     const { data: upcomingData, error: upcomingError, fetchNextPage: fetchNextPageUpcoming,
         hasNextPage: hasNextPageUpcoming, isFetching: isFetchingUpcoming,
@@ -51,49 +54,25 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
         isFetchingNextPage: isFetchingNextPageSearch, status: statusSearch,
     } = useGetSearchResults(searchTerm);
 
-    // Observer for infinite scrolling
-    const observerElem = useRef();
+
+    useEffect(() => {
+        if (inView && !searchTerm && hasNextPageUpcoming) fetchNextPageUpcoming();
+    }, [inView]);
 
     // Filter and sort the films based on the selected filters
-    useEffect(() => {
-        if (searchTerm) {
-            if (searchData) {
-                const allFilms = searchData.pages.flatMap(page => page.results);
-                setFilteredResults(sortResults(filterResults(allFilms)));
-            }
-        } else {
-            if (upcomingData) {
-                const allFilms = upcomingData.pages.flatMap(page => page.results);
-                setFilteredResults(sortResults(filterResults(allFilms)));
-            }
-        }
-    }, [searchData, upcomingData, searchTerm]);
-
-    // Infinite scrolling observer for both upcoming and search results
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting) {
-                    if (searchTerm && hasNextPageSearch && !isFetchingNextPageSearch) {
-                        fetchNextPageSearch();
-                    } else if (!searchTerm && hasNextPageUpcoming && !isFetchingNextPageUpcoming) {
-                        fetchNextPageUpcoming();
-                    }
-                }
-            },
-            { threshold: 1.0 }
-        );
-
-        if (observerElem.current) {
-            observer.observe(observerElem.current);
-        }
-
-        return () => {
-            if (observerElem.current) {
-                observer.unobserve(observerElem.current);
-            }
-        };
-    }, [fetchNextPageUpcoming, fetchNextPageSearch, hasNextPageUpcoming, hasNextPageSearch, searchTerm, isFetchingNextPageUpcoming, isFetchingNextPageSearch]);
+    // useEffect(() => {
+    //     if (searchTerm) {
+    //         if (searchData) {
+    //             const allFilms = searchData.pages.flatMap(page => page.results);
+    //             setFilteredResults(sortResults(filterResults(allFilms)));
+    //         }
+    //     } else {
+    //         if (upcomingData) {
+    //             const allFilms = upcomingData.pages.flatMap(page => page.results);
+    //             setFilteredResults(sortResults(filterResults(allFilms)));
+    //         }
+    //     }
+    // }, [searchData, upcomingData, searchTerm]);
 
     /************************************************************************
      * SEARCH
@@ -291,7 +270,7 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
                         {/* Result */}
                         <SearchDisplay
                             isLoading={searchTerm ? isFetchingSearch : isFetchingUpcoming}
-                            filteredResults={filteredResults}
+                            filteredResults={upcomingData && upcomingData.pages.flatMap(page => page.results)}
                             selectedFilms={formData.selectedFilms}
                             setSelectedFilms={(newSelectedFilms) =>
                                 setFormData({ ...formData, selectedFilms: newSelectedFilms })
@@ -304,8 +283,14 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
                     </div>
                 </div>
 
+
                 {/* Observer element for infinite scrolling */}
-                <div ref={observerElem} className="w-full h-10 bg-white"></div>
+                {hasNextPageUpcoming && !searchTerm && (
+                <div ref={ref} className="mt-10">
+                    <Loader height="h-[40px]" weight="h-[40px]" />
+                </div>
+                )}
+
 
                 {/* Next Step */}
                 <div className="sticky bottom-0 z-50 flex items-center justify-center w-full">
@@ -317,7 +302,6 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
                         Apply
                     </Button>
                 </div>
-
             </DialogContent>
         </Dialog>
     );

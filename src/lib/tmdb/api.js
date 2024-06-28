@@ -13,9 +13,36 @@ export const fetchTrending = () => {
 export const fetchTopRated = () => {
     return apiCall(topRatedMoviesEndpoint);
 }
-export const fetchUpcoming = () => {
-    return apiCall(upcomingMoviesEndpoint);
+// export const fetchUpcoming = (page) => {
+//     return apiCall(upcomingMoviesEndpoint(page));
+// }
+
+export async function fetchUpcoming({ pageParam = 1}) {
+    console.log('pageParam', pageParam);
+    try {
+        const response = await apiCall(upcomingMoviesEndpoint(pageParam));
+        return response;
+    } catch (error) {
+        console.error('API call failed:', error);
+        throw error;
+    }
 }
+
+
+// export const fetchUpcoming = async (pageParam) => {
+
+//     console.log('pageParam', pageParam);
+//     try {
+//         const response = await apiCall(upcomingMoviesEndpoint(pageParam));
+
+//     console.log('response', response);
+//         return response;
+//     } catch (error) {
+//         console.error('API call failed:', error);
+//         throw error;
+//     }
+// }
+
 export const fetchLatest = () => {
     return apiCall(latestMoviesEndpoint);
 }
