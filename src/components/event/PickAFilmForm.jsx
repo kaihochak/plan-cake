@@ -16,6 +16,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from 'react-router-dom'
 import { useCreatePickAFilm } from '@/lib/react-query/queries'
 import DateTimePicker from "@/components/event/DateTimePicker";
+import HourMinutePicker from "@/components/event/HourMinutePicker";
 
 const formSchema = z.object({
 	title: z.string().optional(),
@@ -152,10 +153,15 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 							)}
 						/>
 						{/* DateTime */}
-						<DateTimePicker	
-							formData={formData}
-							setFormData={setFormData}
-						/>
+						<div className='flex justify-between gap-x-2 '>
+							<DateTimePicker	
+								formData={formData}
+								setFormData={setFormData}
+							/>
+							{/* Hours and Minutes */}
+
+							{/* <HourMinutePicker formData={formData} setFormData={setFormData} /> */}
+						</div>
 						<Button type="submit" variant="select" className="w-full">Create Event</Button>
 					</form>
 				</Form>

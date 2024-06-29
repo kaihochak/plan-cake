@@ -600,7 +600,7 @@ const PickAFilmPage = () => {
                         className="flex flex-col w-auto p-2 space-y-2"
                       >
                         <div className="rounded-md">
-                          {/* <DateTimePicker 
+                          <DateTimePicker 
                             formData={{ date: state.date, hour: state.hour, minute: state.minute}}
                             setFormData={({ date, hour, minute }) => { 
                               dispatch({ type: 'SET_DATE', payload: date });
@@ -608,15 +608,15 @@ const PickAFilmPage = () => {
                               dispatch({ type: 'SET_MINUTE', payload: minute });
                             }} 
                             
-                          /> */}
-                          <Calendar
+                          />
+                          {/* <Calendar
                             mode="single"
                             selected={state.date}
                             onSelect={(date) => {
                               setIsDatePickerOpen(false);
                               handleReschedule(date)
                             }}
-                          />
+                          /> */}
                         </div>
                       </PopoverContent>
                     </Popover>

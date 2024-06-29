@@ -10,7 +10,7 @@ import {
 
 const HourMinutePicker = ({ formData, setFormData }) => {
     return (
-        <div className="flex w-full gap-2 custom-z-index">
+        <div className="flex w-full gap-2">
             <Select
                 value={formData.hour}
                 onValueChange={(value) => setFormData({ ...formData, hour: value })}
