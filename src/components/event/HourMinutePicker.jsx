@@ -6,19 +6,18 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-  } from "@/components/ui/timeSelect";
+} from "@/components/ui/timeSelect";
 
 const HourMinutePicker = ({ formData, setFormData }) => {
     return (
         <div className="flex w-full gap-2">
             <Select
-                value={formData.hour}
-                onValueChange={(value) => setFormData({ ...formData, hour: value })}
+                value={formData.date.getHours().toString().padStart(2, "0")}
+                onValueChange={(value) => {
+                    setFormData({ ...formData, date: new Date(formData.date.setHours(value)) });
+                }}
             >
-                <SelectTrigger
-                    className={`w-full ${formData.hour ? "text-primary-foreground" : " "
-                        }`}
-                >
+                <SelectTrigger className={`w-full ${formData.date.getHours() ? "text-primary-foreground" : " "}`}>
                     <SelectValue placeholder="HH" />
                 </SelectTrigger>
                 <SelectContent>
@@ -32,13 +31,12 @@ const HourMinutePicker = ({ formData, setFormData }) => {
                 </SelectContent>
             </Select>
             <Select
-                value={formData.minute}
-                onValueChange={(value) => setFormData({ ...formData, minute: value })}
+                value={formData.date.getMinutes().toString().padStart(2, "0")}
+                onValueChange={(value) =>
+                    setFormData({ ...formData, date: new Date(formData.date.setMinutes(value)) })
+                }
             >
-                <SelectTrigger
-                    className={`w-full ${formData.minute ? "text-primary-foreground" : " "
-                        }`}
-                >
+                <SelectTrigger className={`w-full ${formData.date.getMinutes() ? "text-primary-foreground" : " "}`}>
                     <SelectValue placeholder="MM" />
                 </SelectTrigger>
                 <SelectContent>

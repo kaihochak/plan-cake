@@ -260,11 +260,16 @@ const PickAFilmPage = () => {
           }
         }
 
+        // get date, hour, minute
+        const date = new Date(data.date);
+        const hour = date.getHours();
+        const minute = date.getMinutes();
+
         // Dispatch actions to set the state
         dispatch({ type: 'SET_TITLE', payload: data.title });
-        dispatch({ type: 'SET_DATE', payload: data.date });
-        dispatch({ type: 'SET_HOUR', payload: data.hour });
-        dispatch({ type: 'SET_MINUTE', payload: data.minute });
+        dispatch({ type: 'SET_DATE', payload: date });
+        dispatch({ type: 'SET_HOUR', payload: hour });
+        dispatch({ type: 'SET_MINUTE', payload: minute });
         dispatch({ type: 'SET_GUEST_LIST', payload: guestJSONs });
         dispatch({ type: 'SET_ID', payload: data.$id });
 

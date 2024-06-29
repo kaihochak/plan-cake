@@ -30,8 +30,6 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 	const [formData, setFormData] = useState({
 		title: "",
 		date: new Date(),
-		hour: "",
-		minute: "",
 		host: ""
 	})
 
@@ -56,9 +54,6 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 
 	// form submit
 	async function handleFormSubmit(values) {
-		console.log("values", values);
-		if (formData.hour !== "") formData.date.setHours(formData.hour);
-		if (formData.minute !== "") formData.date.setMinutes(formData.minute);
 		setFormData({ ...formData, title: values.title, host: values.host });
 		localStorage.setItem('host', values.host);
 		onClose(!isOpen);
@@ -153,14 +148,13 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 							)}
 						/>
 						{/* DateTime */}
-						<div className='flex justify-between gap-x-2 '>
+						<div className='grid justify-between grid-cols-2 gap-x-2 '>
 							<DateTimePicker	
 								formData={formData}
 								setFormData={setFormData}
 							/>
 							{/* Hours and Minutes */}
-
-							{/* <HourMinutePicker formData={formData} setFormData={setFormData} /> */}
+							<HourMinutePicker formData={formData} setFormData={setFormData} />
 						</div>
 						<Button type="submit" variant="select" className="w-full">Create Event</Button>
 					</form>
