@@ -18,6 +18,7 @@ import DateTimePicker from '../../components/event/DateTimePicker';
 import { min } from 'date-fns';
 import HourMinutePicker from '../../components/event/HourMinutePicker';
 import { Button } from '../../components/ui/button';
+import { PiKeyReturnFill } from 'react-icons/pi'
 
 // Set Tour Guide
 const tourSteps = [
@@ -309,18 +310,21 @@ const PickAFilmPage = () => {
 
   // Handle renaming event
   const handleRename = async () => {
+
+    setRename(false);
+
     // ensure name is valid
     if (!newName || newName === "" || newName === state.title) {
-      setRename(false);
       return;
     }
 
     // update client state
-    setRename(false);
     dispatch({ type: 'SET_TITLE', payload: newName });
 
     // update server state
     const success = await updatePickAFilmOptimistic({ id: state.id, title: newName });
+
+    console.log("variables.title", variables.title);
 
     // if not successful, recover the previous state and show a toast message
     if (!success) {
@@ -350,23 +354,25 @@ const PickAFilmPage = () => {
   }
 
   // Handle rescheduling event
-  const handleReschedule = async (newDate) => {
+  const handleReschedule = async (newDate, type) => {
 
-    // update client state 
-    dispatch({ 
-      type: 'SET_DATE', 
-      payload: 
-        new Date(
-          newDate.getFullYear(), 
-          newDate.getMonth(), 
-          newDate.getDate(), 
-          state.date.getHours(), 
-          state.date.getMinutes()
-        )
-    });
+    newDate.setHours(state.date.getHours());
+    newDate.setMinutes(state.date.getMinutes());
+
+    if (type === "date") {
+      // update client state 
+      dispatch({ type: 'SET_DATE', payload: newDate });
+      setIsDatePickerOpen(false);
+    }
+
+    if (type === "hourMinute") {
+      setIsHourMinutePickerOpen(false);
+    }
 
     // update server state
     const success = await updatePickAFilmOptimistic({ id: state.id, date: newDate });
+
+    console.log("variables.date", variables.date);
 
     // if not successful, recover the previous state and show a toast message
     if (!success) {
@@ -615,10 +621,7 @@ const PickAFilmPage = () => {
                           <Calendar
                             mode="single"
                             selected={state.date}
-                            onSelect={(date) => {
-                              setIsDatePickerOpen(false);
-                              handleReschedule(date)
-                            }}
+                            onSelect={(date) => handleReschedule(date, "date")}
                           />
                         </div>
                       </PopoverContent>
@@ -636,7 +639,7 @@ const PickAFilmPage = () => {
                         <div className="flex flex-col gap-y-0 cursor-pointer [&_div]:hover:underline">
                           <span className='body text-foreground-dark'>Time</span>
                           <div className={`body transition-all duration-500 ease-in-out ${isPending ? "text-foreground-dark" : "text-foreground"}`}>
-                          {localDateTime.split('·')[1]}
+                            {localDateTime.split('·')[1]}
                           </div>
                         </div>
                       </PopoverTrigger>
@@ -644,20 +647,16 @@ const PickAFilmPage = () => {
                         align="start"
                         className="flex flex-col w-auto p-2 space-y-2"
                       >
-                        <div className="rounded-md">
-                          <HourMinutePicker 
+                        <div className="gap-2 rounded-md flex-between">
+                          <HourMinutePicker
                             formData={{ date: state.date }}
-                            setFormData={set}
+                            setFormData={() => dispatch({ type: 'SET_DATE', payload: new Date(state.date) })}
                           />
-                          <Button variant="select" className="w-full" onClick={() => setIsHourMinutePickerOpen(false)}>Apply</Button> 
-                          {/* <Calendar
-                            mode="single"
-                            selected={state.date}
-                            onSelect={(date) => {
-                              setIsDatePickerOpen(false);
-                              handleReschedule(date)
-                            }}
-                          /> */}
+                          <button
+                            className="text-accent h3"
+                            onClick={() => handleReschedule(state.date, "hourMinute")}>
+                            <PiKeyReturnFill />
+                          </button>
                         </div>
                       </PopoverContent>
                     </Popover>
