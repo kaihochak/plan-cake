@@ -14,6 +14,11 @@ import { Calendar } from "@/components/ui/calendar";
 import { Dialog as SmallDialog, DialogContent as SmallDialogContent } from "@/components/ui/voteSelectDialog";
 import getFormattedLocalDateTime from '@/components/utility/getFormattedLocalDateTime';
 import Joyride from 'react-joyride';
+import DateTimePicker from '../../components/event/DateTimePicker';
+import { min } from 'date-fns';
+import HourMinutePicker from '../../components/event/HourMinutePicker';
+import { Button } from '../../components/ui/button';
+import { PiKeyReturnFill } from 'react-icons/pi'
 
 // Set Tour Guide
 const tourSteps = [
@@ -160,7 +165,9 @@ const tourSteps = [
 // Define initial state
 const initialState = {
   title: "",
-  date: "",
+  date: new Date(),
+  hour: "",
+  minute: "",
   confirmedFilm: null,
   guestList: [],
   selectedFilms: [],
@@ -175,6 +182,10 @@ const reducer = (state, action) => {
       return { ...state, title: action.payload };
     case 'SET_DATE':
       return { ...state, date: action.payload };
+    case 'SET_HOUR':
+      return { ...state, hour: action.payload };
+    case 'SET_MINUTE':
+      return { ...state, minute: action.payload };
     case 'SET_CONFIRMED_FILM':
       return { ...state, confirmedFilm: action.payload };
     case 'SET_GUEST_LIST':
@@ -206,6 +217,7 @@ const PickAFilmPage = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [viewFilmId, setViewFilmId] = React.useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [isHourMinutePickerOpen, setIsHourMinutePickerOpen] = useState(false);
   const [{ run, stepsIndex }, setTourState] = useState({ run: true, stepsIndex: 0 });
   const [showVoteResult, setShowVoteResult] = useState(false);
 
@@ -254,7 +266,9 @@ const PickAFilmPage = () => {
 
         // Dispatch actions to set the state
         dispatch({ type: 'SET_TITLE', payload: data.title });
-        dispatch({ type: 'SET_DATE', payload: data.date });
+        dispatch({ type: 'SET_DATE', payload: new Date(data.date) });
+        dispatch({ type: 'SET_HOUR', payload: new Date(data.date).getHours() });
+        dispatch({ type: 'SET_MINUTE', payload: new Date(data.date).getMinutes() });
         dispatch({ type: 'SET_GUEST_LIST', payload: guestJSONs });
         dispatch({ type: 'SET_ID', payload: data.$id });
 
@@ -296,18 +310,21 @@ const PickAFilmPage = () => {
 
   // Handle renaming event
   const handleRename = async () => {
+
+    setRename(false);
+
     // ensure name is valid
     if (!newName || newName === "" || newName === state.title) {
-      setRename(false);
       return;
     }
 
     // update client state
-    setRename(false);
     dispatch({ type: 'SET_TITLE', payload: newName });
 
     // update server state
     const success = await updatePickAFilmOptimistic({ id: state.id, title: newName });
+
+    console.log("variables.title", variables.title);
 
     // if not successful, recover the previous state and show a toast message
     if (!success) {
@@ -337,17 +354,31 @@ const PickAFilmPage = () => {
   }
 
   // Handle rescheduling event
-  const handleReschedule = async (newDate) => {
+  const handleReschedule = async (newDate, type) => {
 
-    // update client state
-    dispatch({ type: 'SET_DATE', payload: newDate });
+    newDate.setHours(state.date.getHours());
+    newDate.setMinutes(state.date.getMinutes());
+
+    if (type === "date") {
+      // update client state 
+      dispatch({ type: 'SET_DATE', payload: newDate });
+      setIsDatePickerOpen(false);
+    }
+
+    if (type === "hourMinute") {
+      setIsHourMinutePickerOpen(false);
+    }
 
     // update server state
     const success = await updatePickAFilmOptimistic({ id: state.id, date: newDate });
 
+    console.log("variables.date", variables.date);
+
     // if not successful, recover the previous state and show a toast message
     if (!success) {
       dispatch({ type: 'SET_DATE', payload: variables.date }); // recover the previous state
+      // dispatch({ type: 'SET_HOUR', payload: variables.hour });  
+      // dispatch({ type: 'SET_MINUTE', payload: variables.minute });
       toast({
         variant: "destructive",
         title: (<p className='subtitle'>🚨 Error rescheduling event</p>),
@@ -460,7 +491,7 @@ const PickAFilmPage = () => {
   )
 
   return (
-    <div className='flex-col items-center justify-start w-full px-4 mx-auto overflow-x-hidden overflow-y-scroll xl:px-10 custom-scrollbar'>
+    <div className='flex-col items-center justify-start w-full px-4 mx-auto mt-4 overflow-x-hidden overflow-y-scroll xl:px-10 custom-scrollbar'>
       {/* <Joyride
         run={run}
         steps={tourSteps}
@@ -569,9 +600,10 @@ const PickAFilmPage = () => {
                     >
                       <PopoverTrigger asChild >
                         <div className="flex flex-col gap-y-0 cursor-pointer [&_div]:hover:underline">
-                          <span className='body text-foreground-dark'>Date & Time</span>
+                          <span className='body text-foreground-dark'>Date</span>
                           <div className={`body transition-all duration-500 ease-in-out ${isPending ? "text-foreground-dark" : "text-foreground"}`}>
-                            {localDateTime}
+                            {/* show only date */}
+                            {localDateTime.split('·')[0]}
                             <span className='italic small text-foreground-dark'>
                               {
                                 new Date(state.date) > new Date() &&
@@ -589,11 +621,42 @@ const PickAFilmPage = () => {
                           <Calendar
                             mode="single"
                             selected={state.date}
-                            onSelect={(date) => {
-                              setIsDatePickerOpen(false);
-                              handleReschedule(date)
-                            }}
+                            onSelect={(date) => handleReschedule(date, "date")}
                           />
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  }
+
+
+                  {/* time */}
+                  {state.date &&
+                    <Popover
+                      open={isHourMinutePickerOpen}
+                      onOpenChange={setIsHourMinutePickerOpen}
+                    >
+                      <PopoverTrigger asChild >
+                        <div className="flex flex-col gap-y-0 cursor-pointer [&_div]:hover:underline">
+                          <span className='body text-foreground-dark'>Time</span>
+                          <div className={`body transition-all duration-500 ease-in-out ${isPending ? "text-foreground-dark" : "text-foreground"}`}>
+                            {localDateTime.split('·')[1]}
+                          </div>
+                        </div>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        align="start"
+                        className="flex flex-col w-auto p-2 space-y-2"
+                      >
+                        <div className="gap-2 rounded-md flex-between">
+                          <HourMinutePicker
+                            formData={{ date: state.date }}
+                            setFormData={() => dispatch({ type: 'SET_DATE', payload: new Date(state.date) })}
+                          />
+                          <button
+                            className="text-accent h3"
+                            onClick={() => handleReschedule(state.date, "hourMinute")}>
+                            <PiKeyReturnFill />
+                          </button>
                         </div>
                       </PopoverContent>
                     </Popover>
