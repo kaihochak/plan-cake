@@ -16,6 +16,8 @@ import getFormattedLocalDateTime from '@/components/utility/getFormattedLocalDat
 import Joyride from 'react-joyride';
 import DateTimePicker from '../../components/event/DateTimePicker';
 import { min } from 'date-fns';
+import HourMinutePicker from '../../components/event/HourMinutePicker';
+import { Button } from '../../components/ui/button';
 
 // Set Tour Guide
 const tourSteps = [
@@ -163,6 +165,8 @@ const tourSteps = [
 const initialState = {
   title: "",
   date: new Date(),
+  hour: "",
+  minute: "",
   confirmedFilm: null,
   guestList: [],
   selectedFilms: [],
@@ -177,6 +181,10 @@ const reducer = (state, action) => {
       return { ...state, title: action.payload };
     case 'SET_DATE':
       return { ...state, date: action.payload };
+    case 'SET_HOUR':
+      return { ...state, hour: action.payload };
+    case 'SET_MINUTE':
+      return { ...state, minute: action.payload };
     case 'SET_CONFIRMED_FILM':
       return { ...state, confirmedFilm: action.payload };
     case 'SET_GUEST_LIST':
@@ -208,6 +216,7 @@ const PickAFilmPage = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [viewFilmId, setViewFilmId] = React.useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [isHourMinutePickerOpen, setIsHourMinutePickerOpen] = useState(false);
   const [{ run, stepsIndex }, setTourState] = useState({ run: true, stepsIndex: 0 });
   const [showVoteResult, setShowVoteResult] = useState(false);
 
@@ -257,6 +266,8 @@ const PickAFilmPage = () => {
         // Dispatch actions to set the state
         dispatch({ type: 'SET_TITLE', payload: data.title });
         dispatch({ type: 'SET_DATE', payload: new Date(data.date) });
+        dispatch({ type: 'SET_HOUR', payload: new Date(data.date).getHours() });
+        dispatch({ type: 'SET_MINUTE', payload: new Date(data.date).getMinutes() });
         dispatch({ type: 'SET_GUEST_LIST', payload: guestJSONs });
         dispatch({ type: 'SET_ID', payload: data.$id });
 
@@ -583,9 +594,10 @@ const PickAFilmPage = () => {
                     >
                       <PopoverTrigger asChild >
                         <div className="flex flex-col gap-y-0 cursor-pointer [&_div]:hover:underline">
-                          <span className='body text-foreground-dark'>Date & Time</span>
+                          <span className='body text-foreground-dark'>Date</span>
                           <div className={`body transition-all duration-500 ease-in-out ${isPending ? "text-foreground-dark" : "text-foreground"}`}>
-                            {localDateTime}
+                            {/* show only date */}
+                            {localDateTime.split('·')[0]}
                             <span className='italic small text-foreground-dark'>
                               {
                                 new Date(state.date) > new Date() &&
@@ -608,6 +620,44 @@ const PickAFilmPage = () => {
                               handleReschedule(date)
                             }}
                           />
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  }
+
+
+                  {/* time */}
+                  {state.date &&
+                    <Popover
+                      open={isHourMinutePickerOpen}
+                      onOpenChange={setIsHourMinutePickerOpen}
+                    >
+                      <PopoverTrigger asChild >
+                        <div className="flex flex-col gap-y-0 cursor-pointer [&_div]:hover:underline">
+                          <span className='body text-foreground-dark'>Time</span>
+                          <div className={`body transition-all duration-500 ease-in-out ${isPending ? "text-foreground-dark" : "text-foreground"}`}>
+                          {localDateTime.split('·')[1]}
+                          </div>
+                        </div>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        align="start"
+                        className="flex flex-col w-auto p-2 space-y-2"
+                      >
+                        <div className="rounded-md">
+                          <HourMinutePicker 
+                            formData={{ date: state.date }}
+                            setFormData={set}
+                          />
+                          <Button variant="select" className="w-full" onClick={() => setIsHourMinutePickerOpen(false)}>Apply</Button> 
+                          {/* <Calendar
+                            mode="single"
+                            selected={state.date}
+                            onSelect={(date) => {
+                              setIsDatePickerOpen(false);
+                              handleReschedule(date)
+                            }}
+                          /> */}
                         </div>
                       </PopoverContent>
                     </Popover>
