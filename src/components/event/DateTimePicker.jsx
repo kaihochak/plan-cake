@@ -12,9 +12,14 @@ import HourMinutePicker from "./HourMinutePicker";
 const DateTimePicker = ({ formData, setFormData }) => {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
-  const combinedDateTime = formData.date
-    ? setMinutes(setHours(new Date(formData.date), formData.hour), formData.minute)
-    : null;
+  const handleDateChange = (newDate) => {
+    setIsDatePickerOpen(false);
+
+    setFormData({
+      ...formData,
+      date: setMinutes(setHours(newDate, formData.date.getHours()), formData.date.getMinutes()),
+    });
+  };
 
   return (
     <div className="flex items-end gap-x-2">
@@ -28,9 +33,8 @@ const DateTimePicker = ({ formData, setFormData }) => {
             )}
           >
             <CalendarIcon className="w-4 h-4 mr-2" />
-            {combinedDateTime && !isNaN(combinedDateTime.getTime()) ? (
-              format(combinedDateTime, "PPP")
-              // {localDateTime}
+            {formData.date ? (
+              format(formData.date, "PPP")
             ) : (
               <span className="text-m-m">Pick A Date</span>
             )}
@@ -45,12 +49,7 @@ const DateTimePicker = ({ formData, setFormData }) => {
               <Calendar
                 mode="single"
                 selected={formData.date}
-                onSelect={(date) => {
-                  setIsDatePickerOpen(false);
-                  formData.date.setFullYear(date.getFullYear());
-                  formData.date.setMonth(date.getMonth());
-                  formData.date.setDate(date.getDate());
-                }}
+                onSelect={handleDateChange}
               />
             </div>
           </div>

@@ -74,8 +74,6 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 			date: formData.date
 		});
 
-		console.log("newPickAFilm", newPickAFilm);
-
 		if (!newPickAFilm) {
 			toast({
 				variant: "destructive",
