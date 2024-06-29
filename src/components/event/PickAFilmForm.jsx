@@ -15,15 +15,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from 'react-router-dom'
 import { useCreatePickAFilm } from '@/lib/react-query/queries'
-import {
-	Select,
-	SelectContent,
-	SelectGroup,
-	SelectItem,
-	SelectLabel,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/timeSelect"
+import DateTimePicker from "@/components/event/DateTimePicker";
+import HourMinutePicker from "@/components/event/HourMinutePicker";
 
 const formSchema = z.object({
 	title: z.string().optional(),
@@ -37,11 +30,8 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 	const [formData, setFormData] = useState({
 		title: "",
 		date: new Date(),
-		hour: "",
-		minute: "",
 		host: ""
 	})
-	const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
 	// Query to create a new event
 	const { mutateAsync: createPickAFilmToDB, isPending: isLoadingCreate } = useCreatePickAFilm();
@@ -64,9 +54,6 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 
 	// form submit
 	async function handleFormSubmit(values) {
-		console.log("values", values);
-		if (formData.hour !== "") formData.date.setHours(formData.hour);
-		if (formData.minute !== "") formData.date.setMinutes(formData.minute);
 		setFormData({ ...formData, title: values.title, host: values.host });
 		localStorage.setItem('host', values.host);
 		onClose(!isOpen);
@@ -86,8 +73,6 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 			host: formData.host,
 			date: formData.date
 		});
-
-		console.log("newPickAFilm", newPickAFilm);
 
 		if (!newPickAFilm) {
 			toast({
@@ -160,80 +145,14 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 								</FormItem>
 							)}
 						/>
-						{/* Date */}
-						<div className='flex items-end gap-x-2'>
-							<Popover
-								open={isDatePickerOpen}
-								onOpenChange={setIsDatePickerOpen}
-							>
-								<PopoverTrigger asChild className="hover:bg-white">
-									<Button
-										variant='input'
-										className={cn(
-											"w-full rounded-none justify-start text-left font-normal bg-primary border-foreground-dark border-b-2 h-14 p-2 text-primary-foreground",
-											!formData.date ? "text-input" : ""
-										)}
-									>
-										<CalendarIcon className="w-4 h-4 mr-2" />
-										{formData.date && !isNaN(formData.date) ? (
-											format(formData.date, "PPP")
-										) : (
-											<span className="text-m-m">Pick A Date</span>
-										)}
-									</Button>
-								</PopoverTrigger>
-								<PopoverContent
-									align="start"
-									className="flex flex-col w-full p-2 space-y-2"
-								>
-									<div className="rounded-md">
-										<Calendar
-											mode="single"
-											selected={formData.date}
-											onSelect={(date) => {
-												setIsDatePickerOpen(false);
-												setFormData({ ...formData, date: date });
-											}}
-										/>
-									</div>
-								</PopoverContent>
-							</Popover>
-
-							{/* hours */}
-							<Select
-								value={formData.hour}
-								onValueChange={(value) => setFormData({ ...formData, hour: value })}
-							>
-								<SelectTrigger className="w-[20%]">
-									<SelectValue placeholder="HH" />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectGroup>
-										{Array.from({ length: 24 }, (_, i) => i).map((i) => (
-											<SelectItem key={i} value={i.toString().padStart(2, "0")}>{i.toString().padStart(2, "0")}</SelectItem>
-										))}
-									</SelectGroup>
-								</SelectContent>
-							</Select>
-
-							{/* minutes */}
-							<Select
-								value={formData.minute}
-								onValueChange={(value) => setFormData({ ...formData, minute: value })}
-							>
-								<SelectTrigger className="w-[20%]">
-									<SelectValue placeholder="MM" />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectGroup>
-										{/* iterate and render 00 - 55 per each 5 minutes */}
-										{Array.from({ length: 60 }, (_, i) => i).filter((i) => i % 5 === 0).map((i) => (
-											<SelectItem key={i} value={i.toString().padStart(2, "0")}>{i.toString().padStart(2, "0")}</SelectItem>
-										))}
-									</SelectGroup>
-								</SelectContent>
-							</Select>
-
+						{/* DateTime */}
+						<div className='grid justify-between grid-cols-2 gap-x-2 '>
+							<DateTimePicker	
+								formData={formData}
+								setFormData={setFormData}
+							/>
+							{/* Hours and Minutes */}
+							<HourMinutePicker formData={formData} setFormData={setFormData} />
 						</div>
 						<Button type="submit" variant="select" className="w-full">Create Event</Button>
 					</form>
