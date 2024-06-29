@@ -109,12 +109,8 @@ export const useGetUpcoming = () => {
     queryKey: [QUERY_KEYS.GET_UPCOMING],
     queryFn: fetchUpcoming,
     getNextPageParam: (lastPage) => {
-      console.log('lastPage', lastPage);
-
-      // If lastPage is empty or does not contain results, there are no more pages
-      if (!lastPage.page < lastPage.totalPages) {
-        return null;
-      }
+      // If we've reached the last page or we're on the 5th page, return null
+      if (!lastPage.page < lastPage.totalPages || lastPage.page >= 5) return null;
 
       // Return the next page number
       const nextPage = lastPage.page + 1;
@@ -124,10 +120,11 @@ export const useGetUpcoming = () => {
 };
 
 export const useGetSearchResults = (query) => {
-  return useInfiniteQuery({
+
+  return useQuery({
     queryKey: [QUERY_KEYS.SEARCH_FILMS, query],
-    queryFn: ({ pageParam = 1 }) => fetchSearchResults({ query, page: pageParam }),
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    queryFn: () => fetchSearchResults(query),
+    enabled: !!query,
   });
 }
 
