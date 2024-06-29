@@ -104,34 +104,52 @@ export const useGetUserEvents = (userId) => {
 
 // FILMS
 
-// export const useGetUpcoming = () => {
-//   return useQuery({
-//     queryKey: [QUERY_KEYS.GET_UPCOMING],
-//     queryFn: () => fetchUpcoming(),
-//   });
-// }
-
 export const useGetUpcoming = () => {
   return useInfiniteQuery({
     queryKey: [QUERY_KEYS.GET_UPCOMING],
     queryFn: fetchUpcoming,
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    getNextPageParam: (lastPage) => {
+      // If we've reached the last page or we're on the 5th page, return null
+      if (!lastPage.page < lastPage.totalPages || lastPage.page >= 5) return null;
+
+      // Return the next page number
+      const nextPage = lastPage.page + 1;
+      return nextPage || null;
+    },
   });
 };
+
+// export const useGetSearchResults = (query) => {
+
+//   return useQuery({
+//     queryKey: [QUERY_KEYS.SEARCH_FILMS, query],
+//     queryFn: () => fetchSearchResults(query),
+//     enabled: !!query,
+//   });
+// }
+
 
 export const useGetSearchResults = (query) => {
   return useInfiniteQuery({
     queryKey: [QUERY_KEYS.SEARCH_FILMS, query],
     queryFn: ({ pageParam = 1 }) => fetchSearchResults({ query, page: pageParam }),
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    // getNextPageParam: (lastPage) => lastPage.nextCursor,
+    getNextPageParam: (lastPage) => {
+      // If we've reached the last page or we're on the 5th page, return null
+      if (!lastPage.page < lastPage.totalPages || lastPage.page >= 5) return null;
+
+      // Return the next page number
+      const nextPage = lastPage.page + 1;
+      return nextPage || null;
+    }
   });
 }
+
 
 export const useGetFilmById = (filmId) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_FILM_BY_ID, filmId],
     queryFn: () => fetchFilmDetails(filmId),
-    enabled: !!filmId, 
+    enabled: !!filmId,
   });
 };

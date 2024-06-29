@@ -13,8 +13,8 @@ export const fetchTrending = () => {
 export const fetchTopRated = () => {
     return apiCall(topRatedMoviesEndpoint);
 }
-export const fetchUpcoming = () => {
-    return apiCall(upcomingMoviesEndpoint);
+export async function fetchUpcoming({ pageParam = 1 }) {
+    return apiCall(upcomingMoviesEndpoint(pageParam));
 }
 export const fetchLatest = () => {
     return apiCall(latestMoviesEndpoint);

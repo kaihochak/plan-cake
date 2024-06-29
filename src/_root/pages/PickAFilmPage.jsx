@@ -491,7 +491,7 @@ const PickAFilmPage = () => {
   )
 
   return (
-    <div className='flex-col items-center justify-start w-full px-4 mx-auto overflow-x-hidden overflow-y-scroll xl:px-10 custom-scrollbar'>
+    <div className='flex-col items-center justify-start w-full px-4 mx-auto mt-4 overflow-x-hidden overflow-y-scroll xl:px-10 custom-scrollbar'>
       {/* <Joyride
         run={run}
         steps={tourSteps}
