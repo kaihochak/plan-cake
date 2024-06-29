@@ -55,24 +55,25 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
     } = useGetSearchResults(searchTerm);
 
 
+    // infinite scrolling
     useEffect(() => {
-        if (inView && !searchTerm && hasNextPageUpcoming) fetchNextPageUpcoming();
+        if (inView && !searchTerm && hasNextPageUpcoming && !isFetchingNextPageUpcoming) fetchNextPageUpcoming();
     }, [inView]);
 
     // Filter and sort the films based on the selected filters
-    // useEffect(() => {
-    //     if (searchTerm) {
-    //         if (searchData) {
-    //             const allFilms = searchData.pages.flatMap(page => page.results);
-    //             setFilteredResults(sortResults(filterResults(allFilms)));
-    //         }
-    //     } else {
-    //         if (upcomingData) {
-    //             const allFilms = upcomingData.pages.flatMap(page => page.results);
-    //             setFilteredResults(sortResults(filterResults(allFilms)));
-    //         }
-    //     }
-    // }, [searchData, upcomingData, searchTerm]);
+    useEffect(() => {
+        if (searchTerm) {
+            if (searchData) {
+                const allFilms = searchData.pages.flatMap(page => page.results);
+                setFilteredResults(sortResults(filterResults(allFilms)));
+            }
+        } else {
+            if (upcomingData) {
+                const allFilms = upcomingData.pages.flatMap(page => page.results);
+                setFilteredResults(sortResults(filterResults(allFilms)));
+            }
+        }
+    }, [searchData, upcomingData, searchTerm]);
 
     /************************************************************************
      * SEARCH
