@@ -17,7 +17,7 @@ const TransTopBar = ({isSticky}) => {
 
     return (
         <section className="transTopbar">
-            <nav className="flex justify-start px-5 py-6 md:justify-center">
+            <nav className="flex justify-center px-5 py-6">
                 {/* Logo as Home Button */}
                 <Link to="/" className="home-logo">
                     <img src={Logo} alt="Home" className="w-32 " />

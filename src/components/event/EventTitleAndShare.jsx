@@ -4,7 +4,7 @@ import { PiKeyReturnFill } from 'react-icons/pi'
 
 const EventTitleAndShare = ({ state, isPending, copyToClipboard, rename, setRename, newName, setNewName, handleRename, isError }) => {
 	return (
-		< div className={`flex w-full gap-y-1 md:flex-between gap-x-10 ${state.confirmedFilm ? "flex-col items-start md:flex-row-reverse " : "flex-row-reverse items-center"}`} >
+		< div className={`flex flex-row-reverse justify-between item-center w-full gap-y-1 gap-x-12 ${state.confirmedFilm ? "" : ""}`} >
 			{/* Share */}
 			<button
 				className='flex items-center justify-end pl-2 transition-colors duration-500 ease-in-out rounded-lg tour-share md:w-auto gap-x-2 text-accent subtitle hover:text-accent-dark'
@@ -15,7 +15,7 @@ const EventTitleAndShare = ({ state, isPending, copyToClipboard, rename, setRena
 
 			{/* Title */}
 			{!rename ?
-				<div className="flex items-center w-full gap-x-2">
+				<div className="flex items-center gap-x-2">
 					<h2
 						onClick={() => setRename(true)}
 						className={`hover:underline transition-all duration-500 ease-in-out cursor-pointer h3 " ${isPending ? "text-foreground-dark" : "text-foreground"}`}
