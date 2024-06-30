@@ -43,10 +43,6 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 		isFetchingNextPage: isFetchingNextPageSearch, status: statusSearch,
 	} = useGetSearchResults(debouncedSearch);
 
-	console.log("searchData", searchData);
-
-	console.log("debouncedSearch", debouncedSearch);
-
 	/************************************************************************
 	 * INFINITE SCROLL
 	 ************************************************************************/
