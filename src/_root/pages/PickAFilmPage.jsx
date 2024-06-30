@@ -78,8 +78,8 @@ const PickAFilmPage = () => {
   const [viewFilmId, setViewFilmId] = React.useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [isHourMinutePickerOpen, setIsHourMinutePickerOpen] = useState(false);
-  // const [{ run, stepsIndex }, setTourState] = useState({ run: true, stepsIndex: 0 });
-  const [{ run, filmpollOpen, stepsIndex, steps }, setTourState] = useSetState({
+  // const [{ run, stepIndex }, setTourState] = useState({ run: true, stepIndex: 0 });
+  const [{ run, filmpollOpen, stepIndex, steps }, setTourState] = useSetState({
     run: false,
     filmpollOpen: false,
     stepIndex: 0,
@@ -454,6 +454,10 @@ const PickAFilmPage = () => {
 
     // else if the tour is paused, set the running state to true
     } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND]).includes(type)) {
+    // } else {
+      console.log("debug", EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND);
+      console.log("debug", type);
+      console.log("debug", ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND]).includes(type));
 
       const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
 
@@ -483,7 +487,7 @@ const PickAFilmPage = () => {
         
         setTourState({
           filmpollOpen: false,
-          stepsIndex: nextStepIndex
+          stepIndex: nextStepIndex,
         });
 
       }
@@ -493,12 +497,11 @@ const PickAFilmPage = () => {
     console.log(type === EVENTS.TOUR_STATUS ? `${type}:${status}` : type, data);
 
     // if (action === 'next') {
-    //   setTourState({ run: true, stepsIndex: index + 1 });
+    //   setTourState({ run: true, stepIndex: index + 1 });
     // }
   };
 
   const handleStateChange = (isOpen) => {
-    console.log("isOpen", isOpen);
     setTourState({ filmpollOpen: isOpen });
   }
 
@@ -546,7 +549,7 @@ const PickAFilmPage = () => {
       <Joyride
         run={run}
         steps={steps}
-        stepIndex={stepsIndex}
+        stepIndex={stepIndex}
         continuous={true}
         showProgress={true}
         showSkipButton={true}
@@ -733,7 +736,6 @@ const PickAFilmPage = () => {
 
             {/* Film Poll */}
             <FilmPoll
-              setTourState={setTourState}
               id={state.id}
               guestList={state.guestList}
               selectedFilms={state.selectedFilms}
