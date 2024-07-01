@@ -39,9 +39,9 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 		hasNextPage: hasNextPageSearch, isFetching: isFetchingSearch,
 		isFetchingNextPage: isFetchingNextPageSearch, status: statusSearch,
 	} = useGetSearchResults(debouncedSearch);
-	
+
 	// No results found
-	const shouldShowNoResults = !isFetchingSearch && searchData && searchData.pages[0].results.length === 0;
+	const shouldShowNoResults = searchTerm && searchData && searchData.pages[0].results.length === 0;
 
 	/************************************************************************
 	 * INFINITE SCROLL
@@ -309,18 +309,18 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 						protectedFilms={protectedFilms}
 					/>
 
-					{/* Loading or No Results */}
-					{isFetchingSearch ?
-						<div className="h-full flex-center"><Loader height="h-[40px]" weight="h-[40px]" /></div>
-						: shouldShowNoResults && <div className="h-full flex-center big">😞 No results found</div>
-					}
-
 					{/* Observer element for infinite scrolling */}
-					{((hasNextPageUpcoming && !searchTerm) || (hasNextPageSearch && searchTerm)) && (
+					{((hasNextPageUpcoming && !searchTerm) || (hasNextPageSearch && searchTerm)) ? (
 						<div ref={ref} className="mt-10">
-							<Loader height="h-[40px]" weight="h-[40px]" />
-						</div>
-					)}
+							<Loader height="h-[40p]" weight="h-[40px]" />
+						</div>)
+						:
+						
+						// Loader for debouncedSearch or No results found
+						(isFetchingSearch ?
+							<div className="h-full flex-center"><Loader height="h-[40px]" weight="h-[40px]" /></div>
+							: (shouldShowNoResults && <div className="h-full flex-center big">😞 No results found</div>))
+					}
 				</section>
 
 				{/* Next Step */}
