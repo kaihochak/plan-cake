@@ -136,8 +136,6 @@ export const useGetSearchResults = (query) => {
     queryFn: ({ pageParam = 1 }) => fetchSearchResults({ query, page: pageParam }),
     // getNextPageParam: (lastPage) => lastPage.nextCursor,
     getNextPageParam: (lastPage) => {
-
-      console.log('lastPage', lastPage);
       // If we've reached the last page or we're on the 5th page, return null
       if (lastPage && (lastPage.page >= 5 || lastPage.results.length < 20 || lastPage.results.length === 0)) return null;
 
