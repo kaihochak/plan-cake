@@ -282,13 +282,6 @@ const PickAFilmPage = () => {
   }, [isLoadingPickAFilm, data, isInitialized]);
 
 
-  useEffect(() => {
-    if (state.confirmedFilm) {
-      console.log("state.confirmedFilm", state.confirmedFilm);
-    }
-  }, [state.confirmedFilm]);
-
-
   // Copy the URL to the clipboard
   const copyToClipboard = () => {
     const url = `${import.meta.env.VITE_HOSTING_URL}/pickAFilm/${state.id}`;
