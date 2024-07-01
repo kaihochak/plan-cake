@@ -38,8 +38,8 @@ const FilmCard = React.memo(({ item, selectedFilms, setSelectedFilms, watchlistO
 					{!imageLoaded && <Skeleton className="w-full h-full rounded-sm bg-primary-light" />}
 					{selectedFilms ? (
 						<img
-							src={item.poster_path === null || item.poster_path === undefined ? 
-								fallbackMoviePoster :image500(item.poster_path)}
+							src={item.poster_path === null || item.poster_path === undefined ?
+								fallbackMoviePoster : image500(item.poster_path)}
 							alt={item.title}
 							className={`object-cover object-center rounded-sm ${isProtected ? 'border-4 border-accent2' :
 								selectedFilms?.find((film) => parseInt(film.id) == item.id) ? 'border-4 border-accent' : ''}`}
@@ -103,16 +103,16 @@ const FilmCard = React.memo(({ item, selectedFilms, setSelectedFilms, watchlistO
 			</div>
 
 			{/* Info */}
-			<div className="flex flex-col justify-start gap-y-1">
+			<div className="flex flex-col justify-start md:gap-y-1">
 
 				{/* Title */}
-				<h3 className="font-semibold align-baseline line-clamp-1 subtitle">{item.title}</h3>
+				<h3 className="font-semibold align-baseline line-clamp-1 bold">{item.title}</h3>
 
 				<div className="flex justify-between">
 					{/* Rating */}
 					<div className="flex items-center">
-						<div className="ml-1 mr-2 body">★</div>
-						<div className="body">{item.vote_average ? item.vote_average.toFixed(1) : "n/a"}</div>
+						<div className="ml-1 mr-2 small">★</div>
+						<div className="small">{item.vote_average ? item.vote_average.toFixed(1) : "n/a"}</div>
 					</div>
 					<div className="flex">
 						{watchlisters && watchlisters.slice(0, 4).map((watchlister, index) => {

@@ -590,7 +590,7 @@ const PickAFilmPage = () => {
         }
         {/* content */}
         <div className={`relative flex flex-col gap-y-10 w-full max-w-[1280px] mx-auto md:px-10 ${state.confirmedFilm && imagePath(state.confirmedFilm?.backdrop_path) ? "-mt-10 md:-mt-80 lg:-mt-96 xl:-mt-[450px]" : ""}`}>
-          <div className={`flex flex-col gap-y-4 md:gap-y-8`}>
+          <div className={`flex flex-col gap-y-2 md:gap-y-4`}>
             <section className='flex flex-col gap-y-4'>
               {/* title & Share */}
               {!state.confirmedFilm &&

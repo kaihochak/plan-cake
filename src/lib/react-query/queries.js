@@ -107,10 +107,12 @@ export const useGetUserEvents = (userId) => {
 export const useGetUpcoming = () => {
   return useInfiniteQuery({
     queryKey: [QUERY_KEYS.GET_UPCOMING],
-    queryFn: fetchUpcoming,
+    // queryFn: fetchUpcoming,
+    queryFn: ({ pageParam = 1 }) => fetchUpcoming({ page: pageParam }),
     getNextPageParam: (lastPage) => {
       // If we've reached the last page or we're on the 5th page, return null
-      if (!lastPage.page < lastPage.totalPages || lastPage.page >= 5) return null;
+      // if (lastPage && (lastPage.page >= 5 || lastPage.results.length === 0)) return null;
+      if (lastPage && lastPage.results.length === 0) return null;
 
       // Return the next page number
       const nextPage = lastPage.page + 1;
@@ -118,15 +120,6 @@ export const useGetUpcoming = () => {
     },
   });
 };
-
-// export const useGetSearchResults = (query) => {
-
-//   return useQuery({
-//     queryKey: [QUERY_KEYS.SEARCH_FILMS, query],
-//     queryFn: () => fetchSearchResults(query),
-//     enabled: !!query,
-//   });
-// }
 
 
 export const useGetSearchResults = (query) => {
@@ -136,7 +129,7 @@ export const useGetSearchResults = (query) => {
     // getNextPageParam: (lastPage) => lastPage.nextCursor,
     getNextPageParam: (lastPage) => {
       // If we've reached the last page or we're on the 5th page, return null
-      if (!lastPage.page < lastPage.totalPages || lastPage.page >= 5) return null;
+      if (lastPage && (lastPage.page >= 5 || lastPage.results.length < 20 || lastPage.results.length === 0)) return null;
 
       // Return the next page number
       const nextPage = lastPage.page + 1;

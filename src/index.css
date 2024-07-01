@@ -161,7 +161,12 @@ body {
 
   .subtitle {
     @apply font-normal;
-    @apply text-[16px] sm:text-[20px] md:text-[22px] lg:text-[24px];
+    @apply text-[18px] sm:text-[22px] md:text-[24px];
+  }
+
+  .big {
+    @apply font-medium;
+    @apply text-[16px] sm:text-[20px] md:text-[22px];
   }
 
   .body {
@@ -181,7 +186,7 @@ body {
 
   .pretitle {
     @apply font-semibold tracking-[0.03em];
-    @apply text-[10px] md:text-[12px] lg:text-[14px];
+    @apply text-[10px] md:text-[11px] lg:text-[12px];
   }
 
   .button-text {
