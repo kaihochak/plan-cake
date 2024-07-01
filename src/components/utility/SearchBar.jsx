@@ -17,7 +17,7 @@ const SearchBar = ({ searchTerm, handleSearchChange,
                     placeholder="Search"
                     value={searchTerm}
                     onChange={handleSearchChange}
-                    className="flex w-full h-12 pl-12 border-2 rounded-sm border-input bg-primary text-primary-foreground text-m-m ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-border focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex w-full h-12 pl-12 rounded-sm border-[1px] md:border-2 border-input bg-primary text-primary-foreground text-m-m ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-border focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                 />
             </div>
         </div>

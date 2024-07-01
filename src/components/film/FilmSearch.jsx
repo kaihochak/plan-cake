@@ -249,20 +249,20 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 			{/* all child sections have px-4 */}
 			<DialogContent
 				hasClose={false}
-				className="flex flex-col max-w-[1024px] w-full h-full lg:w-[75%] lg:h-[80%] text-secondary [&_section]:px-4"
+				className="flex flex-col max-w-[1024px] w-full h-full lg:w-[75%] lg:h-[80%] text-secondary [&_section]:px-3 [&_section]:md:px-4"
 			>
 				{/* Top */}
-				<section className="sticky top-0 flex flex-col w-full pt-4 bg-opacity-10 custom-z-index gap-y-2 text-primary-foreground lg:mx-auto">
-					<div className="my-1 flex-between ">
-						<h3 className="h3">Pick A Film!</h3>
+				<section className="sticky top-0 flex flex-col w-full pt-3 md:pt-4 bg-opacity-10 custom-z-index gap-y-1 md:gap-y-3 text-primary-foreground lg:mx-auto">
+					<div className="px-1 my-1 flex-between">
+						<h3 className="subtitle">Pick A Film!</h3>
 						<div onClick={() => setModalOpen(false)} className="cursor-pointer subtitle">
 							<IoClose />
 						</div>
 					</div>
 
-					<div className="flex flex-col ">
+					<div className="flex flex-col">
 						{/* Search & Filters */}
-						<div className="flex gap-x-2 md:gap-x-4 tour-search-filter">
+						<div className="flex gap-x-3 md:gap-x-4 tour-search-filter">
 							<SearchBar
 								searchTerm={searchTerm}
 								handleSearchChange={(e) => setSearchTerm(e.target.value)}
@@ -270,7 +270,7 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 							{/* Filters Modal defined at the bottom */}
 							<button
 								onClick={() => setFilterModalOpen(true)}
-								className={`flex items-center text-[30px] mr-2 mb-2 text-primary-foreground/60 ${isFilterApplied ? "text-accent/70" : ""}`}
+								className={`flex items-center subtitle pr-2 pb-1 md:pb-2 text-primary-foreground/60 ${isFilterApplied ? "text-accent/70" : ""}`}
 							>
 								<BiFilterAlt />
 							</button>
@@ -313,9 +313,8 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 					)}
 				</section>
 
-
 				{/* Next Step */}
-				<section className="z-50 flex items-center justify-center w-full">
+				<section className="z-50 flex items-center justify-center w-full pt-1 pb-3 md:pb-4">
 					<Button
 						onClick={() => handleApply(formData)}
 						type="submit"
