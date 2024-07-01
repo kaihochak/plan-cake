@@ -165,7 +165,7 @@ body {
   }
 
   .big {
-    @apply font-normal;
+    @apply font-medium;
     @apply text-[16px] sm:text-[20px] md:text-[24px];
   }
 

@@ -9,28 +9,22 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watch
 	const protectedFilmsSet = new Set(protectedFilms.map(film => film.id));
 
 	return (
-		<div>
-			{filteredResults?.length > 0 ? (
-				<div className="grid grid-cols-3 gap-3 md:gap-4 sm:grid-cols-4 lg:grid-cols-6 tour-apply">
-					{filteredResults.slice(0, max).map((item) => {
-						const isProtected = protectedFilmsSet.has(item.id); // Check if the current item is protected
-						return (
-							<div key={item.id}>
-								<FilmCard
-									item={item}
-									selectedFilms={selectedFilms}
-									setSelectedFilms={setSelectedFilms}
-									watchlistObject={watchlistObject}
-									guests={guests}
-									isProtected={isProtected}
-								/>
-							</div>
-						)
-					})}
-				</div>
-			) : (
-				<div className="mt-4 text-center text-m-l">No results found...</div>
-			)}
+		<div className="grid grid-cols-3 gap-3 md:gap-4 sm:grid-cols-4 lg:grid-cols-6 tour-apply">
+			{filteredResults && filteredResults.slice(0, max).map((item) => {
+				const isProtected = protectedFilmsSet.has(item.id); // Check if the current item is protected
+				return (
+					<div key={item.id}>
+						<FilmCard
+							item={item}
+							selectedFilms={selectedFilms}
+							setSelectedFilms={setSelectedFilms}
+							watchlistObject={watchlistObject}
+							guests={guests}
+							isProtected={isProtected}
+						/>
+					</div>
+				)
+			})}
 		</div>
 	);
 };

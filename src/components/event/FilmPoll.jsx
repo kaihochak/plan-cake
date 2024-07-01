@@ -439,8 +439,6 @@ const FilmPoll = ({
         showVoteResult={showVoteResult}
         setShowVoteResult={setShowVoteResult}
       />
-
-
     </div>
   );
 };

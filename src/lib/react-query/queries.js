@@ -109,8 +109,9 @@ export const useGetUpcoming = () => {
     queryKey: [QUERY_KEYS.GET_UPCOMING],
     queryFn: fetchUpcoming,
     getNextPageParam: (lastPage) => {
+
       // If we've reached the last page or we're on the 5th page, return null
-      if (!lastPage.page < lastPage.totalPages || lastPage.page >= 5) return null;
+      if (lastPage && (lastPage.page >= 5 || lastPage.results.length === 0)) return null;
 
       // Return the next page number
       const nextPage = lastPage.page + 1;
@@ -135,8 +136,10 @@ export const useGetSearchResults = (query) => {
     queryFn: ({ pageParam = 1 }) => fetchSearchResults({ query, page: pageParam }),
     // getNextPageParam: (lastPage) => lastPage.nextCursor,
     getNextPageParam: (lastPage) => {
+
+      console.log('lastPage', lastPage);
       // If we've reached the last page or we're on the 5th page, return null
-      if (!lastPage.page < lastPage.totalPages || lastPage.page >= 5) return null;
+      if (lastPage && (lastPage.page >= 5 || lastPage.results.length < 20 || lastPage.results.length === 0)) return null;
 
       // Return the next page number
       const nextPage = lastPage.page + 1;

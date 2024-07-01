@@ -270,7 +270,7 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 							{/* Filters Modal defined at the bottom */}
 							<button
 								onClick={() => setFilterModalOpen(true)}
-								className={`flex items-center subtitle pr-2 pb-1 md:pb-2 text-primary-foreground/60 ${isFilterApplied ? "text-accent/70" : ""}`}
+								className={`flex items-center big pr-2 pb-1 md:pb-2 text-primary-foreground/60 ${isFilterApplied ? "text-accent/70" : ""}`}
 							>
 								<BiFilterAlt />
 							</button>
@@ -290,7 +290,7 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 				</section>
 
 				{/* Result */}
-				<section className="overflow-y-auto custom-scrollbar">
+				<section className="h-full overflow-y-auto custom-scrollbar">
 					<SearchDisplay
 						isLoading={searchTerm ? isFetchingSearch : isFetchingUpcoming}
 						filteredResults={
@@ -308,6 +308,8 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 					{/* Observer element for infinite scrolling */}
 					{((hasNextPageUpcoming && !searchTerm) || (hasNextPageSearch && searchTerm)) && (
 						<div ref={ref} className="mt-10">
+							<div className="mt-4 text-center text-m-l">No results found...</div>
+
 							<Loader height="h-[40px]" weight="h-[40px]" />
 						</div>
 					)}
