@@ -32,20 +32,13 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 
 	const [searchTerm, setSearchTerm] = useState("");
 	const debouncedSearch = useDebounce(searchTerm, 500);
-
-	// Query search results
-	// const { data: searchData, error: searchError, isFetching: isFetchingSearch
-	// } = useGetSearchResults(debouncedSearch);
+	const shouldShowSearchResults = searchTerm.length > 0;
 
 	// Query search results
 	const { data: searchData, error: searchError, fetchNextPage: fetchNextPageSearch,
 		hasNextPage: hasNextPageSearch, isFetching: isFetchingSearch,
 		isFetchingNextPage: isFetchingNextPageSearch, status: statusSearch,
 	} = useGetSearchResults(debouncedSearch);
-
-	console.log("searchData", searchData);
-
-	console.log("debouncedSearch", debouncedSearch);
 
 	/************************************************************************
 	 * INFINITE SCROLL
@@ -60,11 +53,8 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 		}
 	}, [inView]);
 
-	const shouldShowSearchResults = searchTerm.length > 0;
-	// const shouldShowUpcoming = !shouldShowSearchResults && upcomingData.pages.every(page => page.results.length === 0);
 
 	// Form Data
-	const [inputValue, setInputValue] = useState("");
 	const [formData, setFormData] = useState({ selectedFilms });
 	const [users, setUsers] = useState([]);
 
@@ -256,14 +246,16 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 
 	return (
 		<Dialog open={showFilmSearch} onOpenChange={setShowFilmSearch}>
+			{/* all child sections have px-4 */}
 			<DialogContent
 				hasClose={false}
-				className="max-w-[1024px] w-full h-full lg:w-[75%] lg:h-[80%] overflow-y-auto custom-scrollbar bg-primary text-secondary"
+				className="flex flex-col max-w-[1024px] w-full h-full lg:w-[75%] lg:h-[80%] text-secondary [&_section]:px-4"
 			>
-				<div className="flex flex-col w-full h-full px-2 pb-10 gap-y-2 bg-primary text-primary-foreground lg:mx-auto">
-					<div className="my-1 flex-between">
+				{/* Top */}
+				<section className="sticky top-0 flex flex-col w-full pt-4 bg-opacity-10 custom-z-index gap-y-2 text-primary-foreground lg:mx-auto">
+					<div className="my-1 flex-between ">
 						<h3 className="h3">Pick A Film!</h3>
-						<div onClick={() => setModalOpen(false)} className="cursor-pointer text-m-xl">
+						<div onClick={() => setModalOpen(false)} className="cursor-pointer subtitle">
 							<IoClose />
 						</div>
 					</div>
@@ -294,51 +286,44 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
                             sortBy={sortBy}
                             setSortBy={setSortBy}
                         /> */}
-
-						{/* Result */}
-						<SearchDisplay
-							isLoading={searchTerm ? isFetchingSearch : isFetchingUpcoming}
-							filteredResults={
-								shouldShowSearchResults
-									? searchData?.pages.flatMap(page => page.results)
-									: upcomingData && upcomingData.pages.flatMap(page => page.results)}
-							selectedFilms={formData.selectedFilms}
-							setSelectedFilms={(newSelectedFilms) =>
-								setFormData({ ...formData, selectedFilms: newSelectedFilms })
-							}
-							watchlistObject={watchlistObject}
-							guests={users}
-							protectedFilms={protectedFilms}
-						/>
-
 					</div>
-				</div>
+				</section>
 
-
-				{/* Observer element for infinite scrolling */}
-				{hasNextPageUpcoming && !searchTerm && (
-					<div ref={ref} className="mt-10">
-						<Loader height="h-[40px]" weight="h-[40px]" />
-					</div>
-				)}
-
-				{hasNextPageSearch && searchTerm && (
-					<div ref={ref} className="mt-10">
-						<Loader height="h-[40px]" weight="h-[40px]" />
-					</div>
-				)}
+				{/* Result */}
+				<section className="overflow-y-auto custom-scrollbar">
+					<SearchDisplay
+						isLoading={searchTerm ? isFetchingSearch : isFetchingUpcoming}
+						filteredResults={
+							shouldShowSearchResults
+								? searchData?.pages.flatMap(page => page.results)
+								: upcomingData && upcomingData.pages.flatMap(page => page.results)}
+						selectedFilms={formData.selectedFilms}
+						setSelectedFilms={(newSelectedFilms) =>
+							setFormData({ ...formData, selectedFilms: newSelectedFilms })
+						}
+						watchlistObject={watchlistObject}
+						guests={users}
+						protectedFilms={protectedFilms}
+					/>
+					{/* Observer element for infinite scrolling */}
+					{((hasNextPageUpcoming && !searchTerm) || (hasNextPageSearch && searchTerm)) && (
+						<div ref={ref} className="mt-10">
+							<Loader height="h-[40px]" weight="h-[40px]" />
+						</div>
+					)}
+				</section>
 
 
 				{/* Next Step */}
-				<div className="sticky bottom-0 z-50 flex items-center justify-center w-full">
+				<section className="z-50 flex items-center justify-center w-full">
 					<Button
 						onClick={() => handleApply(formData)}
 						type="submit"
-						className="w-[95%] border-none bg-accent text-primary shadow-xl"
+						className="w-full border-none shadow-xl bg-accent text-primary"
 					>
 						Apply
 					</Button>
-				</div>
+				</section>
 			</DialogContent>
 		</Dialog>
 	);
