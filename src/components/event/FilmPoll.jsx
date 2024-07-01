@@ -304,16 +304,16 @@ const FilmPoll = ({
 
   const FilmDisplay = () => {
     return (
-      <div className="flex flex-col p-2 my-2 rounded-sm gap-y-2 md:gap-y-4 md:p-4 bg-primary-light">
+      <div className="flex flex-col p-2 my-2 rounded-sm gap-y-2 md:gap-y-3 md:p-3 bg-primary-light">
         {/* Buttons */}
-        <div className="flex flex-row items-center self-end gap-4 jusitfy-end ">
+        <div className="flex flex-row items-center self-end gap-2 md:gap-4 jusitfy-end ">
           <Button
             variant="outline"
             className="button-sizing"
             onClick={() => setShowVoteResult(true)}
           >
-            <div className="w-full flex-start gap-x-2 tour-confirm">
-              <p className="body">Confirm Film</p>
+            <div className="w-full flex-center gap-x-2 tour-confirm">
+              <p className="small">Confirm Film</p>
               <LuVote className="w-5 h-5 mb-[0.5]" />
             </div>
           </Button>
@@ -339,7 +339,7 @@ const FilmPoll = ({
           </Select>
         </div>
         {/* Film Cards */}
-        <div className="grid grid-cols-2 gap-4 xl:gap-6 sm:grid-cols-3 md:grid-cols-4 tour-vote">
+        <div className="grid grid-cols-3 gap-4 xl:gap-6 sm:grid-cols-4 md:grid-cols-5 tour-vote">
           {loading &&
             !sortedFilms &&
             Array.from({ length: 4 }).map((_, index) => (

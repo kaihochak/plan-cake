@@ -161,12 +161,12 @@ body {
 
   .subtitle {
     @apply font-normal;
-    @apply text-[18px] sm:text-[22px] md:text-[26px] lg:text-[28px];
+    @apply text-[18px] sm:text-[22px] md:text-[26px];
   }
 
   .big {
     @apply font-normal;
-    @apply text-[16px] sm:text-[20px] md:text-[24px] lg:text-[26px];
+    @apply text-[16px] sm:text-[20px] md:text-[24px];
   }
 
   .body {
