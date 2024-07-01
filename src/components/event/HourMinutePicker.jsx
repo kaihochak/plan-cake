@@ -29,7 +29,7 @@ const HourMinutePicker = ({ formData, setFormData }) => {
 			<Select
 				value={formData.date.getMinutes().toString().padStart(2, "0")}
 				onValueChange={(value) =>
-					setFormData({ ...formData, date: new Date(formData.date.setMinutes(value)) })
+					setFormData({ ...formData, date: new Date(formData.date.setMinutes(parseInt(value))) })
 				}
 			>
 				<SelectTrigger className={`w-full text-primary-foreground`}>
