@@ -3,8 +3,6 @@ import FilmCard from "@/components/film/FilmCard";
 
 const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watchlistObject, guests, max, protectedFilms }) => {
 
-	if (max == null) max = 100;
-
 	// Convert protectedFilms array to a Set for fast lookup, take the id of each film
 	const protectedFilmsSet = new Set(protectedFilms.map(film => film.id));
 

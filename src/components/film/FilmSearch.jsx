@@ -25,13 +25,15 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 		isFetchingNextPage: isFetchingNextPageUpcoming, status: statusUpcoming,
 	} = useGetUpcoming();
 
+	console.log("upcomingData: ", upcomingData);
+
+
 	/************************************************************************
 	 * SEARCH
 	 ************************************************************************/
 
 	const [searchTerm, setSearchTerm] = useState("");
 	const debouncedSearch = useDebounce(searchTerm, 500);
-	const shouldShowSearchResults = debouncedSearch.length > 0;
 
 	// Query search results
 	const { data: searchData, error: searchError, fetchNextPage: fetchNextPageSearch,
@@ -79,84 +81,89 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 		ratingFilter: defaultFilters.ratingFilter,
 	});
 
-	console.log("isFilterApplied", isFilterApplied);
-
-
 	// Filter and sort the films based on the selected filters
 	useEffect(() => {
-	    if (debouncedSearch) {
-	        if (searchData) setFilteredResults(sortResults(filterResults(searchData.pages.flatMap(page => page.results))));
-	    } else {
-	        if (upcomingData) setFilteredResults(sortResults(filterResults(upcomingData.pages.flatMap(page => page.results))));
-	    }
+		if (debouncedSearch) {
+			if (searchData) setFilteredResults(sortResults(filterResults(searchData.pages.flatMap(page => page.results))));
+		} else {
+			if (upcomingData) setFilteredResults(sortResults(filterResults(upcomingData.pages.flatMap(page => page.results))));
+		}
 	}, [searchData, upcomingData, searchTerm, filters, sortBy]);
+
+
+	useEffect(() => {
+		if (filteredResults.length > 0) {
+			console.log("filteredResults: ", filteredResults);
+		}
+	}, [filteredResults]);
+	
 
 	/************************************************************************
 	 * FILTERS & SORTING
 	 ************************************************************************/
 
 	const filterResults = (filmData) => {
-	    // const specificUserIDs = filters.specificWatchlistFilter.map(filter => filter.id);
-	    // const specificUsers = users.filter(user => specificUserIDs.includes(user._id));
+		// const specificUserIDs = filters.specificWatchlistFilter.map(filter => filter.id);
+		// const specificUsers = users.filter(user => specificUserIDs.includes(user._id));
 
-	    // const watchlistedFilms_OR = specificUsers.flatMap(user => user.films.watchlist);
+		// const watchlistedFilms_OR = specificUsers.flatMap(user => user.films.watchlist);
 
-	    // const watchlistedFilms_AND = specificUsers.reduce((acc, user) => {
-	    //     return acc.filter(film => user.films.watchlist.some(watchlistedFilm => watchlistedFilm._id === film._id));
-	    // }, specificUsers.length > 0 ? specificUsers[0].films.watchlist : []);
+		// const watchlistedFilms_AND = specificUsers.reduce((acc, user) => {
+		//     return acc.filter(film => user.films.watchlist.some(watchlistedFilm => watchlistedFilm._id === film._id));
+		// }, specificUsers.length > 0 ? specificUsers[0].films.watchlist : []);
 
-	    // const watchlistFilterActive = filters.watchlistFilter > 0;
-	    // const specificWatchlistFilterActive = filters.specificWatchlistFilter.length > 0;
-	    const genreFilterActive = filters.genreFilter.length > 0;
-	    const yearFilterActive =
-	        filters.yearFilter[0] !== defaultFilters.yearFilter[0] ||
-	        filters.yearFilter[1] !== defaultFilters.yearFilter[1];
-	    const ratingFilterActive = filters.ratingFilter > 0;
+		// const watchlistFilterActive = filters.watchlistFilter > 0;
+		// const specificWatchlistFilterActive = filters.specificWatchlistFilter.length > 0;
+		const genreFilterActive = filters.genreFilter.length > 0;
+		const yearFilterActive =
+			filters.yearFilter[0] !== defaultFilters.yearFilter[0] ||
+			filters.yearFilter[1] !== defaultFilters.yearFilter[1];
+		const ratingFilterActive = filters.ratingFilter > 0;
 
-	    return filmData.filter(film => {
-	        return (
-	            // (specificWatchlistFilterActive ? filterBySpecificWatchlist(film) : true) &&
-	            // (watchlistFilterActive ? filterByWatchlist(film) : true) &&
-	            (genreFilterActive ? filterByGenre(film) : true) &&
-	            (yearFilterActive ? filterByYears(film) : true) &&
-	            (ratingFilterActive ? filterByRating(film) : true)
-	        );
-	    });
+		return filmData.filter(film => {
+			return (
+				// (specificWatchlistFilterActive ? filterBySpecificWatchlist(film) : true) &&
+				// (watchlistFilterActive ? filterByWatchlist(film) : true) &&
+				(genreFilterActive ? filterByGenre(film) : true) &&
+				(yearFilterActive ? filterByYears(film) : true) &&
+				(ratingFilterActive ? filterByRating(film) : true)
+			);
+		});
 
 		// Helper functions
-	    // function filterBySpecificWatchlist(film) {
-	    //     if (filters.isSpecificAnd) {
-	    //         if (watchlistedFilms_AND.some(watchlistedFilm => watchlistedFilm._id === film.id.toString())) return true;
-	    //     } else {
-	    //         if (watchlistedFilms_OR.some(watchlistedFilm => watchlistedFilm._id === film.id.toString())) return true;
-	    //     }
-	    // }
+		// function filterBySpecificWatchlist(film) {
+		//     if (filters.isSpecificAnd) {
+		//         if (watchlistedFilms_AND.some(watchlistedFilm => watchlistedFilm._id === film.id.toString())) return true;
+		//     } else {
+		//         if (watchlistedFilms_OR.some(watchlistedFilm => watchlistedFilm._id === film.id.toString())) return true;
+		//     }
+		// }
 
-	    // function filterByWatchlist(film) {
-	    //     let counter = 0;
-	    //     users.forEach(user => {
-	    //         user.films.watchlist.forEach(watchlistedFilm => {
-	    //             if (watchlistedFilm._id === film.id.toString()) counter++;
-	    //         });
-	    //     });
-	    //     return counter >= filters.watchlistFilter;
-	    // }
+		// function filterByWatchlist(film) {
+		//     let counter = 0;
+		//     users.forEach(user => {
+		//         user.films.watchlist.forEach(watchlistedFilm => {
+		//             if (watchlistedFilm._id === film.id.toString()) counter++;
+		//         });
+		//     });
+		//     return counter >= filters.watchlistFilter;
+		// }
 
-	    function filterByGenre(film) {
-	        if (film.genres)
-	            return filters.genreFilter?.some(selectedGenre => film.genres.some(genre => genre.id === selectedGenre.id));
-	        if (film.genre_ids)
-	            return filters.genreFilter?.some(selectedGenre => film.genre_ids.some(genre => genre === selectedGenre.id));
-	    }
+		function filterByGenre(film) {
+			if (film.genres)
+				return filters.genreFilter?.some(selectedGenre => film.genres.some(genre => genre.id === selectedGenre.id));
+			if (film.genre_ids)
+				return filters.genreFilter?.some(selectedGenre => film.genre_ids.some(genre => genre === selectedGenre.id));
+		}
 
-	    function filterByYears(film) {
-	        let year = film.release_date.split("-")[0];
-	        return filters.yearFilter[0] <= year && year <= filters.yearFilter[1];
-	    }
+		function filterByYears(film) {
+			let year = film.release_date.split("-")[0];
+			return filters.yearFilter[0] <= year && year <= filters.yearFilter[1];
+		}
 
-	    function filterByRating(film) {
-	        return film.vote_average >= filters.ratingFilter;
-	    }
+		function filterByRating(film) {
+			return film.vote_average >= filters.ratingFilter;
+		}
 	};
 
 	// const filterWatchlistedFilms = (films) => {
@@ -164,30 +171,30 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 	// };
 
 	const sortResults = (results) => {
-	    let sortedItems = results;
-	    switch (sortBy) {
-	        case "Rating: High to Low":
-	            sortedItems = sortedItems.sort((a, b) => b.vote_average - a.vote_average);
-	            break;
-	        case "Rating: Low to High":
-	            sortedItems = sortedItems.sort((a, b) => a.vote_average - b.vote_average);
-	            break;
-	        case "Year: New to Old":
-	            sortedItems = sortedItems.sort(
-	                (a, b) => parseInt(b.release_date.split("-")[0]) - parseInt(a.release_date.split("-")[0])
-	            );
-	            break;
-	        case "Year: Old to New":
-	            sortedItems = sortedItems.sort(
-	                (a, b) => parseInt(a.release_date.split("-")[0]) - parseInt(b.release_date.split("-")[0])
-	            );
-	            break;
-	        // case "Watchlists: Most to Least" || "Watchlists: Least to Most":
-	        //     break;
-	        default:
-	            break;
-	    }
-	    return sortedItems;
+		let sortedItems = results;
+		switch (sortBy) {
+			case "Rating: High to Low":
+				sortedItems = sortedItems.sort((a, b) => b.vote_average - a.vote_average);
+				break;
+			case "Rating: Low to High":
+				sortedItems = sortedItems.sort((a, b) => a.vote_average - b.vote_average);
+				break;
+			case "Year: New to Old":
+				sortedItems = sortedItems.sort(
+					(a, b) => parseInt(b.release_date.split("-")[0]) - parseInt(a.release_date.split("-")[0])
+				);
+				break;
+			case "Year: Old to New":
+				sortedItems = sortedItems.sort(
+					(a, b) => parseInt(a.release_date.split("-")[0]) - parseInt(b.release_date.split("-")[0])
+				);
+				break;
+			// case "Watchlists: Most to Least" || "Watchlists: Least to Most":
+			//     break;
+			default:
+				break;
+		}
+		return sortedItems;
 	};
 
 	// const sortFilmsByWatchlist = (films) => {
@@ -195,30 +202,6 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 	//         return watchlistObject[b.id].length - watchlistObject[a.id].length;
 	//     });
 	// };
-
-	/************************************************************************
-	 *  Components
-	 ************************************************************************/
-
-	const FilmFiltersDialog = () => {
-		return (
-			<Dialog open={filterModalOpen} onOpenChange={setFilterModalOpen}>
-				<DialogContent hasClose={false} className="max-w-[1024px] w-full h-full lg:w-[75%] lg:h-[80%] overflow-y-auto bg-primary custom-scrollbar text-secondary">
-					<FilmFilters
-						filmData={filmData}
-						users={users}
-						setIsFilterApplied={setIsFilterApplied}
-						setModalOpen={setFilterModalOpen}
-						sortBy={sortBy}
-						setSortBy={setSortBy}
-						filters={filters}
-						setFilters={setFilters}
-						setFilteredResults={setFilteredResults}
-					/>
-				</DialogContent>
-			</Dialog>
-		);
-	};
 
 	/************************************************************************
 	 *  RENDER
@@ -254,18 +237,29 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 							>
 								<BiFilterAlt />
 							</button>
-							<FilmFiltersDialog />
+							<FilmFilters
+								filmData={filmData}
+								users={users}
+								setIsFilterApplied={setIsFilterApplied}
+								modalOpen={filterModalOpen}
+								setModalOpen={setFilterModalOpen}
+								sortBy={sortBy}
+								setSortBy={setSortBy}
+								filters={filters}
+								setFilters={setFilters}
+								setFilteredResults={setFilteredResults}
+							/>
 						</div>
 
 						<FilmFiltersDisplay
-                            openFilterModal={setFilterModalOpen}
-                            isFilterApplied={isFilterApplied}
-                            setIsFilterApplied={setIsFilterApplied}
-                            filters={filters}
-                            setFilters={setFilters}
-                            sortBy={sortBy}
-                            setSortBy={setSortBy}
-                        />
+							openFilterModal={setFilterModalOpen}
+							isFilterApplied={isFilterApplied}
+							setIsFilterApplied={setIsFilterApplied}
+							filters={filters}
+							setFilters={setFilters}
+							sortBy={sortBy}
+							setSortBy={setSortBy}
+						/>
 					</div>
 				</section>
 
@@ -275,9 +269,7 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 						isLoading={searchTerm ? isFetchingSearch : isFetchingUpcoming}
 						filteredResults={filteredResults}
 						selectedFilms={formData.selectedFilms}
-						setSelectedFilms={(newSelectedFilms) =>
-							setFormData({ ...formData, selectedFilms: newSelectedFilms })
-						}
+						setSelectedFilms={(newSelectedFilms) => setFormData({ ...formData, selectedFilms: newSelectedFilms })}
 						watchlistObject={watchlistObject}
 						guests={users}
 						protectedFilms={protectedFilms}
@@ -289,7 +281,7 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 						// Loader for debouncedSearch or No results found
 						: (isFetchingSearch ?
 							<div className="h-full flex-center"><Loader height="h-[40px]" weight="h-[40px]" /></div>
-							: (shouldShowNoResults && <div className="h-full flex-center big">😞 No results found</div>))
+							: (filteredResults.length === 0 && <div className="h-full flex-center big">😞 No results found</div>))
 					}
 				</section>
 
