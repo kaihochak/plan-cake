@@ -350,7 +350,7 @@ const FilmPoll = ({
 
           {sortedFilms?.length === 0 ||
             (sortedFilms === null && (
-              <div className="col-span-4 py-32 mx-auto md:py-36 text-primary-foreground h3">
+              <div className="col-span-5 py-32 mx-auto md:py-36 text-primary-foreground h3">
                 No film selected
               </div>
             ))}

@@ -9,7 +9,7 @@ const SearchDisplay = ({ filteredResults, selectedFilms, setSelectedFilms, watch
 	const protectedFilmsSet = new Set(protectedFilms.map(film => film.id));
 
 	return (
-		<div className="grid grid-cols-3 gap-3 md:gap-4 sm:grid-cols-4 lg:grid-cols-6 tour-apply">
+		<div className="grid w-full grid-cols-3 gap-3 md:gap-4 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 tour-apply">
 			{filteredResults && filteredResults.slice(0, max).map((item) => {
 				const isProtected = protectedFilmsSet.has(item.id); // Check if the current item is protected
 				return (

@@ -3,7 +3,6 @@ import SearchDisplay from "./SearchDisplay";
 import { Button } from "@/components/ui/button";
 import "@/styles/utility.css";
 import SearchBar from "@/components/utility/SearchBar";
-import debounce from "lodash.debounce";
 import FilmFilters from "@/components/film/FilmFilters";
 import FilmFiltersDisplay from "@/components/film/FilmFiltersDisplay";
 import { BiFilterAlt } from "react-icons/bi";
@@ -80,138 +79,116 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 		ratingFilter: defaultFilters.ratingFilter,
 	});
 
+	console.log("isFilterApplied", isFilterApplied);
+
 
 	// Filter and sort the films based on the selected filters
-	// useEffect(() => {
-	//     if (searchTerm) {
-	//         if (searchData) {
-	//             setFilteredResults(sortResults(filterResults(searchData.results)));
-	//         }
-	//     } else {
-	//         if (upcomingData) {
-	//             const allFilms = upcomingData.pages.flatMap(page => page.results);
-	//             setFilteredResults(sortResults(filterResults(allFilms)));
-	//         }
-	//     }
-	// }, [searchData, upcomingData, searchTerm]);
-
-	/************************************************************************
-	 * SEARCH
-	 ************************************************************************/
-
-	// const handleSearchChange = (e) => {
-	//     setInputValue(e.target.value);
-	//     debouncedSearch(e.target.value);
-	// };
-	// const debouncedSearch = useCallback(
-	//     debounce((searchTerm) => {
-	//         console.log("searchTerm", searchTerm);
-	//         setSearchTerm(searchTerm);
-	//     }, 350),
-	//     []
-	// );
+	useEffect(() => {
+	    if (debouncedSearch) {
+	        if (searchData) setFilteredResults(sortResults(filterResults(searchData.pages.flatMap(page => page.results))));
+	    } else {
+	        if (upcomingData) setFilteredResults(sortResults(filterResults(upcomingData.pages.flatMap(page => page.results))));
+	    }
+	}, [searchData, upcomingData, searchTerm, filters, sortBy]);
 
 	/************************************************************************
 	 * FILTERS & SORTING
 	 ************************************************************************/
 
-	// useEffect(() => {
-	//     setFilteredResults(sortResults(filterResults(filmData)));
-	// }, [filmData, sortBy, filters]);
+	const filterResults = (filmData) => {
+	    // const specificUserIDs = filters.specificWatchlistFilter.map(filter => filter.id);
+	    // const specificUsers = users.filter(user => specificUserIDs.includes(user._id));
 
-	// const filterResults = (filmData) => {
-	//     const specificUserIDs = filters.specificWatchlistFilter.map(filter => filter.id);
-	//     const specificUsers = users.filter(user => specificUserIDs.includes(user._id));
+	    // const watchlistedFilms_OR = specificUsers.flatMap(user => user.films.watchlist);
 
-	//     const watchlistedFilms_OR = specificUsers.flatMap(user => user.films.watchlist);
+	    // const watchlistedFilms_AND = specificUsers.reduce((acc, user) => {
+	    //     return acc.filter(film => user.films.watchlist.some(watchlistedFilm => watchlistedFilm._id === film._id));
+	    // }, specificUsers.length > 0 ? specificUsers[0].films.watchlist : []);
 
-	//     const watchlistedFilms_AND = specificUsers.reduce((acc, user) => {
-	//         return acc.filter(film => user.films.watchlist.some(watchlistedFilm => watchlistedFilm._id === film._id));
-	//     }, specificUsers.length > 0 ? specificUsers[0].films.watchlist : []);
+	    // const watchlistFilterActive = filters.watchlistFilter > 0;
+	    // const specificWatchlistFilterActive = filters.specificWatchlistFilter.length > 0;
+	    const genreFilterActive = filters.genreFilter.length > 0;
+	    const yearFilterActive =
+	        filters.yearFilter[0] !== defaultFilters.yearFilter[0] ||
+	        filters.yearFilter[1] !== defaultFilters.yearFilter[1];
+	    const ratingFilterActive = filters.ratingFilter > 0;
 
-	//     const watchlistFilterActive = filters.watchlistFilter > 0;
-	//     const specificWatchlistFilterActive = filters.specificWatchlistFilter.length > 0;
-	//     const genreFilterActive = filters.genreFilter.length > 0;
-	//     const yearFilterActive =
-	//         filters.yearFilter[0] !== defaultFilters.yearFilter[0] ||
-	//         filters.yearFilter[1] !== defaultFilters.yearFilter[1];
-	//     const ratingFilterActive = filters.ratingFilter > 0;
+	    return filmData.filter(film => {
+	        return (
+	            // (specificWatchlistFilterActive ? filterBySpecificWatchlist(film) : true) &&
+	            // (watchlistFilterActive ? filterByWatchlist(film) : true) &&
+	            (genreFilterActive ? filterByGenre(film) : true) &&
+	            (yearFilterActive ? filterByYears(film) : true) &&
+	            (ratingFilterActive ? filterByRating(film) : true)
+	        );
+	    });
 
-	//     return filmData.filter(film => {
-	//         return (
-	//             (specificWatchlistFilterActive ? filterBySpecificWatchlist(film) : true) &&
-	//             (watchlistFilterActive ? filterByWatchlist(film) : true) &&
-	//             (genreFilterActive ? filterByGenre(film) : true) &&
-	//             (yearFilterActive ? filterByYears(film) : true) &&
-	//             (ratingFilterActive ? filterByRating(film) : true)
-	//         );
-	//     });
+		// Helper functions
+	    // function filterBySpecificWatchlist(film) {
+	    //     if (filters.isSpecificAnd) {
+	    //         if (watchlistedFilms_AND.some(watchlistedFilm => watchlistedFilm._id === film.id.toString())) return true;
+	    //     } else {
+	    //         if (watchlistedFilms_OR.some(watchlistedFilm => watchlistedFilm._id === film.id.toString())) return true;
+	    //     }
+	    // }
 
-	//     function filterBySpecificWatchlist(film) {
-	//         if (filters.isSpecificAnd) {
-	//             if (watchlistedFilms_AND.some(watchlistedFilm => watchlistedFilm._id === film.id.toString())) return true;
-	//         } else {
-	//             if (watchlistedFilms_OR.some(watchlistedFilm => watchlistedFilm._id === film.id.toString())) return true;
-	//         }
-	//     }
+	    // function filterByWatchlist(film) {
+	    //     let counter = 0;
+	    //     users.forEach(user => {
+	    //         user.films.watchlist.forEach(watchlistedFilm => {
+	    //             if (watchlistedFilm._id === film.id.toString()) counter++;
+	    //         });
+	    //     });
+	    //     return counter >= filters.watchlistFilter;
+	    // }
 
-	//     function filterByWatchlist(film) {
-	//         let counter = 0;
-	//         users.forEach(user => {
-	//             user.films.watchlist.forEach(watchlistedFilm => {
-	//                 if (watchlistedFilm._id === film.id.toString()) counter++;
-	//             });
-	//         });
-	//         return counter >= filters.watchlistFilter;
-	//     }
+	    function filterByGenre(film) {
+	        if (film.genres)
+	            return filters.genreFilter?.some(selectedGenre => film.genres.some(genre => genre.id === selectedGenre.id));
+	        if (film.genre_ids)
+	            return filters.genreFilter?.some(selectedGenre => film.genre_ids.some(genre => genre === selectedGenre.id));
+	    }
 
-	//     function filterByGenre(film) {
-	//         if (film.genres)
-	//             return filters.genreFilter?.some(selectedGenre => film.genres.some(genre => genre.id === selectedGenre.id));
-	//         if (film.genre_ids)
-	//             return filters.genreFilter?.some(selectedGenre => film.genre_ids.some(genre => genre === selectedGenre.id));
-	//     }
+	    function filterByYears(film) {
+	        let year = film.release_date.split("-")[0];
+	        return filters.yearFilter[0] <= year && year <= filters.yearFilter[1];
+	    }
 
-	//     function filterByYears(film) {
-	//         let year = film.release_date.split("-")[0];
-	//         return filters.yearFilter[0] <= year && year <= filters.yearFilter[1];
-	//     }
-
-	//     function filterByRating(film) {
-	//         return film.vote_average >= filters.ratingFilter;
-	//     }
-	// };
+	    function filterByRating(film) {
+	        return film.vote_average >= filters.ratingFilter;
+	    }
+	};
 
 	// const filterWatchlistedFilms = (films) => {
 	//     return films.filter(film => !watchlistObject[film.id]);
 	// };
 
-	// const sortResults = (results) => {
-	//     let sortedItems = results;
-	//     switch (sortBy) {
-	//         case "Rating: High to Low":
-	//             sortedItems = sortedItems.sort((a, b) => b.vote_average - a.vote_average);
-	//             break;
-	//         case "Rating: Low to High":
-	//             sortedItems = sortedItems.sort((a, b) => a.vote_average - b.vote_average);
-	//             break;
-	//         case "Year: New to Old":
-	//             sortedItems = sortedItems.sort(
-	//                 (a, b) => parseInt(b.release_date.split("-")[0]) - parseInt(a.release_date.split("-")[0])
-	//             );
-	//             break;
-	//         case "Year: Old to New":
-	//             sortedItems = sortedItems.sort(
-	//                 (a, b) => parseInt(a.release_date.split("-")[0]) - parseInt(b.release_date.split("-")[0])
-	//             );
-	//             break;
-	//         case "Watchlists: Most to Least" || "Watchlists: Least to Most":
-	//             break;
-	//         default:
-	//             break;
-	//     }
-	//     return sortedItems;
-	// };
+	const sortResults = (results) => {
+	    let sortedItems = results;
+	    switch (sortBy) {
+	        case "Rating: High to Low":
+	            sortedItems = sortedItems.sort((a, b) => b.vote_average - a.vote_average);
+	            break;
+	        case "Rating: Low to High":
+	            sortedItems = sortedItems.sort((a, b) => a.vote_average - b.vote_average);
+	            break;
+	        case "Year: New to Old":
+	            sortedItems = sortedItems.sort(
+	                (a, b) => parseInt(b.release_date.split("-")[0]) - parseInt(a.release_date.split("-")[0])
+	            );
+	            break;
+	        case "Year: Old to New":
+	            sortedItems = sortedItems.sort(
+	                (a, b) => parseInt(a.release_date.split("-")[0]) - parseInt(b.release_date.split("-")[0])
+	            );
+	            break;
+	        // case "Watchlists: Most to Least" || "Watchlists: Least to Most":
+	        //     break;
+	        default:
+	            break;
+	    }
+	    return sortedItems;
+	};
 
 	// const sortFilmsByWatchlist = (films) => {
 	//     return films.sort((a, b) => {
@@ -273,14 +250,14 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 							{/* Filters Modal defined at the bottom */}
 							<button
 								onClick={() => setFilterModalOpen(true)}
-								className={`flex items-center big pr-2 pb-1 md:pb-2 text-primary-foreground/60 ${isFilterApplied ? "text-accent/70" : ""}`}
+								className={`flex items-center big pr-2 pb-1 md:pb-2 transition-colors duration-300 ease-in-out hover:text-accent/70 ${isFilterApplied ? "text-accent/70" : "text-input"}`}
 							>
 								<BiFilterAlt />
 							</button>
 							<FilmFiltersDialog />
 						</div>
 
-						{/* <FilmFiltersDisplay
+						<FilmFiltersDisplay
                             openFilterModal={setFilterModalOpen}
                             isFilterApplied={isFilterApplied}
                             setIsFilterApplied={setIsFilterApplied}
@@ -288,7 +265,7 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
                             setFilters={setFilters}
                             sortBy={sortBy}
                             setSortBy={setSortBy}
-                        /> */}
+                        />
 					</div>
 				</section>
 
@@ -296,10 +273,7 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 				<section className="flex-col h-full overflow-y-auto flex-start custom-scrollbar">
 					<SearchDisplay
 						isLoading={searchTerm ? isFetchingSearch : isFetchingUpcoming}
-						filteredResults={
-							shouldShowSearchResults
-								? searchData?.pages.flatMap(page => page.results)
-								: upcomingData && upcomingData.pages.flatMap(page => page.results)}
+						filteredResults={filteredResults}
 						selectedFilms={formData.selectedFilms}
 						setSelectedFilms={(newSelectedFilms) =>
 							setFormData({ ...formData, selectedFilms: newSelectedFilms })
@@ -310,14 +284,10 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 					/>
 
 					{/* Observer element for infinite scrolling */}
-					{((hasNextPageUpcoming && !searchTerm) || (hasNextPageSearch && searchTerm)) ? (
-						<div ref={ref} className="mt-10">
-							<Loader height="h-[40p]" weight="h-[40px]" />
-						</div>)
-						:
-						
+					{((hasNextPageUpcoming && !searchTerm) || (hasNextPageSearch && searchTerm)) ?
+						(<div ref={ref} className="mt-10"><Loader height="h-[40p]" weight="h-[40px]" /></div>)
 						// Loader for debouncedSearch or No results found
-						(isFetchingSearch ?
+						: (isFetchingSearch ?
 							<div className="h-full flex-center"><Loader height="h-[40px]" weight="h-[40px]" /></div>
 							: (shouldShowNoResults && <div className="h-full flex-center big">😞 No results found</div>))
 					}
