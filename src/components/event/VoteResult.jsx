@@ -124,7 +124,7 @@ const VoteResult = ({ selectedFilms, guestList, confirmedFilm, setConfirmedFilm,
                         </TableCell>
                         <TableCell>{film.title}</TableCell>
                         <TableCell>{film.votes}</TableCell>
-                        <TableCell className="">
+                        <TableCell className="w-[50%]">
                           {film.voters.map((voter, index) => (
                             <span key={index}>
                               {voter.name}{index < film.voters.length - 1 ? ', ' : ''}
