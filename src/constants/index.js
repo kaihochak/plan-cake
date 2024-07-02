@@ -4,7 +4,8 @@ export const defaultFilters = {
     isSpecificAnd: true,
     genreFilter: [],
     yearFilter: [1860, new Date().getFullYear()],
-    ratingFilter: 0,
+    ratingFilter: [0, 500],
+    rumtimeFilter: 0,
 };
 
 export const defaultSortBy = "Watchlists: Most to Least";

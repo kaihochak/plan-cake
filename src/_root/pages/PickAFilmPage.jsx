@@ -13,7 +13,6 @@ import EventTitleAndShare from '@/components/event/EventTitleAndShare';
 import FilmPreview from "@/components/film/FilmPreview";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { Dialog as SmallDialog, DialogContent as SmallDialogContent } from "@/components/ui/voteSelectDialog";
 import getFormattedLocalDateTime from '@/components/utility/getFormattedLocalDateTime';
 import DateTimePicker from '../../components/event/DateTimePicker';
 import { min, set } from 'date-fns';
@@ -21,6 +20,147 @@ import HourMinutePicker from '../../components/event/HourMinutePicker';
 import { Button } from '../../components/ui/button';
 import { PiKeyReturnFill } from 'react-icons/pi';
 
+// Set Tour Guide
+const tourSteps = [
+  {
+    target: '.tour-add-film',
+    content: (
+      <div>
+        <p className='mb-1 bold'>Add a Film</p>
+        <p className='body'>Got a movie in mind? Hit the "Add Film" button to start adding your favorites.</p>
+      </div>
+    ),
+    disableBeacon: true,
+    stepIndex: 0,
+    disableOverlayClose: true,
+    hideCloseButton: true,
+    hideFooter: true,
+    placement: 'bottom',
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: '.tour-share',
+    content: (
+      <div>
+        <p className='mb-1 bold'>Add Guest Name</p>
+        <p className='body'>Open the guest name drop-down, and add your friends' names. Want to vote on their behalf? Select their name and cast their vote (but make sure you've got their permission first)!</p>
+      </div>
+    ),
+    placement: 'bottom',
+    stepIndex: 1,
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: '.tour-search-filter',
+    content: (
+      <div>
+        <p className='mb-1 bold'>Search/Filter for a Film</p>
+        <p className='body'>Use the search bar to find the movie you’re looking for, or click on the filter button to narrow down your choices.</p>
+      </div>
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    hideCloseButton: true,
+    hideFooter: true,
+    placement: 'bottom',
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: '.tour-apply',
+    content: (
+      <div>
+        <p className='mb-1 bold'>Apply selection</p>
+        <p className='body'>Found something interesting? Hover over the film to see the "Add" button and an "Info" button for details. Click "Apply" after selecting the films you want to add to the poll.</p>
+      </div>
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    hideCloseButton: true,
+    hideFooter: true,
+    placement: 'bottom',
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: '.tour-vote',
+    content: (
+      <div>
+        <p className='mb-1 bold'>Vote for the Film</p>
+        <p className='body'>Check out the selected films in the poll section. Hover over your pick and click the "+" button to cast your vote for the movie you want to watch.</p>
+      </div>
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    hideCloseButton: true,
+    hideFooter: true,
+    placement: 'bottom',
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: '.tour-confirm',
+    content: (
+      <div>
+        <p className='mb-1 bold'>Confirm Film</p>
+        <p className='body'>After everyone has voted, click the "Confirmed Film" button to see which movie the group decided to watch. Popcorn(pancake) time!</p>
+      </div>
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    hideCloseButton: true,
+    hideFooter: true,
+    placement: 'bottom',
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: '.tour-edit',
+    content: (
+      <div>
+        <p className='mb-1 bold'>Edit Event Title and Date & Time</p>
+        <p className='body'>Want to change the event name or tweak the date and time? Just click on the title or the date & time fields and make it yours!</p>
+      </div>
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    hideCloseButton: true,
+    hideFooter: true,
+    placement: 'bottom',
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+];
 
 // Define initial state
 const initialState = {
@@ -60,7 +200,6 @@ const reducer = (state, action) => {
       return state;
   }
 };
-
 
 /**********************************************************************************
  * PickAFilmPage
@@ -240,6 +379,7 @@ const PickAFilmPage = () => {
   //   })
   // })
 
+  
   // Initialize local state with data from the query
   useEffect(() => {
     if (!isLoadingPickAFilm && data && !isInitialized) {
