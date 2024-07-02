@@ -695,7 +695,7 @@ const PickAFilmPage = () => {
   )
 
   return (
-    <div className={`flex-col items-center justify-start w-full px-4 mx-auto mt-4 overflow-x-hidden overflow-y-scroll xl:px-10 custom-scrollbar  ${state.confirmedFilm ? "mt-0" : ""}`}>
+    <div className={`flex-col items-center justify-start w-full px-4 mx-auto overflow-x-hidden overflow-y-scroll xl:px-10 custom-scrollbar  ${state.confirmedFilm ? "mt-0" : "mt-4"}`}>
       <Joyride
         callback={handleJoyrideCallback}
         continuous={true}
