@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query'
 import { QUERY_KEYS } from './queryKeys';
 import { createPickAFilm, getPickAFilm, updatePickAFilm, updatePickAFilmGuestList, createEvent, createUserAccount, getUserEvents, signInAccount, signOutAccount } from '../appwrite/api'
-import { fetchUpcoming, fetchFilmDetails, fetchSearchResults } from '../tmdb/api'
+import { fetchUpcoming, fetchFilmDetails, fetchSearchResults, fetchDiscoverMovies } from '../tmdb/api'
 
 // Auth
 export const useCreateUserAccount = () => {
@@ -103,7 +103,6 @@ export const useGetUserEvents = (userId) => {
 
 
 // FILMS
-
 export const useGetUpcoming = () => {
   return useInfiniteQuery({
     queryKey: [QUERY_KEYS.GET_UPCOMING],
@@ -112,7 +111,7 @@ export const useGetUpcoming = () => {
     getNextPageParam: (lastPage) => {
       // If we've reached the last page or we're on the 5th page, return null
       // if (lastPage && (lastPage.page >= 5 || lastPage.results.length === 0)) return null;
-      if (lastPage && lastPage.results.length === 0) return null;
+      if (lastPage && (lastPage.page >= 5 || lastPage.results.length < 20)) return null;
 
       // Return the next page number
       const nextPage = lastPage.page + 1;
@@ -121,6 +120,20 @@ export const useGetUpcoming = () => {
   });
 };
 
+export const useGetDiscover = (query) => {
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYS.DISCOVER_FILMS, query],
+    queryFn: ({ pageParam = 1 }) => fetchDiscoverMovies({ query, page: pageParam }),
+    getNextPageParam: (lastPage) => {
+      // If we've reached the last page or we're on the 5th page, return null
+      if (lastPage && (lastPage.page >= 5 || lastPage.results.length < 20)) return null;
+
+      // Return the next page number
+      const nextPage = lastPage.page + 1;
+      return nextPage || null;
+    },
+  });
+}
 
 export const useGetSearchResults = (query) => {
   return useInfiniteQuery({
@@ -129,7 +142,7 @@ export const useGetSearchResults = (query) => {
     // getNextPageParam: (lastPage) => lastPage.nextCursor,
     getNextPageParam: (lastPage) => {
       // If we've reached the last page or we're on the 5th page, return null
-      if (lastPage && (lastPage.page >= 5 || lastPage.results.length < 20 || lastPage.results.length === 0)) return null;
+      if (lastPage && (lastPage.page >= 5 || lastPage.results.length < 20)) return null;
 
       // Return the next page number
       const nextPage = lastPage.page + 1;
@@ -137,7 +150,6 @@ export const useGetSearchResults = (query) => {
     }
   });
 }
-
 
 export const useGetFilmById = (filmId) => {
   return useQuery({

@@ -11,13 +11,10 @@ import EventTitleAndShare from '@/components/event/EventTitleAndShare';
 import FilmPreview from "@/components/film/FilmPreview";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { Dialog as SmallDialog, DialogContent as SmallDialogContent } from "@/components/ui/voteSelectDialog";
 import getFormattedLocalDateTime from '@/components/utility/getFormattedLocalDateTime';
 import Joyride from 'react-joyride';
 import DateTimePicker from '../../components/event/DateTimePicker';
-import { min } from 'date-fns';
 import HourMinutePicker from '../../components/event/HourMinutePicker';
-import { Button } from '../../components/ui/button';
 import { PiKeyReturnFill } from 'react-icons/pi'
 
 // Set Tour Guide
@@ -201,7 +198,6 @@ const reducer = (state, action) => {
   }
 };
 
-
 /**********************************************************************************
  * PickAFilmPage
  **********************************************************************************/
@@ -228,7 +224,6 @@ const PickAFilmPage = () => {
   const { data, isLoading: isLoadingPickAFilm } = useGetPickAFilmById(id);
   // Query: Update PickAFilm optimistically
   const { isPending, variables, mutateAsync: updatePickAFilmOptimistic, isError } = useUpdatePickAFilmOptimistic(); // Query: Update the guestList optimistically
-
 
   // Initialize local state with data from the query
   useEffect(() => {
