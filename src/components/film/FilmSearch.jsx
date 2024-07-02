@@ -16,7 +16,7 @@ import useDebounce from "@/hooks/useDebounce";
 
 // Define initial state
 const initialFilterState = {
-  isFilterApplied: false,
+	isFilterApplied: false,
 	filterModalOpen: false,
 	genreFilter: defaultFilters.genreFilter,
 	yearFilter: defaultFilters.yearFilter,
@@ -29,8 +29,8 @@ const initialFilterState = {
 
 // Define reducer function
 const reducer = (state, action) => {
-  switch (action.type) {
-    case 'SET_GENRE_FILTER':
+	switch (action.type) {
+		case 'SET_GENRE_FILTER':
 			return { ...state, genreFilter: action.payload };
 		case 'SET_YEAR_FILTER':
 			return { ...state, yearFilter: action.payload };
@@ -44,9 +44,9 @@ const reducer = (state, action) => {
 			return { ...state, includeVideo: action.payload };
 		case 'SET_SORT_BY':
 			return { ...state, sortBy: action.payload };
-    default:
-      return state;
-  }
+		default:
+			return state;
+	}
 };
 
 
@@ -58,20 +58,23 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 	const [filterState, dispatch] = React.useReducer(reducer, initialFilterState);
 
 	/************************************************************************
-	 * UPCOMING
+	 * DISCOVER
 	 ************************************************************************/
-	const { data: upcomingData, error: upcomingError, fetchNextPage: fetchNextPageUpcoming,
-		hasNextPage: hasNextPageUpcoming, isFetching: isFetchingUpcoming,
-		isFetchingNextPage: isFetchingNextPageUpcoming, status: statusUpcoming,
-	} = useGetUpcoming();
-
 	const { data: discoverData, error: discoverError, fetchNextPage: fetchNextPageDiscover,
 		hasNextPage: hasNextPageDiscover, isFetching: isFetchingDiscover,
 		isFetchingNextPage: isFetchingNextPageDiscover, status: statusDiscover,
 	} = useGetDiscover({
-		sort_by: "popularity.desc",
+		sort_by: filterState.sortBy,
+		with_genres: filterState.genreFilter.map(genre => genre.id).join(","),
+		primary_release_date_gte: filterState.yearFilter[0],
+		primary_release_date_lte: filterState.yearFilter[1],
+		vote_average_gte: filterState.ratingFilter,
+		with_runtime_gte: filterState.runtimeFilter[0],
+		with_runtime_lte: filterState.runtimeFilter[1],
+		include_adult: filterState.includeAdult,
+		include_video: filterState.includeVideo,
 	});
-	
+
 	console.log("discoverData", discoverData);
 
 	/************************************************************************
@@ -91,7 +94,7 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 	 * INFINITE SCROLL
 	 ************************************************************************/
 	const { ref, inView } = useInView();
-	
+
 	// infinite scrolling
 	useEffect(() => {
 		if (inView) {
@@ -130,22 +133,23 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 		if (debouncedSearch) {
 			if (searchData) setFilteredResults(sortResults(filterResults(searchData.pages.flatMap(page => page.results))));
 		} else {
-			// if (upcomingData) setFilteredResults(sortResults(filterResults(upcomingData.pages.flatMap(page => page.results))));
-			if (discoverData) setFilteredResults(sortResults(filterResults(discoverData.pages.flatMap(page => page.results))));
+			// discover method already provide filter and sort options, we just need to pass in the correct parameters
+			if (discoverData) setFilteredResults(discoverData.pages.flatMap(page => page.results));
+			// if (discoverData) setFilteredResults(sortResults(filterResults(discoverData.pages.flatMap(page => page.results))));
 		}
 		// }, [searchData, upcomingData, searchTerm, filters, sortBy]);
-	}, [searchData, discoverData, debouncedSearch, filters, sortBy]);
+	}, [searchData, discoverData, debouncedSearch, filterState]);
 
 	/************************************************************************
 	 * FILTERS & SORTING
 	 ************************************************************************/
 
 	const filterResults = (filmData) => {
-		const genreFilterActive = filters.genreFilter.length > 0;
+		const genreFilterActive = filterState.genreFilter.length > 0;
 		const yearFilterActive =
-			filters.yearFilter[0] !== defaultFilters.yearFilter[0] ||
-			filters.yearFilter[1] !== defaultFilters.yearFilter[1];
-		const ratingFilterActive = filters.ratingFilter > 0;
+			filterState.yearFilter[0] !== defaultFilters.yearFilter[0] ||
+			filterState.yearFilter[1] !== defaultFilters.yearFilter[1];
+		const ratingFilterActive = filterState.ratingFilter > 0;
 
 		return filmData.filter(film => {
 			return (
@@ -159,36 +163,36 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 
 		function filterByGenre(film) {
 			if (film.genres)
-				return filters.genreFilter?.some(selectedGenre => film.genres.some(genre => genre.id === selectedGenre.id));
+				return filterState.genreFilter?.some(selectedGenre => film.genres.some(genre => genre.id === selectedGenre.id));
 			if (film.genre_ids)
-				return filters.genreFilter?.some(selectedGenre => film.genre_ids.some(genre => genre === selectedGenre.id));
+				return filterState.genreFilter?.some(selectedGenre => film.genre_ids.some(genre => genre === selectedGenre.id));
 		}
 
 		function filterByYears(film) {
 			let year = film.release_date.split("-")[0];
-			return filters.yearFilter[0] <= year && year <= filters.yearFilter[1];
+			return filterState.yearFilter[0] <= year && year <= filterState.yearFilter[1];
 		}
 
 		function filterByRating(film) {
-			return film.vote_average >= filters.ratingFilter;
+			return film.vote_average >= filterState.ratingFilter;
 		}
 	};
 
 	const sortResults = (results) => {
 		let sortedItems = results;
-		switch (sortBy) {
-			case "Rating: High to Low":
+		switch (filterState.sortBy) {
+			case "Highest Rated":
 				sortedItems = sortedItems.sort((a, b) => b.vote_average - a.vote_average);
 				break;
-			case "Rating: Low to High":
+			case "Lowest Rated":
 				sortedItems = sortedItems.sort((a, b) => a.vote_average - b.vote_average);
 				break;
-			case "Year: New to Old":
+			case "Oldest":
 				sortedItems = sortedItems.sort(
 					(a, b) => parseInt(b.release_date.split("-")[0]) - parseInt(a.release_date.split("-")[0])
 				);
 				break;
-			case "Year: Old to New":
+			case "Newest":
 				sortedItems = sortedItems.sort(
 					(a, b) => parseInt(a.release_date.split("-")[0]) - parseInt(b.release_date.split("-")[0])
 				);
@@ -234,16 +238,15 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 								<BiFilterAlt />
 							</button>
 							<FilmFilters
-								filmData={filmData}
-								users={users}
-								setIsFilterApplied={setIsFilterApplied}
 								modalOpen={filterModalOpen}
 								setModalOpen={setFilterModalOpen}
+								setIsFilterApplied={setIsFilterApplied}
+								dispatch={dispatch}
+								filterState={filterState}
 								sortBy={sortBy}
 								setSortBy={setSortBy}
 								filters={filters}
 								setFilters={setFilters}
-								setFilteredResults={setFilteredResults}
 							/>
 						</div>
 

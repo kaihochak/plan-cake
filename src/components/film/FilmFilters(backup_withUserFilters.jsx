@@ -14,27 +14,39 @@ import { Ampersand } from "lucide-react"
 import { Dialog, DialogContent } from "@/components/ui/filmSearchDialog";
 
 
-const FilmFilters = ({ modalOpen, setModalOpen, dispatch, filterState }) => {
-  // setIsFilterApplied,
-  // sortBy: parentSortBy, setSortBy: parentSetSortBy,
-  // filters: parentFilters, setFilters: parentSetFilters }) => {
+const FilmFilters = ({ users: parentUsers, setIsFilterApplied,
+  modalOpen, setModalOpen,
+  sortBy: parentSortBy, setSortBy: parentSetSortBy,
+  filters: parentFilters, setFilters: parentSetFilters }) => {
 
-  const [sortBy, setSortBy] = useState(filterState.sortBy);
-  const [filters, setFilters] = useState(filterState.filters);
+  const [sortBy, setSortBy] = useState(parentSortBy);
+  const [filters, setFilters] = useState(parentFilters);
   const [genres, setGenres] = useState(new Set());
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // call api, fetch data
   useEffect(() => {
-    const getGenres = async () => {
-      const data = await fetchMovieGenres();
-      if (data) {
-        const newGenresObject = {};
-        data.genres.forEach(genre => { newGenresObject[genre.id] = genre.name; });
-        setGenres(newGenresObject);
-      }
-    };
     getGenres();
+    convertUsers();
   }, []);
+
+  // fetch data for most watchlisted films
+  const getGenres = async () => {
+    const data = await fetchMovieGenres();
+    if (data) {
+      const newGenresObject = {};
+      data.genres.forEach(genre => { newGenresObject[genre.id] = genre.name; });
+      setGenres(newGenresObject);
+    }
+    setLoading(false);
+  };
+
+  // convert users to the format required by the MultiSelect component
+  const convertUsers = () => {
+    const newUsers = parentUsers.map(user => ({ id: user._id, name: user.username }));
+    setUsers(newUsers);
+  };
 
   /******************************************************************************
    *  SORTS
@@ -50,18 +62,101 @@ const FilmFilters = ({ modalOpen, setModalOpen, dispatch, filterState }) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
             <DropdownMenuRadioGroup value={sortBy} onValueChange={setSortBy}>
-              <DropdownMenuRadioItem value="Most Popular">Most Popular</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="Least Popular">Least Popular</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="Oldest">Oldest</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="Newest">Newest</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="Highest Rated">Highest Rated</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="Lowest Rated">Lowest Rated</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="Watchlists: Most to Least">Watchlists: Most to Least</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="Year: Old to New">Year: Old to New</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="Year: New to Old">Year: New to Old</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="Rating: High to Low">Rating: High to Low</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="Rating: Low to High">Rating: Low to High</DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
     )
   }
+
+  /*******************************************************************************
+   *  WATCHLISTS
+   ******************************************************************************/
+
+  let maxNumWatchlist = users.length;
+  const handleWatchlistChange = (event, newValue) => {
+    // For slider component, the newValue is directly provided as the second argument
+    if (newValue !== undefined) {
+      setFilters((currentFilters) => ({
+        ...currentFilters,
+        watchlistFilter: newValue
+      }));
+    } else {
+      // For standard input, extract the value from event.target.value
+      const inputVal = event.target.value === '' ? 0 : Number(event.target.value);
+      if (inputVal > maxNumWatchlist || inputVal < 0) return;
+      setFilters((currentFilters) => ({
+        ...currentFilters,
+        watchlistFilter: inputVal
+      }));
+    }
+  };
+
+  const handleSpecificWatchlistChange = (newSpecificWatchlist) => {
+
+    // if AND is selected, number of watchlist should be at least the number of selected users
+    if (filters.isSpecificAnd && newSpecificWatchlist.length > filters.watchlistFilter) {
+      setFilters((currentFilters) => ({
+        ...currentFilters,
+        watchlistFilter: newSpecificWatchlist.length
+      }));
+    }
+
+    // if OR is selected, number of watchlist should be at least 1
+    if (!filters.isSpecificAnd && newSpecificWatchlist.length > 0 && filters.watchlistFilter === 0) {
+      setFilters((currentFilters) => ({
+        ...currentFilters,
+        watchlistFilter: 1
+      }));
+    }
+
+    // Update the watchlist filter if the new specific watchlist is empty
+    if (newSpecificWatchlist.length === 0) {
+      setFilters((currentFilters) => ({
+        ...currentFilters,
+        watchlistFilter: 0
+      }));
+    }
+
+    // Update the specific watchlist filter
+    setFilters((currentFilters) => ({
+      ...currentFilters,
+      specificWatchlistFilter: newSpecificWatchlist
+    }));
+  };
+
+  const handleIsSpecificAnd = () => {
+
+    // toggle the isSpecificAnd filter
+    setFilters((currentFilters) => ({
+      ...currentFilters,
+      isSpecificAnd: !filters.isSpecificAnd
+    }));
+  };
+
+  useEffect(() => {
+    // if OR is selected and specific watchlist is not empty, set watchlist filter to 1
+    if (!filters.isSpecificAnd && filters.specificWatchlistFilter.length > 0) {
+      setFilters((currentFilters) => ({
+        ...currentFilters,
+        watchlistFilter: 1
+      }));
+    }
+
+    // if AND is selected, number of watchlist should be at least the number of selected users
+    if (filters.isSpecificAnd && filters.specificWatchlistFilter.length > filters.watchlistFilter) {
+      setFilters((currentFilters) => ({
+        ...currentFilters,
+        watchlistFilter: filters.specificWatchlistFilter.length
+      }));
+    }
+  }, [filters.isSpecificAnd]);
+
   /*******************************************************************************
    *  GENRES
    ******************************************************************************/
@@ -270,9 +365,67 @@ const FilmFilters = ({ modalOpen, setModalOpen, dispatch, filterState }) => {
             </div>
           </div>
 
+          {/* SORTS */}
           <SortOptions />
 
           <Separator />
+
+          {/* WATCHLISTS */}
+          {/* <div className='flex flex-col py-3'>
+        <div className='pb-2 subtitle'>Watchlists
+          <p className='pt-2 text-m-s text-primary-foreground/70'>The minimum number of watchlists they're on.</p>
+        </div>
+
+        <div className='w-[100%] mx-auto'>
+          <div className='flex items-center'>
+            <Slider
+              defaultValue={filters.watchlistFilter}
+              aria-label="Default"
+              valueLabelDisplay="auto"
+              value={filters.watchlistFilter}
+              onChange={handleWatchlistChange}
+              min={0}
+              max={maxNumWatchlist}
+              sx={{ color: 'hsl(var(--accent))', height: 2, '& .MuiSlider-thumb': { height: 12, width: 12, }, }}
+            />
+            <Input
+              type="text"
+              className="w-12 h-6 ml-2 text-center border rounded-md text-m-s bg-primary/80 "
+              value={filters.watchlistFilter}
+              onChange={handleWatchlistChange}
+              onKeyPress={(event) => {
+                if (!/[0-9]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+            />
+          </div> */}
+
+          {/* Specific Watchlist */}
+          {/* <div className='mt-4'>
+            <p className='pb-4 text-m-s text-primary-foreground/70'>Whose watchlists they appear on.</p>
+          </div>
+          <div className='flex items-center gap-2 '> */}
+          {/* set AND OR */}
+          {/* <Button variant="outline" size="icon" className="bg-accent text-accent-foreground" onClick={() => handleIsSpecificAnd()} >
+              <div className={` h-[1.2rem] w-[1.4rem] rotate-0  transition-all ${filters.isSpecificAnd ? "-rotate-90 scale-0 hidden md:block" : "scale-100"}`}>OR</div>
+              <Ampersand className={`md:absolute h-[1.4rem] w-[1.4rem] transition-all ${filters.isSpecificAnd ? "rotate-0 scale-100" : "hidden md:scale-0 rotate-90"}`} />
+              <span className="sr-only">Toggle theme</span>
+            </Button> */}
+          {/* Selection */}
+          {/* <div className='w-full'>
+              <MultiSelect
+                options={users}
+                label="Member"
+                selected={filters.specificWatchlistFilter}
+                setSelected={handleSpecificWatchlistChange}
+                separator={filters.isSpecificAnd ? " &\u00A0" : ",\u00A0"}
+                className="w-full"
+              />
+            </div>
+          </div>
+        </div>
+      </div> */}
 
           {/* GENRES */}
           <div className='flex flex-col py-3'>
