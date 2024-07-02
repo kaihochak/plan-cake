@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useReducer } from 'react'
+import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
+import { useMount, useSetState } from 'react-use';
 import FilmPoll from '@/components/event/FilmPoll'
 import GuestSelection from "@/components/event/GuestSelection";
 import { useParams } from 'react-router-dom';
@@ -12,10 +14,11 @@ import FilmPreview from "@/components/film/FilmPreview";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import getFormattedLocalDateTime from '@/components/utility/getFormattedLocalDateTime';
-import Joyride from 'react-joyride';
 import DateTimePicker from '../../components/event/DateTimePicker';
+import { min, set } from 'date-fns';
 import HourMinutePicker from '../../components/event/HourMinutePicker';
-import { PiKeyReturnFill } from 'react-icons/pi'
+import { Button } from '../../components/ui/button';
+import { PiKeyReturnFill } from 'react-icons/pi';
 
 // Set Tour Guide
 const tourSteps = [
@@ -214,7 +217,13 @@ const PickAFilmPage = () => {
   const [viewFilmId, setViewFilmId] = React.useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [isHourMinutePickerOpen, setIsHourMinutePickerOpen] = useState(false);
-  const [{ run, stepsIndex }, setTourState] = useState({ run: true, stepsIndex: 0 });
+  // const [{ run, stepIndex }, setTourState] = useState({ run: true, stepIndex: 0 });
+  const [{ run, filmpollOpen, stepIndex, steps }, setTourState] = useSetState({
+    run: false,
+    filmpollOpen: false,
+    stepIndex: 0,
+    steps: [],
+  });
   const [showVoteResult, setShowVoteResult] = useState(false);
 
   const host = localStorage.getItem('host');
@@ -225,6 +234,152 @@ const PickAFilmPage = () => {
   // Query: Update PickAFilm optimistically
   const { isPending, variables, mutateAsync: updatePickAFilmOptimistic, isError } = useUpdatePickAFilmOptimistic(); // Query: Update the guestList optimistically
 
+  // Set Tour Guide
+  // useMount(() => {
+  //   setTourState({
+  //     run: true,
+  //     steps: [
+  //       {
+  //         target: '.tour-add-film',
+  //         content: (
+  //           <div>
+  //             <p className='mb-1 bold'>Add a Film</p>
+  //             <p className='body'>Got a movie in mind? Hit the "Add Film" button to start adding your favorites.</p>
+  //           </div>
+  //         ),
+  //         disableBeacon: true,
+  //         disableOverlayClose: true,
+  //         hideCloseButton: true,
+  //         hideFooter: true,
+  //         placement: 'bottom',
+  //         spotlightClicks: true,
+  //         styles: {
+  //           options: {
+  //             zIndex: 10000,
+  //           },
+  //         },
+  //       },
+  //       {
+  //         target: '.tour-search-filter',
+  //         content: (
+  //           <div>
+  //             <p className='mb-1 bold'>Search/Filter for a Film</p>
+  //             <p className='body'>Use the search bar to find the movie you’re looking for, or click on the filter button to narrow down your choices.</p>
+  //           </div>
+  //         ),
+  //         disableBeacon: true,
+  //         disableOverlayClose: true,
+  //         hideCloseButton: true,
+  //         hideFooter: true,
+  //         placement: 'bottom',
+  //         spotlightClicks: true,
+  //         styles: {
+  //           options: {
+  //             zIndex: 10000,
+  //           },
+  //         },
+  //       },
+  //       {
+  //         target: '.tour-apply',
+  //         content: (
+  //           <div>
+  //             <p className='mb-1 bold'>Apply selection</p>
+  //             <p className='body'>Found something interesting? Hover over the film to see the "Add" button and an "Info" button for details. Click "Apply" after selecting the films you want to add to the poll.</p>
+  //           </div>
+  //         ),
+  //         disableBeacon: true,
+  //         disableOverlayClose: true,
+  //         hideCloseButton: true,
+  //         hideFooter: true,
+  //         placement: 'bottom',
+  //         spotlightClicks: true,
+  //         styles: {
+  //           options: {
+  //             zIndex: 10000,
+  //           },
+  //         },
+  //       },
+  //       {
+  //         target: '.tour-share',
+  //         content: (
+  //           <div>
+  //             <p className='mb-1 bold'>Add Guest Name</p>
+  //             <p className='body'>Open the guest name drop-down, and add your friends' names. Want to vote on their behalf? Select their name and cast their vote (but make sure you've got their permission first)!</p>
+  //           </div>
+  //         ),
+  //         placement: 'bottom',
+  //         spotlightClicks: true,
+  //         styles: {
+  //           options: {
+  //             zIndex: 10000,
+  //           },
+  //         },
+  //       },
+  //       {
+  //         target: '.tour-vote',
+  //         content: (
+  //           <div>
+  //             <p className='mb-1 bold'>Vote for the Film</p>
+  //             <p className='body'>Check out the selected films in the poll section. Hover over your pick and click the "+" button to cast your vote for the movie you want to watch.</p>
+  //           </div>
+  //         ),
+  //         disableBeacon: true,
+  //         disableOverlayClose: true,
+  //         hideCloseButton: true,
+  //         hideFooter: true,
+  //         placement: 'bottom',
+  //         spotlightClicks: true,
+  //         styles: {
+  //           options: {
+  //             zIndex: 10000,
+  //           },
+  //         },
+  //       },
+  //       {
+  //         target: '.tour-confirm',
+  //         content: (
+  //           <div>
+  //             <p className='mb-1 bold'>Confirm Film</p>
+  //             <p className='body'>After everyone has voted, click the "Confirmed Film" button to see which movie the group decided to watch. Popcorn(pancake) time!</p>
+  //           </div>
+  //         ),
+  //         disableBeacon: true,
+  //         disableOverlayClose: true,
+  //         hideCloseButton: true,
+  //         hideFooter: true,
+  //         placement: 'bottom',
+  //         spotlightClicks: true,
+  //         styles: {
+  //           options: {
+  //             zIndex: 10000,
+  //           },
+  //         },
+  //       },
+  //       {
+  //         target: '.tour-edit',
+  //         content: (
+  //           <div>
+  //             <p className='mb-1 bold'>Edit Event Title and Date & Time</p>
+  //             <p className='body'>Want to change the event name or tweak the date and time? Just click on the title or the date & time fields and make it yours!</p>
+  //           </div>
+  //         ),
+  //         disableBeacon: true,
+  //         disableOverlayClose: true,
+  //         hideCloseButton: true,
+  //         hideFooter: true,
+  //         placement: 'bottom',
+  //         spotlightClicks: true,
+  //         styles: {
+  //           options: {
+  //             zIndex: 10000,
+  //           },
+  //         },
+  //       },
+  //     ]
+  //   })
+  // })
+
+  
   // Initialize local state with data from the query
   useEffect(() => {
     if (!isLoadingPickAFilm && data && !isInitialized) {
@@ -433,11 +588,72 @@ const PickAFilmPage = () => {
     const { action, index, status, type } = data;
     console.log('Type:', type, 'Action:', action, 'Index:', index, 'Status:', status);
 
-    if (action === 'next') {
-      setTourState({ run: true, stepsIndex: index + 1 });
+    // if the tour is finished or skipped, set the running state to false
+    if (([STATUS.FINISHED, STATUS.SKIPPED]).includes(status)) {
+      setTourState({ run: false, stepIndex: 0 });
+
+    // else if the tour is paused, set the running state to true
+    } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND]).includes(type)) {
+    // } else {
+      console.log("debug", EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND);
+      console.log("debug", type);
+      console.log("debug", ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND]).includes(type));
+
+      const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
+
+      if (filmpollOpen && index === 0) {
+
+        console.log("index", index);
+
+        setTimeout(() => {
+          setTourState({ run: true });
+        }, 400);
+      } else if (filmpollOpen && index === 1) {
+
+        console.log("index", index);
+
+        setTourState({
+          run: false,
+          filmpollOpen: false,
+          stepIndex: nextStepIndex,
+        });
+
+        setTimeout(() => {
+          setTourState({ run: true });
+        }, 400);
+      } else if (index === 2 && action === ACTIONS.PREV) {
+        console.log("index", index);
+
+        setTourState({
+          run: false,
+          filmpollOpen: true,
+          stepIndex: nextStepIndex,
+        });
+
+        setTimeout(() => {
+          setTourState({ run: true });
+        }, 400);
+
+      } else {
+        setTourState({
+          filmpollOpen: false,
+          stepIndex: nextStepIndex,
+        });
+
+      }
+
     }
+
+    console.log(type === EVENTS.TOUR_STATUS ? `${type}:${status}` : type, data);
+
+    // if (action === 'next') {
+    //   setTourState({ run: true, stepIndex: index + 1 });
+    // }
   };
 
+  const handleStateChange = (isOpen) => {
+    setTourState({ filmpollOpen: isOpen });
+  }
 
 
   // Open the Film Preview Modal
@@ -479,14 +695,16 @@ const PickAFilmPage = () => {
   )
 
   return (
-    <div className='flex-col items-center justify-start w-full px-4 mx-auto mt-4 overflow-x-hidden overflow-y-scroll xl:px-10 custom-scrollbar'>
-      {/* <Joyride
-        run={run}
-        steps={tourSteps}
-        stepIndex={stepsIndex}
+    <div className={`flex-col items-center justify-start w-full px-4 mx-auto mt-4 overflow-x-hidden overflow-y-scroll xl:px-10 custom-scrollbar  ${state.confirmedFilm ? "mt-0" : ""}`}>
+      <Joyride
+        callback={handleJoyrideCallback}
         continuous={true}
+        run={run}
+        scrollToFirstStep={true}
         showProgress={true}
         showSkipButton={true}
+        stepIndex={stepIndex}
+        steps={steps}
         styles={{
           options: {
             arrowColor: 'hsl(var(--secondary))',
@@ -498,7 +716,7 @@ const PickAFilmPage = () => {
             zIndex: 1000,
           },
         }}
-      /> */}
+      />
 
       <div className={`mx-auto flex flex-col justify-start gap-y-4 md:pb-32 max-w-[1280px]
         ${!state.confirmedFilm ? "pt-12 md:pt-16 lg:pt-24 xl:pt-12" : ""}
@@ -580,77 +798,81 @@ const PickAFilmPage = () => {
                     </h3>
                   }
 
-                  {/* date */}
-                  {state.date &&
-                    <Popover
-                      open={isDatePickerOpen}
-                      onOpenChange={setIsDatePickerOpen}
-                    >
-                      <PopoverTrigger asChild >
-                        <div className="flex flex-col gap-y-0 cursor-pointer [&_div]:hover:underline">
-                          <span className='body text-foreground-dark'>Date</span>
-                          <div className={`body transition-all duration-500 ease-in-out ${isPending ? "text-foreground-dark" : "text-foreground"}`}>
-                            {/* show only date */}
-                            {localDateTime.split('·')[0]}
-                            <span className='italic small text-foreground-dark'>
-                              {
-                                new Date(state.date) > new Date() &&
-                                ` (in ${Math.floor((new Date(state.date) - new Date()) / (1000 * 60 * 60 * 24)) + 1} days)`
-                              }
-                            </span>
-                          </div>
-                        </div>
-                      </PopoverTrigger>
-                      <PopoverContent
-                        align="start"
-                        className="flex flex-col w-auto p-2 space-y-2"
+                  <div className='flex flex-col gap-y-2'>
+                    {/* date */}
+                    {state.date &&
+                      <Popover
+                        open={isDatePickerOpen}
+                        onOpenChange={setIsDatePickerOpen}
                       >
-                        <div className="rounded-md">
-                          <Calendar
-                            mode="single"
-                            selected={state.date}
-                            onSelect={(date) => handleReschedule(date, "date")}
-                          />
-                        </div>
-                      </PopoverContent>
-                    </Popover>
-                  }
+                        <PopoverTrigger asChild >
+                          <div className="flex flex-col gap-y-0 cursor-pointer [&_div]:hover:underline">
+                            <span className='body text-foreground-dark'>Date</span>
+                            <div className={`body transition-all duration-500 ease-in-out ${isPending ? "text-foreground-dark" : "text-foreground"}`}>
+                              {/* show only date */}
+                              {localDateTime.split('·')[0]}
+                              <span className='italic small text-foreground-dark'>
+                                {
+                                  new Date(state.date) > new Date() &&
+                                  ` (in ${Math.floor((new Date(state.date) - new Date()) / (1000 * 60 * 60 * 24)) + 1} days)`
+                                }
+                              </span>
+                            </div>
+                          </div>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          align="start"
+                          className="flex flex-col w-auto p-2 space-y-2"
+                        >
+                          <div className="rounded-md">
+                            <Calendar
+                              mode="single"
+                              selected={state.date}
+                              onSelect={(date) => handleReschedule(date, "date")}
+                            />
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                    }
 
 
-                  {/* time */}
-                  {state.date &&
-                    <Popover
-                      open={isHourMinutePickerOpen}
-                      onOpenChange={setIsHourMinutePickerOpen}
-                    >
-                      <PopoverTrigger asChild >
-                        <div className="flex flex-col gap-y-0 cursor-pointer [&_div]:hover:underline">
-                          <span className='body text-foreground-dark'>Time</span>
-                          <div className={`body transition-all duration-500 ease-in-out ${isPending ? "text-foreground-dark" : "text-foreground"}`}>
-                            {localDateTime.split('·')[1]}
-                          </div>
-                        </div>
-                      </PopoverTrigger>
-                      <PopoverContent
-                        align="start"
-                        className="flex flex-col w-auto p-2 space-y-2"
+                    {/* time */}
+                    {state.date &&
+                      <Popover
+                        open={isHourMinutePickerOpen}
+                        onOpenChange={setIsHourMinutePickerOpen}
                       >
-                        <div className="gap-2 rounded-md flex-between">
-                          <HourMinutePicker
-                            formData={{ date: state.date }}
-                            setFormData={() => dispatch({ type: 'SET_DATE', payload: new Date(state.date) })}
-                          />
-                          <button
-                            className="text-accent h3"
-                            onClick={() => handleReschedule(state.date, "hourMinute")}>
-                            <PiKeyReturnFill />
-                          </button>
-                        </div>
-                      </PopoverContent>
-                    </Popover>
-                  }
+                        <PopoverTrigger asChild >
+                          <div className="flex flex-col gap-y-0 cursor-pointer [&_div]:hover:underline">
+                            <span className='body text-foreground-dark'>Time</span>
+                            <div className={`body transition-all duration-500 ease-in-out ${isPending ? "text-foreground-dark" : "text-foreground"}`}>
+                              {localDateTime.split('·')[1]}
+                            </div>
+                          </div>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          align="start"
+                          className="flex flex-col w-auto p-2 space-y-2"
+                        >
+                          <div className="gap-2 rounded-md flex-between">
+                            <HourMinutePicker
+                              formData={{ date: state.date }}
+                              setFormData={() => dispatch({ type: 'SET_DATE', payload: new Date(state.date) })}
+                            />
+                            <button
+                              className="text-accent h3"
+                              onClick={() => handleReschedule(state.date, "hourMinute")}>
+                              <PiKeyReturnFill />
+                            </button>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                    }
+                    {/* date & time */}
+                  </div>
+
                   {/* Guest List */}
-                  <div className='md:self-end'>
+                  <div className=''>
                     <GuestSelection
                       id={state.id}
                       guestList={state.guestList}
@@ -665,7 +887,6 @@ const PickAFilmPage = () => {
 
             {/* Film Poll */}
             <FilmPoll
-              setTourState={setTourState}
               id={state.id}
               guestList={state.guestList}
               selectedFilms={state.selectedFilms}
@@ -677,6 +898,8 @@ const PickAFilmPage = () => {
               setConfirmedFilm={handleSetConfirmedFilm}
               showVoteResult={showVoteResult}
               setShowVoteResult={setShowVoteResult}
+              isOpen={filmpollOpen}
+              onStateChange={handleStateChange}
             />
           </div>
         </div>

@@ -362,7 +362,7 @@ body {
   }
 
   .feature-container {
-    @apply flex flex-col items-start gap-y-1 w-[160px];
+    @apply flex flex-col items-start justify-between gap-y-1 w-[160px];
   }
 
   /* Explore Container */

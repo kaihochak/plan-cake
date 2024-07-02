@@ -20,7 +20,7 @@ const FilmPoll = ({
   id,
   selectedFilms, selectedGuest, guestList, confirmedFilm,
   setSelectedFilms, setSelectedGuest, setGuestList, setConfirmedFilm,
-  showVoteResult, setShowVoteResult
+  showVoteResult, setShowVoteResult, isOpen, onStateChange
 }) => {
   const { toast } = useToast();
   const [showFilmSearch, setShowFilmSearch] = useState(false);
@@ -386,8 +386,12 @@ const FilmPoll = ({
             variant="accent"
             className="button-sizing"
             onClick={() => {
-              if (selectedGuest) setShowFilmSearch(true);
-              else setShowGuestSelection(true);
+              if (selectedGuest) {
+                setShowFilmSearch(true);
+                onStateChange(true);
+              } else {
+                setShowGuestSelection(true);
+              }
               // setTourState({
               //   run: false,
               //   step: 0,

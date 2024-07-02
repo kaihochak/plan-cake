@@ -87,10 +87,6 @@ const FilmSearch = ({ showFilmSearch, setShowFilmSearch, selectedFilms, handleAp
 		isFetchingNextPage: isFetchingNextPageSearch, status: statusSearch,
 	} = useGetSearchResults(debouncedSearch);
 
-	/************************************************************************
-	 * INFINITE SCROLL
-	 ************************************************************************/
-	const { ref, inView } = useInView();
 
 	// infinite scrolling
 	useEffect(() => {

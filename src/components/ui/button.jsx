@@ -11,8 +11,10 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-default border-2 hover:bg-default rounded-sm hover:bg-opacity-100 ",
-        input: "bg-default hover:bg-default rounded-sm hover:bg-opacity-10 ",
-        select: "bg-primary border-2 hover:bg-default/90 rounded-sm hover:bg-opacity-100",
+
+        input:  "bg-default hover:bg-default rounded-sm hover:bg-opacity-10 ",
+        select: "bg-primary border-2 hover:bg-default/90 hover:text-primary rounded-sm hover:bg-opacity-100",
+
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:

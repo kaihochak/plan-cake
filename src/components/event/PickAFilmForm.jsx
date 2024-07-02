@@ -29,7 +29,7 @@ const PickAFilmForm = ({ isOpen, onClose }) => {
 	const [newPickAFilm, setNewPickAFilm] = useState(null);
 	const [formData, setFormData] = useState({
 		title: "",
-		date: new Date(),
+		date: new Date(new Date().setMinutes(0)),
 		host: ""
 	})
 

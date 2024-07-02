@@ -72,6 +72,12 @@ const VoteResult = ({ selectedFilms, guestList, confirmedFilm, setConfirmedFilm,
     }
   }, [selectedFilms]);
 
+  useEffect(() => {
+    if (showVoteResult) {
+      populateResults();
+    }
+  }, [showVoteResult]);
+
   /************************************************************************
    *  Rendering
    ************************************************************************/
